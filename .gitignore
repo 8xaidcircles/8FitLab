@@ -44,5 +44,5 @@ next-env.d.ts
 # files
 /files/
 
-# PDL raw data（氏名・メール・電話番号等の個人情報を含むため絶対にコミットしない）
-/data/
+# 外部データの生ファイル（JobHop v2 / ESCO のダウンロード。サイズが大きいためコミットしない）
+/data/raw/
