@@ -19,6 +19,8 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npx eslint .
+      # PageProps などのルートの型は .next/types に生成される（.next は git に含めない）
+      - run: npx next typegen
       - run: npx tsc --noEmit
       # DB テスト（repository.db.test.ts）は Supabase の鍵が無いと自動でスキップされる
       - run: npx vitest run
