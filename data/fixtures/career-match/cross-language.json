@@ -1,0 +1,26 @@
+{
+ "description": "計算エンジン（src/lib/career-match/calculate.ts）と統計生成（scripts/build_career_statistics.py）で一致させる関数の入出力表。TS はテスト、Python は生成スクリプトの実行開始時に突き合わせる",
+ "round_years": [
+  { "input": 0, "expected": 0.5 },
+  { "input": 0.2, "expected": 0.5 },
+  { "input": 0.25, "expected": 0.5 },
+  { "input": 0.5, "expected": 0.5 },
+  { "input": 0.74, "expected": 0.5 },
+  { "input": 0.75, "expected": 1.0 },
+  { "input": 1.0, "expected": 1.0 },
+  { "input": 1.25, "expected": 1.5 },
+  { "input": 1.74, "expected": 1.5 },
+  { "input": 1.75, "expected": 2.0 },
+  { "input": 2.25, "expected": 2.5 },
+  { "input": 10.3, "expected": 10.5 },
+  { "input": 49.75, "expected": 50.0 },
+  { "input": 50.3, "expected": 50.0 },
+  { "input": 120, "expected": 50.0 }
+ ],
+ "experience_unit_keys": [
+  { "role_id": "2513.5", "years": 0.5, "expected": "2513.5__0.5" },
+  { "role_id": "2513.5", "years": 2, "expected": "2513.5__2.0" },
+  { "role_id": "2512.4", "years": 10.5, "expected": "2512.4__10.5" },
+  { "role_id": "3512.1", "years": 50, "expected": "3512.1__50.0" }
+ ]
+}

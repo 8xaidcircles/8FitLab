@@ -80,7 +80,7 @@ export function skillStatisticsVersion(
   return `${stats.source}:${stats.source_years.join("-")}:${stats.calculation_version}:k=${stats.region.prior_strength}`;
 }
 
-// scripts/build_career_statistics.py の round_years と一致させること
+// scripts/build_career_statistics.py の round_years と一致させること（data/fixtures/career-match/cross-language.json で両方を検証）
 export function roundYears(years: number): number {
   return Math.min(MAX_YEARS, Math.max(0.5, Math.floor(years * 2 + 0.5) / 2));
 }

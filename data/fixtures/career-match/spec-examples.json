@@ -1,0 +1,25 @@
+{
+ "description": "要件定義書 §19 の計算例。statistics は期待値を確かめたときの Career Statistics の版。統計を再生成して版が変わったら、期待値を確認して statistics と一緒に更新する",
+ "statistics": {
+  "source": "jobhop_v2",
+  "source_version": "v2",
+  "calculation_version": "2.2.0",
+  "taxonomy_version": "1.1.2"
+ },
+ "cases": [
+  {
+   "goal_id": "full-stack-developer",
+   "label": "Web開発者 2 年のみ",
+   "experiences": [{ "role_id": "2513.5", "years": 2 }],
+   "group_achievements_uncapped": [100, 64.02],
+   "experience_match": 75
+  },
+  {
+   "goal_id": "full-stack-developer",
+   "label": "ICTアプリケーション開発者 3 年のみ",
+   "experiences": [{ "role_id": "2514.2", "years": 3 }],
+   "group_achievements_uncapped": [87.24, 100],
+   "experience_match": 50
+  }
+ ]
+}

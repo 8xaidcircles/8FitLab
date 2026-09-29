@@ -37,6 +37,7 @@ from scipy.stats.mstats import hdquantiles
 ROOT = Path(__file__).resolve().parent.parent
 RAW_DIR = ROOT / "data" / "raw" / "jobhop"
 GOALS_PATH = ROOT / "data" / "goals" / "goals.json"
+CROSS_LANGUAGE_FIXTURE = ROOT / "data" / "fixtures" / "career-match" / "cross-language.json"
 OUT_DIR = ROOT / "data" / "statistics" / "career-match"
 
 SPLITS = ["train", "val", "test"]
@@ -75,6 +76,23 @@ def quarter_index(series: pd.Series) -> pd.Series:
 
 def round_years(years: float) -> float:
     return min(MAX_YEARS, max(0.5, math.floor(years * 2 + 0.5) / 2))
+
+
+def experience_unit_key(role_id: str, years: float) -> str:
+    return f"{role_id}__{years:.1f}"
+
+
+def verify_cross_language_fixture() -> None:
+    """計算エンジン（TS）と同じ入出力表で、丸めと Unit キーが一致することを確かめる。"""
+    fixture = json.loads(CROSS_LANGUAGE_FIXTURE.read_text(encoding="utf-8"))
+    for case in fixture["round_years"]:
+        actual = round_years(case["input"])
+        if actual != case["expected"]:
+            raise ValueError(f"round_years({case['input']}) = {actual}, expected {case['expected']}")
+    for case in fixture["experience_unit_keys"]:
+        actual = experience_unit_key(case["role_id"], case["years"])
+        if actual != case["expected"]:
+            raise ValueError(f"experience_unit_key({case['role_id']}, {case['years']}) = {actual}, expected {case['expected']}")
 
 
 def dated_jobs(df: pd.DataFrame) -> pd.DataFrame:
@@ -156,7 +174,7 @@ def experience_statistics(goal_units, other_counts, n_goal, n_other):
     rows = []
     for (role_id, years), count in cumulative_counts(goal_units).items():
         p_other = other_counts.get((role_id, years), 0) / n_other if n_other else 0.0
-        rows.append(unit_row(f"{role_id}__{years:.1f}", {"role_id": role_id, "years": years}, count / n_goal, p_other))
+        rows.append(unit_row(experience_unit_key(role_id, years), {"role_id": role_id, "years": years}, count / n_goal, p_other))
     return sorted(rows, key=lambda r: r["contribution"], reverse=True)
 
 
@@ -223,6 +241,7 @@ def group_experience(df, jobs, all_units, all_counts, all_persons, group_id, cod
 
 
 def main() -> None:
+    verify_cross_language_fixture()
     goals = json.loads(GOALS_PATH.read_text(encoding="utf-8"))
     df = load_jobhop()
     all_persons = set(df.person_id.unique())
