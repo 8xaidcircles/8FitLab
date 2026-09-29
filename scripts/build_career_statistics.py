@@ -16,7 +16,9 @@ Experience（Requirement Group ごとに算出。Experience Match は Group 達�
     Group の職業そのものは Unit に含めない。Other 側は職歴全体を使う
   - Unit = Role × 「Years 年以上」（累積）。ユーザーは自分の年数以下のすべての Unit に該当する
   - experience_reference = Group Population のうち前職歴がある人の Σ Contribution の 90 パーセンタイル。
-    Group 達成率はこの値を 100 としてスケーリングする（Group の職業の経験があれば 100）
+    Group の職業の経験が無いユーザーの Group 達成率は、この値を 100 としてスケーリングする
+  - occupation_tenure = Group Population が Group の職業（どれでも。重なる期間は 1 回）に就いていた年数の分布。
+    Group の職業の経験があるユーザーは、その年数の分布上のパーセンタイル（同率は中央順位）でも評価する
   - パーセンタイルは Harrell-Davis 推定量で求める。全順序統計量の加重平均のため、母数が少ない Group でも
     上位数人の値に振られにくく、母数が多ければ通常のパーセンタイルに一致する（調整パラメータなし）。
     Goal 間で Σ Contribution の尺度が大きく異なるため、他 Goal や全体平均へのフォールバックは行わない
@@ -45,7 +47,7 @@ HF_BASE = "https://huggingface.co/datasets/aida-ugent/JobHop/resolve/main"
 
 SOURCE = "jobhop_v2"
 SOURCE_VERSION = "v2"
-CALCULATION_VERSION = "2.2.0"
+CALCULATION_VERSION = "2.3.0"
 MIN_RELIABLE_SAMPLE = 100
 MAX_YEARS = 50.0
 REFERENCE_PERCENTILE = 90
@@ -192,6 +194,16 @@ def person_scores(goal_units: pd.DataFrame, rows: list) -> pd.Series:
     return scores.groupby(goal_units.person_id).sum()
 
 
+def occupation_tenure(jobs: pd.DataFrame, group_ids: set, codes: list) -> dict:
+    """Group Population が Group の職業（どれでも）に就いていた年数の分布。Group 内の職業は OR なので 1 つの Role として合算する。"""
+    own = jobs[jobs.person_id.isin(group_ids) & jobs.role_id.isin(codes)].assign(role_id="group")
+    counts = experience_units(own).years.value_counts().sort_index()
+    return {
+        "sample_size": int(counts.sum()),
+        "distribution": [{"years": float(years), "persons": int(n)} for years, n in counts.items()],
+    }
+
+
 def education_statistics(edu, goal_ids, other_ids, n_goal, n_other):
     goal_counts = edu[edu.person_id.isin(goal_ids)].degree_id.value_counts()
     other_counts = edu[edu.person_id.isin(other_ids)].degree_id.value_counts()
@@ -224,6 +236,7 @@ def group_experience(df, jobs, all_units, all_counts, all_persons, group_id, cod
         "pre_goal_experience_persons": 0,
         "experience_reference": 0,
         "experience": [],
+        "occupation_tenure": {"sample_size": 0, "distribution": []},
     }
     if n_group == 0:
         print(f"  [Notice] group={group_id}: no dated person in the group. Experience is not calculable for Goals that include this group.")
@@ -238,6 +251,9 @@ def group_experience(df, jobs, all_units, all_counts, all_persons, group_id, cod
     result["pre_goal_experience_persons"] = int(scores.size)
     result["experience_reference"] = round(reference_value(scores), 6)
     result["experience"] = rows
+    result["occupation_tenure"] = occupation_tenure(jobs, group_ids, codes)
+    if result["occupation_tenure"]["sample_size"] == 0:
+        print(f"  [Notice] group={group_id}: no dated tenure in the group occupations. Users with the occupation are not calculable.")
     if result["experience_reference"] <= 0:
         print(
             f"  [Notice] group={group_id}: experience_reference = 0 (pre-goal persons = {scores.size}, units = {len(rows)}). "
@@ -297,7 +313,8 @@ def main() -> None:
         path.write_text(json.dumps(result, ensure_ascii=False, indent=1, allow_nan=False), encoding="utf-8")
         groups_summary = "  ".join(
             f"[{g['group_id']} N={g['goal_sample_size']} pre={g['pre_goal_experience_persons']}"
-            f" units={len(g['experience'])} ref={g['experience_reference']:.4f}]"
+            f" units={len(g['experience'])} ref={g['experience_reference']:.4f}"
+            f" tenure={g['occupation_tenure']['sample_size']}]"
             for g in result["requirement_groups"]
         )
         print(f"{goal['goal_id']:<22} N={n_goal:>5} (undated {result['undated_goal_persons']:>3})  {groups_summary}")

@@ -8,8 +8,11 @@ import {
   experienceMatch,
   experienceUnitKey,
   groupAchievement,
+  groupOccupationYears,
   groupUnavailableReason,
+  isTenureCalculable,
   roundYears,
+  tenurePercentile,
   userYearsByRole,
 } from "../calculate";
 import { loadCareerStatistics, loadGoals, loadKnownIds, loadSkillContext } from "../data";
@@ -96,9 +99,19 @@ describe.each(goals.map((g) => [g.goal_id] as const))("計算の性質: %s", (go
   // Goal Population = 0 などで Experience を算出できない Goal は、性質のテストの対象外（算出不可は別に固定する）
   const computable = experienceMatch(stats, []).value !== null;
 
-  it("Group の職業の経験があれば、その Group の達成率は 100", () => {
+  it("Group の職業の経験は即 100 ではなく在職年数のパーセンタイル以上。年数を増やしても下がらず、cap を受けない", () => {
+    const yearsList = [0.5, 1, 2, 3, 5, 10, 20, 50];
     for (const group of groups) {
-      for (const code of group.occupations) expect(groupAchievement(group, [{ role_id: code, years: 0.5 }], cap)).toBe(100);
+      for (const code of group.occupations) {
+        const values = yearsList.map((years) => groupAchievement(group, [{ role_id: code, years }], cap)!);
+        expect(values[0]).toBeLessThan(100);
+        values.forEach((value, i) => {
+          expect(value).toBeGreaterThanOrEqual(tenurePercentile(group.occupation_tenure, yearsList[i]));
+          expect(value).toBeLessThanOrEqual(100);
+          if (i > 0) expect(value).toBeGreaterThanOrEqual(values[i - 1]);
+        });
+        if (cap < 100) expect(values.at(-1)).toBeGreaterThan(cap);
+      }
     }
   });
 
@@ -120,9 +133,13 @@ describe.each(goals.map((g) => [g.goal_id] as const))("計算の性質: %s", (go
     }
   });
 
-  it.skipIf(!computable)("全 Group の職業を経験していれば Experience は 100、経験が無ければ 0", () => {
-    const all = groups.map((group) => ({ role_id: group.occupations[0], years: 1 }));
-    expect(experienceMatch(stats, all)).toEqual({ value: 100, coverage: 1 });
+  it.skipIf(!computable)("全 Group の職業を経験していれば coverage = 1 で年数に応じて上がり、経験が無ければ 0", () => {
+    const all = (years: number) => groups.map((group) => ({ role_id: group.occupations[0], years }));
+    const short = experienceMatch(stats, all(0.5));
+    const long = experienceMatch(stats, all(20));
+    expect(short.coverage).toBe(1);
+    expect(short.value!).toBeLessThan(100);
+    expect(long.value!).toBeGreaterThan(short.value!);
     expect(experienceMatch(stats, [])).toEqual({ value: 0, coverage: 0 });
   });
 
@@ -183,6 +200,7 @@ describe("算出不可（null）", () => {
     experience: [
       { unit_id: "2512.4__1.0", role_id: "2512.4", years: 1, p_unit_given_goal: 0.2, p_unit_given_other: 0.1, quantity: 0.2, quality: 66.6667, contribution: 0.133333 },
     ],
+    occupation_tenure: { sample_size: 4, distribution: [{ years: 0.5, persons: 1 }, { years: 1, persons: 2 }, { years: 3, persons: 1 }] },
     ...overrides,
   });
 
@@ -217,11 +235,39 @@ describe("算出不可（null）", () => {
     }
   });
 
-  it("算出不可の Group でも、Group の職業の経験があれば Group 達成率は 100（Experience 全体は算出不可のまま）", () => {
+  it("前職歴で算出不可の Group でも、Group の職業の経験があれば在職年数のパーセンタイルで算出する", () => {
     const g = group({ experience_reference: 0 });
     const experiences = [{ role_id: "2513.5", years: 1 }];
-    expect(groupAchievement(g, experiences)).toBe(100);
-    expect(experienceMatch({ requirement_groups: [g] }, experiences).value).toBeNull();
+    // 1 年未満 1 人 + 1 年ちょうど 2 人の半分 = 2 人 / 4 人
+    expect(groupAchievement(g, experiences)).toBe(50);
+    expect(experienceMatch({ requirement_groups: [g] }, experiences)).toEqual({ value: 50, coverage: 1 });
+    expect(experienceMatch({ requirement_groups: [g] }, []).unavailable_reason).toBe("INSUFFICIENT_REFERENCE_DATA");
+  });
+
+  it("在職年数の分布が空・欠落・人数 0 なら、Group の職業の経験は前職歴だけで評価し、どちらも無理なら null", () => {
+    const experiences = [{ role_id: "2513.5", years: 1 }, { role_id: "2512.4", years: 1 }];
+    for (const bad of [
+      { sample_size: 0, distribution: [] },
+      { sample_size: 0, distribution: [{ years: 1, persons: 1 }] },
+      { sample_size: NaN, distribution: [{ years: 1, persons: 1 }] },
+      null,
+      undefined,
+    ]) {
+      const tenure = bad as unknown as RequirementGroupStatistics["occupation_tenure"];
+      expect(isTenureCalculable(tenure)).toBe(false);
+      expect(groupAchievement(group({ occupation_tenure: tenure }), experiences)).toBe(100);
+      expect(groupAchievement(group({ occupation_tenure: tenure, experience_reference: 0 }), experiences)).toBeNull();
+    }
+  });
+
+  it("Group の職業の経験は、在職年数のパーセンタイルと前職歴（100 まで）の高いほう", () => {
+    // 前職歴 0.133333 / 0.2 = 66.67 > 在職 0.5 年のパーセンタイル 12.5
+    expect(groupAchievement(group({ experience_reference: 0.2 }), [{ role_id: "2513.5", years: 0.5 }, { role_id: "2512.4", years: 1 }])).toBeCloseTo(66.6667, 3);
+    // 在職 3 年のパーセンタイル 87.5 > 前職歴 66.67
+    expect(groupAchievement(group({ experience_reference: 0.2 }), [{ role_id: "2513.5", years: 3 }, { role_id: "2512.4", years: 1 }])).toBe(87.5);
+    // Group の職業の経験がある Group は cap を受けない
+    expect(groupAchievement(group(), [{ role_id: "2513.5", years: 3 }], 50)).toBe(87.5);
+    expect(groupAchievement(group(), [{ role_id: "2512.4", years: 1 }], 50)).toBe(50);
   });
 
   it("Experience が算出不可なら、Goal Match の分母から外す", async () => {
@@ -247,6 +293,31 @@ describe("算出不可（null）", () => {
     expect(educationMatch([], "Bachelor")).toBeNull();
     expect(educationMatch([{ degree_id: "Bachelor", contribution: 0 }], "Bachelor")).toBeNull();
     expect(educationMatch([{ degree_id: "Bachelor", contribution: 0.3 }], null)).toBe(0);
+  });
+});
+
+describe("在職年数のパーセンタイル", () => {
+  const tenure = { sample_size: 4, distribution: [{ years: 0.5, persons: 1 }, { years: 1, persons: 2 }, { years: 3, persons: 1 }] };
+
+  it("（下回る人数 + 同じ人数 × 0.5）/ 全人数 × 100", () => {
+    expect(tenurePercentile(tenure, 0.5)).toBe(12.5);
+    expect(tenurePercentile(tenure, 1)).toBe(50);
+    expect(tenurePercentile(tenure, 2)).toBe(75);
+    expect(tenurePercentile(tenure, 3)).toBe(87.5);
+    expect(tenurePercentile(tenure, 50)).toBe(100);
+  });
+
+  it("Group 内の職業（OR）の年数は合算してから丸め、Group 外の職業・0 以下は数えない", () => {
+    const group = { group_id: "g", occupations: ["2512.5", "2513.5"] };
+    expect(
+      groupOccupationYears(group, [
+        { role_id: "2512.5", years: 0.3 },
+        { role_id: "2513.5", years: 0.3 },
+        { role_id: "2512.4", years: 5 },
+        { role_id: "2513.5", years: -1 },
+      ]),
+    ).toBe(0.5);
+    expect(groupOccupationYears(group, [{ role_id: "2512.4", years: 5 }])).toBe(0);
   });
 });
 

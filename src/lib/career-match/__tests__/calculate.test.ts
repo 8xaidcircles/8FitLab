@@ -69,6 +69,8 @@ function group(groupId: string, occupations: string[]): RequirementGroupStatisti
       { unit_id: "A__2.0", role_id: "A", years: 2.0, ...row(0.05, 0) },
       { unit_id: "B__0.5", role_id: "B", years: 0.5, ...row(0.1, 0) },
     ],
+    // パーセンタイル：0.5 年 = 12.5、1 年 = 50、2 年 = 75、3 年 = 87.5
+    occupation_tenure: { sample_size: 4, distribution: [{ years: 0.5, persons: 1 }, { years: 1, persons: 2 }, { years: 3, persons: 1 }] },
   };
 }
 
@@ -304,8 +306,17 @@ describe("experienceMatch", () => {
     expect(match([{ role_id: "A", years: 2 }, { role_id: "B", years: 1 }])).toBe(100); // 0.6 / 0.4
   });
 
-  it("Goal 職業そのものの経験があれば 100", () => {
-    expect(experienceMatch(stats(), [{ role_id: "G", years: 0.5 }])).toEqual({ value: 100, coverage: 1 });
+  it("Goal 職業そのものの経験は即 100 ではなく、在職年数のパーセンタイル", () => {
+    expect(experienceMatch(stats(), [{ role_id: "G", years: 0.5 }])).toEqual({ value: 12.5, coverage: 1 });
+    expect(match([{ role_id: "G", years: 1 }])).toBe(50);
+    expect(match([{ role_id: "G", years: 3 }])).toBe(87.5);
+  });
+
+  it("Goal 職業の経験と前職歴があれば、高いほう", () => {
+    // 在職 1 年 = 50 < 前職歴 A 2 年 + B 1 年 = min(100, 0.6 / 0.4 × 100)
+    expect(match([{ role_id: "G", years: 1 }, { role_id: "A", years: 2 }, { role_id: "B", years: 1 }])).toBe(100);
+    // 在職 3 年 = 87.5 > 前職歴 A 0.5 年 = 50
+    expect(match([{ role_id: "G", years: 3 }, { role_id: "A", years: 0.5 }])).toBe(87.5);
   });
 
   describe("複合 Goal（Group の AND、Group 内は OR）= Group 達成率の平均", () => {
@@ -313,19 +324,21 @@ describe("experienceMatch", () => {
     const k = { ...group("k", ["K1"]), experience: [{ unit_id: "B__0.5", role_id: "B", years: 0.5, ...row(0.2, 0) }] };
     const composite = stats({ goal_occupations: ["F1", "F2", "K1"], requirement_groups: [group("f", ["F1", "F2"]), k] });
 
-    it("Group 内はどれか 1 つで満たし、全 Group を満たせば 100", () => {
-      expect(experienceMatch(composite, [{ role_id: "F2", years: 1 }, { role_id: "K1", years: 1 }])).toEqual({ value: 100, coverage: 1 });
+    it("Group 内はどれか 1 つで満たし、全 Group を満たせば coverage = 1（達成率は在職年数）", () => {
+      expect(experienceMatch(composite, [{ role_id: "F2", years: 1 }, { role_id: "K1", years: 1 }])).toEqual({ value: 50, coverage: 1 });
+      expect(experienceMatch(composite, [{ role_id: "F2", years: 3 }, { role_id: "K1", years: 3 }]).value).toBe(87.5);
     });
 
-    it("同じ Group の職業を複数経験しても 1 Group として数える", () => {
-      expect(experienceMatch(composite, [{ role_id: "F1", years: 1 }, { role_id: "F2", years: 1 }])).toEqual({ value: 50, coverage: 0.5 });
+    it("同じ Group の職業を複数経験しても 1 Group として数え、年数は合算する", () => {
+      // F = 在職 2 年 = 75、K = 0 → 37.5
+      expect(experienceMatch(composite, [{ role_id: "F1", years: 1 }, { role_id: "F2", years: 1 }])).toEqual({ value: 37.5, coverage: 0.5 });
     });
 
     it("満たしていない Group は、その Group の前職統計で達成率を出す", () => {
-      // F = 100、K = 0.2 / 0.4 → (100 + 50) / 2
-      expect(experienceMatch(composite, [{ role_id: "F1", years: 1 }, { role_id: "B", years: 0.5 }]).value).toBeCloseTo(75);
-      // A は F の前職統計には寄与するが K には寄与しない → (100 + 0) / 2
-      expect(experienceMatch(composite, [{ role_id: "F1", years: 1 }, { role_id: "A", years: 2 }]).value).toBe(50);
+      // F = 在職 3 年 = 87.5、K = 0.2 / 0.4 = 50 → (87.5 + 50) / 2
+      expect(experienceMatch(composite, [{ role_id: "F1", years: 3 }, { role_id: "B", years: 0.5 }]).value).toBeCloseTo(68.75);
+      // A は F の前職統計には寄与するが K には寄与しない → (max(在職 87.5, 前職歴 100) + 0) / 2
+      expect(experienceMatch(composite, [{ role_id: "F1", years: 3 }, { role_id: "A", years: 2 }]).value).toBe(50);
     });
 
     it("Group を満たさなければ各 Group の前職統計の平均", () => {
@@ -337,7 +350,7 @@ describe("experienceMatch", () => {
       // F = min(50, 0.5 / 0.4 × 100) = 50、K = min(50, 0.2 / 0.4 × 100) = 50
       const both = [{ role_id: "A", years: 2 }, { role_id: "B", years: 1 }];
       expect(experienceMatch(composite, both).value).toBe(COMPOSITE_UNMET_GROUP_CAP);
-      // F を満たせば (100 + min(50, 50)) / 2
+      // F の職業の経験があれば F は cap を受けない：(max(在職 50, 前職歴 min(100, 125)) + min(50, 50)) / 2
       expect(experienceMatch(composite, [...both, { role_id: "F1", years: 1 }]).value).toBe(75);
     });
 

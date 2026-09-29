@@ -3,7 +3,7 @@
  "statistics": {
   "source": "jobhop_v2",
   "source_version": "v2",
-  "calculation_version": "2.2.0",
+  "calculation_version": "2.3.0",
   "taxonomy_version": "1.1.2"
  },
  "cases": [
@@ -11,8 +11,8 @@
    "goal_id": "full-stack-developer",
    "label": "Web開発者 2 年のみ",
    "experiences": [{ "role_id": "2513.5", "years": 2 }],
-   "group_achievements_uncapped": [100, 64.02],
-   "experience_match": 75
+   "group_achievements_uncapped": [67.41, 64.02],
+   "experience_match": 58.71
   },
   {
    "goal_id": "full-stack-developer",

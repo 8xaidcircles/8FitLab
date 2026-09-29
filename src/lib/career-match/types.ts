@@ -43,6 +43,12 @@ export interface RequirementGroup {
   occupations: string[];
 }
 
+/** Group Population が Group の職業（どれでも）に就いていた年数の分布。years は 0.5 年単位（round_years） */
+export interface OccupationTenure {
+  sample_size: number;
+  distribution: { years: number; persons: number }[];
+}
+
 /** Requirement Group を単独の Goal とみなした Experience 統計 */
 export interface RequirementGroupStatistics extends RequirementGroup {
   /** Group の職業に就いた時期が分かる人数 */
@@ -53,6 +59,7 @@ export interface RequirementGroupStatistics extends RequirementGroup {
   experience_reference: number;
   /** Unit = Role × 「years 年以上」（Group の職業に就く前の職歴のみ） */
   experience: ExperienceStatisticsRow[];
+  occupation_tenure: OccupationTenure;
 }
 
 export interface CareerStatistics {
@@ -259,7 +266,7 @@ export interface CareerMatchResult {
   human_skill_progress: number | null;
   skill_layer_weights: ResolvedSkillLayerWeights;
   experience_match: number | null;
-  /** 経験で満たした Requirement Group の割合（0〜1）。1 なら Goal 到達済みとして Experience = 100 */
+  /** Group の職業そのものの経験がある Requirement Group の割合（0〜1） */
   experience_goal_coverage: number;
   education_match: number | null;
   evidence_mode: EvidenceMode;

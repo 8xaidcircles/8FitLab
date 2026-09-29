@@ -12,7 +12,7 @@
  "source_version": "v2",
  "taxonomy": "esco",
  "taxonomy_version": "1.1.2",
- "calculation_version": "2.2.0",
+ "calculation_version": "2.3.0",
  "calculation_date": "2026-09-29",
  "experience_reference_percentile": 90,
  "experience_reference_estimator": "harrell-davis",
@@ -26856,7 +26856,160 @@
      "quality": 3.8014,
      "contribution": 8e-05
     }
-   ]
+   ],
+   "occupation_tenure": {
+    "sample_size": 461,
+    "distribution": [
+     {
+      "years": 0.5,
+      "persons": 121
+     },
+     {
+      "years": 1.0,
+      "persons": 87
+     },
+     {
+      "years": 1.5,
+      "persons": 16
+     },
+     {
+      "years": 2.0,
+      "persons": 48
+     },
+     {
+      "years": 2.5,
+      "persons": 9
+     },
+     {
+      "years": 3.0,
+      "persons": 27
+     },
+     {
+      "years": 3.5,
+      "persons": 4
+     },
+     {
+      "years": 4.0,
+      "persons": 24
+     },
+     {
+      "years": 4.5,
+      "persons": 4
+     },
+     {
+      "years": 5.0,
+      "persons": 22
+     },
+     {
+      "years": 5.5,
+      "persons": 3
+     },
+     {
+      "years": 6.0,
+      "persons": 23
+     },
+     {
+      "years": 6.5,
+      "persons": 8
+     },
+     {
+      "years": 7.0,
+      "persons": 7
+     },
+     {
+      "years": 7.5,
+      "persons": 2
+     },
+     {
+      "years": 8.0,
+      "persons": 10
+     },
+     {
+      "years": 9.0,
+      "persons": 5
+     },
+     {
+      "years": 9.5,
+      "persons": 1
+     },
+     {
+      "years": 10.0,
+      "persons": 6
+     },
+     {
+      "years": 10.5,
+      "persons": 1
+     },
+     {
+      "years": 11.0,
+      "persons": 4
+     },
+     {
+      "years": 11.5,
+      "persons": 2
+     },
+     {
+      "years": 12.0,
+      "persons": 1
+     },
+     {
+      "years": 13.0,
+      "persons": 5
+     },
+     {
+      "years": 13.5,
+      "persons": 1
+     },
+     {
+      "years": 14.0,
+      "persons": 1
+     },
+     {
+      "years": 14.5,
+      "persons": 2
+     },
+     {
+      "years": 15.0,
+      "persons": 3
+     },
+     {
+      "years": 16.5,
+      "persons": 1
+     },
+     {
+      "years": 17.0,
+      "persons": 3
+     },
+     {
+      "years": 17.5,
+      "persons": 1
+     },
+     {
+      "years": 18.0,
+      "persons": 2
+     },
+     {
+      "years": 18.5,
+      "persons": 1
+     },
+     {
+      "years": 21.0,
+      "persons": 2
+     },
+     {
+      "years": 24.0,
+      "persons": 2
+     },
+     {
+      "years": 25.0,
+      "persons": 1
+     },
+     {
+      "years": 28.0,
+      "persons": 1
+     }
+    ]
+   }
   }
  ],
  "education": [

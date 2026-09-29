@@ -214,6 +214,19 @@ describe("Career Statistics Master", () => {
         expect(r.years * 2).toBe(Math.round(r.years * 2));
       }
 
+      // 在職年数の分布：Group Population の一部で、0.5 年単位・昇順・人数の合計が sample_size
+      const tenure = group.occupation_tenure;
+      expect(tenure.sample_size).toBeGreaterThan(0);
+      expect(tenure.sample_size).toBeLessThanOrEqual(group.goal_sample_size);
+      expect(tenure.distribution.reduce((sum, row) => sum + row.persons, 0)).toBe(tenure.sample_size);
+      tenure.distribution.forEach((row, i) => {
+        expect(row.years * 2).toBe(Math.round(row.years * 2));
+        expect(row.years).toBeGreaterThanOrEqual(0.5);
+        expect(row.years).toBeLessThanOrEqual(50);
+        expect(row.persons).toBeGreaterThan(0);
+        if (i > 0) expect(row.years).toBeGreaterThan(tenure.distribution[i - 1].years);
+      });
+
       // 累積 Unit（年以上）なので、同じ Role では年数が長いほど P(Unit|Goal) は増えない
       const byRole = new Map<string, typeof group.experience>();
       for (const r of group.experience) byRole.set(r.role_id, [...(byRole.get(r.role_id) ?? []), r]);
@@ -293,12 +306,19 @@ describe("実データでの算出", () => {
     expect(result.experience_match).toBeGreaterThan(0);
   });
 
-  it("Frontend: Goal 職業（Web開発者）の経験があれば Experience = 100", async () => {
+  it("Frontend: Goal 職業（Web開発者）の経験は即 100 ではなく、在職年数に応じた値（1 年で 40〜50）", async () => {
     const known = await loadKnownIds();
     const [stats, skill] = await Promise.all([loadCareerStatistics("frontend-developer"), loadSkillContext("frontend-developer")]);
-    const result = calculateCareerMatch({ skill_ids: [], certification_ids: [], experiences: [{ role_id: "2513.5", years: 2 }], degree_id: null }, stats, skill, known);
-    expect(result.experience_match).toBe(100);
-    expect(result.experience_goal_coverage).toBe(1);
+    const run = (years: number) =>
+      calculateCareerMatch({ skill_ids: [], certification_ids: [], experiences: [{ role_id: "2513.5", years }], degree_id: null }, stats, skill, known);
+    const oneYear = run(1);
+    expect(oneYear.experience_match).toBeGreaterThanOrEqual(40);
+    expect(oneYear.experience_match).toBeLessThanOrEqual(50);
+    expect(oneYear.experience_goal_coverage).toBe(1);
+
+    const values = [0.5, 1, 2, 3, 5, 10, 20].map((years) => run(years).experience_match!);
+    for (let i = 1; i < values.length; i++) expect(values[i]).toBeGreaterThan(values[i - 1]);
+    expect(values.at(-1)).toBeLessThan(100);
   });
 
   it("Full-Stack の各 Group の統計は、単独 Goal（Frontend / Backend）の統計と同じ", async () => {
@@ -311,7 +331,7 @@ describe("実データでの算出", () => {
     ]);
   });
 
-  it("Full-Stack: 両方の Group で 100、片方だけなら 50〜75、どちらも無ければ 50 以下", async () => {
+  it("Full-Stack: 片方の Group の職業だけなら 50〜75、どちらも無ければ 50 以下、両方なら年数に応じて上がる", async () => {
     const known = await loadKnownIds();
     const [stats, skill] = await Promise.all([
       loadCareerStatistics("full-stack-developer"),
@@ -333,8 +353,10 @@ describe("実データでの算出", () => {
     }
 
     const both = run([{ role_id: "2512.5", years: 1 }, { role_id: "2512.4", years: 1 }]);
-    expect(both.experience_match).toBe(100);
+    expect(both.experience_match).toBeLessThan(100);
     expect(both.experience_goal_coverage).toBe(1);
+    const bothLonger = run([{ role_id: "2512.5", years: 10 }, { role_id: "2512.4", years: 10 }]);
+    expect(bothLonger.experience_match).toBeGreaterThan(both.experience_match!);
   });
 
   it("Frontend: 前職（ソフトウェア開発者）の経験年数が長いほど Experience は下がらない", async () => {
