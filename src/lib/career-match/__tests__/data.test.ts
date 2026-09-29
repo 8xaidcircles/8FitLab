@@ -387,7 +387,11 @@ describe("Skill Statistics（技術スキル層、Stack Overflow）", () => {
       known,
     );
     expect(result.skill_layer_weights.source).not.toBe("fallback");
-    expect(result.skill_statistics_version).toMatch(/^stack_overflow_developer_survey:2023-2024-2025:\d+\.\d+\.\d+:k=[\d.]+$/);
+    if (result.skill_layer_weights.tech > 0) {
+      expect(result.skill_statistics_version).toMatch(/^stack_overflow_developer_survey:2023-2024-2025:\d+\.\d+\.\d+:k=[\d.]+$/);
+    } else {
+      expect(result.skill_statistics_version).toBeNull();
+    }
   });
 
   it.each(goals.map((g) => [g.goal_id] as const))("%s: 採用 unit があり、メンバーは辞書の技術", async (goalId) => {

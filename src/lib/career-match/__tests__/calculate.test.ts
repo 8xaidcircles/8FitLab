@@ -184,6 +184,13 @@ describe("calculateCareerMatch の Skill（技術スキル層 × 人間定義層
     expect(skillStatisticsVersion(skill.techStats!)).toMatch(/^.+:\d{4}(-\d{4})*:.+:k=[\d.]+$/);
   });
 
+  it("技術層の配分が 0 の Goal は、技術層を計算しても Skill Statistics の由来を残さない", () => {
+    const result = skillMatch({ skill_ids: ["jest"] }, layered({ tech: 0, human: 1 }));
+    expect(result.tech_skill_progress).not.toBeNull();
+    expect(result.skill_layer_weights.tech).toBe(0);
+    expect(result.skill_statistics_version).toBeNull();
+  });
+
   it("技術層 100% の Goal で技術スキル統計が無ければ、配分 0 の人間定義層に 100% を寄せる（fallback）", () => {
     const result = skillMatch({ skill_ids: ["jest"] }, { ...layered({ tech: 1, human: 0 }), techStats: null });
     expect(result.tech_skill_progress).toBeNull();
@@ -396,8 +403,23 @@ describe("evidenceMode / confidence", () => {
     ["proxy", 0, "skill_only", "low"],
   ] as const)("%s / N=%d → %s / %s", (mapping, n, mode, conf) => {
     const s = stats({ mapping_status: mapping, goal_sample_size: n });
-    expect(evidenceMode(s)).toBe(mode);
-    expect(confidence(evidenceMode(s), n)).toBe(conf);
+    const both = { experience: 50, education: 50 };
+    expect(evidenceMode(s, both)).toBe(mode);
+    expect(confidence(evidenceMode(s, both), n)).toBe(conf);
+  });
+
+  it.each([
+    [50, null, "full"],
+    [null, 50, "full"],
+    [0, null, "full"], // 0 点は算出できている
+    [null, null, "skill_only"],
+  ] as const)("N > 0 で Experience=%s / Education=%s → %s", (experience, education, mode) => {
+    expect(evidenceMode(stats({ goal_sample_size: 500 }), { experience, education })).toBe(mode);
+  });
+
+  it("Experience・Education とも算出できなければ、N ≥ 100 でも confidence = low", () => {
+    const mode = evidenceMode(stats({ goal_sample_size: 500 }), { experience: null, education: null });
+    expect(confidence(mode, 500)).toBe("low");
   });
 });
 
@@ -443,6 +465,33 @@ describe("calculateCareerMatch", () => {
     expect(result.experience_match).toBeNull();
     expect(result.education_match).toBeNull();
     expect(result.goal_match).toBe(25);
+  });
+
+  it("Goal Sample Size > 0 でも Experience・Education とも算出できなければ skill_only", () => {
+    const result = calculateCareerMatch(
+      input({ skill_ids: ["html"], experiences: [{ role_id: "A", years: 1 }], degree_id: "Master" }),
+      stats({ requirement_groups: [{ ...group("g", ["G"]), experience_reference: 0 }], education: undefined }),
+      skill,
+      known,
+    );
+    expect(result.goal_sample_size).toBe(500);
+    expect(result.experience_match).toBeNull();
+    expect(result.education_match).toBeNull();
+    expect(result.evidence_mode).toBe("skill_only");
+    expect(result.confidence).toBe("low");
+    expect(result.goal_match).toBe(25);
+  });
+
+  it("Experience だけ算出できれば full（Education が算出不可でも）", () => {
+    const result = calculateCareerMatch(
+      input({ experiences: [{ role_id: "A", years: 0.5 }] }),
+      stats({ education: undefined }),
+      skill,
+      known,
+    );
+    expect(result.education_match).toBeNull();
+    expect(result.evidence_mode).toBe("full");
+    expect(result.confidence).toBe("moderate");
   });
 
   it("Goal Sample Size < 100 なら confidence = low、small_sample = true", () => {

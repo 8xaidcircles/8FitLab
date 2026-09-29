@@ -73,7 +73,7 @@ export function resolveUserSkills(
   };
 }
 
-// 例：stack_overflow_developer_survey:2023-2025:0.3.0:k=80.9（k は再生成のたびにデータから推定し直すため含める）
+// 例：stack_overflow_developer_survey:2023-2024-2025:0.3.0:k=80.9（k は再生成のたびにデータから推定し直すため含める）
 export function skillStatisticsVersion(
   stats: Pick<SkillStatistics, "source" | "source_years" | "calculation_version" | "region">,
 ): string {
@@ -179,8 +179,14 @@ export function goalMatch(categories: readonly (number | null)[]): number {
   return available.reduce((sum, value) => sum + value, 0) / available.length;
 }
 
-export function evidenceMode(stats: CareerStatistics): EvidenceMode {
+// full / proxy は、観測データ（Experience・Education）の少なくとも一方を算出できた場合だけ。
+// Goal Population > 0 でも両方とも算出不可なら、Skill だけで算出しているため skill_only
+export function evidenceMode(
+  stats: Pick<CareerStatistics, "goal_sample_size" | "mapping_status">,
+  observed: { experience: number | null; education: number | null },
+): EvidenceMode {
   if (stats.goal_sample_size === 0) return "skill_only";
+  if (observed.experience === null && observed.education === null) return "skill_only";
   return stats.mapping_status === "exact" ? "full" : "proxy";
 }
 
@@ -213,7 +219,6 @@ export function calculateCareerMatch(
   const degreeIsKnown = input.degree_id !== null && (DEGREES as readonly string[]).includes(input.degree_id);
   const ignoredDegreeId = input.degree_id !== null && !degreeIsKnown ? input.degree_id : null;
 
-  const mode = evidenceMode(stats);
   const layered = layeredSkillProgress({
     held: skills.held,
     techStats: skill.techStats,
@@ -226,10 +231,11 @@ export function calculateCareerMatch(
   let experience: number | null = null;
   let coverage = 0;
   let education: number | null = null;
-  if (mode !== "skill_only") {
+  if (stats.goal_sample_size > 0) {
     ({ value: experience, coverage } = experienceMatch(stats, validExperiences));
     education = educationMatch(stats.education, degreeIsKnown ? input.degree_id : null);
   }
+  const mode = evidenceMode(stats, { experience, education });
 
   return {
     goal_id: stats.goal_id,
@@ -238,8 +244,11 @@ export function calculateCareerMatch(
     skill_progress: layered.progress,
     skill_scoring_method: skillModel.method,
     skill_calculation_version: SKILL_CALCULATION_VERSION,
+    // 配分 0 の Goal でも技術層は計算するが、結果が依存しない統計の由来は残さない
     skill_statistics_version:
-      skill.techStats && layered.tech_progress !== null ? skillStatisticsVersion(skill.techStats) : null,
+      skill.techStats && layered.tech_progress !== null && layered.weights.tech > 0
+        ? skillStatisticsVersion(skill.techStats)
+        : null,
     tech_skill_progress: layered.tech_progress,
     human_skill_progress: layered.human_progress,
     skill_layer_weights: layered.weights,

@@ -205,7 +205,8 @@ export default async function ResultPage({ params }: PageProps<"/career-match/re
           <p className="text-sm font-bold text-muted">Goal Match</p>
           <p className="mt-2 leading-relaxed">
             スキル・職歴・学歴のうち、算出できたカテゴリの平均です。
-            {match.evidence_mode === "skill_only" && "このGoalは職歴データがないため、スキルのみで算出しています。"}
+            {match.evidence_mode === "skill_only" &&
+              "このGoalは職歴・学歴の統計を算出できないため、スキルのみで算出しています。"}
           </p>
           <dl className="mt-4 flex flex-wrap gap-2 text-xs">
             <div className="rounded-full bg-indigo-soft px-3 py-1">
