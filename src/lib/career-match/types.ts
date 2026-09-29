@@ -197,21 +197,19 @@ export interface SkillLayersMaster {
   goals: GoalSkillLayers[];
 }
 
-/** Goal ごとの全ユーザーの Skill 達成率（0〜100）の分布。蓄積データから集計する */
+/** Goal ごとの全ユーザーの Skill 達成率（0〜100）。蓄積データから集計する（1 ユーザー 1 値。§11） */
 export interface SkillProgressDistribution {
   goal_id: string;
-  sample_size: number;
-  mean: number;
-  sd: number;
+  scores: readonly number[];
 }
 
 /**
  * linear：達成率をそのまま Skill Match とする（コールドスタート期）
- * normal_cdf：全ユーザーの達成率分布 N(mean, sd) 上のパーセンタイルを Skill Match とする
+ * ecdf：全ユーザーの達成率の経験分布上のパーセンタイル（同率は中央順位）を Skill Match とする。分布の形を仮定しない
  */
 export type SkillScoringModel =
   | { method: "linear" }
-  | { method: "normal_cdf"; mean: number; sd: number; sample_size: number };
+  | { method: "ecdf"; sorted_scores: readonly number[]; sample_size: number };
 
 export type SkillScoringMethod = SkillScoringModel["method"];
 
@@ -283,4 +281,14 @@ export interface CareerMatchResult {
 
 export interface SkillGapStep extends LearningStep {
   satisfied: boolean;
+}
+
+/**
+ * Skill Gap を Skill Match との関係で分けたもの（どちらも learning_order 順）。
+ * data_driven：Skill Match の達成率に効く Step（技術スキル層の採用 unit、または配分のある人間定義層の要件を含む）
+ * checklist：Skill Match には効かない前提・基本要件（Git など。学習順には必要だがスコアの分母に含まない）
+ */
+export interface SkillGap {
+  data_driven: (SkillGapStep & { scored_options: string[] })[];
+  checklist: SkillGapStep[];
 }

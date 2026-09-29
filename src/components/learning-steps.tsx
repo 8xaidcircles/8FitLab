@@ -8,7 +8,8 @@ export interface StepView {
   learning_order: number;
   name: string;
   satisfied: boolean;
-  options: { skill_id: string; name: string; owned: boolean }[];
+  /** scored が false の選択肢は、Step を満たしても Skill Match には効かない */
+  options: { skill_id: string; name: string; owned: boolean; scored?: boolean }[];
 }
 
 export function LearningSteps({
@@ -16,11 +17,14 @@ export function LearningSteps({
   assessmentId,
   steps,
   showStatus = true,
+  trackView = true,
 }: {
   goalId: string;
   assessmentId?: string;
   steps: StepView[];
   showStatus?: boolean;
+  /** 同じページに複数並べるときは 1 つだけ true にする（閲覧イベントを重複させない） */
+  trackView?: boolean;
 }) {
   const missingOrder = new Map(
     steps.filter((s) => !s.satisfied).map((s, i) => [s.step_id, i + 1] as const),
@@ -28,7 +32,9 @@ export function LearningSteps({
 
   return (
     <>
-      <TrackView event="learning_path_viewed" data={{ goal_id: goalId, assessment_id: assessmentId ?? null }} />
+      {trackView && (
+        <TrackView event="learning_path_viewed" data={{ goal_id: goalId, assessment_id: assessmentId ?? null }} />
+      )}
       <ol className="mt-5 space-y-2">
         {steps.map((step) => {
           const choice = step.options.length > 1;
@@ -101,6 +107,7 @@ export function LearningSteps({
                       >
                         {option.owned && "✓ "}
                         {option.name}
+                        {option.scored === false && <span className="ml-1 font-normal text-muted">（Skill対象外）</span>}
                       </span>
                     ))}
                   </div>

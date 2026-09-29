@@ -50,30 +50,40 @@ export function weightedSkillProgress(
   );
 }
 
-// 標準正規分布の CDF。erf は Abramowitz & Stegun 7.1.26（最大誤差 1.5e-7）
-export function standardNormalCdf(z: number): number {
-  const x = Math.abs(z) / Math.SQRT2;
-  const t = 1 / (1 + 0.3275911 * x);
-  const poly = t * (0.254829592 + t * (-0.284496736 + t * (1.421413741 + t * (-1.453152027 + t * 1.061405429))));
-  const erf = 1 - poly * Math.exp(-x * x);
-  return z >= 0 ? (1 + erf) / 2 : (1 - erf) / 2;
+// sorted（昇順）のうち x より小さい値の数（lower）と x 以下の値の数（upper）
+function rankBounds(sorted: readonly number[], x: number): { lower: number; upper: number } {
+  const search = (inclusive: boolean) => {
+    let lo = 0;
+    let hi = sorted.length;
+    while (lo < hi) {
+      const mid = (lo + hi) >>> 1;
+      if (sorted[mid] < x || (inclusive && sorted[mid] === x)) lo = mid + 1;
+      else hi = mid;
+    }
+    return lo;
+  };
+  return { lower: search(false), upper: search(true) };
 }
 
-// 蓄積データが十分なら全ユーザーの進捗分布による CDF 変換、無ければ（コールドスタート）線形
+// 経験分布上のパーセンタイル（0〜100）=（x 未満の数 + 0.5 × x と同じ値の数）/ N × 100（同率は中央順位）
+export function ecdfPercentile(sortedScores: readonly number[], x: number): number {
+  if (sortedScores.length === 0) throw new Error("ECDF requires at least one score");
+  const { lower, upper } = rankBounds(sortedScores, x);
+  return ((lower + 0.5 * (upper - lower)) / sortedScores.length) * 100;
+}
+
+// 蓄積データが十分なら全ユーザーの達成率の経験分布（ECDF）で変換、無ければ（コールドスタート）線形。
+// 全員が同じ達成率なら順位の情報が無い（全員 50 になる）ため線形のまま
 export function selectSkillScoringModel(distribution: SkillProgressDistribution | null | undefined): SkillScoringModel {
-  if (
-    !distribution ||
-    distribution.sample_size < SKILL_DISTRIBUTION_MIN_SAMPLE ||
-    !Number.isFinite(distribution.mean) ||
-    !(distribution.sd > 0)
-  ) {
-    return LINEAR_SKILL_SCORING;
-  }
-  return { method: "normal_cdf", mean: distribution.mean, sd: distribution.sd, sample_size: distribution.sample_size };
+  if (!distribution || distribution.scores.length < SKILL_DISTRIBUTION_MIN_SAMPLE) return LINEAR_SKILL_SCORING;
+  if (!distribution.scores.every((s) => Number.isFinite(s) && s >= 0 && s <= 100)) return LINEAR_SKILL_SCORING;
+  const sorted = [...distribution.scores].sort((a, b) => a - b);
+  if (sorted[0] === sorted[sorted.length - 1]) return LINEAR_SKILL_SCORING;
+  return { method: "ecdf", sorted_scores: sorted, sample_size: sorted.length };
 }
 
 // 達成率（0〜100）→ Skill Match（0〜100）
 export function scoreSkill(progress: number, model: SkillScoringModel): number {
   if (model.method === "linear") return progress;
-  return standardNormalCdf((progress - model.mean) / model.sd) * 100;
+  return ecdfPercentile(model.sorted_scores, progress);
 }

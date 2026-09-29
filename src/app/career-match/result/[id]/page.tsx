@@ -7,7 +7,6 @@ import { getAnonymousUserId, isUuid } from "@/lib/anonymous-user";
 import { getAssessment } from "@/lib/assessment/repository";
 import {
   COMPOSITE_UNMET_GROUP_CAP,
-  evaluateSteps,
   goalOccupations,
   goalSkillUnits,
   humanRequirementStatus,
@@ -20,9 +19,10 @@ import {
   loadSkillContext,
   loadSkillNames,
   normalizeHumanRequirements,
-  resolveSkillLayerWeights,
   resolveUserSkills,
   satisfiedGroupIds,
+  skillGap,
+  skillMatchScope,
   skillUnitGaps,
 } from "@/lib/career-match";
 import { CONFIDENCE_LABELS, EVIDENCE_LABELS, SKILL_LAYER_WEIGHT_SOURCE_LABELS, formatPercent } from "@/lib/labels";
@@ -102,8 +102,15 @@ export default async function ResultPage({ params }: PageProps<"/career-match/re
     skillContext,
     known,
   );
-  const steps = evaluateSteps(path, held);
-  const missing = steps.filter((s) => !s.satisfied);
+  // 現在の定義で、Skill Match に効く skill_id（配分と Skill Gap の分類に使う）
+  const scope = skillMatchScope({
+    techStats: skillContext.techStats,
+    goalLayers: skillContext.goalLayers,
+    defaultWeights: skillContext.defaultWeights,
+  });
+  const gap = skillGap(path, held, scope.skillIds);
+  const missingDataDriven = gap.data_driven.filter((s) => !s.satisfied).length;
+  const missingChecklist = gap.checklist.filter((s) => !s.satisfied).length;
 
   const certificationNames = skillContext.certifications
     .filter((c) => assessment.certification_ids.includes(c.cert_id))
@@ -117,10 +124,7 @@ export default async function ResultPage({ params }: PageProps<"/career-match/re
     held,
   );
   // 「Skill の内訳」は保存した入力を現在の定義で判定する。スコアと配分は保存時の値（再計算しない）
-  const currentWeights = resolveSkillLayerWeights(skillContext.goalLayers.layer_weights, skillContext.defaultWeights, {
-    tech: techGaps.length > 0,
-    human: humanRequirements.length > 0,
-  });
+  const currentWeights = scope.weights;
   const showTech = currentWeights.tech > 0;
   const showHuman = currentWeights.human > 0;
   const percent = (w: number) => `${Math.round(w * 100)}%`;
@@ -192,7 +196,7 @@ export default async function ResultPage({ params }: PageProps<"/career-match/re
   return (
     <div className="mx-auto max-w-4xl px-4 py-10">
       <TrackView event="page_viewed" data={{ path: "/career-match/result", goal_id: goal.goal_id }} />
-      <TrackView event="skill_gap_viewed" data={{ assessment_id: id, goal_id: goal.goal_id, missing: missing.length }} />
+      <TrackView event="skill_gap_viewed" data={{ assessment_id: id, goal_id: goal.goal_id, missing: missingDataDriven + missingChecklist }} />
 
       <p className="text-sm font-bold text-sky">Career Match</p>
       <h1 className="mt-1 text-2xl font-extrabold md:text-3xl">{goal.name}との一致度</h1>
@@ -322,9 +326,9 @@ export default async function ResultPage({ params }: PageProps<"/career-match/re
           <div>
             <h2 className="text-xl font-extrabold">Skill Gap と Learning Path</h2>
             <p className="mt-1 text-sm text-muted">
-              {missing.length === 0
+              {missingDataDriven + missingChecklist === 0
                 ? "すべての学習ステップを習得済みです。"
-                : `未習得のステップが ${missing.length} つあります。上から順に学ぶのがおすすめです。`}
+                : `未習得のステップが ${missingDataDriven + missingChecklist} つあります。それぞれ上から順に学ぶのがおすすめです。`}
               現在の学習ステップの定義で判定しています。
             </p>
           </div>
@@ -332,21 +336,54 @@ export default async function ResultPage({ params }: PageProps<"/career-match/re
             {goal.name}のLearning Pathを見る →
           </Link>
         </div>
-        <LearningSteps
-          goalId={goal.goal_id}
-          assessmentId={id}
-          steps={steps.map((s) => ({
-            step_id: s.step_id,
-            learning_order: s.learning_order,
-            name: s.name,
-            satisfied: s.satisfied,
-            options: s.any_of.map((skillId) => ({
-              skill_id: skillId,
-              name: skillName(skillId),
-              owned: held.has(skillId),
-            })),
-          }))}
-        />
+
+        {gap.data_driven.length > 0 && (
+          <div className="mt-6">
+            <h3 className="font-bold">Skillに反映されるステップ（未習得 {missingDataDriven}）</h3>
+            <p className="mt-1 text-xs text-muted">習得すると Skill が上がります。</p>
+            <LearningSteps
+              goalId={goal.goal_id}
+              assessmentId={id}
+              steps={gap.data_driven.map((s) => ({
+                step_id: s.step_id,
+                learning_order: s.learning_order,
+                name: s.name,
+                satisfied: s.satisfied,
+                options: s.any_of.map((skillId) => ({
+                  skill_id: skillId,
+                  name: skillName(skillId),
+                  owned: held.has(skillId),
+                  scored: s.scored_options.includes(skillId),
+                })),
+              }))}
+            />
+          </div>
+        )}
+
+        {gap.checklist.length > 0 && (
+          <div className="mt-8">
+            <h3 className="font-bold">前提・基本要件のチェックリスト（未習得 {missingChecklist}）</h3>
+            <p className="mt-1 text-xs text-muted">
+              仕事や学習を進めるうえで前提になる項目です。Skillの計算には含めていません（調査データでこのGoalに特徴的とは判定されなかった技術と、配分のない手法・知識）。
+            </p>
+            <LearningSteps
+              goalId={goal.goal_id}
+              assessmentId={id}
+              trackView={gap.data_driven.length === 0}
+              steps={gap.checklist.map((s) => ({
+                step_id: s.step_id,
+                learning_order: s.learning_order,
+                name: s.name,
+                satisfied: s.satisfied,
+                options: s.any_of.map((skillId) => ({
+                  skill_id: skillId,
+                  name: skillName(skillId),
+                  owned: held.has(skillId),
+                })),
+              }))}
+            />
+          </div>
+        )}
       </section>
 
       <section className="mt-10 space-y-2 rounded-2xl bg-white p-5 text-xs leading-relaxed text-muted">

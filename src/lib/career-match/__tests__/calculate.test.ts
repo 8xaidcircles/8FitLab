@@ -257,17 +257,18 @@ describe("calculateCareerMatch の Skill Scoring", () => {
     expect(result.skill_scoring_method).toBe("linear");
   });
 
-  it("蓄積データの分布があれば CDF 変換し、Goal Match にも反映する", () => {
-    const distribution = { goal_id: "test-goal", sample_size: 500, mean: 30, sd: 20 };
-    const result = calculateCareerMatch(input({ skill_ids: skillIds }), stats(), skill, known, distribution);
+  it("蓄積データの分布があれば ECDF で変換し、Goal Match にも反映する", () => {
+    // 400 人が 0 点、100 人が 50 点、100 人が 100 点 → 50 点は (400 + 0.5 × 100) / 600
+    const scores = [...Array(400).fill(0), ...Array(100).fill(50), ...Array(100).fill(100)];
+    const result = calculateCareerMatch(input({ skill_ids: skillIds }), stats(), skill, known, { goal_id: "test-goal", scores });
     expect(result.skill_progress).toBeCloseTo(50, 10);
-    expect(result.skill_scoring_method).toBe("normal_cdf");
-    expect(result.skill_match).toBeCloseTo(84.13, 1); // Φ((50 − 30) / 20)
+    expect(result.skill_scoring_method).toBe("ecdf");
+    expect(result.skill_match).toBeCloseTo(75, 10);
     expect(result.goal_match).toBeCloseTo((result.skill_match + 0 + 0) / 3);
   });
 
   it("別 Goal の分布はエラー", () => {
-    const distribution = { goal_id: "other", sample_size: 500, mean: 30, sd: 20 };
+    const distribution = { goal_id: "other", scores: [0, 100] };
     expect(() => calculateCareerMatch(input(), stats(), skill, known, distribution)).toThrow();
   });
 });

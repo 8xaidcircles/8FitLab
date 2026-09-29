@@ -73,6 +73,25 @@ export function resolveSkillLayerWeights(
   };
 }
 
+// Skill Match の計算に使う層（配分が 0 の層は除く）と、その層で達成率に効く skill_id
+// （技術スキル層は採用 unit のメンバー、人間定義層は要件の any_of）
+export function skillMatchScope(params: {
+  techStats: Pick<SkillStatistics, "goal_id" | "units"> | null;
+  goalLayers: GoalSkillLayers;
+  defaultWeights: SkillLayerWeights;
+}): { weights: ResolvedSkillLayerWeights; skillIds: Set<string> } {
+  const units = params.techStats ? goalSkillUnits(params.techStats) : [];
+  const requirements = normalizeHumanRequirements(params.goalLayers.human_requirements);
+  const weights = resolveSkillLayerWeights(params.goalLayers.layer_weights, params.defaultWeights, {
+    tech: units.length > 0,
+    human: requirements.length > 0,
+  });
+  const skillIds = new Set<string>();
+  if (weights.tech > 0) for (const unit of units) for (const member of unit.members) skillIds.add(member.skill_id);
+  if (weights.human > 0) for (const requirement of requirements) for (const id of requirement.any_of) skillIds.add(id);
+  return { weights, skillIds };
+}
+
 export interface LayeredSkillProgress {
   /** 2 層を配分で合算した Skill Progress（0〜100） */
   progress: number;

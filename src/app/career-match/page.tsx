@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { TrackView } from "@/components/track-view";
 import {
-  goalSkillUnits,
   loadCertifications,
   loadEducation,
   loadGoals,
@@ -11,8 +10,7 @@ import {
   loadRoles,
   loadSkillContext,
   loadTechSkills,
-  normalizeHumanRequirements,
-  resolveSkillLayerWeights,
+  skillMatchScope,
   type SkillContext,
 } from "@/lib/career-match";
 import type { Certification, HumanSkill, LearningPathMaster } from "@/lib/career-match/types";
@@ -33,15 +31,13 @@ function goalRelevantIds(
   humanSkills: readonly HumanSkill[],
   certifications: readonly Certification[],
 ): string[] {
-  const ids = new Set<string>();
-  const units = context.techStats ? goalSkillUnits(context.techStats) : [];
-  const humanRequirements = normalizeHumanRequirements(context.goalLayers.human_requirements);
-  const weights = resolveSkillLayerWeights(context.goalLayers.layer_weights, context.defaultWeights, {
-    tech: units.length > 0,
-    human: humanRequirements.length > 0,
-  });
-  if (weights.tech > 0) for (const unit of units) for (const member of unit.members) ids.add(member.skill_id);
-  if (weights.human > 0) for (const requirement of humanRequirements) for (const id of requirement.any_of) ids.add(id);
+  const ids = new Set(
+    skillMatchScope({
+      techStats: context.techStats,
+      goalLayers: context.goalLayers,
+      defaultWeights: context.defaultWeights,
+    }).skillIds,
+  );
   for (const step of path.steps) for (const id of step.any_of) ids.add(id);
   for (const skill of humanSkills) {
     if (ids.has(skill.skill_id)) for (const tool of skill.tools ?? []) ids.add(tool.tool_id);

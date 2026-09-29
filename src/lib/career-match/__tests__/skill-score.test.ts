@@ -2,11 +2,11 @@ import { describe, expect, it } from "vitest";
 import {
   LINEAR_SKILL_SCORING,
   SKILL_DISTRIBUTION_MIN_SAMPLE,
+  ecdfPercentile,
   goalSkillUnits,
   scoreSkill,
   selectSkillScoringModel,
   skillUnitGaps,
-  standardNormalCdf,
   weightedSkillProgress,
 } from "../skill-score";
 import type { SkillProgressDistribution, SkillStatistics } from "../types";
@@ -23,8 +23,13 @@ const skillStats: Pick<SkillStatistics, "goal_id" | "units"> = {
   ],
 };
 
+// 0〜99 を等間隔に並べた n 件（n = 100 なら 0, 1, ..., 99）
+function spread(n: number): number[] {
+  return Array.from({ length: n }, (_, i) => (i * 99) / Math.max(1, n - 1));
+}
+
 function distribution(overrides: Partial<SkillProgressDistribution> = {}): SkillProgressDistribution {
-  return { goal_id: "test-goal", sample_size: SKILL_DISTRIBUTION_MIN_SAMPLE, mean: 40, sd: 20, ...overrides };
+  return { goal_id: "test-goal", scores: spread(SKILL_DISTRIBUTION_MIN_SAMPLE), ...overrides };
 }
 
 describe("weightedSkillProgress（技術スキル層）", () => {
@@ -62,22 +67,36 @@ describe("skillUnitGaps", () => {
   });
 });
 
-describe("standardNormalCdf", () => {
-  it.each([
-    [0, 0.5],
-    [1, 0.841345],
-    [-1, 0.158655],
-    [1.959964, 0.975],
-    [-3, 0.00135],
-  ])("Φ(%s) ≈ %s", (z, expected) => {
-    expect(standardNormalCdf(z)).toBeCloseTo(expected, 5);
+describe("ecdfPercentile（同率は中央順位）", () => {
+  const sorted = [0, 10, 20, 20, 30];
+
+  it("（x 未満の数 + 0.5 × 同じ値の数）/ N × 100", () => {
+    expect(ecdfPercentile(sorted, 10)).toBeCloseTo(30, 10); // (1 + 0.5) / 5
+    expect(ecdfPercentile(sorted, 20)).toBeCloseTo(60, 10); // (2 + 0.5 × 2) / 5
+    expect(ecdfPercentile(sorted, 15)).toBeCloseTo(40, 10); // 分布に無い値：(2 + 0) / 5
   });
 
-  it("単調増加で 0〜1 に収まる", () => {
-    const values = [-8, -3, -1, 0, 1, 3, 8].map(standardNormalCdf);
-    for (let i = 1; i < values.length; i++) expect(values[i]).toBeGreaterThan(values[i - 1]);
-    expect(values[0]).toBeGreaterThanOrEqual(0);
-    expect(values.at(-1)).toBeLessThanOrEqual(1);
+  it("全員より低ければ 0、全員より高ければ 100", () => {
+    expect(ecdfPercentile(sorted, -1)).toBe(0);
+    expect(ecdfPercentile(sorted, 31)).toBe(100);
+  });
+
+  it("全員が同点なら、同じ値は 50", () => {
+    expect(ecdfPercentile([40, 40, 40], 40)).toBe(50);
+    expect(ecdfPercentile([40, 40, 40], 39)).toBe(0);
+    expect(ecdfPercentile([40, 40, 40], 41)).toBe(100);
+  });
+
+  it("1 件だけでも計算でき、0 件はエラー", () => {
+    expect(ecdfPercentile([50], 50)).toBe(50);
+    expect(() => ecdfPercentile([], 50)).toThrow();
+  });
+
+  it("0 点・100 点に偏った分布でも、順位どおりのパーセンタイルになる", () => {
+    const skewed = [...Array(80).fill(0), ...Array(20).fill(100)];
+    expect(ecdfPercentile(skewed, 0)).toBeCloseTo(40, 10); // 80 人の同率の中央
+    expect(ecdfPercentile(skewed, 50)).toBeCloseTo(80, 10);
+    expect(ecdfPercentile(skewed, 100)).toBeCloseTo(90, 10);
   });
 });
 
@@ -88,22 +107,33 @@ describe("selectSkillScoringModel", () => {
   });
 
   it("ユーザー数が基準未満なら linear", () => {
-    expect(selectSkillScoringModel(distribution({ sample_size: SKILL_DISTRIBUTION_MIN_SAMPLE - 1 }))).toEqual(LINEAR_SKILL_SCORING);
+    expect(selectSkillScoringModel(distribution({ scores: spread(SKILL_DISTRIBUTION_MIN_SAMPLE - 1) }))).toEqual(
+      LINEAR_SKILL_SCORING,
+    );
   });
 
-  it("分散が 0・不正値なら linear（CDF 変換できない）", () => {
-    expect(selectSkillScoringModel(distribution({ sd: 0 }))).toEqual(LINEAR_SKILL_SCORING);
-    expect(selectSkillScoringModel(distribution({ sd: NaN }))).toEqual(LINEAR_SKILL_SCORING);
-    expect(selectSkillScoringModel(distribution({ mean: NaN }))).toEqual(LINEAR_SKILL_SCORING);
+  it("全員が同点なら linear（順位の情報が無い）", () => {
+    expect(selectSkillScoringModel(distribution({ scores: Array(SKILL_DISTRIBUTION_MIN_SAMPLE).fill(40) }))).toEqual(
+      LINEAR_SKILL_SCORING,
+    );
   });
 
-  it("ユーザー数が基準以上なら normal_cdf に切り替わる", () => {
-    expect(selectSkillScoringModel(distribution())).toEqual({
-      method: "normal_cdf",
-      mean: 40,
-      sd: 20,
-      sample_size: SKILL_DISTRIBUTION_MIN_SAMPLE,
-    });
+  it("0〜100 の範囲外・不正値を含むなら linear", () => {
+    for (const bad of [NaN, -1, 101, Infinity]) {
+      expect(selectSkillScoringModel(distribution({ scores: [...spread(SKILL_DISTRIBUTION_MIN_SAMPLE), bad] }))).toEqual(
+        LINEAR_SKILL_SCORING,
+      );
+    }
+  });
+
+  it("ユーザー数が基準以上なら ecdf に切り替わり、達成率を昇順に並べて持つ", () => {
+    const scores = spread(SKILL_DISTRIBUTION_MIN_SAMPLE).reverse();
+    const model = selectSkillScoringModel(distribution({ scores }));
+    expect(model.method).toBe("ecdf");
+    if (model.method !== "ecdf") return;
+    expect(model.sample_size).toBe(SKILL_DISTRIBUTION_MIN_SAMPLE);
+    expect(model.sorted_scores).toEqual([...scores].sort((a, b) => a - b));
+    expect(scores[0]).toBeGreaterThan(scores[1]); // 入力の配列は並べ替えない
   });
 });
 
@@ -112,18 +142,16 @@ describe("scoreSkill", () => {
     for (const progress of [0, 25, 50, 100]) expect(scoreSkill(progress, LINEAR_SKILL_SCORING)).toBe(progress);
   });
 
-  describe("normal_cdf：全ユーザーの達成率分布上のパーセンタイル", () => {
+  describe("ecdf：全ユーザーの達成率の経験分布上のパーセンタイル", () => {
     const model = selectSkillScoringModel(distribution());
 
-    it("平均と同じ達成率は 50、+1σ は約 84", () => {
-      expect(scoreSkill(40, model)).toBeCloseTo(50, 4);
-      expect(scoreSkill(60, model)).toBeCloseTo(84.13, 1);
-      expect(scoreSkill(20, model)).toBeCloseTo(15.87, 1);
+    it("中央の達成率は 50 付近", () => {
+      expect(scoreSkill(49.5, model)).toBeCloseTo(50, 10);
     });
 
     it("達成率が高いほど Skill Match は下がらず、0〜100 に収まる", () => {
       const values = [0, 10, 25, 40, 50, 75, 100].map((p) => scoreSkill(p, model));
-      for (let i = 1; i < values.length; i++) expect(values[i]).toBeGreaterThan(values[i - 1]);
+      for (let i = 1; i < values.length; i++) expect(values[i]).toBeGreaterThanOrEqual(values[i - 1]);
       for (const value of values) {
         expect(value).toBeGreaterThanOrEqual(0);
         expect(value).toBeLessThanOrEqual(100);
