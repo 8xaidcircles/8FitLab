@@ -157,14 +157,22 @@ export async function loadSkillNames(): Promise<Map<string, string>> {
 }
 
 export async function loadSkillContext(goalId: string): Promise<SkillContext> {
-  const [techStats, goalLayers, master, humanSkills, certifications] = await Promise.all([
+  const [techStats, goalLayers, master, humanSkills, certifications, skillMigration] = await Promise.all([
     loadSkillStatistics(goalId),
     loadGoalSkillLayers(goalId),
     loadSkillLayersMaster(),
     loadHumanSkills(),
     loadCertifications(),
+    loadSkillMigration(),
   ]);
-  return { techStats, goalLayers, defaultWeights: master.default_layer_weights, humanSkills, certifications };
+  return {
+    techStats,
+    goalLayers,
+    defaultWeights: master.default_layer_weights,
+    humanSkills,
+    certifications,
+    skillMigration,
+  };
 }
 
 async function assertGoalId(goalId: string): Promise<void> {
@@ -179,9 +187,15 @@ export async function loadCareerStatistics(goalId: string): Promise<CareerStatis
   return readJson<CareerStatistics>(`statistics/career-match/${goalId}.json`);
 }
 
-export async function loadSkillStatistics(goalId: string): Promise<SkillStatistics> {
+/** 技術スキル統計が無い Goal は null（Skill Progress は人間定義層だけで計算する） */
+export async function loadSkillStatistics(goalId: string): Promise<SkillStatistics | null> {
   await assertGoalId(goalId);
-  return readJson<SkillStatistics>(`statistics/skill-match/${goalId}.json`);
+  try {
+    return await readJson<SkillStatistics>(`statistics/skill-match/${goalId}.json`);
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code === "ENOENT") return null;
+    throw error;
+  }
 }
 
 export async function loadLearningPath(goalId: string): Promise<LearningPathMaster> {

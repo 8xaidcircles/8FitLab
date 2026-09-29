@@ -724,6 +724,13 @@
      "region_p_skill_given_goal": 0.03448
     },
     {
+     "skill_id": "couchbase",
+     "name": "Couchbase",
+     "so_item": "Couchbase",
+     "p_skill_given_goal": 0.011905,
+     "region_p_skill_given_goal": 0.011083
+    },
+    {
      "skill_id": "couchdb",
      "name": "CouchDB",
      "so_item": "Couch DB",
@@ -734,13 +741,6 @@
      "skill_id": "ravendb",
      "name": "RavenDB",
      "so_item": "RavenDB",
-     "p_skill_given_goal": 0.011905,
-     "region_p_skill_given_goal": 0.011083
-    },
-    {
-     "skill_id": "couchbase",
-     "name": "Couchbase",
-     "so_item": "Couchbase",
      "p_skill_given_goal": 0.011905,
      "region_p_skill_given_goal": 0.011083
     },
@@ -3346,16 +3346,16 @@
    "name": "Java ビルドツール",
    "members": [
     {
-     "skill_id": "maven",
-     "name": "Maven",
-     "so_item": "Maven (build tool)",
+     "skill_id": "gradle",
+     "name": "Gradle",
+     "so_item": "Gradle",
      "p_skill_given_goal": 0.074074,
      "region_p_skill_given_goal": 0.06896
     },
     {
-     "skill_id": "gradle",
-     "name": "Gradle",
-     "so_item": "Gradle",
+     "skill_id": "maven",
+     "name": "Maven",
+     "so_item": "Maven (build tool)",
      "p_skill_given_goal": 0.074074,
      "region_p_skill_given_goal": 0.06896
     },
@@ -3762,16 +3762,16 @@
      "region_p_skill_given_goal": 0.037505
     },
     {
-     "skill_id": "ovh",
-     "name": "OVHcloud",
-     "so_item": "OVH",
+     "skill_id": "managed-hosting",
+     "name": "マネージドホスティング",
+     "so_item": "Managed Hosting",
      "p_skill_given_goal": 0.035398,
      "region_p_skill_given_goal": 0.033338
     },
     {
-     "skill_id": "managed-hosting",
-     "name": "マネージドホスティング",
-     "so_item": "Managed Hosting",
+     "skill_id": "ovh",
+     "name": "OVHcloud",
+     "so_item": "OVH",
      "p_skill_given_goal": 0.035398,
      "region_p_skill_given_goal": 0.033338
     },

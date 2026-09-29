@@ -3192,16 +3192,16 @@
      "region_p_skill_given_goal": 0.085901
     },
     {
-     "skill_id": "puppet",
-     "name": "Puppet",
-     "so_item": "Puppet",
+     "skill_id": "chef",
+     "name": "Chef",
+     "so_item": "Chef",
      "p_skill_given_goal": 0.012384,
      "region_p_skill_given_goal": 0.011529
     },
     {
-     "skill_id": "chef",
-     "name": "Chef",
-     "so_item": "Chef",
+     "skill_id": "puppet",
+     "name": "Puppet",
+     "so_item": "Puppet",
      "p_skill_given_goal": 0.012384,
      "region_p_skill_given_goal": 0.011529
     }

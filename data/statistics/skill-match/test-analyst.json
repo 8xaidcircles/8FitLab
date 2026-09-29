@@ -1003,16 +1003,16 @@
      "region_p_skill_given_goal": 0.011687
     },
     {
-     "skill_id": "couchdb",
-     "name": "CouchDB",
-     "so_item": "Couch DB",
+     "skill_id": "couchbase",
+     "name": "Couchbase",
+     "so_item": "Couchbase",
      "p_skill_given_goal": 0.004819,
      "region_p_skill_given_goal": 0.004703
     },
     {
-     "skill_id": "couchbase",
-     "name": "Couchbase",
-     "so_item": "Couchbase",
+     "skill_id": "couchdb",
+     "name": "CouchDB",
+     "so_item": "Couch DB",
      "p_skill_given_goal": 0.004819,
      "region_p_skill_given_goal": 0.004703
     },
@@ -2001,16 +2001,16 @@
      "region_p_skill_given_goal": 0.035061
     },
     {
-     "skill_id": "snowflake",
-     "name": "Snowflake",
-     "so_item": "Snowflake",
+     "skill_id": "clickhouse",
+     "name": "ClickHouse",
+     "so_item": "Clickhouse",
      "p_skill_given_goal": 0.017964,
      "region_p_skill_given_goal": 0.017531
     },
     {
-     "skill_id": "clickhouse",
-     "name": "ClickHouse",
-     "so_item": "Clickhouse",
+     "skill_id": "snowflake",
+     "name": "Snowflake",
+     "so_item": "Snowflake",
      "p_skill_given_goal": 0.017964,
      "region_p_skill_given_goal": 0.017531
     },
@@ -2267,16 +2267,16 @@
      "region_p_skill_given_goal": 0.010382
     },
     {
-     "skill_id": "ionic",
-     "name": "Ionic",
-     "so_item": "Ionic",
+     "skill_id": "capacitor",
+     "name": "Capacitor",
+     "so_item": "Capacitor",
      "p_skill_given_goal": 0.007092,
      "region_p_skill_given_goal": 0.006921
     },
     {
-     "skill_id": "capacitor",
-     "name": "Capacitor",
-     "so_item": "Capacitor",
+     "skill_id": "ionic",
+     "name": "Ionic",
+     "so_item": "Ionic",
      "p_skill_given_goal": 0.007092,
      "region_p_skill_given_goal": 0.006921
     }
@@ -3779,16 +3779,16 @@
      "region_p_skill_given_goal": 0.014274
     },
     {
-     "skill_id": "vultr",
-     "name": "Vultr",
-     "so_item": "Vultr",
+     "skill_id": "managed-hosting",
+     "name": "マネージドホスティング",
+     "so_item": "Managed Hosting",
      "p_skill_given_goal": 0.014451,
      "region_p_skill_given_goal": 0.014274
     },
     {
-     "skill_id": "managed-hosting",
-     "name": "マネージドホスティング",
-     "so_item": "Managed Hosting",
+     "skill_id": "vultr",
+     "name": "Vultr",
+     "so_item": "Vultr",
      "p_skill_given_goal": 0.014451,
      "region_p_skill_given_goal": 0.014274
     },

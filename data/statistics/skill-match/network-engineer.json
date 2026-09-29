@@ -321,16 +321,16 @@
      "region_p_skill_given_goal": 0.173986
     },
     {
-     "skill_id": "homebrew",
-     "name": "Homebrew",
-     "so_item": "Homebrew",
+     "skill_id": "chocolatey",
+     "name": "Chocolatey",
+     "so_item": "Chocolatey",
      "p_skill_given_goal": 0.168675,
      "region_p_skill_given_goal": 0.158857
     },
     {
-     "skill_id": "chocolatey",
-     "name": "Chocolatey",
-     "so_item": "Chocolatey",
+     "skill_id": "homebrew",
+     "name": "Homebrew",
+     "so_item": "Homebrew",
      "p_skill_given_goal": 0.168675,
      "region_p_skill_given_goal": 0.158857
     },
@@ -1765,16 +1765,16 @@
      "region_p_skill_given_goal": 0.032701
     },
     {
-     "skill_id": "ravendb",
-     "name": "RavenDB",
-     "so_item": "RavenDB",
+     "skill_id": "couchbase",
+     "name": "Couchbase",
+     "so_item": "Couchbase",
      "p_skill_given_goal": 0.011211,
      "region_p_skill_given_goal": 0.010683
     },
     {
-     "skill_id": "couchbase",
-     "name": "Couchbase",
-     "so_item": "Couchbase",
+     "skill_id": "ravendb",
+     "name": "RavenDB",
+     "so_item": "RavenDB",
      "p_skill_given_goal": 0.011211,
      "region_p_skill_given_goal": 0.010683
     }

@@ -267,7 +267,13 @@ describe("実データでの算出", () => {
       expect(value).toBeGreaterThanOrEqual(0);
       expect(value).toBeLessThanOrEqual(100);
     }
-    expect(short.ignored).toEqual({ skill_ids: [], certification_ids: [], role_ids: [], degree_id: null });
+    expect(short.ignored).toEqual({
+      skill_ids: [],
+      legacy_skill_ids: [],
+      certification_ids: [],
+      role_ids: [],
+      degree_id: null,
+    });
   });
 
   it("Proxy Goal（Full-Stack Developer）は proxy / moderate_low", async () => {
@@ -355,10 +361,37 @@ describe("実データでの算出", () => {
 
 const techIds = new Set((await loadTechSkills()).map((s) => s.skill_id));
 
+async function requireSkillStatistics(goalId: string) {
+  const stats = await loadSkillStatistics(goalId);
+  if (!stats) throw new Error(`Skill statistics are missing: ${goalId}`);
+  return stats;
+}
+
 describe("Skill Statistics（技術スキル層、Stack Overflow）", () => {
+  // 読み込みはファイルが無いと null（人間定義層に fallback）になるため、デプロイ時の欠落はここで検知する
+  it.each(goals.map((g) => [g.goal_id] as const))("%s: Skill Statistics のファイルがある", async (goalId) => {
+    expect(await loadSkillStatistics(goalId)).not.toBeNull();
+  });
+
+  // ファイルがあっても採用 unit が 0 件なら、人間定義層 100% に静かに切り替わる。実データでは起きないことを固定する
+  it.each(goals.map((g) => [g.goal_id] as const))("%s: 配分が fallback にならない", async (goalId) => {
+    const [stats, skill, known] = await Promise.all([
+      loadCareerStatistics(goalId),
+      loadSkillContext(goalId),
+      loadKnownIds(),
+    ]);
+    const result = calculateCareerMatch(
+      { skill_ids: [], certification_ids: [], experiences: [], degree_id: null },
+      stats,
+      skill,
+      known,
+    );
+    expect(result.skill_layer_weights.source).not.toBe("fallback");
+    expect(result.skill_statistics_version).toMatch(/^stack_overflow_developer_survey:2023-2024-2025:\d+\.\d+\.\d+:k=[\d.]+$/);
+  });
 
   it.each(goals.map((g) => [g.goal_id] as const))("%s: 採用 unit があり、メンバーは辞書の技術", async (goalId) => {
-    const stats = await loadSkillStatistics(goalId);
+    const stats = await requireSkillStatistics(goalId);
     expect(stats.goal_id).toBe(goalId);
     const units = goalSkillUnits(stats);
     expect(units.length).toBeGreaterThan(0);
@@ -372,7 +405,7 @@ describe("Skill Statistics（技術スキル層、Stack Overflow）", () => {
   });
 
   it("Backend: PHP・Laravel・Ruby on Rails はサーバーサイドのグループを満たし、どれでも同じ点", async () => {
-    const stats = await loadSkillStatistics("backend-developer");
+    const stats = await requireSkillStatistics("backend-developer");
     const php = weightedSkillProgress(stats, ["php"]);
     expect(php).toBeGreaterThan(0);
     expect(weightedSkillProgress(stats, ["python"])).toBe(php);
@@ -384,7 +417,7 @@ describe("Skill Statistics（技術スキル層、Stack Overflow）", () => {
 
   it.each(goals.map((g) => [g.goal_id] as const))("%s: 2 層の Skill Progress が 0〜100 で計算できる", async (goalId) => {
     const [techStats, goalLayers, master, humanSkills, certifications] = await Promise.all([
-      loadSkillStatistics(goalId),
+      requireSkillStatistics(goalId),
       loadGoalSkillLayers(goalId),
       loadSkillLayersMaster(),
       loadHumanSkills(),
@@ -407,7 +440,7 @@ describe("Skill Statistics（技術スキル層、Stack Overflow）", () => {
 
   it("IT PM: 人間定義層 100%。PMP でプロジェクト管理・リスク管理・ステークホルダー調整を満たす", async () => {
     const [techStats, goalLayers, master, humanSkills, certifications] = await Promise.all([
-      loadSkillStatistics("it-project-manager"),
+      requireSkillStatistics("it-project-manager"),
       loadGoalSkillLayers("it-project-manager"),
       loadSkillLayersMaster(),
       loadHumanSkills(),
@@ -424,7 +457,7 @@ describe("Skill Statistics（技術スキル層、Stack Overflow）", () => {
   });
 
   it("Data Scientist: サーバーサイドの言語グループは使われず、PHP では Python の代わりにならない", async () => {
-    const stats = await loadSkillStatistics("data-scientist");
+    const stats = await requireSkillStatistics("data-scientist");
     expect(stats.units.some((u) => u.unit_id === "server-language")).toBe(false);
     expect(weightedSkillProgress(stats, ["python"])).toBeGreaterThan(0);
     expect(weightedSkillProgress(stats, ["php"])).toBe(0);

@@ -924,16 +924,16 @@
      "region_p_skill_given_goal": 0.063745
     },
     {
-     "skill_id": "svelte",
-     "name": "Svelte",
-     "so_item": "Svelte",
+     "skill_id": "angularjs",
+     "name": "AngularJS",
+     "so_item": "AngularJS",
      "p_skill_given_goal": 0.05,
      "region_p_skill_given_goal": 0.05
     },
     {
-     "skill_id": "angularjs",
-     "name": "AngularJS",
-     "so_item": "AngularJS",
+     "skill_id": "svelte",
+     "name": "Svelte",
+     "so_item": "Svelte",
      "p_skill_given_goal": 0.05,
      "region_p_skill_given_goal": 0.05
     },
@@ -1914,16 +1914,16 @@
      "region_p_skill_given_goal": 0.03
     },
     {
-     "skill_id": "remix",
-     "name": "Remix",
-     "so_item": "Remix",
+     "skill_id": "gatsby",
+     "name": "Gatsby",
+     "so_item": "Gatsby",
      "p_skill_given_goal": 0.023904,
      "region_p_skill_given_goal": 0.023904
     },
     {
-     "skill_id": "gatsby",
-     "name": "Gatsby",
-     "so_item": "Gatsby",
+     "skill_id": "remix",
+     "name": "Remix",
+     "so_item": "Remix",
      "p_skill_given_goal": 0.023904,
      "region_p_skill_given_goal": 0.023904
     }
@@ -2332,16 +2332,16 @@
      "region_p_skill_given_goal": 0.015632
     },
     {
-     "skill_id": "dynamodb",
-     "name": "DynamoDB",
-     "so_item": "Dynamodb",
+     "skill_id": "cassandra",
+     "name": "Cassandra",
+     "so_item": "Cassandra",
      "p_skill_given_goal": 0.014354,
      "region_p_skill_given_goal": 0.014008
     },
     {
-     "skill_id": "cassandra",
-     "name": "Cassandra",
-     "so_item": "Cassandra",
+     "skill_id": "dynamodb",
+     "name": "DynamoDB",
+     "so_item": "Dynamodb",
      "p_skill_given_goal": 0.014354,
      "region_p_skill_given_goal": 0.014008
     },
@@ -2360,16 +2360,16 @@
      "region_p_skill_given_goal": 0.013399
     },
     {
-     "skill_id": "firebase-realtime-database",
-     "name": "Firebase Realtime Database",
-     "so_item": "Firebase Realtime Database",
+     "skill_id": "cosmos-db",
+     "name": "Azure Cosmos DB",
+     "so_item": "Cosmos DB",
      "p_skill_given_goal": 0.009569,
      "region_p_skill_given_goal": 0.009339
     },
     {
-     "skill_id": "cosmos-db",
-     "name": "Azure Cosmos DB",
-     "so_item": "Cosmos DB",
+     "skill_id": "firebase-realtime-database",
+     "name": "Firebase Realtime Database",
+     "so_item": "Firebase Realtime Database",
      "p_skill_given_goal": 0.009569,
      "region_p_skill_given_goal": 0.009339
     }
@@ -2483,16 +2483,16 @@
      "region_p_skill_given_goal": 0.058386
     },
     {
-     "skill_id": "xamarin",
-     "name": "Xamarin",
-     "so_item": "Xamarin",
+     "skill_id": "react-native",
+     "name": "React Native",
+     "so_item": "React Native",
      "p_skill_given_goal": 0.039886,
      "region_p_skill_given_goal": 0.038924
     },
     {
-     "skill_id": "react-native",
-     "name": "React Native",
-     "so_item": "React Native",
+     "skill_id": "xamarin",
+     "name": "Xamarin",
+     "so_item": "Xamarin",
      "p_skill_given_goal": 0.039886,
      "region_p_skill_given_goal": 0.038924
     },
@@ -2848,16 +2848,16 @@
    "name": "Java ビルドツール",
    "members": [
     {
-     "skill_id": "maven",
-     "name": "Maven",
-     "so_item": "Maven (build tool)",
+     "skill_id": "gradle",
+     "name": "Gradle",
+     "so_item": "Gradle",
      "p_skill_given_goal": 0.055118,
      "region_p_skill_given_goal": 0.053788
     },
     {
-     "skill_id": "gradle",
-     "name": "Gradle",
-     "so_item": "Gradle",
+     "skill_id": "maven",
+     "name": "Maven",
+     "so_item": "Maven (build tool)",
      "p_skill_given_goal": 0.055118,
      "region_p_skill_given_goal": 0.053788
     },
@@ -3594,16 +3594,16 @@
      "region_p_skill_given_goal": 0.015748
     },
     {
-     "skill_id": "prometheus",
-     "name": "Prometheus",
-     "so_item": "Prometheus",
+     "skill_id": "new-relic",
+     "name": "New Relic",
+     "so_item": "New Relic",
      "p_skill_given_goal": 0.015748,
      "region_p_skill_given_goal": 0.015748
     },
     {
-     "skill_id": "new-relic",
-     "name": "New Relic",
-     "so_item": "New Relic",
+     "skill_id": "prometheus",
+     "name": "Prometheus",
+     "so_item": "Prometheus",
      "p_skill_given_goal": 0.015748,
      "region_p_skill_given_goal": 0.015748
     }

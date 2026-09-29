@@ -1,4 +1,5 @@
 import { heldSkillIds, layeredSkillProgress } from "./skill-layers";
+import { migrateLegacySkillIds, type SkillMigrationMapping } from "./skill-migration";
 import { scoreSkill, selectSkillScoringModel } from "./skill-score";
 import {
   DEGREES,
@@ -39,6 +40,44 @@ export interface SkillContext {
   defaultWeights: SkillLayerWeights;
   humanSkills: readonly HumanSkill[];
   certifications: readonly Certification[];
+  skillMigration: readonly SkillMigrationMapping[];
+}
+
+export interface ResolvedUserSkills {
+  /** ユーザーが持つとみなす skill_id。Skill Match・Skill Gap・Learning Path はすべてこの集合で判定する */
+  held: Set<string>;
+  /** マスタに無い skill_id / tool_id */
+  ignoredSkillIds: string[];
+  ignoredCertificationIds: string[];
+  /** 移行先を 1 つに決められない旧 skill_id（split）。計算には使わず、再入力を案内する */
+  legacySkillIds: string[];
+}
+
+// 入力を「旧 skill_id の移行 → マスタに無い ID の除外 → 資格・ツールの展開」の順に解決する
+export function resolveUserSkills(
+  input: Pick<UserInput, "skill_ids" | "certification_ids">,
+  skill: Pick<SkillContext, "humanSkills" | "certifications" | "skillMigration">,
+  known: Pick<KnownIds, "skillIds" | "certificationIds">,
+): ResolvedUserSkills {
+  const migrated = migrateLegacySkillIds(new Set(input.skill_ids), skill.skillMigration);
+  const certificationIds = [...new Set(input.certification_ids)];
+  const validCertificationIds = certificationIds.filter((id) => known.certificationIds.has(id));
+  return {
+    held: heldSkillIds(
+      { skillIds: migrated.skillIds.filter((id) => known.skillIds.has(id)), certificationIds: validCertificationIds },
+      skill,
+    ),
+    ignoredSkillIds: migrated.skillIds.filter((id) => !known.skillIds.has(id)),
+    ignoredCertificationIds: certificationIds.filter((id) => !known.certificationIds.has(id)),
+    legacySkillIds: migrated.unresolved,
+  };
+}
+
+// 例：stack_overflow_developer_survey:2023-2025:0.3.0:k=80.9（k は再生成のたびにデータから推定し直すため含める）
+export function skillStatisticsVersion(
+  stats: Pick<SkillStatistics, "source" | "source_years" | "calculation_version" | "region">,
+): string {
+  return `${stats.source}:${stats.source_years.join("-")}:${stats.calculation_version}:k=${stats.region.prior_strength}`;
 }
 
 // scripts/build_career_statistics.py の round_years と一致させること
@@ -164,12 +203,7 @@ export function calculateCareerMatch(
     throw new Error(`Goal mismatch: skill distribution=${skillDistribution.goal_id}, statistics=${stats.goal_id}`);
   }
 
-  const skillIds = [...new Set(input.skill_ids)];
-  const ignoredSkillIds = skillIds.filter((id) => !known.skillIds.has(id));
-  const validSkillIds = skillIds.filter((id) => known.skillIds.has(id));
-  const certificationIds = [...new Set(input.certification_ids)];
-  const ignoredCertificationIds = certificationIds.filter((id) => !known.certificationIds.has(id));
-  const validCertificationIds = certificationIds.filter((id) => known.certificationIds.has(id));
+  const skills = resolveUserSkills(input, skill, known);
 
   const ignoredRoleIds = [...new Set(input.experiences.map((e) => e.role_id))].filter(
     (id) => !known.roleIds.has(id),
@@ -180,12 +214,8 @@ export function calculateCareerMatch(
   const ignoredDegreeId = input.degree_id !== null && !degreeIsKnown ? input.degree_id : null;
 
   const mode = evidenceMode(stats);
-  const held = heldSkillIds(
-    { skillIds: validSkillIds, certificationIds: validCertificationIds },
-    { humanSkills: skill.humanSkills, certifications: skill.certifications },
-  );
   const layered = layeredSkillProgress({
-    held,
+    held: skills.held,
     techStats: skill.techStats,
     goalLayers: skill.goalLayers,
     defaultWeights: skill.defaultWeights,
@@ -208,6 +238,8 @@ export function calculateCareerMatch(
     skill_progress: layered.progress,
     skill_scoring_method: skillModel.method,
     skill_calculation_version: SKILL_CALCULATION_VERSION,
+    skill_statistics_version:
+      skill.techStats && layered.tech_progress !== null ? skillStatisticsVersion(skill.techStats) : null,
     tech_skill_progress: layered.tech_progress,
     human_skill_progress: layered.human_progress,
     skill_layer_weights: layered.weights,
@@ -222,8 +254,9 @@ export function calculateCareerMatch(
     data_source_version: `${stats.source}:${stats.source_version}`,
     taxonomy_version: `${stats.taxonomy}:${stats.taxonomy_version}`,
     ignored: {
-      skill_ids: ignoredSkillIds,
-      certification_ids: ignoredCertificationIds,
+      skill_ids: skills.ignoredSkillIds,
+      legacy_skill_ids: skills.legacySkillIds,
+      certification_ids: skills.ignoredCertificationIds,
       role_ids: ignoredRoleIds,
       degree_id: ignoredDegreeId,
     },

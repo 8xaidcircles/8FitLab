@@ -97,9 +97,13 @@ export async function saveAssessment({
       data_source_version: result.data_source_version,
       taxonomy_version: result.taxonomy_version,
       skill_calculation_version: result.skill_calculation_version,
+      skill_statistics_version: result.skill_statistics_version,
       skill_progress: result.skill_progress,
       tech_skill_progress: result.tech_skill_progress,
       human_skill_progress: result.human_skill_progress,
+      skill_weight_tech: result.skill_layer_weights.tech,
+      skill_weight_human: result.skill_layer_weights.human,
+      skill_weight_source: result.skill_layer_weights.source,
     }),
   ];
   if (submission.skill_ids.length > 0) {
@@ -174,7 +178,7 @@ export async function getAssessment(assessmentId: string, anonymousUserId: strin
     supabase
       .from("career_match_results")
       .select(
-        "goal_match, skill_match, experience_match, education_match, evidence_mode, confidence, goal_sample_size, calculation_version, data_source_version, taxonomy_version, skill_calculation_version, skill_progress, tech_skill_progress, human_skill_progress",
+        "goal_match, skill_match, experience_match, education_match, evidence_mode, confidence, goal_sample_size, calculation_version, data_source_version, taxonomy_version, skill_calculation_version, skill_statistics_version, skill_progress, tech_skill_progress, human_skill_progress, skill_weight_tech, skill_weight_human, skill_weight_source",
       )
       .eq("assessment_id", assessmentId)
       .single(),
@@ -222,9 +226,15 @@ export async function getAssessment(assessmentId: string, anonymousUserId: strin
           ? null
           : {
               skill_calculation_version: m.skill_calculation_version,
+              skill_statistics_version: m.skill_statistics_version,
               skill_progress: Number(m.skill_progress),
               tech_skill_progress: toNumber(m.tech_skill_progress),
               human_skill_progress: toNumber(m.human_skill_progress),
+              skill_layer_weights: {
+                tech: Number(m.skill_weight_tech),
+                human: Number(m.skill_weight_human),
+                source: m.skill_weight_source,
+              },
             },
     },
     learning_path: path.data!,

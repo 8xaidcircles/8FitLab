@@ -437,16 +437,16 @@
      "region_p_skill_given_goal": 0.004952
     },
     {
-     "skill_id": "ibm-db2",
-     "name": "IBM Db2",
-     "so_item": "IBM DB2",
+     "skill_id": "cockroachdb",
+     "name": "CockroachDB",
+     "so_item": "Cockroachdb",
      "p_skill_given_goal": 0.004957,
      "region_p_skill_given_goal": 0.003616
     },
     {
-     "skill_id": "cockroachdb",
-     "name": "CockroachDB",
-     "so_item": "Cockroachdb",
+     "skill_id": "ibm-db2",
+     "name": "IBM Db2",
+     "so_item": "IBM DB2",
      "p_skill_given_goal": 0.004957,
      "region_p_skill_given_goal": 0.003616
     },
@@ -2783,16 +2783,16 @@
      "region_p_skill_given_goal": 0.019009
     },
     {
-     "skill_id": "ovh",
-     "name": "OVHcloud",
-     "so_item": "OVH",
+     "skill_id": "managed-hosting",
+     "name": "マネージドホスティング",
+     "so_item": "Managed Hosting",
      "p_skill_given_goal": 0.017575,
      "region_p_skill_given_goal": 0.012268
     },
     {
-     "skill_id": "managed-hosting",
-     "name": "マネージドホスティング",
-     "so_item": "Managed Hosting",
+     "skill_id": "ovh",
+     "name": "OVHcloud",
+     "so_item": "OVH",
      "p_skill_given_goal": 0.017575,
      "region_p_skill_given_goal": 0.012268
     },

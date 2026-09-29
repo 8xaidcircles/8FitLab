@@ -37,6 +37,7 @@ Goal Skill の採用（selected）:
 """
 
 import json
+import math
 import re
 from datetime import date
 from pathlib import Path
@@ -142,6 +143,9 @@ def estimate_prior_strength(pairs: list) -> float:
             continue
         numerator += n * (u / n - p) ** 2 / (p * (1 - p)) - 1
         denominator += n - 1
+    # 推定に使える組が無いときに固定値へ逃がすと「人が決めた k」になるため、止めて原因を直す
+    if denominator <= 0 or not math.isfinite(numerator):
+        raise ValueError("prior strength k cannot be estimated: no (Goal, technology) pair with n_JP >= 2 and 0 < p < 1")
     tau = min(max(numerator / denominator, 1e-6), 1.0)
     return 1 / tau - 1
 
@@ -322,8 +326,7 @@ def main() -> None:
             if group:
                 members = sorted(
                     (member(item, items[item]) for item in group["so_items"] if item in items),
-                    key=lambda m: m["region_p_skill_given_goal"],
-                    reverse=True,
+                    key=lambda m: (-m["region_p_skill_given_goal"], m["skill_id"]),
                 )
                 head = {"unit_id": group["group_id"], "type": "group", "name": group["name"], "in_dictionary": True}
             else:
@@ -388,7 +391,7 @@ def main() -> None:
             "units": rows,
         }
         path = OUT_DIR / f"{goal['goal_id']}.json"
-        path.write_text(json.dumps(result, ensure_ascii=False, indent=1), encoding="utf-8")
+        path.write_text(json.dumps(result, ensure_ascii=False, indent=1, allow_nan=False), encoding="utf-8")
         significant = sum(r["significant"] for r in rows)
         selected = [
             f"[{r['name']}: {' / '.join(m['name'] for m in r['members'][:4])}]" if r["type"] == "group" else r["name"]

@@ -3945,13 +3945,6 @@
      "region_p_skill_given_goal": 0.024775
     },
     {
-     "skill_id": "ionic",
-     "name": "Ionic",
-     "so_item": "Ionic",
-     "p_skill_given_goal": 0.004283,
-     "region_p_skill_given_goal": 0.014813
-    },
-    {
      "skill_id": "cordova",
      "name": "Cordova",
      "so_item": "Cordova",
@@ -3959,16 +3952,23 @@
      "region_p_skill_given_goal": 0.014813
     },
     {
-     "skill_id": "dotnet-maui",
-     "name": ".NET MAUI",
-     "so_item": ".NET MAUI",
-     "p_skill_given_goal": 0.005353,
-     "region_p_skill_given_goal": 0.004764
+     "skill_id": "ionic",
+     "name": "Ionic",
+     "so_item": "Ionic",
+     "p_skill_given_goal": 0.004283,
+     "region_p_skill_given_goal": 0.014813
     },
     {
      "skill_id": "capacitor",
      "name": "Capacitor",
      "so_item": "Capacitor",
+     "p_skill_given_goal": 0.005353,
+     "region_p_skill_given_goal": 0.004764
+    },
+    {
+     "skill_id": "dotnet-maui",
+     "name": ".NET MAUI",
+     "so_item": ".NET MAUI",
      "p_skill_given_goal": 0.005353,
      "region_p_skill_given_goal": 0.004764
     },

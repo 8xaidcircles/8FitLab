@@ -1876,16 +1876,16 @@
      "region_p_skill_given_goal": 0.120985
     },
     {
-     "skill_id": "puppet",
-     "name": "Puppet",
-     "so_item": "Puppet",
+     "skill_id": "chef",
+     "name": "Chef",
+     "so_item": "Chef",
      "p_skill_given_goal": 0.009719,
      "region_p_skill_given_goal": 0.008464
     },
     {
-     "skill_id": "chef",
-     "name": "Chef",
-     "so_item": "Chef",
+     "skill_id": "puppet",
+     "name": "Puppet",
+     "so_item": "Puppet",
      "p_skill_given_goal": 0.009719,
      "region_p_skill_given_goal": 0.008464
     }
@@ -3684,16 +3684,16 @@
      "region_p_skill_given_goal": 0.063152
     },
     {
-     "skill_id": "linode",
-     "name": "Linode (Akamai)",
-     "so_item": "Linode, now Akamai",
+     "skill_id": "hetzner",
+     "name": "Hetzner",
+     "so_item": "Hetzner",
      "p_skill_given_goal": 0.022654,
      "region_p_skill_given_goal": 0.019517
     },
     {
-     "skill_id": "hetzner",
-     "name": "Hetzner",
-     "so_item": "Hetzner",
+     "skill_id": "linode",
+     "name": "Linode (Akamai)",
+     "so_item": "Linode, now Akamai",
      "p_skill_given_goal": 0.022654,
      "region_p_skill_given_goal": 0.019517
     },

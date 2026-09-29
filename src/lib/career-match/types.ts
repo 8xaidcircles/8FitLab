@@ -238,9 +238,11 @@ export interface ResolvedSkillLayerWeights extends SkillLayerWeights {
 /** Assessment 保存時の Skill の内訳（保存済みの結果で旧方式のものは null） */
 export interface StoredSkillBreakdown {
   skill_calculation_version: string;
+  skill_statistics_version: string | null;
   skill_progress: number;
   tech_skill_progress: number | null;
   human_skill_progress: number | null;
+  skill_layer_weights: ResolvedSkillLayerWeights;
 }
 
 export interface CareerMatchResult {
@@ -251,6 +253,8 @@ export interface CareerMatchResult {
   skill_progress: number;
   skill_scoring_method: SkillScoringMethod;
   skill_calculation_version: string;
+  /** 技術スキル層に使った Skill Statistics の由来（出典:年:計算バージョン:k）。技術スキル層を計算できない Goal は null */
+  skill_statistics_version: string | null;
   /** 技術スキル層（Stack Overflow の Contribution 加重）の達成率。計算できない Goal は null */
   tech_skill_progress: number | null;
   /** 人間定義層（要件の充足率）の達成率。要件が無い Goal は null */
@@ -269,6 +273,8 @@ export interface CareerMatchResult {
   taxonomy_version: string;
   ignored: {
     skill_ids: string[];
+    /** 移行先を 1 つに決められない旧 skill_id（split） */
+    legacy_skill_ids: string[];
     certification_ids: string[];
     role_ids: string[];
     degree_id: string | null;

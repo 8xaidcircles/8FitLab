@@ -155,7 +155,7 @@ def unit_row(unit_id: str, extra: dict, p_goal: float, p_other: float) -> dict:
 def experience_statistics(goal_units, other_counts, n_goal, n_other):
     rows = []
     for (role_id, years), count in cumulative_counts(goal_units).items():
-        p_other = other_counts.get((role_id, years), 0) / n_other
+        p_other = other_counts.get((role_id, years), 0) / n_other if n_other else 0.0
         rows.append(unit_row(f"{role_id}__{years:.1f}", {"role_id": role_id, "years": years}, count / n_goal, p_other))
     return sorted(rows, key=lambda r: r["contribution"], reverse=True)
 
@@ -185,7 +185,11 @@ def education_statistics(edu, goal_ids, other_ids, n_goal, n_other):
 
 
 def reference_value(scores: pd.Series) -> float:
-    return float(hdquantiles(scores.to_numpy(), prob=[REFERENCE_PERCENTILE / 100])[0])
+    """Harrell-Davis 推定量は 2 人未満では NaN を返すため、その場合は 0（Experience は算出不可）。"""
+    if scores.size < 2:
+        return 0.0
+    value = float(hdquantiles(scores.to_numpy(), prob=[REFERENCE_PERCENTILE / 100])[0])
+    return value if math.isfinite(value) and value > 0 else 0.0
 
 
 def group_experience(df, jobs, all_units, all_counts, all_persons, group_id, codes) -> dict:
@@ -206,13 +210,14 @@ def group_experience(df, jobs, all_units, all_counts, all_persons, group_id, cod
     if n_group == 0:
         return result
     excluded_counts = cumulative_counts(all_units[all_units.person_id.isin(excluded)])
-    other_counts = all_counts.sub(excluded_counts, fill_value=0)
+    # excluded は all_units の部分集合なので負にはならないはずだが、負の出現数が Quality に混ざらないよう 0 で止める
+    other_counts = all_counts.sub(excluded_counts, fill_value=0).clip(lower=0)
     units = pre_goal_units(jobs, group_start, codes)
     rows = experience_statistics(units, other_counts, n_group, n_other)
     scores = person_scores(units, rows) if rows else pd.Series(dtype=float)
 
     result["pre_goal_experience_persons"] = int(scores.size)
-    result["experience_reference"] = round(reference_value(scores), 6) if scores.size else 0
+    result["experience_reference"] = round(reference_value(scores), 6)
     result["experience"] = rows
     return result
 
@@ -264,7 +269,7 @@ def main() -> None:
         }
 
         path = OUT_DIR / f"{goal['goal_id']}.json"
-        path.write_text(json.dumps(result, ensure_ascii=False, indent=1), encoding="utf-8")
+        path.write_text(json.dumps(result, ensure_ascii=False, indent=1, allow_nan=False), encoding="utf-8")
         groups_summary = "  ".join(
             f"[{g['group_id']} N={g['goal_sample_size']} pre={g['pre_goal_experience_persons']}"
             f" units={len(g['experience'])} ref={g['experience_reference']:.4f}]"

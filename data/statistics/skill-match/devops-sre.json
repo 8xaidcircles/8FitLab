@@ -2988,16 +2988,16 @@
      "region_p_skill_given_goal": 0.025275
     },
     {
-     "skill_id": "xamarin",
-     "name": "Xamarin",
-     "so_item": "Xamarin",
+     "skill_id": "cordova",
+     "name": "Cordova",
+     "so_item": "Cordova",
      "p_skill_given_goal": 0.018568,
      "region_p_skill_given_goal": 0.017693
     },
     {
-     "skill_id": "cordova",
-     "name": "Cordova",
-     "so_item": "Cordova",
+     "skill_id": "xamarin",
+     "name": "Xamarin",
+     "so_item": "Xamarin",
      "p_skill_given_goal": 0.018568,
      "region_p_skill_given_goal": 0.017693
     },

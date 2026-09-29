@@ -10,9 +10,10 @@ import {
   evaluateSteps,
   goalOccupations,
   goalSkillUnits,
-  heldSkillIds,
+  humanRequirementStatus,
   loadEducation,
   loadGoals,
+  loadKnownIds,
   loadLearningPath,
   loadRoleGroups,
   loadRoles,
@@ -20,6 +21,7 @@ import {
   loadSkillNames,
   normalizeHumanRequirements,
   resolveSkillLayerWeights,
+  resolveUserSkills,
   satisfiedGroupIds,
   skillUnitGaps,
 } from "@/lib/career-match";
@@ -79,10 +81,11 @@ export default async function ResultPage({ params }: PageProps<"/career-match/re
   const assessment = await getAssessment(id, anonymousUserId);
   if (!assessment) notFound();
 
-  const [goals, path, skillNames, skillContext, roles, roleGroups, education] = await Promise.all([
+  const [goals, path, skillNames, known, skillContext, roles, roleGroups, education] = await Promise.all([
     loadGoals(),
     loadLearningPath(assessment.goal_id),
     loadSkillNames(),
+    loadKnownIds(),
     loadSkillContext(assessment.goal_id),
     loadRoles(),
     loadRoleGroups(),
@@ -94,9 +97,10 @@ export default async function ResultPage({ params }: PageProps<"/career-match/re
   const jaRoleNames = new Map(roleGroups.flatMap((g) => g.roles.map((r) => [r.role_id, r.name])));
   const roleName = (roleId: string) => jaRoleNames.get(roleId) ?? roles.find((r) => r.role_id === roleId)?.label ?? roleId;
 
-  const held = heldSkillIds(
-    { skillIds: assessment.skill_ids, certificationIds: assessment.certification_ids },
+  const { held } = resolveUserSkills(
+    { skill_ids: assessment.skill_ids, certification_ids: assessment.certification_ids },
     skillContext,
+    known,
   );
   const steps = evaluateSteps(path, held);
   const missing = steps.filter((s) => !s.satisfied);
@@ -108,29 +112,33 @@ export default async function ResultPage({ params }: PageProps<"/career-match/re
     skillContext.techStats && goalSkillUnits(skillContext.techStats).length > 0
       ? skillUnitGaps(skillContext.techStats, held)
       : [];
-  const humanRequirements = normalizeHumanRequirements(skillContext.goalLayers.human_requirements).map((r) => ({
-    ...r,
-    satisfied: r.any_of.some((id) => held.has(id)),
-  }));
-  const layerWeights = resolveSkillLayerWeights(skillContext.goalLayers.layer_weights, skillContext.defaultWeights, {
+  const humanRequirements = humanRequirementStatus(
+    normalizeHumanRequirements(skillContext.goalLayers.human_requirements),
+    held,
+  );
+  // 「Skill の内訳」は保存した入力を現在の定義で判定する。スコアと配分は保存時の値（再計算しない）
+  const currentWeights = resolveSkillLayerWeights(skillContext.goalLayers.layer_weights, skillContext.defaultWeights, {
     tech: techGaps.length > 0,
     human: humanRequirements.length > 0,
   });
-  const showTech = layerWeights.tech > 0;
-  const showHuman = layerWeights.human > 0;
+  const showTech = currentWeights.tech > 0;
+  const showHuman = currentWeights.human > 0;
   const percent = (w: number) => `${Math.round(w * 100)}%`;
 
-  const skillSource = match.skill
+  const stored = match.skill;
+  const skillSource = stored
     ? [
-        showTech && `技術 ${formatPercent(match.skill.tech_skill_progress ?? 0)}（配分 ${percent(layerWeights.tech)}）`,
-        showHuman && `手法・知識 ${formatPercent(match.skill.human_skill_progress ?? 0)}（配分 ${percent(layerWeights.human)}）`,
+        stored.skill_layer_weights.tech > 0 &&
+          `技術 ${formatPercent(stored.tech_skill_progress ?? 0)}（配分 ${percent(stored.skill_layer_weights.tech)}）`,
+        stored.skill_layer_weights.human > 0 &&
+          `手法・知識 ${formatPercent(stored.human_skill_progress ?? 0)}（配分 ${percent(stored.skill_layer_weights.human)}）`,
       ]
         .filter(Boolean)
         .join(" ＋ ")
     : "旧方式（8FitLabの学習ステップの達成率）で計算した結果です";
-  const skillNotes = match.skill
+  const skillNotes = stored
     ? [
-        `技術はStack Overflow Developer Surveyで、このGoalの人に特徴的な技術を重要度で重み付けしています（${SKILL_LAYER_WEIGHT_SOURCE_LABELS[layerWeights.source]}）。`,
+        `技術はStack Overflow Developer Surveyで、このGoalの人に特徴的な技術を重要度で重み付けしています（${SKILL_LAYER_WEIGHT_SOURCE_LABELS[stored.skill_layer_weights.source]}）。`,
         ...(certificationNames.length > 0 ? [`資格（${certificationNames.join("、")}）が証明するスキルも含めています。`] : []),
       ]
     : ["もう一度計算すると、現在の方式（技術 × 手法・知識の2層）で算出します。"];
@@ -256,7 +264,7 @@ export default async function ResultPage({ params }: PageProps<"/career-match/re
         <div className={`mt-5 grid gap-4 ${showTech && showHuman ? "md:grid-cols-2" : ""}`}>
           {showTech && (
             <div className="rounded-2xl border border-line bg-white p-5">
-              <h3 className="font-bold">技術（配分 {percent(layerWeights.tech)}）</h3>
+              <h3 className="font-bold">技術（配分 {percent(currentWeights.tech)}）</h3>
               <p className="mt-1 text-xs text-muted">右の数字は、満たすと技術の達成率が上がる割合です。</p>
               <ul className="mt-3 space-y-2 text-sm">
                 {techGaps.map(({ unit, satisfied, share }) => (
@@ -284,7 +292,7 @@ export default async function ResultPage({ params }: PageProps<"/career-match/re
           )}
           {showHuman && (
             <div className="rounded-2xl border border-line bg-white p-5">
-              <h3 className="font-bold">手法・知識（配分 {percent(layerWeights.human)}）</h3>
+              <h3 className="font-bold">手法・知識（配分 {percent(currentWeights.human)}）</h3>
               <p className="mt-1 text-xs text-muted">各項目を同じ重さで数えています。</p>
               <ul className="mt-3 space-y-2 text-sm">
                 {humanRequirements.map((r) => (
@@ -316,6 +324,7 @@ export default async function ResultPage({ params }: PageProps<"/career-match/re
               {missing.length === 0
                 ? "すべての学習ステップを習得済みです。"
                 : `未習得のステップが ${missing.length} つあります。上から順に学ぶのがおすすめです。`}
+              現在の学習ステップの定義で判定しています。
             </p>
           </div>
           <Link href={`/learning-path/${goal.goal_id}`} className="text-sm font-bold text-indigo hover:underline">
@@ -362,7 +371,8 @@ export default async function ResultPage({ params }: PageProps<"/career-match/re
             {STACK_OVERFLOW_SURVEY.license}
           </a>
           。8FitLabが集計・日本補正）＋ 8FitLab 手法・知識・資格マスタ ／ 計算バージョン {match.calculation_version}
-          {match.skill && ` ／ Skill計算 ${match.skill.skill_calculation_version}`}
+          {stored && ` ／ Skill計算 ${stored.skill_calculation_version}`}
+          {stored?.skill_statistics_version && ` ／ Skill統計 ${stored.skill_statistics_version}`}
         </p>
       </section>
 

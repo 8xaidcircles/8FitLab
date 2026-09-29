@@ -1,12 +1,14 @@
 import { afterAll, describe, expect, it } from "vitest";
 import {
   calculateCareerMatch,
-  heldSkillIds,
   learningPath,
   loadCareerStatistics,
   loadKnownIds,
   loadLearningPath,
   loadSkillContext,
+  resolveUserSkills,
+  SKILL_CALCULATION_VERSION,
+  type CareerMatchResult,
 } from "@/lib/career-match";
 import { recordEvent } from "@/lib/events";
 import { createClient } from "@/lib/supabase/server";
@@ -26,16 +28,15 @@ describe.skipIf(!hasDb)("Supabase repository（実 DB）", () => {
     await supabase.from("events").delete().eq("anonymous_user_id", anonymousUserId);
   });
 
-  async function save(submission: AssessmentSubmission) {
+  async function save(submission: AssessmentSubmission, override: Partial<CareerMatchResult> = {}) {
     const [stats, skill, path, known] = await Promise.all([
       loadCareerStatistics(submission.goal_id),
       loadSkillContext(submission.goal_id),
       loadLearningPath(submission.goal_id),
       loadKnownIds(),
     ]);
-    const result = calculateCareerMatch(submission, stats, skill, known);
-    const held = heldSkillIds({ skillIds: submission.skill_ids, certificationIds: submission.certification_ids }, skill);
-    const missingSteps = learningPath(path, held);
+    const result = { ...calculateCareerMatch(submission, stats, skill, known), ...override };
+    const missingSteps = learningPath(path, resolveUserSkills(submission, skill, known).held);
     const id = await saveAssessment({ anonymousUserId, submission, result, missingSteps });
     createdIds.push(id);
     return { id, result, missingSteps };
@@ -59,11 +60,14 @@ describe.skipIf(!hasDb)("Supabase repository（実 DB）", () => {
     expect(stored!.skill_ids.sort()).toEqual(["html-css", "jest", "vue"]);
     expect(stored!.legacy_skill_ids).toEqual([]);
     expect(stored!.certification_ids).toEqual(["ipa-fe"]);
+    expect(result.skill_statistics_version).toMatch(/^stack_overflow_developer_survey:2023-2024-2025:/);
     expect(stored!.career_match.skill).toEqual({
       skill_calculation_version: result.skill_calculation_version,
+      skill_statistics_version: result.skill_statistics_version,
       skill_progress: expect.closeTo(result.skill_progress, 6),
       tech_skill_progress: expect.closeTo(result.tech_skill_progress!, 6),
       human_skill_progress: expect.closeTo(result.human_skill_progress!, 6),
+      skill_layer_weights: result.skill_layer_weights,
     });
     expect(stored!.experiences).toEqual([{ role_id: "2513.5", years: 1.5 }]);
     expect(stored!.education_level_id).toBe("technical-college");
@@ -120,6 +124,87 @@ describe.skipIf(!hasDb)("Supabase repository（実 DB）", () => {
     const stored = await getAssessment(id, anonymousUserId);
     expect(stored!.skill_ids.sort()).toEqual(["bash-shell", "html-css", "web-api"]);
     expect(stored!.legacy_skill_ids).toEqual(["backend-framework"]);
+  });
+
+  it("保存済みの結果は再計算せず、保存時のスコアと配分を返す（設定が変わっても変わらない）", async () => {
+    // 現在の設定（Frontend は技術層 100%）とは違う配分・値で保存された結果を想定する
+    const { id } = await save(
+      {
+        goal_id: "frontend-developer",
+        skill_ids: ["html-css"],
+        certification_ids: [],
+        experiences: [],
+        education_level_id: null,
+        degree_id: null,
+        field_id: null,
+      },
+      {
+        skill_match: 12.5,
+        skill_progress: 12.5,
+        tech_skill_progress: 10,
+        human_skill_progress: 22.5,
+        skill_layer_weights: { tech: 0.8, human: 0.2, source: "default" },
+        skill_statistics_version: "stack_overflow_developer_survey:2023-2024-2025:0.2.0:k=50",
+      },
+    );
+    const stored = await getAssessment(id, anonymousUserId);
+    expect(stored!.career_match.skill_match).toBe(12.5);
+    expect(stored!.career_match.skill).toEqual({
+      skill_calculation_version: SKILL_CALCULATION_VERSION,
+      skill_statistics_version: "stack_overflow_developer_survey:2023-2024-2025:0.2.0:k=50",
+      skill_progress: 12.5,
+      tech_skill_progress: 10,
+      human_skill_progress: 22.5,
+      skill_layer_weights: { tech: 0.8, human: 0.2, source: "default" },
+    });
+  });
+
+  it("旧方式の結果（skill_calculation_version が NULL）は skill を null とし、保存時の Skill Match を返す", async () => {
+    const { id } = await save({
+      goal_id: "backend-developer",
+      skill_ids: [],
+      certification_ids: [],
+      experiences: [],
+      education_level_id: null,
+      degree_id: null,
+      field_id: null,
+    });
+    const supabase = createClient();
+    const { error } = await supabase
+      .from("career_match_results")
+      .update({
+        skill_match: 40,
+        skill_calculation_version: null,
+        skill_statistics_version: null,
+        skill_progress: null,
+        tech_skill_progress: null,
+        human_skill_progress: null,
+        skill_weight_tech: null,
+        skill_weight_human: null,
+        skill_weight_source: null,
+      })
+      .eq("assessment_id", id);
+    expect(error).toBeNull();
+    await supabase.from("assessment_skills").insert([{ assessment_id: id, skill_id: "shell-script" }]);
+
+    const stored = await getAssessment(id, anonymousUserId);
+    expect(stored!.career_match.skill_match).toBe(40);
+    expect(stored!.career_match.skill).toBeNull();
+    expect(stored!.skill_ids).toEqual(["bash-shell"]);
+  });
+
+  it("配分の制約：合計が 1 でない・source が不正・一部だけ NULL・計算方式と不一致の値は保存できない", async () => {
+    const id = createdIds[0];
+    const supabase = createClient();
+    for (const invalid of [
+      { skill_weight_tech: 0.5, skill_weight_human: 0.2 },
+      { skill_weight_source: "manual" },
+      { skill_weight_human: null },
+      { skill_weight_tech: null, skill_weight_human: null, skill_weight_source: null },
+    ]) {
+      const { error } = await supabase.from("career_match_results").update(invalid).eq("assessment_id", id);
+      expect(error?.message, JSON.stringify(invalid)).toMatch(/check constraint/);
+    }
   });
 
   it("別の anonymous_user_id からは読めず、削除もできない", async () => {

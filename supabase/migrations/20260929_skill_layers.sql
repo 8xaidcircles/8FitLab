@@ -2,7 +2,8 @@
 -- Supabase ダッシュボード > SQL Editor に貼り付けて 1 回実行する。何度実行しても結果は同じ
 --
 -- 1. 資格の入力を保存するテーブル
--- 2. career_match_results に Skill の計算方式・内訳の列を追加（skill_calculation_version が NULL の行は旧方式）
+-- 2. career_match_results に Skill の計算方式・内訳・適用した配分の列を追加（skill_calculation_version が NULL の行は旧方式）。
+--    配分は設定（goal-skill-layers.json）が後で変わっても、保存時の値を表示するために持つ
 -- 3. 保存済みの旧 skill_id を新しい skill_id に変換（data/skills/skill-migration.json の renamed / merged）
 --    same / human / split_and_human は同じ ID のまま。split（backend-framework など）は
 --    どれを持っていたか分からないため変換せず残す（計算では無視される）
@@ -23,7 +24,10 @@ ALTER TABLE public.career_match_results
     ADD COLUMN IF NOT EXISTS skill_calculation_version TEXT,
     ADD COLUMN IF NOT EXISTS skill_progress NUMERIC,
     ADD COLUMN IF NOT EXISTS tech_skill_progress NUMERIC,
-    ADD COLUMN IF NOT EXISTS human_skill_progress NUMERIC;
+    ADD COLUMN IF NOT EXISTS human_skill_progress NUMERIC,
+    ADD COLUMN IF NOT EXISTS skill_weight_tech NUMERIC,
+    ADD COLUMN IF NOT EXISTS skill_weight_human NUMERIC,
+    ADD COLUMN IF NOT EXISTS skill_weight_source TEXT;
 
 -- renamed: shell-script → bash-shell
 UPDATE public.assessment_skills SET skill_id = 'bash-shell' WHERE skill_id = 'shell-script';

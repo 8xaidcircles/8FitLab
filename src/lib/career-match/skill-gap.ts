@@ -1,5 +1,8 @@
 import type { LearningPathMaster, LearningStep, SkillGapStep } from "./types";
 
+// userSkillIds には resolveUserSkills().held を渡す（入力値のままだと、資格・ツール経由のスキルと旧 skill_id の移行が反映されず、
+// Skill Match と食い違う）
+
 export function isStepSatisfied(step: LearningStep, userSkillIds: ReadonlySet<string>): boolean {
   return step.any_of.some((skillId) => userSkillIds.has(skillId));
 }

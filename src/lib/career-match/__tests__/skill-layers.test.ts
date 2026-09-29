@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   heldSkillIds,
+  humanRequirementStatus,
   humanSkillProgress,
   layeredSkillProgress,
   normalizeHumanRequirements,
@@ -85,6 +86,15 @@ describe("humanSkillProgress", () => {
   it("要件が無ければ null", () => {
     expect(humanSkillProgress([], new Set(["testing"]))).toBeNull();
   });
+
+  it("要件ごとの充足状況を返す（Skill Gap 用）", () => {
+    expect(humanRequirementStatus(requirements, new Set(["azure"])).map((r) => [r.requirement_id, r.satisfied])).toEqual([
+      ["testing", false],
+      ["statistics", false],
+      ["project-management", false],
+      ["cloud", true],
+    ]);
+  });
 });
 
 describe("resolveSkillLayerWeights", () => {
@@ -116,10 +126,23 @@ describe("resolveSkillLayerWeights", () => {
     expect(resolveSkillLayerWeights({ tech: 0, human: 1 }, defaults, { tech: false, human: true }).source).toBe("goal");
   });
 
+  it("配分のある層が計算できなければ、配分 0 でも計算できる層を 100% にする", () => {
+    expect(resolveSkillLayerWeights({ tech: 1, human: 0 }, defaults, { tech: false, human: true })).toEqual({
+      tech: 0,
+      human: 1,
+      source: "fallback",
+    });
+    expect(resolveSkillLayerWeights({ tech: 0, human: 1 }, defaults, { tech: true, human: false })).toEqual({
+      tech: 1,
+      human: 0,
+      source: "fallback",
+    });
+  });
+
   it("不正な配分、または計算できる層が無ければエラー", () => {
     expect(() => resolveSkillLayerWeights({ tech: -1, human: 1 }, defaults, both)).toThrow();
     expect(() => resolveSkillLayerWeights({ tech: 0, human: 0 }, defaults, both)).toThrow();
-    expect(() => resolveSkillLayerWeights({ tech: 1, human: 0 }, defaults, { tech: false, human: true })).toThrow();
+    expect(() => resolveSkillLayerWeights({ tech: 1, human: 0 }, defaults, { tech: false, human: false })).toThrow();
   });
 });
 

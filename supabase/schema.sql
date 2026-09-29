@@ -64,10 +64,29 @@ CREATE TABLE IF NOT EXISTS public.career_match_results (
     taxonomy_version TEXT NOT NULL,
     -- Skill の計算方式（NULL は旧方式＝Learning Step の達成率）と、2 層の達成率の内訳
     skill_calculation_version TEXT,
+    -- 技術スキル層に使った Skill Statistics の由来（出典:年:計算バージョン:k）。技術スキル層を計算しない Goal は NULL
+    skill_statistics_version TEXT,
     skill_progress NUMERIC,
     tech_skill_progress NUMERIC,
     human_skill_progress NUMERIC,
-    created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+    -- 適用した配分（設定が後で変わっても保存時の値を表示する）。source は default / goal / fallback
+    skill_weight_tech NUMERIC,
+    skill_weight_human NUMERIC,
+    skill_weight_source TEXT,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
+    CONSTRAINT career_match_results_skill_weights_check CHECK (
+        (skill_weight_tech IS NULL AND skill_weight_human IS NULL AND skill_weight_source IS NULL)
+        OR (
+            skill_weight_tech IS NOT NULL AND skill_weight_human IS NOT NULL AND skill_weight_source IS NOT NULL
+            AND skill_weight_tech >= 0 AND skill_weight_human >= 0
+            AND abs(skill_weight_tech + skill_weight_human - 1) <= 0.000001
+            AND skill_weight_source IN ('default', 'goal', 'fallback')
+        )
+    ),
+    -- 旧方式（skill_calculation_version が NULL）の行は配分も NULL、2 層方式の行は配分を必ず持つ
+    CONSTRAINT career_match_results_skill_version_weights_check CHECK (
+        (skill_calculation_version IS NULL) = (skill_weight_source IS NULL)
+    )
 );
 
 CREATE TABLE IF NOT EXISTS public.assessment_certifications (

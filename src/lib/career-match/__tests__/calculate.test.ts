@@ -9,13 +9,16 @@ import {
   experienceMatch,
   goalMatch,
   quality,
+  resolveUserSkills,
   roundYears,
+  skillStatisticsVersion,
   userExperienceKeys,
   SKILL_CALCULATION_VERSION,
   type KnownIds,
   type SkillContext,
 } from "../calculate";
-import type { CareerStatistics, RequirementGroupStatistics, UserInput } from "../types";
+import { learningPath } from "../skill-gap";
+import type { CareerStatistics, LearningPathMaster, RequirementGroupStatistics, UserInput } from "../types";
 import { skillStatistics, unit } from "./skill-fixtures";
 
 function row(pGoal: number, pOther: number) {
@@ -43,6 +46,10 @@ const skill: SkillContext = {
     },
   ],
   certifications: [{ cert_id: "jstqb-fl", name: "JSTQB FL", issuer: "JSTQB", proves: ["testing"] }],
+  skillMigration: [
+    { old_skill_id: "shell-script", action: "renamed", new_skill_ids: ["docker"] },
+    { old_skill_id: "cloud", action: "split", new_skill_ids: ["aws", "azure"] },
+  ],
 };
 
 // Experience（Role × 年以上、Other に無い Unit なので c = Pg）:
@@ -170,6 +177,54 @@ describe("calculateCareerMatch の Skill（技術スキル層 × 人間定義層
     expect(result.tech_skill_progress).toBeNull();
     expect(result.skill_layer_weights).toEqual({ tech: 0, human: 1, source: "fallback" });
     expect(result.skill_match).toBe(100);
+  });
+
+  it("技術スキル層に使った Skill Statistics の由来を結果に残す", () => {
+    expect(skillMatch({}).skill_statistics_version).toBe(skillStatisticsVersion(skill.techStats!));
+    expect(skillStatisticsVersion(skill.techStats!)).toMatch(/^.+:\d{4}(-\d{4})*:.+:k=[\d.]+$/);
+  });
+
+  it("技術層 100% の Goal で技術スキル統計が無ければ、配分 0 の人間定義層に 100% を寄せる（fallback）", () => {
+    const result = skillMatch({ skill_ids: ["jest"] }, { ...layered({ tech: 1, human: 0 }), techStats: null });
+    expect(result.tech_skill_progress).toBeNull();
+    expect(result.skill_statistics_version).toBeNull();
+    expect(result.human_skill_progress).toBe(100);
+    expect(result.skill_layer_weights).toEqual({ tech: 0, human: 1, source: "fallback" });
+    expect(result.skill_match).toBe(100);
+  });
+
+  it("技術スキル統計の採用 unit が 0 件でも、人間定義層 100% に寄せる（fallback）", () => {
+    const empty = { ...layered({ tech: 1, human: 0 }), techStats: skillStatistics("test-goal", []) };
+    expect(skillMatch({ skill_ids: ["testing"] }, empty).skill_layer_weights).toEqual({
+      tech: 0,
+      human: 1,
+      source: "fallback",
+    });
+  });
+
+  it("人間定義層 100% の Goal で要件が空なら、技術スキル層に 100% を寄せる（fallback）", () => {
+    const context = layered({ tech: 0, human: 1 });
+    const result = skillMatch(
+      { skill_ids: ["html", "python"] },
+      { ...context, goalLayers: { ...context.goalLayers, human_requirements: [] } },
+    );
+    expect(result.human_skill_progress).toBeNull();
+    expect(result.skill_layer_weights).toEqual({ tech: 1, human: 0, source: "fallback" });
+    expect(result.skill_match).toBeCloseTo(50, 10);
+  });
+
+  it("どちらの層も計算できなければエラー", () => {
+    const context = layered({ tech: 1, human: 0 });
+    expect(() =>
+      skillMatch({}, { ...context, techStats: null, goalLayers: { ...context.goalLayers, human_requirements: [] } }),
+    ).toThrow("No skill layer is available");
+  });
+
+  it("旧 skill_id は移行してから計算し、split は ignored ではなく legacy_skill_ids に返す", () => {
+    const result = skillMatch({ skill_ids: ["shell-script", "cloud"] });
+    expect(result.skill_match).toBeCloseTo(25, 10); // shell-script → docker
+    expect(result.ignored.skill_ids).toEqual([]);
+    expect(result.ignored.legacy_skill_ids).toEqual(["cloud"]);
   });
 
   it("Unknown な資格は無視して ignored に返す", () => {
@@ -420,7 +475,13 @@ describe("calculateCareerMatch", () => {
     expect(result.skill_match).toBe(25);
     expect(result.experience_match).toBe(0);
     expect(result.education_match).toBe(0);
-    expect(result.ignored).toEqual({ skill_ids: ["cobol"], certification_ids: [], role_ids: ["Z"], degree_id: "Diploma" });
+    expect(result.ignored).toEqual({
+      skill_ids: ["cobol"],
+      legacy_skill_ids: [],
+      certification_ids: [],
+      role_ids: ["Z"],
+      degree_id: "Diploma",
+    });
   });
 
   it("既知だが Goal 統計に存在しない Role は 0 寄与（ignored にしない）", () => {
@@ -436,5 +497,39 @@ describe("calculateCareerMatch", () => {
 
   it("Goal が一致しないデータの組み合わせはエラー", () => {
     expect(() => calculateCareerMatch(input(), stats({ goal_id: "other" }), skill, known)).toThrow();
+  });
+});
+
+describe("resolveUserSkills", () => {
+  it("直接入力・ツール・資格で同じスキルに届いても 1 つにまとめる", () => {
+    const { held } = resolveUserSkills(
+      { skill_ids: ["testing", "jest", "testing"], certification_ids: ["jstqb-fl", "jstqb-fl"] },
+      skill,
+      known,
+    );
+    expect([...held].sort()).toEqual(["jest", "testing"]);
+  });
+
+  it("旧 skill_id を移行してから、マスタに無い ID を除外する", () => {
+    const resolved = resolveUserSkills(
+      { skill_ids: ["shell-script", "cloud", "cobol"], certification_ids: ["unknown-cert"] },
+      skill,
+      known,
+    );
+    expect([...resolved.held]).toEqual(["docker"]);
+    expect(resolved.ignoredSkillIds).toEqual(["cobol"]);
+    expect(resolved.ignoredCertificationIds).toEqual(["unknown-cert"]);
+    expect(resolved.legacySkillIds).toEqual(["cloud"]);
+  });
+
+  it("Skill Gap / Learning Path も同じ集合で判定する（資格経由のスキルが未習得に出ない）", () => {
+    const path: LearningPathMaster = {
+      goal_id: "test-goal",
+      region: "JP",
+      version: "1.0.0",
+      steps: [{ learning_order: 1, step_id: "testing", name: "テスト", any_of: ["testing"] }],
+    };
+    const { held } = resolveUserSkills({ skill_ids: [], certification_ids: ["jstqb-fl"] }, skill, known);
+    expect(learningPath(path, held)).toEqual([]);
   });
 });

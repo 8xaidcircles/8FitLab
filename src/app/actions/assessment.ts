@@ -5,7 +5,6 @@ import { saveAssessment } from "@/lib/assessment/repository";
 import { educationIds, parseAssessmentSubmission } from "@/lib/assessment/validate";
 import {
   calculateCareerMatch,
-  heldSkillIds,
   learningPath,
   loadCareerStatistics,
   loadEducation,
@@ -13,6 +12,7 @@ import {
   loadKnownIds,
   loadLearningPath,
   loadSkillContext,
+  resolveUserSkills,
 } from "@/lib/career-match";
 import { recordEvent } from "@/lib/events";
 
@@ -36,11 +36,7 @@ export async function submitAssessment(raw: unknown): Promise<SubmitAssessmentRe
     loadLearningPath(submission.goal_id),
   ]);
   const result = calculateCareerMatch(submission, stats, skillContext, known);
-  const held = heldSkillIds(
-    { skillIds: submission.skill_ids, certificationIds: submission.certification_ids },
-    skillContext,
-  );
-  const missingSteps = learningPath(path, held);
+  const missingSteps = learningPath(path, resolveUserSkills(submission, skillContext, known).held);
 
   const anonymousUserId = await getOrCreateAnonymousUserId();
   let assessmentId: string;

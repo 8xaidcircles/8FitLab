@@ -30,17 +30,25 @@ export function heldSkillIds(
   return held;
 }
 
+export function humanRequirementStatus(
+  requirements: readonly HumanRequirement[],
+  held: ReadonlySet<string>,
+): (HumanRequirement & { satisfied: boolean })[] {
+  return requirements.map((r) => ({ ...r, satisfied: r.any_of.some((id) => held.has(id)) }));
+}
+
 // 人間定義層の達成率（0〜100）= 満たした要件の数 / 要件の数 × 100（要件は均等）。要件が無ければ null
 export function humanSkillProgress(
   requirements: readonly HumanRequirement[],
   held: ReadonlySet<string>,
 ): number | null {
   if (requirements.length === 0) return null;
-  const satisfied = requirements.filter((r) => r.any_of.some((id) => held.has(id))).length;
+  const satisfied = humanRequirementStatus(requirements, held).filter((r) => r.satisfied).length;
   return (satisfied / requirements.length) * 100;
 }
 
-// Goal の配分（無ければ既定値）を合計 1 に正規化する。計算できない層は 0 にして、残りの層に寄せる
+// Goal の配分（無ければ既定値）を合計 1 に正規化する。計算できない層は 0 にして、もう片方の層に寄せる。
+// 配分のある層がすべて計算できないときは、配分が 0 でも計算できる層を 100% にする（両方とも計算できなければエラー）
 export function resolveSkillLayerWeights(
   goalWeights: SkillLayerWeights | undefined,
   defaultWeights: SkillLayerWeights,
@@ -50,10 +58,14 @@ export function resolveSkillLayerWeights(
   if (![base.tech, base.human].every((w) => Number.isFinite(w) && w >= 0) || base.tech + base.human <= 0) {
     throw new Error(`Invalid skill layer weights: tech=${base.tech}, human=${base.human}`);
   }
-  const tech = available.tech ? base.tech : 0;
-  const human = available.human ? base.human : 0;
-  if (tech + human <= 0) throw new Error("No skill layer is available for Skill Progress");
+  let tech = available.tech ? base.tech : 0;
+  let human = available.human ? base.human : 0;
   const fallback = (base.tech > 0 && !available.tech) || (base.human > 0 && !available.human);
+  if (tech + human <= 0) {
+    if (available.tech) tech = 1;
+    else if (available.human) human = 1;
+    else throw new Error("No skill layer is available for Skill Progress");
+  }
   return {
     tech: tech / (tech + human),
     human: human / (tech + human),
