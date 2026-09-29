@@ -226,6 +226,7 @@ def group_experience(df, jobs, all_units, all_counts, all_persons, group_id, cod
         "experience": [],
     }
     if n_group == 0:
+        print(f"  [Notice] group={group_id}: no dated person in the group. Experience is not calculable for Goals that include this group.")
         return result
     excluded_counts = cumulative_counts(all_units[all_units.person_id.isin(excluded)])
     # excluded は all_units の部分集合なので負にはならないはずだが、負の出現数が Quality に混ざらないよう 0 で止める
@@ -237,6 +238,11 @@ def group_experience(df, jobs, all_units, all_counts, all_persons, group_id, cod
     result["pre_goal_experience_persons"] = int(scores.size)
     result["experience_reference"] = round(reference_value(scores), 6)
     result["experience"] = rows
+    if result["experience_reference"] <= 0:
+        print(
+            f"  [Notice] group={group_id}: experience_reference = 0 (pre-goal persons = {scores.size}, units = {len(rows)}). "
+            "Experience is not calculable for Goals that include this group."
+        )
     return result
 
 

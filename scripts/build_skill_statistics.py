@@ -53,7 +53,7 @@ DICTIONARY_PATH = ROOT / "data" / "skills" / "tech-skills.json"
 GROUPS_PATH = ROOT / "data" / "skills" / "tech-skill-groups.json"
 OUT_DIR = ROOT / "data" / "statistics" / "skill-match"
 
-CALCULATION_VERSION = "0.3.0"
+CALCULATION_VERSION = "0.3.1"
 # 出力は Stack Overflow Developer Survey（ODbL）の派生データベースのため、同じ ODbL で提供する（ODbL 4.4）
 DERIVED_DATABASE_LICENSE = {
     "name": "Open Database License (ODbL) v1.0",
@@ -69,6 +69,9 @@ REGION_COUNTRY = "Japan"
 MIN_RELIABLE_SAMPLE = 100
 ALPHA = 0.05
 CUMULATIVE_SHARE = 0.8
+# 日本補正の τ = 1 / (k + 1) の範囲。下限 0.001 は k ≈ 999（推定が不安定なときに k が発散しないための安全網）
+TAU_MIN = 0.001
+TAU_MAX = 1.0
 SCOPES = ("world", "region")
 
 # 年ごとの技術スキルの設問（HaveWorkedWith 列） → カテゴリ
@@ -146,8 +149,22 @@ def estimate_prior_strength(pairs: list) -> float:
     # 推定に使える組が無いときに固定値へ逃がすと「人が決めた k」になるため、止めて原因を直す
     if denominator <= 0 or not math.isfinite(numerator):
         raise ValueError("prior strength k cannot be estimated: no (Goal, technology) pair with n_JP >= 2 and 0 < p < 1")
-    tau = min(max(numerator / denominator, 1e-6), 1.0)
-    return 1 / tau - 1
+    raw_tau = numerator / denominator
+    # τ ≤ 0（日本と世界の差が二項分布の誤差より小さい）では k が発散し、日本の回答を事実上無視することになる。
+    # 下限で k を約 999 に抑え、上限（τ = 1 → k = 0、縮小なし）とともに、張り付いたら警告してデータを確かめる
+    tau = min(max(raw_tau, TAU_MIN), TAU_MAX)
+    k = 1 / tau - 1
+    if raw_tau <= TAU_MIN:
+        print(
+            f"  [Warning] prior strength k reached the upper bound (k = {k:.0f}, raw tau = {raw_tau:.6g}): "
+            "Japan responses are almost fully shrunk to world rates. Check the sample variance."
+        )
+    elif raw_tau >= TAU_MAX:
+        print(
+            f"  [Warning] prior strength k reached the lower bound (k = 0, raw tau = {raw_tau:.6g}): "
+            "Japan rates are used without shrinkage. Check the sample variance."
+        )
+    return k
 
 
 def shrink(u: int, n: int, prior_mean: float, k: float) -> float:
@@ -294,7 +311,7 @@ def main() -> None:
         (s["region"][2], s["region"][0], s["world"][2] / s["world"][0])
         for items in goal_items.values() for s in items.values()
     ])
-    print(f"region={REGION_COUNTRY} prior_strength k={prior_strength:.1f}")
+    print(f"region={REGION_COUNTRY} prior_strength k={prior_strength:.1f} (tau={1 / (prior_strength + 1):.4f})")
 
     def rates(stats: dict) -> tuple:
         n_goal, n_other, u_goal, u_other = stats["world"]

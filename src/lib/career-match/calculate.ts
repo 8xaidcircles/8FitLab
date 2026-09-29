@@ -73,7 +73,7 @@ export function resolveUserSkills(
   };
 }
 
-// 例：stack_overflow_developer_survey:2023-2024-2025:0.3.0:k=80.9（k は再生成のたびにデータから推定し直すため含める）
+// 例：stack_overflow_developer_survey:2023-2024-2025:0.3.1:k=80.9（k は再生成のたびにデータから推定し直すため含める）
 export function skillStatisticsVersion(
   stats: Pick<SkillStatistics, "source" | "source_years" | "calculation_version" | "region">,
 ): string {
@@ -128,14 +128,32 @@ export function satisfiedGroupIds(
 // 複合 Goal では、経験していない Group は統計上どれだけ近くてもこの値まで（両方の経験があって初めて 100）
 export const COMPOSITE_UNMET_GROUP_CAP = 50;
 
-// Group の職業の経験があれば 100。無ければ min(cap, Σ Contribution(該当 Unit) / reference × 100)
+export type ExperienceUnavailableReason =
+  | "NO_REQUIREMENT_GROUPS"
+  | "NO_EXPERIENCE_UNITS"
+  | "INSUFFICIENT_REFERENCE_DATA";
+
+// 統計生成は、前職歴のある人が 2 人未満・パーセンタイルが 0 以下・非有限なら experience_reference = 0 を出す（§56 Statistics Build）。
+// JSON の欠落（undefined / null）も同じく算出不可として扱い、割り算に進ませない
+export function groupUnavailableReason(
+  group: Pick<RequirementGroupStatistics, "experience" | "experience_reference">,
+): ExperienceUnavailableReason | null {
+  if (!Array.isArray(group.experience) || group.experience.length === 0) return "NO_EXPERIENCE_UNITS";
+  const reference = group.experience_reference as number | null | undefined;
+  if (typeof reference !== "number" || !Number.isFinite(reference) || reference <= 0) return "INSUFFICIENT_REFERENCE_DATA";
+  return null;
+}
+
+// Group の職業の経験があれば 100。無ければ min(cap, Σ Contribution(該当 Unit) / reference × 100)。
+// 統計から算出できない Group（groupUnavailableReason）で、職業の経験も無ければ null
 export function groupAchievement(
   group: RequirementGroupStatistics,
   experiences: readonly UserExperience[],
   cap = 100,
-): number {
+): number | null {
   const years = userYearsByRole(experiences);
   if (group.occupations.some((code) => years.has(code))) return 100;
+  if (groupUnavailableReason(group) !== null) return null;
   const keys = userExperienceKeys(experiences);
   const matched = group.experience.reduce(
     (sum, row) => (keys.has(experienceUnitKey(row.role_id, row.years)) ? sum + row.contribution : sum),
@@ -144,17 +162,24 @@ export function groupAchievement(
   return Math.min(cap, (matched / group.experience_reference) * 100);
 }
 
-// Experience = Requirement Group 達成率の平均（Goal は Group の AND）
+export type ExperienceMatchResult =
+  | { value: number; coverage: number; unavailable_reason?: undefined }
+  | { value: null; coverage: 0; unavailable_reason: ExperienceUnavailableReason };
+
+// Experience = Requirement Group 達成率の平均（Goal は Group の AND）。
+// どれか 1 つの Group でも算出できなければ Experience 全体を算出不可（null）とし、Goal Match の分母から外す。
+// 算出できる Group だけで平均すると、複合 Goal（Full-Stack など）を片方の Group だけで評価して高く出るため
 export function experienceMatch(
   stats: Pick<CareerStatistics, "requirement_groups">,
   experiences: readonly UserExperience[],
-): { value: number | null; coverage: number } {
+): ExperienceMatchResult {
   const groups = stats.requirement_groups;
-  const computable = groups.length > 0 && groups.every((g) => g.experience.length > 0 && g.experience_reference > 0);
-  if (!computable) return { value: null, coverage: 0 };
+  if (groups.length === 0) return { value: null, coverage: 0, unavailable_reason: "NO_REQUIREMENT_GROUPS" };
+  const reason = groups.map(groupUnavailableReason).find((r) => r !== null);
+  if (reason) return { value: null, coverage: 0, unavailable_reason: reason };
 
   const cap = groups.length > 1 ? COMPOSITE_UNMET_GROUP_CAP : 100;
-  const achievements = groups.map((group) => groupAchievement(group, experiences, cap));
+  const achievements = groups.map((group) => groupAchievement(group, experiences, cap)!);
   return {
     value: achievements.reduce((sum, value) => sum + value, 0) / groups.length,
     coverage: satisfiedGroupIds(groups, experiences).size / groups.length,

@@ -8,6 +8,7 @@ import {
   experienceMatch,
   experienceUnitKey,
   groupAchievement,
+  groupUnavailableReason,
   roundYears,
   userYearsByRole,
 } from "../calculate";
@@ -113,7 +114,7 @@ describe.each(goals.map((g) => [g.goal_id] as const))("計算の性質: %s", (go
     for (const group of groups) {
       const topRoles = [...new Set(group.experience.map((row) => row.role_id))].slice(0, 5);
       for (const role_id of topRoles) {
-        const values = [0.5, 1, 2, 3, 5, 10, 20, 50].map((years) => groupAchievement(group, [{ role_id, years }], cap));
+        const values = [0.5, 1, 2, 3, 5, 10, 20, 50].map((years) => groupAchievement(group, [{ role_id, years }], cap)!);
         for (let i = 1; i < values.length; i++) expect(values[i]).toBeGreaterThanOrEqual(values[i - 1]);
       }
     }
@@ -135,7 +136,7 @@ describe.each(goals.map((g) => [g.goal_id] as const))("計算の性質: %s", (go
     const role_id = row.role_id;
     const summed = groupAchievement(group, [{ role_id, years: 0.3 }, { role_id, years: 0.3 }], Infinity);
     expect(summed).toBe(groupAchievement(group, [{ role_id, years: 0.5 }], Infinity));
-    expect(summed).toBeLessThan(groupAchievement(group, [{ role_id, years: 1 }], Infinity));
+    expect(summed).toBeLessThan(groupAchievement(group, [{ role_id, years: 1 }], Infinity)!);
   });
 
   const firstUnitRole = groups.find((g) => g.experience.length > 0)?.experience[0].role_id;
@@ -192,6 +193,53 @@ describe("算出不可（null）", () => {
     // 複合 Goal では、どれか 1 つの Group が算出不可なら Experience 全体を算出不可にする
     expect(experienceMatch({ requirement_groups: [group(), group({ group_id: "h", experience_reference: 0 })] }, []).value).toBeNull();
     expect(experienceMatch({ requirement_groups: [group()] }, []).value).toBe(0);
+  });
+
+  it("算出不可の理由を返す", () => {
+    const reason = (groups: RequirementGroupStatistics[]) => experienceMatch({ requirement_groups: groups }, []).unavailable_reason;
+    expect(reason([])).toBe("NO_REQUIREMENT_GROUPS");
+    expect(reason([group({ experience: [] })])).toBe("NO_EXPERIENCE_UNITS");
+    expect(reason([group({ experience_reference: 0 })])).toBe("INSUFFICIENT_REFERENCE_DATA");
+    expect(reason([group()])).toBeUndefined();
+  });
+
+  it("Experience Reference が負・非有限・欠落（null / undefined）でも割り算に進まない", () => {
+    const experiences = [{ role_id: "2512.4", years: 1 }];
+    for (const bad of [-0.1, NaN, Infinity, null, undefined]) {
+      const g = group({ experience_reference: bad as unknown as number });
+      expect(groupUnavailableReason(g)).toBe("INSUFFICIENT_REFERENCE_DATA");
+      expect(groupAchievement(g, experiences)).toBeNull();
+      expect(experienceMatch({ requirement_groups: [g] }, experiences)).toEqual({
+        value: null,
+        coverage: 0,
+        unavailable_reason: "INSUFFICIENT_REFERENCE_DATA",
+      });
+    }
+  });
+
+  it("算出不可の Group でも、Group の職業の経験があれば Group 達成率は 100（Experience 全体は算出不可のまま）", () => {
+    const g = group({ experience_reference: 0 });
+    const experiences = [{ role_id: "2513.5", years: 1 }];
+    expect(groupAchievement(g, experiences)).toBe(100);
+    expect(experienceMatch({ requirement_groups: [g] }, experiences).value).toBeNull();
+  });
+
+  it("Experience が算出不可なら、Goal Match の分母から外す", async () => {
+    const stats = statsByGoal.get("frontend-developer")!;
+    const broken: CareerStatistics = {
+      ...stats,
+      requirement_groups: stats.requirement_groups.map((g) => ({ ...g, experience_reference: 0 })),
+    };
+    const skill = await loadSkillContext("frontend-developer");
+    const result = calculateCareerMatch(
+      { skill_ids: [], certification_ids: [], experiences: [{ role_id: "2512.4", years: 3 }], degree_id: "Bachelor" },
+      broken,
+      skill,
+      known,
+    );
+    expect(result.experience_match).toBeNull();
+    expect(result.education_match).not.toBeNull();
+    expect(result.goal_match).toBeCloseTo((result.skill_match + result.education_match!) / 2, 10);
   });
 
   it("学歴の行が無い・Contribution がすべて 0 なら Education は null", () => {
