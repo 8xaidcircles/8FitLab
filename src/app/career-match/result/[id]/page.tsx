@@ -386,8 +386,17 @@ export default async function ResultPage({ params }: PageProps<"/career-match/re
         )}
       </section>
 
-      <section className="mt-10 space-y-2 rounded-2xl bg-white p-5 text-xs leading-relaxed text-muted">
-        <p className="font-bold text-ink">この結果について</p>
+      <div className="mt-10 text-center">
+        <Link
+          href={`/career-match?goal=${goal.goal_id}`}
+          className="inline-block rounded-full border border-line bg-white px-6 py-3 text-sm font-bold text-indigo hover:border-sky"
+        >
+          入力を変えてもう一度計算する
+        </Link>
+      </div>
+
+      <section aria-label="この結果について" className="mt-16 space-y-2 border-t border-line pt-6 text-[11px] leading-relaxed text-muted">
+        <p className="font-bold">この結果について</p>
         <p>
           Experience・Educationの一致度は欧州の労働市場データ（JobHop / ESCO）に基づいており、日本の労働市場を完全に反映するものではありません。
           Skillは、調査データのあるGoalでは世界の開発者調査（Stack Overflow Developer Survey）を8FitLabが集計し、日本の回答で補正した技術で評価します。
@@ -408,20 +417,14 @@ export default async function ResultPage({ params }: PageProps<"/career-match/re
           >
             {STACK_OVERFLOW_SURVEY.license}
           </a>
-          。8FitLabが集計・日本補正）＋ 8FitLab 手法・知識・資格マスタ ／ 計算バージョン {match.calculation_version}
+          。8FitLabが集計・日本補正）＋ 8FitLab 手法・知識・資格マスタ
+        </p>
+        <p>
+          計算バージョン {match.calculation_version}
           {stored && ` ／ Skill計算 ${stored.skill_calculation_version}`}
           {stored?.skill_statistics_version && ` ／ Skill統計 ${stored.skill_statistics_version}`}
         </p>
       </section>
-
-      <div className="mt-8 text-center">
-        <Link
-          href={`/career-match?goal=${goal.goal_id}`}
-          className="inline-block rounded-full border border-line bg-white px-6 py-3 text-sm font-bold text-indigo hover:border-sky"
-        >
-          入力を変えてもう一度計算する
-        </Link>
-      </div>
     </div>
   );
 }

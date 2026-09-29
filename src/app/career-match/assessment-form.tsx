@@ -156,6 +156,23 @@ export function AssessmentForm({
     selected.has(option.id) ||
     ((!goalId || !onlyGoalSkills || relevant.has(option.id)) &&
       (!normalizedQuery || option.name.toLowerCase().includes(normalizedQuery)));
+  // 資格は Goal で絞り込まない（一般的な資格を持っている人が選べないため）。Goal を選んだら、関係する資格を先に分けて示す
+  const visibleCertification = (option: Option) =>
+    certs.has(option.id) || !normalizedQuery || option.name.toLowerCase().includes(normalizedQuery);
+  const certificationGroups: OptionGroup[] = goalId
+    ? [
+        {
+          id: "goal-certifications",
+          name: "このGoalに関係する資格",
+          options: certifications.filter((o) => relevant.has(o.id)),
+        },
+        {
+          id: "other-certifications",
+          name: "その他の資格（このGoalの計算とSkill Gapには影響しません）",
+          options: certifications.filter((o) => !relevant.has(o.id)),
+        },
+      ]
+    : [{ id: "certifications", name: "取得済みの資格", options: certifications }];
   const level = education.levels.find((l) => l.level_id === levelId);
   const fields = education.fields.filter((f) => f.levels.includes(levelId));
 
@@ -308,12 +325,12 @@ export function AssessmentForm({
         hint="取得済みの資格を選んでください（任意）。資格が証明するスキルを持っているものとして計算します。"
       >
         <ChipGroups
-          groups={[{ id: "certifications", name: "取得済みの資格", options: certifications }]}
+          groups={certificationGroups}
           selected={certs}
-          visible={(o) => visible(o, certs)}
+          visible={visibleCertification}
           onToggle={toggleCertification}
         />
-        {certifications.every((o) => !visible(o, certs)) && (
+        {certifications.every((o) => !visibleCertification(o)) && (
           <p className="text-sm text-muted">条件に合う資格はありません。</p>
         )}
         <p className="mt-4 text-xs text-muted">選択中：{certs.size}件</p>
