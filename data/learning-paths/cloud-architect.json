@@ -1,0 +1,97 @@
+{
+  "goal_id": "cloud-architect",
+  "region": "JP",
+  "version": "2.0.0",
+  "steps": [
+    {
+      "learning_order": 1,
+      "step_id": "linux",
+      "name": "Linux",
+      "any_of": [
+        "linux"
+      ]
+    },
+    {
+      "learning_order": 2,
+      "step_id": "network-fundamentals",
+      "name": "ネットワーク基礎（TCP/IP）",
+      "any_of": [
+        "network-fundamentals"
+      ]
+    },
+    {
+      "learning_order": 3,
+      "step_id": "cloud",
+      "name": "クラウド（AWS / GCP / Azure）",
+      "any_of": [
+        "aws",
+        "azure",
+        "google-cloud"
+      ]
+    },
+    {
+      "learning_order": 4,
+      "step_id": "cloud-networking",
+      "name": "クラウドネットワーク",
+      "any_of": [
+        "cloud-networking"
+      ]
+    },
+    {
+      "learning_order": 5,
+      "step_id": "cloud-security",
+      "name": "クラウドセキュリティ",
+      "any_of": [
+        "cloud-security"
+      ]
+    },
+    {
+      "learning_order": 6,
+      "step_id": "docker",
+      "name": "Docker",
+      "any_of": [
+        "docker"
+      ]
+    },
+    {
+      "learning_order": 7,
+      "step_id": "iac",
+      "name": "Infrastructure as Code",
+      "any_of": [
+        "iac"
+      ]
+    },
+    {
+      "learning_order": 8,
+      "step_id": "kubernetes",
+      "name": "Kubernetes",
+      "any_of": [
+        "kubernetes"
+      ]
+    },
+    {
+      "learning_order": 9,
+      "step_id": "system-design",
+      "name": "システム設計",
+      "any_of": [
+        "system-design"
+      ]
+    },
+    {
+      "learning_order": 10,
+      "step_id": "monitoring",
+      "name": "監視・オブザーバビリティ",
+      "any_of": [
+        "monitoring"
+      ]
+    },
+    {
+      "learning_order": 11,
+      "step_id": "cloud-cost-optimization",
+      "name": "クラウドコスト最適化",
+      "any_of": [
+        "cloud-cost-optimization"
+      ]
+    }
+  ]
+}

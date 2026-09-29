@@ -1,0 +1,81 @@
+{
+  "goal_id": "it-project-manager",
+  "region": "JP",
+  "version": "2.0.0",
+  "steps": [
+    {
+      "learning_order": 1,
+      "step_id": "sdlc",
+      "name": "システム開発工程",
+      "any_of": [
+        "sdlc"
+      ]
+    },
+    {
+      "learning_order": 2,
+      "step_id": "requirements-definition",
+      "name": "要件定義",
+      "any_of": [
+        "requirements-definition"
+      ]
+    },
+    {
+      "learning_order": 3,
+      "step_id": "project-management",
+      "name": "プロジェクト管理",
+      "any_of": [
+        "project-management"
+      ]
+    },
+    {
+      "learning_order": 4,
+      "step_id": "agile-scrum",
+      "name": "アジャイル / スクラム",
+      "any_of": [
+        "agile-scrum"
+      ]
+    },
+    {
+      "learning_order": 5,
+      "step_id": "risk-management",
+      "name": "リスク管理",
+      "any_of": [
+        "risk-management"
+      ]
+    },
+    {
+      "learning_order": 6,
+      "step_id": "stakeholder-management",
+      "name": "ステークホルダー調整",
+      "any_of": [
+        "stakeholder-management"
+      ]
+    },
+    {
+      "learning_order": 7,
+      "step_id": "git-github",
+      "name": "Git / GitHub",
+      "any_of": [
+        "git-github"
+      ]
+    },
+    {
+      "learning_order": 8,
+      "step_id": "sql",
+      "name": "SQL",
+      "any_of": [
+        "sql"
+      ]
+    },
+    {
+      "learning_order": 9,
+      "step_id": "cloud",
+      "name": "クラウド（AWS / GCP / Azure）",
+      "any_of": [
+        "aws",
+        "azure",
+        "google-cloud"
+      ]
+    }
+  ]
+}

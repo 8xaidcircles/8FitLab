@@ -1,0 +1,75 @@
+{
+  "goal_id": "network-engineer",
+  "region": "JP",
+  "version": "2.0.0",
+  "steps": [
+    {
+      "learning_order": 1,
+      "step_id": "network-fundamentals",
+      "name": "ネットワーク基礎（TCP/IP）",
+      "any_of": [
+        "network-fundamentals"
+      ]
+    },
+    {
+      "learning_order": 2,
+      "step_id": "linux",
+      "name": "Linux",
+      "any_of": [
+        "linux"
+      ]
+    },
+    {
+      "learning_order": 3,
+      "step_id": "routing-switching",
+      "name": "ルーティング・スイッチング",
+      "any_of": [
+        "routing-switching"
+      ]
+    },
+    {
+      "learning_order": 4,
+      "step_id": "network-security",
+      "name": "ネットワークセキュリティ",
+      "any_of": [
+        "network-security"
+      ]
+    },
+    {
+      "learning_order": 5,
+      "step_id": "automation-scripting",
+      "name": "自動化スクリプト",
+      "any_of": [
+        "bash-shell",
+        "python",
+        "go"
+      ]
+    },
+    {
+      "learning_order": 6,
+      "step_id": "cloud",
+      "name": "クラウド（AWS / GCP / Azure）",
+      "any_of": [
+        "aws",
+        "azure",
+        "google-cloud"
+      ]
+    },
+    {
+      "learning_order": 7,
+      "step_id": "cloud-networking",
+      "name": "クラウドネットワーク",
+      "any_of": [
+        "cloud-networking"
+      ]
+    },
+    {
+      "learning_order": 8,
+      "step_id": "monitoring",
+      "name": "監視・オブザーバビリティ",
+      "any_of": [
+        "monitoring"
+      ]
+    }
+  ]
+}

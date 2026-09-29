@@ -1,0 +1,92 @@
+{
+  "goal_id": "data-scientist",
+  "region": "JP",
+  "version": "2.0.0",
+  "steps": [
+    {
+      "learning_order": 1,
+      "step_id": "data-language",
+      "name": "データ分析言語",
+      "any_of": [
+        "python",
+        "r"
+      ]
+    },
+    {
+      "learning_order": 2,
+      "step_id": "sql",
+      "name": "SQL",
+      "any_of": [
+        "sql"
+      ]
+    },
+    {
+      "learning_order": 3,
+      "step_id": "statistics",
+      "name": "統計学",
+      "any_of": [
+        "statistics"
+      ]
+    },
+    {
+      "learning_order": 4,
+      "step_id": "dataframe",
+      "name": "データフレーム操作",
+      "any_of": [
+        "pandas",
+        "numpy",
+        "tidyverse"
+      ]
+    },
+    {
+      "learning_order": 5,
+      "step_id": "data-visualization",
+      "name": "データ可視化・BI",
+      "any_of": [
+        "data-visualization"
+      ]
+    },
+    {
+      "learning_order": 6,
+      "step_id": "math-for-ml",
+      "name": "機械学習のための数学",
+      "any_of": [
+        "math-for-ml"
+      ]
+    },
+    {
+      "learning_order": 7,
+      "step_id": "git-github",
+      "name": "Git / GitHub",
+      "any_of": [
+        "git-github"
+      ]
+    },
+    {
+      "learning_order": 8,
+      "step_id": "machine-learning",
+      "name": "機械学習",
+      "any_of": [
+        "machine-learning"
+      ]
+    },
+    {
+      "learning_order": 9,
+      "step_id": "deep-learning",
+      "name": "深層学習",
+      "any_of": [
+        "deep-learning"
+      ]
+    },
+    {
+      "learning_order": 10,
+      "step_id": "cloud",
+      "name": "クラウド（AWS / GCP / Azure）",
+      "any_of": [
+        "aws",
+        "azure",
+        "google-cloud"
+      ]
+    }
+  ]
+}

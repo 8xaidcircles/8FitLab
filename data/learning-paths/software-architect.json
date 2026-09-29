@@ -1,0 +1,121 @@
+{
+  "goal_id": "software-architect",
+  "region": "JP",
+  "version": "2.0.0",
+  "steps": [
+    {
+      "learning_order": 1,
+      "step_id": "backend-language",
+      "name": "バックエンド言語",
+      "any_of": [
+        "python",
+        "java",
+        "go",
+        "php",
+        "ruby",
+        "csharp",
+        "nodejs",
+        "kotlin",
+        "scala"
+      ]
+    },
+    {
+      "learning_order": 2,
+      "step_id": "git-github",
+      "name": "Git / GitHub",
+      "any_of": [
+        "git-github"
+      ]
+    },
+    {
+      "learning_order": 3,
+      "step_id": "sql",
+      "name": "SQL",
+      "any_of": [
+        "sql"
+      ]
+    },
+    {
+      "learning_order": 4,
+      "step_id": "database-design",
+      "name": "データベース設計",
+      "any_of": [
+        "database-design"
+      ]
+    },
+    {
+      "learning_order": 5,
+      "step_id": "web-api",
+      "name": "Web API（REST）",
+      "any_of": [
+        "web-api"
+      ]
+    },
+    {
+      "learning_order": 6,
+      "step_id": "design-patterns",
+      "name": "設計原則・デザインパターン",
+      "any_of": [
+        "design-patterns"
+      ]
+    },
+    {
+      "learning_order": 7,
+      "step_id": "testing",
+      "name": "テスト（単体・結合）",
+      "any_of": [
+        "testing"
+      ]
+    },
+    {
+      "learning_order": 8,
+      "step_id": "cloud",
+      "name": "クラウド（AWS / GCP / Azure）",
+      "any_of": [
+        "aws",
+        "azure",
+        "google-cloud"
+      ]
+    },
+    {
+      "learning_order": 9,
+      "step_id": "system-design",
+      "name": "システム設計",
+      "any_of": [
+        "system-design"
+      ]
+    },
+    {
+      "learning_order": 10,
+      "step_id": "web-security",
+      "name": "Webセキュリティ",
+      "any_of": [
+        "web-security"
+      ]
+    },
+    {
+      "learning_order": 11,
+      "step_id": "microservices",
+      "name": "マイクロサービス",
+      "any_of": [
+        "microservices"
+      ]
+    },
+    {
+      "learning_order": 12,
+      "step_id": "domain-driven-design",
+      "name": "ドメイン駆動設計",
+      "any_of": [
+        "domain-driven-design"
+      ]
+    },
+    {
+      "learning_order": 13,
+      "step_id": "architecture-documentation",
+      "name": "アーキテクチャ文書化",
+      "any_of": [
+        "architecture-documentation"
+      ]
+    }
+  ]
+}

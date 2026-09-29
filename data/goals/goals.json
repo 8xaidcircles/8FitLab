@@ -1,0 +1,307 @@
+{
+  "version": "2.0.0",
+  "taxonomy": "esco",
+  "taxonomy_version": "1.1.2",
+  "goals": [
+    {
+      "goal_id": "frontend-developer",
+      "display_name": "Frontend Developer",
+      "mapping_status": "proxy",
+      "requirement_groups": [
+        {
+          "group_id": "frontend-developer",
+          "name": "フロントエンドエンジニア",
+          "occupations": [
+            {
+              "code": "2513.5",
+              "label": "web developer"
+            },
+            {
+              "code": "2512.5",
+              "label": "user interface developer"
+            }
+          ]
+        }
+      ],
+      "name": "フロントエンドエンジニア",
+      "summary": "Webサービスの画面やUIを作る"
+    },
+    {
+      "goal_id": "backend-developer",
+      "display_name": "Backend Developer",
+      "mapping_status": "proxy",
+      "requirement_groups": [
+        {
+          "group_id": "backend-developer",
+          "name": "バックエンドエンジニア",
+          "occupations": [
+            {
+              "code": "2512.4",
+              "label": "software developer"
+            }
+          ]
+        }
+      ],
+      "name": "バックエンドエンジニア",
+      "summary": "サーバー・API・データベースを作る"
+    },
+    {
+      "goal_id": "full-stack-developer",
+      "display_name": "Full-Stack Developer",
+      "mapping_status": "proxy",
+      "requirement_groups": [
+        {
+          "group_id": "frontend",
+          "name": "フロントエンド",
+          "occupations": [
+            {
+              "code": "2513.5",
+              "label": "web developer"
+            },
+            {
+              "code": "2512.5",
+              "label": "user interface developer"
+            }
+          ]
+        },
+        {
+          "group_id": "backend",
+          "name": "バックエンド",
+          "occupations": [
+            {
+              "code": "2512.4",
+              "label": "software developer"
+            }
+          ]
+        }
+      ],
+      "name": "フルスタックエンジニア",
+      "summary": "画面からサーバーまで一通り作る"
+    },
+    {
+      "goal_id": "data-analyst",
+      "display_name": "Data Analyst",
+      "mapping_status": "exact",
+      "requirement_groups": [
+        {
+          "group_id": "data-analyst",
+          "name": "データアナリスト",
+          "occupations": [
+            {
+              "code": "2511.3",
+              "label": "data analyst"
+            }
+          ]
+        }
+      ],
+      "name": "データアナリスト",
+      "summary": "データを集計・可視化して意思決定を支える"
+    },
+    {
+      "goal_id": "data-scientist",
+      "display_name": "Data Scientist",
+      "mapping_status": "exact",
+      "requirement_groups": [
+        {
+          "group_id": "data-scientist",
+          "name": "データサイエンティスト",
+          "occupations": [
+            {
+              "code": "2511.4",
+              "label": "data scientist"
+            }
+          ]
+        }
+      ],
+      "name": "データサイエンティスト",
+      "summary": "統計や機械学習で課題を解く"
+    },
+    {
+      "goal_id": "data-engineer",
+      "display_name": "Data Engineer",
+      "mapping_status": "proxy",
+      "requirement_groups": [
+        {
+          "group_id": "data-engineer",
+          "name": "データエンジニア",
+          "occupations": [
+            {
+              "code": "2521.4",
+              "label": "database integrator"
+            },
+            {
+              "code": "2521.5",
+              "label": "data warehouse designer"
+            },
+            {
+              "code": "2521.2",
+              "label": "database designer"
+            }
+          ]
+        }
+      ],
+      "name": "データエンジニア",
+      "summary": "データ基盤やパイプラインを作る"
+    },
+    {
+      "goal_id": "it-project-manager",
+      "display_name": "IT Project Manager",
+      "mapping_status": "exact",
+      "requirement_groups": [
+        {
+          "group_id": "it-project-manager",
+          "name": "ITプロジェクトマネージャー",
+          "occupations": [
+            {
+              "code": "1330.7",
+              "label": "ICT project manager"
+            }
+          ]
+        }
+      ],
+      "name": "ITプロジェクトマネージャー",
+      "summary": "システム開発プロジェクトを計画・推進する"
+    },
+    {
+      "goal_id": "product-manager",
+      "display_name": "Product Manager",
+      "mapping_status": "exact",
+      "requirement_groups": [
+        {
+          "group_id": "product-manager",
+          "name": "プロダクトマネージャー",
+          "occupations": [
+            {
+              "code": "1330.6",
+              "label": "ICT product manager"
+            }
+          ]
+        }
+      ],
+      "name": "プロダクトマネージャー",
+      "summary": "何を作るかを決め、プロダクトを育てる"
+    },
+    {
+      "goal_id": "software-architect",
+      "display_name": "Software Architect",
+      "mapping_status": "exact",
+      "requirement_groups": [
+        {
+          "group_id": "software-architect",
+          "name": "ソフトウェアアーキテクト",
+          "occupations": [
+            {
+              "code": "2512.3",
+              "label": "software architect"
+            }
+          ]
+        }
+      ],
+      "name": "ソフトウェアアーキテクト",
+      "summary": "システム全体の設計方針を決める"
+    },
+    {
+      "goal_id": "mobile-app-developer",
+      "display_name": "Mobile App Developer",
+      "mapping_status": "exact",
+      "requirement_groups": [
+        {
+          "group_id": "mobile-app-developer",
+          "name": "モバイルアプリエンジニア",
+          "occupations": [
+            {
+              "code": "2514.2.2",
+              "label": "mobile application developer"
+            }
+          ]
+        }
+      ],
+      "name": "モバイルアプリエンジニア",
+      "summary": "iOS / Android アプリを作る"
+    },
+    {
+      "goal_id": "network-engineer",
+      "display_name": "Network Engineer",
+      "mapping_status": "exact",
+      "requirement_groups": [
+        {
+          "group_id": "network-engineer",
+          "name": "ネットワークエンジニア",
+          "occupations": [
+            {
+              "code": "2523.3",
+              "label": "ICT network engineer"
+            }
+          ]
+        }
+      ],
+      "name": "ネットワークエンジニア",
+      "summary": "ネットワークを設計・構築・運用する"
+    },
+    {
+      "goal_id": "test-analyst",
+      "display_name": "Test Analyst",
+      "mapping_status": "exact",
+      "requirement_groups": [
+        {
+          "group_id": "test-analyst",
+          "name": "テストエンジニア / QA",
+          "occupations": [
+            {
+              "code": "2519.6",
+              "label": "ICT test analyst"
+            }
+          ]
+        }
+      ],
+      "name": "テストエンジニア / QA",
+      "summary": "テストを設計し、品質を保証する"
+    },
+    {
+      "goal_id": "devops-sre",
+      "display_name": "DevOps / SRE",
+      "mapping_status": "proxy",
+      "requirement_groups": [
+        {
+          "group_id": "devops-sre",
+          "name": "DevOps / SREエンジニア",
+          "occupations": [
+            {
+              "code": "2519.3",
+              "label": "ICT change and configuration manager"
+            },
+            {
+              "code": "2522.1",
+              "label": "ICT system administrator"
+            }
+          ]
+        }
+      ],
+      "name": "DevOps / SREエンジニア",
+      "summary": "開発と運用をつなぎ、安定稼働を支える"
+    },
+    {
+      "goal_id": "cloud-architect",
+      "display_name": "Cloud Architect",
+      "mapping_status": "proxy",
+      "requirement_groups": [
+        {
+          "group_id": "cloud-architect",
+          "name": "クラウドアーキテクト",
+          "occupations": [
+            {
+              "code": "2512.1",
+              "label": "cloud engineer"
+            },
+            {
+              "code": "2511.14",
+              "label": "ICT system architect"
+            }
+          ]
+        }
+      ],
+      "name": "クラウドアーキテクト",
+      "summary": "クラウド上のインフラを設計する"
+    }
+  ]
+}

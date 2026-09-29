@@ -1,0 +1,90 @@
+{
+ "taxonomy": "esco",
+ "taxonomy_version": "1.1.2",
+ "links": [
+  {
+   "skill_id": "css",
+   "matched_by": "CSS",
+   "esco_uri": "http://data.europa.eu/esco/skill/e5d1f825-60ed-4bdd-872a-e748c387f777",
+   "esco_label": "CSS"
+  },
+  {
+   "skill_id": "javascript",
+   "matched_by": "JavaScript",
+   "esco_uri": "http://data.europa.eu/esco/skill/3cd569a2-4f88-4c1e-9995-8dce8c5e51a7",
+   "esco_label": "JavaScript"
+  },
+  {
+   "skill_id": "typescript",
+   "matched_by": "TypeScript",
+   "esco_uri": "http://data.europa.eu/esco/skill/867137fb-ff1b-4ca3-99f3-cb6969aa2c68",
+   "esco_label": "TypeScript"
+  },
+  {
+   "skill_id": "angular",
+   "matched_by": "Angular",
+   "esco_uri": "http://data.europa.eu/esco/skill/1ffac4ac-fda7-407d-8ed1-ca8f4a8dc146",
+   "esco_label": "Angular"
+  },
+  {
+   "skill_id": "python",
+   "matched_by": "Python",
+   "esco_uri": "http://data.europa.eu/esco/skill/ccd0a1d9-afda-43d9-b901-96344886e14d",
+   "esco_label": "Python (computer programming)"
+  },
+  {
+   "skill_id": "java",
+   "matched_by": "Java",
+   "esco_uri": "http://data.europa.eu/esco/skill/19a8293b-8e95-4de3-983f-77484079c389",
+   "esco_label": "Java (computer programming)"
+  },
+  {
+   "skill_id": "php",
+   "matched_by": "PHP",
+   "esco_uri": "http://data.europa.eu/esco/skill/4350c38d-0fe9-4ca7-bab9-40ed7f72b04f",
+   "esco_label": "PHP"
+  },
+  {
+   "skill_id": "ruby",
+   "matched_by": "Ruby",
+   "esco_uri": "http://data.europa.eu/esco/skill/0ccdfe98-f845-4598-84a1-3dca66e9d9a3",
+   "esco_label": "Ruby (computer programming)"
+  },
+  {
+   "skill_id": "csharp",
+   "matched_by": "C#",
+   "esco_uri": "http://data.europa.eu/esco/skill/4c016b68-4116-468c-9dc6-42710c239e4a",
+   "esco_label": "C#"
+  },
+  {
+   "skill_id": "scala",
+   "matched_by": "Scala",
+   "esco_uri": "http://data.europa.eu/esco/skill/ffddfc7c-a9dd-449f-9e96-882dc447c8b6",
+   "esco_label": "Scala"
+  },
+  {
+   "skill_id": "r",
+   "matched_by": "R",
+   "esco_uri": "http://data.europa.eu/esco/skill/51586df8-1c46-4b47-8583-773cb63bf00b",
+   "esco_label": "R"
+  },
+  {
+   "skill_id": "swift",
+   "matched_by": "Swift",
+   "esco_uri": "http://data.europa.eu/esco/skill/be80acfc-b6f2-4411-9b8d-b19d9cd2556a",
+   "esco_label": "Swift (computer programming)"
+  },
+  {
+   "skill_id": "sql",
+   "matched_by": "SQL",
+   "esco_uri": "http://data.europa.eu/esco/skill/598de5b0-5b58-4ea7-8058-a4bc4d18c742",
+   "esco_label": "SQL"
+  },
+  {
+   "skill_id": "distributed-processing",
+   "matched_by": "Hadoop",
+   "esco_uri": "http://data.europa.eu/esco/skill/e46291c7-52b9-4174-bd59-178884861038",
+   "esco_label": "Hadoop"
+  }
+ ]
+}

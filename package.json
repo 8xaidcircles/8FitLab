@@ -3,10 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "node --use-system-ca ./node_modules/next/dist/bin/next dev",
-    "build": "node --use-system-ca ./node_modules/next/dist/bin/next build",
-    "start": "node --use-system-ca ./node_modules/next/dist/bin/next start",
-    "lint": "eslint"
+    "dev": "node scripts/system-ca.mjs ./node_modules/next/dist/bin/next dev",
+    "build": "node scripts/system-ca.mjs ./node_modules/next/dist/bin/next build",
+    "start": "node scripts/system-ca.mjs ./node_modules/next/dist/bin/next start",
+    "lint": "eslint",
+    "test": "vitest run",
+    "test:db": "node scripts/system-ca.mjs --env-file=.env.local ./node_modules/vitest/vitest.mjs run src/lib/assessment/__tests__/repository.db.test.ts"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.116.0",
@@ -16,12 +18,13 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
+    "@types/node": "^24.19.0",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.3.4",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^5.0.2"
   }
 }

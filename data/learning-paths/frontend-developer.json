@@ -1,0 +1,90 @@
+{
+  "goal_id": "frontend-developer",
+  "region": "JP",
+  "version": "2.0.0",
+  "steps": [
+    {
+      "learning_order": 1,
+      "step_id": "html-css",
+      "name": "HTML / CSS",
+      "any_of": [
+        "html-css"
+      ]
+    },
+    {
+      "learning_order": 2,
+      "step_id": "javascript",
+      "name": "JavaScript",
+      "any_of": [
+        "javascript"
+      ]
+    },
+    {
+      "learning_order": 3,
+      "step_id": "git-github",
+      "name": "Git / GitHub",
+      "any_of": [
+        "git-github"
+      ]
+    },
+    {
+      "learning_order": 4,
+      "step_id": "typescript",
+      "name": "TypeScript",
+      "any_of": [
+        "typescript"
+      ]
+    },
+    {
+      "learning_order": 5,
+      "step_id": "frontend-framework",
+      "name": "フロントエンドフレームワーク",
+      "any_of": [
+        "react",
+        "vue",
+        "angular"
+      ]
+    },
+    {
+      "learning_order": 6,
+      "step_id": "web-api",
+      "name": "Web API（REST）",
+      "any_of": [
+        "web-api"
+      ]
+    },
+    {
+      "learning_order": 7,
+      "step_id": "meta-framework",
+      "name": "フロントエンドのフルスタックフレームワーク",
+      "any_of": [
+        "nextjs",
+        "nuxt"
+      ]
+    },
+    {
+      "learning_order": 8,
+      "step_id": "testing",
+      "name": "テスト（単体・結合）",
+      "any_of": [
+        "testing"
+      ]
+    },
+    {
+      "learning_order": 9,
+      "step_id": "web-accessibility",
+      "name": "Webアクセシビリティ",
+      "any_of": [
+        "web-accessibility"
+      ]
+    },
+    {
+      "learning_order": 10,
+      "step_id": "web-performance",
+      "name": "Webパフォーマンス最適化",
+      "any_of": [
+        "web-performance"
+      ]
+    }
+  ]
+}

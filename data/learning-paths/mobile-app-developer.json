@@ -1,0 +1,66 @@
+{
+  "goal_id": "mobile-app-developer",
+  "region": "JP",
+  "version": "2.0.0",
+  "steps": [
+    {
+      "learning_order": 1,
+      "step_id": "git-github",
+      "name": "Git / GitHub",
+      "any_of": [
+        "git-github"
+      ]
+    },
+    {
+      "learning_order": 2,
+      "step_id": "mobile-platform",
+      "name": "モバイル開発（iOS / Android / クロスプラットフォーム）",
+      "any_of": [
+        "swift",
+        "kotlin",
+        "flutter",
+        "react-native"
+      ]
+    },
+    {
+      "learning_order": 3,
+      "step_id": "mobile-ui",
+      "name": "モバイルUI設計",
+      "any_of": [
+        "mobile-ui"
+      ]
+    },
+    {
+      "learning_order": 4,
+      "step_id": "web-api",
+      "name": "Web API（REST）",
+      "any_of": [
+        "web-api"
+      ]
+    },
+    {
+      "learning_order": 5,
+      "step_id": "testing",
+      "name": "テスト（単体・結合）",
+      "any_of": [
+        "testing"
+      ]
+    },
+    {
+      "learning_order": 6,
+      "step_id": "app-release",
+      "name": "アプリ公開・ストア申請",
+      "any_of": [
+        "app-release"
+      ]
+    },
+    {
+      "learning_order": 7,
+      "step_id": "ci-cd",
+      "name": "CI/CD",
+      "any_of": [
+        "ci-cd"
+      ]
+    }
+  ]
+}

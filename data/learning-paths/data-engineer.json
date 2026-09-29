@@ -1,0 +1,111 @@
+{
+  "goal_id": "data-engineer",
+  "region": "JP",
+  "version": "2.0.0",
+  "steps": [
+    {
+      "learning_order": 1,
+      "step_id": "sql",
+      "name": "SQL",
+      "any_of": [
+        "sql"
+      ]
+    },
+    {
+      "learning_order": 2,
+      "step_id": "data-engineering-language",
+      "name": "データ処理言語",
+      "any_of": [
+        "python",
+        "java",
+        "scala",
+        "go"
+      ]
+    },
+    {
+      "learning_order": 3,
+      "step_id": "linux",
+      "name": "Linux",
+      "any_of": [
+        "linux"
+      ]
+    },
+    {
+      "learning_order": 4,
+      "step_id": "git-github",
+      "name": "Git / GitHub",
+      "any_of": [
+        "git-github"
+      ]
+    },
+    {
+      "learning_order": 5,
+      "step_id": "database-design",
+      "name": "データベース設計",
+      "any_of": [
+        "database-design"
+      ]
+    },
+    {
+      "learning_order": 6,
+      "step_id": "data-modeling",
+      "name": "データモデリング",
+      "any_of": [
+        "data-modeling"
+      ]
+    },
+    {
+      "learning_order": 7,
+      "step_id": "etl",
+      "name": "ETL / データパイプライン",
+      "any_of": [
+        "etl"
+      ]
+    },
+    {
+      "learning_order": 8,
+      "step_id": "data-warehouse",
+      "name": "データウェアハウス",
+      "any_of": [
+        "bigquery",
+        "snowflake",
+        "amazon-redshift"
+      ]
+    },
+    {
+      "learning_order": 9,
+      "step_id": "cloud",
+      "name": "クラウド（AWS / GCP / Azure）",
+      "any_of": [
+        "aws",
+        "azure",
+        "google-cloud"
+      ]
+    },
+    {
+      "learning_order": 10,
+      "step_id": "docker",
+      "name": "Docker",
+      "any_of": [
+        "docker"
+      ]
+    },
+    {
+      "learning_order": 11,
+      "step_id": "distributed-processing",
+      "name": "分散処理",
+      "any_of": [
+        "apache-spark",
+        "hadoop"
+      ]
+    },
+    {
+      "learning_order": 12,
+      "step_id": "ci-cd",
+      "name": "CI/CD",
+      "any_of": [
+        "ci-cd"
+      ]
+    }
+  ]
+}

@@ -1,26 +1,149 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/*
+ * 8FitLab カラー
+ * - indigo / sky: 姉妹ブランド 8Wheel のブランドカラー（基調色）
+ * - sun / mint / cyan / flame / coral: 親ブランド AID CIRCLES のグラデーション（アクセントに限定して使う）
+ */
+@theme {
+  --color-ink: #1b1f5e;
+  --color-indigo: #2b3192;
+  --color-indigo-soft: #e8eafb;
+  --color-sky: #38a6f2;
+  --color-sky-soft: #e6f4fe;
+  --color-sun: #f2e26e;
+  --color-mint: #8ee8c8;
+  --color-cyan: #22c3e0;
+  --color-cyan-soft: #e3f8fb;
+  --color-flame: #f27035;
+  --color-flame-soft: #fff0e8;
+  --color-coral: #e84545;
+  --color-mist: #f5f8fc;
+  --color-line: #dde5f0;
+  --color-muted: #5b6480;
+
+  --font-sans: var(--font-noto-sans-jp), "Hiragino Sans", "Yu Gothic UI", sans-serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+@utility bg-brand-gradient {
+  background-image: linear-gradient(110deg, #f2e26e 0%, #8ee8c8 22%, #22c3e0 45%, #38a6f2 68%, #f27035 100%);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+@utility text-brand-gradient {
+  background-image: linear-gradient(110deg, #22c3e0 0%, #38a6f2 45%, #2b3192 100%);
+  background-clip: text;
+  color: transparent;
+}
+
+html {
+  color-scheme: light;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-mist);
+  color: var(--color-ink);
+}
+
+/* microCMS リッチエディタが出力する記事本文 */
+.blog-content {
+  line-height: 1.95;
+  overflow-wrap: anywhere;
+
+  & > * + * {
+    margin-top: 1.25em;
+  }
+  & h2 {
+    margin-top: 2.5em;
+    padding-left: 0.75rem;
+    border-left: 4px solid var(--color-cyan);
+    font-size: 1.375rem;
+    font-weight: 800;
+    line-height: 1.5;
+  }
+  & h3 {
+    margin-top: 2em;
+    font-size: 1.15rem;
+    font-weight: 700;
+    line-height: 1.5;
+  }
+  & h4 {
+    margin-top: 1.75em;
+    font-weight: 700;
+  }
+  & a {
+    color: var(--color-indigo);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  & a:hover {
+    color: var(--color-sky);
+  }
+  & ul,
+  & ol {
+    padding-left: 1.5em;
+  }
+  & ul {
+    list-style: disc;
+  }
+  & ol {
+    list-style: decimal;
+  }
+  & li + li {
+    margin-top: 0.4em;
+  }
+  & li::marker {
+    color: var(--color-sky);
+  }
+  & blockquote {
+    border-left: 4px solid var(--color-line);
+    padding-left: 1rem;
+    color: var(--color-muted);
+  }
+  & img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 1rem;
+  }
+  & figure figcaption {
+    margin-top: 0.5em;
+    font-size: 0.8rem;
+    color: var(--color-muted);
+    text-align: center;
+  }
+  & :not(pre) > code {
+    border-radius: 0.375rem;
+    background: var(--color-indigo-soft);
+    padding: 0.1em 0.4em;
+    font-size: 0.9em;
+  }
+  & pre {
+    overflow-x: auto;
+    border-radius: 1rem;
+    background: var(--color-ink);
+    padding: 1rem 1.25rem;
+    color: #fff;
+    font-size: 0.85rem;
+    line-height: 1.7;
+  }
+  & table {
+    display: block;
+    overflow-x: auto;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+  }
+  & th,
+  & td {
+    border: 1px solid var(--color-line);
+    padding: 0.5rem 0.75rem;
+  }
+  & th {
+    background: var(--color-sky-soft);
+    font-weight: 700;
+  }
+  & hr {
+    border-color: var(--color-line);
+  }
+  & iframe {
+    max-width: 100%;
+  }
 }

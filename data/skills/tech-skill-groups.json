@@ -1,0 +1,182 @@
+{
+  "version": "1.0.0",
+  "description": "代わりのきく技術のグループ。グループ内のどれか 1 つを使えればそのグループを満たす（Experience の要件グループと同じ OR）。1 つの技術は最大 1 グループにしか入らない。goals がある場合はその Goal でだけグループとして扱い、それ以外の Goal ではメンバーを個別の技術として扱う",
+  "groups": [
+    {
+      "group_id": "server-language",
+      "name": "サーバーサイドの言語・ランタイム",
+      "goals": ["backend-developer", "full-stack-developer", "software-architect"],
+      "members": ["java", "php", "ruby", "go", "python", "csharp", "rust", "scala", "elixir", "nodejs", "deno"]
+    },
+    {
+      "group_id": "server-framework",
+      "name": "サーバーサイドのフレームワーク",
+      "goals": ["backend-developer", "full-stack-developer", "software-architect"],
+      "members": [
+        "spring-boot", "spring-framework", "laravel", "ruby-on-rails", "django", "fastapi", "flask",
+        "express", "fastify", "nestjs", "aspnet-core", "aspnet", "symfony", "codeigniter", "yii",
+        "phoenix", "play-framework", "quarkus", "micronaut", "ktor", "axum"
+      ]
+    },
+    {
+      "group_id": "frontend-framework",
+      "name": "フロントエンドのフレームワーク",
+      "members": ["react", "vue", "angular", "angularjs", "svelte", "solidjs", "blazor", "elm", "htmx"]
+    },
+    {
+      "group_id": "frontend-meta-framework",
+      "name": "フロントエンドのメタフレームワーク",
+      "members": ["nextjs", "nuxt", "remix", "astro", "gatsby"]
+    },
+    {
+      "group_id": "cms",
+      "name": "CMS",
+      "members": ["wordpress", "drupal", "strapi"]
+    },
+    {
+      "group_id": "relational-database",
+      "name": "リレーショナルデータベース",
+      "members": ["postgresql", "mysql", "mariadb", "sql-server", "oracle-database", "ibm-db2", "cockroachdb", "tidb", "firebird", "h2"]
+    },
+    {
+      "group_id": "nosql-database",
+      "name": "NoSQL データベース",
+      "members": ["mongodb", "dynamodb", "cloud-firestore", "firebase-realtime-database", "cosmos-db", "couchdb", "couchbase", "cassandra", "ravendb"]
+    },
+    {
+      "group_id": "in-memory-store",
+      "name": "インメモリデータストア",
+      "members": ["redis", "valkey"]
+    },
+    {
+      "group_id": "search-engine",
+      "name": "検索エンジン",
+      "members": ["elasticsearch", "solr"]
+    },
+    {
+      "group_id": "data-warehouse",
+      "name": "データウェアハウス",
+      "members": ["bigquery", "snowflake", "amazon-redshift", "databricks-sql", "clickhouse", "presto"]
+    },
+    {
+      "group_id": "public-cloud",
+      "name": "パブリッククラウド",
+      "members": ["aws", "azure", "google-cloud", "oracle-cloud", "ibm-cloud", "alibaba-cloud", "yandex-cloud"]
+    },
+    {
+      "group_id": "paas",
+      "name": "PaaS・ホスティングサービス",
+      "members": ["vercel", "netlify", "heroku", "render", "railway", "fly-io", "pythonanywhere"]
+    },
+    {
+      "group_id": "vps-hosting",
+      "name": "VPS・レンタルサーバー",
+      "members": ["digitalocean", "hetzner", "linode", "vultr", "ovh", "scaleway", "managed-hosting", "colocation"]
+    },
+    {
+      "group_id": "baas",
+      "name": "BaaS",
+      "members": ["firebase", "supabase"]
+    },
+    {
+      "group_id": "container-runtime",
+      "name": "コンテナ",
+      "members": ["docker", "podman"]
+    },
+    {
+      "group_id": "container-orchestration",
+      "name": "コンテナオーケストレーション",
+      "members": ["kubernetes", "openshift"]
+    },
+    {
+      "group_id": "infrastructure-as-code",
+      "name": "Infrastructure as Code",
+      "members": ["terraform", "pulumi"]
+    },
+    {
+      "group_id": "configuration-management",
+      "name": "構成管理",
+      "members": ["ansible", "chef", "puppet"]
+    },
+    {
+      "group_id": "monitoring",
+      "name": "監視・オブザーバビリティ",
+      "members": ["prometheus", "datadog", "new-relic", "splunk"]
+    },
+    {
+      "group_id": "virtualization",
+      "name": "仮想化基盤",
+      "members": ["vmware", "openstack"]
+    },
+    {
+      "group_id": "message-broker",
+      "name": "メッセージブローカー",
+      "members": ["apache-kafka", "rabbitmq"]
+    },
+    {
+      "group_id": "deep-learning-framework",
+      "name": "深層学習フレームワーク",
+      "members": ["pytorch", "tensorflow", "keras", "jax"]
+    },
+    {
+      "group_id": "dotnet-runtime",
+      "name": ".NET",
+      "members": ["dotnet", "dotnet-framework"]
+    },
+    {
+      "group_id": "shell",
+      "name": "シェル",
+      "members": ["bash-shell", "powershell"]
+    },
+    {
+      "group_id": "mobile-native-language",
+      "name": "モバイルネイティブ言語",
+      "members": ["swift", "kotlin", "objective-c"]
+    },
+    {
+      "group_id": "mobile-ide",
+      "name": "モバイル開発環境",
+      "members": ["xcode", "android-studio"]
+    },
+    {
+      "group_id": "cross-platform-mobile",
+      "name": "クロスプラットフォーム開発",
+      "members": ["flutter", "react-native", "dotnet-maui", "xamarin", "ionic", "capacitor", "cordova"]
+    },
+    {
+      "group_id": "js-package-manager",
+      "name": "JavaScript パッケージマネージャー",
+      "members": ["npm", "yarn", "pnpm", "bun"]
+    },
+    {
+      "group_id": "js-bundler",
+      "name": "JavaScript ビルドツール",
+      "members": ["vite", "webpack"]
+    },
+    {
+      "group_id": "jvm-build",
+      "name": "Java ビルドツール",
+      "members": ["maven", "gradle", "ant"]
+    },
+    {
+      "group_id": "python-package-manager",
+      "name": "Python パッケージマネージャー",
+      "members": ["pip", "poetry"]
+    },
+    {
+      "group_id": "os-package-manager",
+      "name": "OS パッケージマネージャー",
+      "members": ["apt", "pacman", "homebrew", "chocolatey", "nix"]
+    },
+    {
+      "group_id": "native-build",
+      "name": "C/C++ ビルドツール",
+      "members": ["cmake", "meson", "ninja", "qmake", "scons", "build2"]
+    },
+    {
+      "group_id": "native-compiler",
+      "name": "C/C++ コンパイラ",
+      "members": ["gcc", "clang", "msvc"]
+    }
+  ]
+}

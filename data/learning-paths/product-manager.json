@@ -1,0 +1,79 @@
+{
+  "goal_id": "product-manager",
+  "region": "JP",
+  "version": "2.0.0",
+  "steps": [
+    {
+      "learning_order": 1,
+      "step_id": "user-research",
+      "name": "ユーザーリサーチ",
+      "any_of": [
+        "user-research"
+      ]
+    },
+    {
+      "learning_order": 2,
+      "step_id": "requirements-definition",
+      "name": "要件定義",
+      "any_of": [
+        "requirements-definition"
+      ]
+    },
+    {
+      "learning_order": 3,
+      "step_id": "ux-design",
+      "name": "UXデザイン基礎",
+      "any_of": [
+        "ux-design"
+      ]
+    },
+    {
+      "learning_order": 4,
+      "step_id": "product-metrics",
+      "name": "KPI設計・プロダクト分析",
+      "any_of": [
+        "product-metrics"
+      ]
+    },
+    {
+      "learning_order": 5,
+      "step_id": "sql",
+      "name": "SQL",
+      "any_of": [
+        "sql"
+      ]
+    },
+    {
+      "learning_order": 6,
+      "step_id": "agile-scrum",
+      "name": "アジャイル / スクラム",
+      "any_of": [
+        "agile-scrum"
+      ]
+    },
+    {
+      "learning_order": 7,
+      "step_id": "product-roadmap",
+      "name": "ロードマップ策定",
+      "any_of": [
+        "product-roadmap"
+      ]
+    },
+    {
+      "learning_order": 8,
+      "step_id": "stakeholder-management",
+      "name": "ステークホルダー調整",
+      "any_of": [
+        "stakeholder-management"
+      ]
+    },
+    {
+      "learning_order": 9,
+      "step_id": "web-api",
+      "name": "Web API（REST）",
+      "any_of": [
+        "web-api"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "version": "1.0.0",
+  "description": "資格。proves に挙げたスキル（人間定義層・技術スキル層のどちらでもよい）を持っていることの証明として扱う。資格を持っていれば proves のスキルを持つとみなす",
+  "certifications": [
+    { "cert_id": "ipa-ip", "name": "ITパスポート試験", "issuer": "IPA", "proves": ["it-fundamentals"] },
+    { "cert_id": "ipa-fe", "name": "基本情報技術者試験", "issuer": "IPA", "proves": ["it-fundamentals", "sdlc"] },
+    { "cert_id": "ipa-ap", "name": "応用情報技術者試験", "issuer": "IPA", "proves": ["it-fundamentals", "sdlc"] },
+    { "cert_id": "ipa-pm", "name": "プロジェクトマネージャ試験", "issuer": "IPA", "proves": ["project-management", "risk-management", "stakeholder-management"] },
+    { "cert_id": "ipa-sa", "name": "システムアーキテクト試験", "issuer": "IPA", "proves": ["system-design", "requirements-definition"] },
+    { "cert_id": "ipa-nw", "name": "ネットワークスペシャリスト試験", "issuer": "IPA", "proves": ["network-fundamentals", "routing-switching", "network-security"] },
+    { "cert_id": "ipa-db", "name": "データベーススペシャリスト試験", "issuer": "IPA", "proves": ["database-design", "data-modeling"] },
+    { "cert_id": "ipa-sc", "name": "情報処理安全確保支援士試験", "issuer": "IPA", "proves": ["web-security", "network-security"] },
+
+    { "cert_id": "pmp", "name": "PMP（Project Management Professional）", "issuer": "PMI", "proves": ["project-management", "risk-management", "stakeholder-management"] },
+    { "cert_id": "psm-1", "name": "Professional Scrum Master I", "issuer": "Scrum.org", "proves": ["agile-scrum"] },
+    { "cert_id": "csm", "name": "認定スクラムマスター（CSM）", "issuer": "Scrum Alliance", "proves": ["agile-scrum"] },
+    { "cert_id": "pspo-1", "name": "Professional Scrum Product Owner I", "issuer": "Scrum.org", "proves": ["agile-scrum", "product-roadmap"] },
+    { "cert_id": "hcd-net", "name": "HCD-Net 認定 人間中心設計専門家", "issuer": "HCD-Net", "proves": ["user-research", "ux-design"] },
+
+    { "cert_id": "jstqb-fl", "name": "JSTQB Foundation Level", "issuer": "JSTQB", "proves": ["test-design"] },
+    { "cert_id": "jstqb-al-ta", "name": "JSTQB Advanced Level テストアナリスト", "issuer": "JSTQB", "proves": ["test-design"] },
+    { "cert_id": "jstqb-al-tm", "name": "JSTQB Advanced Level テストマネージャ", "issuer": "JSTQB", "proves": ["test-design", "quality-management"] },
+
+    { "cert_id": "stat-kentei-2", "name": "統計検定 2級", "issuer": "日本統計学会", "proves": ["statistics"] },
+    { "cert_id": "stat-kentei-pre1", "name": "統計検定 準1級", "issuer": "日本統計学会", "proves": ["statistics", "math-for-ml"] },
+    { "cert_id": "stat-kentei-1", "name": "統計検定 1級", "issuer": "日本統計学会", "proves": ["statistics", "math-for-ml"] },
+    { "cert_id": "ds-kentei", "name": "データサイエンティスト検定 リテラシーレベル", "issuer": "データサイエンティスト協会", "proves": ["statistics", "machine-learning"] },
+    { "cert_id": "jdla-g", "name": "G検定（ジェネラリスト検定）", "issuer": "日本ディープラーニング協会", "proves": ["machine-learning", "deep-learning"] },
+    { "cert_id": "jdla-e", "name": "E資格（エンジニア資格）", "issuer": "日本ディープラーニング協会", "proves": ["machine-learning", "deep-learning", "math-for-ml"] },
+    { "cert_id": "pl-300", "name": "Microsoft Certified: Power BI Data Analyst Associate（PL-300）", "issuer": "Microsoft", "proves": ["data-visualization"] },
+    { "cert_id": "tableau-desktop-specialist", "name": "Tableau Desktop Specialist", "issuer": "Tableau", "proves": ["data-visualization"] },
+    { "cert_id": "mos-excel", "name": "MOS Excel", "issuer": "Microsoft", "proves": ["excel"] },
+
+    { "cert_id": "ccna", "name": "CCNA", "issuer": "Cisco", "proves": ["network-fundamentals", "routing-switching"] },
+    { "cert_id": "ccnp-enterprise", "name": "CCNP Enterprise", "issuer": "Cisco", "proves": ["network-fundamentals", "routing-switching", "network-security"] },
+    { "cert_id": "linuc-1", "name": "LinuC レベル1", "issuer": "LPI-Japan", "proves": ["linux"] },
+    { "cert_id": "linuc-2", "name": "LinuC レベル2", "issuer": "LPI-Japan", "proves": ["linux", "network-fundamentals"] },
+    { "cert_id": "lpic-1", "name": "LPIC-1", "issuer": "Linux Professional Institute", "proves": ["linux"] },
+
+    { "cert_id": "aws-saa", "name": "AWS Certified Solutions Architect – Associate", "issuer": "Amazon Web Services", "proves": ["aws", "cloud-networking", "cloud-security"] },
+    { "cert_id": "aws-sap", "name": "AWS Certified Solutions Architect – Professional", "issuer": "Amazon Web Services", "proves": ["aws", "system-design", "cloud-networking", "cloud-security", "cloud-cost-optimization"] },
+    { "cert_id": "gcp-pca", "name": "Google Cloud Professional Cloud Architect", "issuer": "Google Cloud", "proves": ["google-cloud", "system-design", "cloud-networking", "cloud-security"] },
+    { "cert_id": "az-104", "name": "Microsoft Certified: Azure Administrator Associate（AZ-104）", "issuer": "Microsoft", "proves": ["azure", "cloud-networking"] },
+    { "cert_id": "az-305", "name": "Microsoft Certified: Azure Solutions Architect Expert（AZ-305）", "issuer": "Microsoft", "proves": ["azure", "system-design", "cloud-networking", "cloud-security"] },
+    { "cert_id": "cka", "name": "Certified Kubernetes Administrator（CKA）", "issuer": "CNCF", "proves": ["kubernetes"] },
+    { "cert_id": "terraform-associate", "name": "HashiCorp Certified: Terraform Associate", "issuer": "HashiCorp", "proves": ["terraform", "iac"] },
+
+    { "cert_id": "java-silver", "name": "Oracle Certified Java Programmer, Silver SE", "issuer": "Oracle", "proves": ["java"] },
+    { "cert_id": "python3-basic", "name": "Python 3 エンジニア認定基礎試験", "issuer": "Pythonエンジニア育成推進協会", "proves": ["python"] },
+    { "cert_id": "php-certified", "name": "PHP8 技術者認定初級試験", "issuer": "PHP技術者認定機構", "proves": ["php"] },
+    { "cert_id": "ruby-silver", "name": "Ruby Association Certified Ruby Programmer Silver", "issuer": "Ruby Association", "proves": ["ruby"] },
+    { "cert_id": "oss-db-silver", "name": "OSS-DB Silver", "issuer": "LPI-Japan", "proves": ["postgresql", "database-design"] }
+  ]
+}

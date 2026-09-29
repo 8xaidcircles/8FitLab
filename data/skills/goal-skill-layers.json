@@ -1,0 +1,134 @@
+{
+  "version": "1.0.0",
+  "description": "Goal ごとの人間定義層の要件と、Skill Progress における技術スキル層・人間定義層の配分。要件は文字列（人間定義層のスキル 1 つ）か、any_of（どれか 1 つで満たす）を持つオブジェクト。技術スキル層の配分が 0 の Goal に限り、any_of に技術スキルを入れてよい（配分がある Goal では技術スキル層と二重に数えるため入れない）",
+  "default_layer_weights": { "tech": 1, "human": 0 },
+  "default_layer_weight_reason": "データのある Goal は、客観データ（Stack Overflow）に基づく技術スキル層だけで評価するため。人間定義層の要件は Learning Path の参考として保持するが、配分は 0",
+  "goals": [
+    {
+      "goal_id": "frontend-developer",
+      "human_requirements": ["git-github", "web-api", "testing", "web-accessibility", "web-performance"]
+    },
+    {
+      "goal_id": "backend-developer",
+      "human_requirements": ["git-github", "linux", "web-api", "database-design", "testing", "web-security", "ci-cd"]
+    },
+    {
+      "goal_id": "full-stack-developer",
+      "human_requirements": ["git-github", "web-api", "database-design", "testing", "web-security"]
+    },
+    {
+      "goal_id": "data-analyst",
+      "human_requirements": ["excel", "statistics", "data-visualization", "git-github", "product-metrics"]
+    },
+    {
+      "goal_id": "data-scientist",
+      "human_requirements": ["statistics", "data-visualization", "math-for-ml", "git-github", "machine-learning", "deep-learning"]
+    },
+    {
+      "goal_id": "data-engineer",
+      "human_requirements": ["linux", "git-github", "database-design", "data-modeling", "etl", "ci-cd"]
+    },
+    {
+      "goal_id": "it-project-manager",
+      "layer_weights": { "tech": 0, "human": 1 },
+      "layer_weight_reason": "Stack Overflow の回答者は開発者が中心で、代理 DevType（Project manager）の採用技術は WordPress・VBA など職務と関係の薄いものだけのため",
+      "human_requirements": [
+        "sdlc",
+        "requirements-definition",
+        "project-management",
+        "agile-scrum",
+        "risk-management",
+        "stakeholder-management",
+        "vendor-management",
+        "git-github",
+        { "requirement_id": "sql", "name": "SQL", "any_of": ["sql"] },
+        { "requirement_id": "public-cloud", "name": "クラウド（AWS / Azure / Google Cloud）", "any_of": ["aws", "azure", "google-cloud"] }
+      ]
+    },
+    {
+      "goal_id": "product-manager",
+      "layer_weights": { "tech": 0, "human": 1 },
+      "layer_weight_reason": "Stack Overflow の回答者は開発者が中心で、Product manager の採用技術がほぼ無い（CMS のみ）ため",
+      "human_requirements": [
+        "user-research",
+        "requirements-definition",
+        "ux-design",
+        "product-metrics",
+        "market-analysis",
+        "agile-scrum",
+        "product-roadmap",
+        "stakeholder-management",
+        "web-api",
+        { "requirement_id": "sql", "name": "SQL", "any_of": ["sql"] }
+      ]
+    },
+    {
+      "goal_id": "software-architect",
+      "human_requirements": [
+        "git-github",
+        "database-design",
+        "web-api",
+        "design-patterns",
+        "testing",
+        "system-design",
+        "web-security",
+        "microservices",
+        "domain-driven-design",
+        "architecture-documentation"
+      ]
+    },
+    {
+      "goal_id": "mobile-app-developer",
+      "human_requirements": ["git-github", "mobile-ui", "web-api", "testing", "app-release", "ci-cd"]
+    },
+    {
+      "goal_id": "network-engineer",
+      "layer_weights": { "tech": 0, "human": 1 },
+      "layer_weight_reason": "Stack Overflow に対応する DevType が無く、代理 DevType（System administrator）の採用技術に Web 開発系の技術が混ざるため",
+      "human_requirements": [
+        "network-fundamentals",
+        "linux",
+        "routing-switching",
+        "network-security",
+        { "requirement_id": "automation-scripting", "name": "自動化スクリプト", "any_of": ["bash-shell", "python", "go"] },
+        { "requirement_id": "public-cloud", "name": "クラウド（AWS / Azure / Google Cloud）", "any_of": ["aws", "azure", "google-cloud"] },
+        "cloud-networking",
+        "monitoring"
+      ]
+    },
+    {
+      "goal_id": "test-analyst",
+      "layer_weights": { "tech": 0, "human": 1 },
+      "layer_weight_reason": "Stack Overflow にテスト専任の DevType が無く、採用技術が Groovy のみのため",
+      "human_requirements": [
+        "sdlc",
+        "test-design",
+        "quality-management",
+        { "requirement_id": "sql", "name": "SQL", "any_of": ["sql"] },
+        "git-github",
+        "web-api",
+        "api-testing",
+        { "requirement_id": "test-scripting-language", "name": "テスト自動化の言語", "any_of": ["python", "javascript", "typescript", "java", "ruby"] },
+        "test-automation",
+        "ci-cd"
+      ]
+    },
+    {
+      "goal_id": "devops-sre",
+      "human_requirements": ["linux", "network-fundamentals", "git-github", "ci-cd", "iac", "monitoring", "incident-response"]
+    },
+    {
+      "goal_id": "cloud-architect",
+      "human_requirements": [
+        "linux",
+        "network-fundamentals",
+        "cloud-networking",
+        "cloud-security",
+        "iac",
+        "system-design",
+        "monitoring",
+        "cloud-cost-optimization"
+      ]
+    }
+  ]
+}

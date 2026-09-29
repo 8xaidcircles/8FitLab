@@ -1,0 +1,83 @@
+{
+  "goal_id": "test-analyst",
+  "region": "JP",
+  "version": "2.0.0",
+  "steps": [
+    {
+      "learning_order": 1,
+      "step_id": "sdlc",
+      "name": "システム開発工程",
+      "any_of": [
+        "sdlc"
+      ]
+    },
+    {
+      "learning_order": 2,
+      "step_id": "test-design",
+      "name": "テスト設計",
+      "any_of": [
+        "test-design"
+      ]
+    },
+    {
+      "learning_order": 3,
+      "step_id": "sql",
+      "name": "SQL",
+      "any_of": [
+        "sql"
+      ]
+    },
+    {
+      "learning_order": 4,
+      "step_id": "git-github",
+      "name": "Git / GitHub",
+      "any_of": [
+        "git-github"
+      ]
+    },
+    {
+      "learning_order": 5,
+      "step_id": "web-api",
+      "name": "Web API（REST）",
+      "any_of": [
+        "web-api"
+      ]
+    },
+    {
+      "learning_order": 6,
+      "step_id": "api-testing",
+      "name": "APIテスト",
+      "any_of": [
+        "api-testing"
+      ]
+    },
+    {
+      "learning_order": 7,
+      "step_id": "test-scripting-language",
+      "name": "テスト自動化の言語",
+      "any_of": [
+        "python",
+        "javascript",
+        "typescript",
+        "java",
+        "ruby"
+      ]
+    },
+    {
+      "learning_order": 8,
+      "step_id": "test-automation",
+      "name": "テスト自動化",
+      "any_of": [
+        "test-automation"
+      ]
+    },
+    {
+      "learning_order": 9,
+      "step_id": "ci-cd",
+      "name": "CI/CD",
+      "any_of": [
+        "ci-cd"
+      ]
+    }
+  ]
+}

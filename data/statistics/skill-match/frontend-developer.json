@@ -1,0 +1,6707 @@
+{
+ "goal_id": "frontend-developer",
+ "mapping_status": "exact",
+ "devtypes": {
+  "2023": [
+   "Developer, front-end"
+  ],
+  "2024": [
+   "Developer, front-end"
+  ],
+  "2025": [
+   "Developer, front-end"
+  ]
+ },
+ "source": "stack_overflow_developer_survey",
+ "source_years": [
+  2023,
+  2024,
+  2025
+ ],
+ "license": {
+  "name": "Open Database License (ODbL) v1.0",
+  "url": "https://opendatacommons.org/licenses/odbl/1-0/",
+  "contents_license": "Database Contents License (DbCL) v1.0",
+  "contents_url": "https://opendatacommons.org/licenses/dbcl/1-0/",
+  "attribution": "Contains information from the Stack Overflow Developer Survey (https://survey.stackoverflow.co/), which is made available under the Open Database License (ODbL).",
+  "modifications": "8FitLab aggregated the survey responses by Goal and adjusted them to the Japanese market (empirical Bayes shrinkage). Method: scripts/build_skill_statistics.py"
+ },
+ "calculation_version": "0.3.0",
+ "calculation_date": "2026-09-29",
+ "min_reliable_sample": 100,
+ "region": {
+  "country": "Japan",
+  "method": "empirical-bayes-beta-binomial",
+  "prior_strength": 80.9
+ },
+ "selection": {
+  "alpha": 0.05,
+  "correction": "bonferroni",
+  "significance_scope": "world",
+  "cumulative_share": 0.8,
+  "contribution_scope": "region"
+ },
+ "units": [
+  {
+   "unit_id": "javascript",
+   "type": "skill",
+   "name": "JavaScript",
+   "category": "language",
+   "members": [
+    {
+     "skill_id": "javascript",
+     "name": "JavaScript",
+     "so_item": "JavaScript",
+     "p_skill_given_goal": 0.92582,
+     "region_p_skill_given_goal": 0.946515
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 1402,
+   "other_respondents": 26661,
+   "p_skill_given_goal": 0.92582,
+   "p_skill_given_other": 0.656164,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 50,
+   "region_other_respondents": 686,
+   "region_p_skill_given_goal": 0.946515,
+   "region_p_skill_given_other": 0.586887,
+   "quantity": 0.946515,
+   "quality": 61.7265,
+   "contribution": 0.584251,
+   "p_value": 1.63e-97,
+   "significant": true,
+   "selected": true
+  },
+  {
+   "unit_id": "frontend-framework",
+   "type": "group",
+   "name": "フロントエンドのフレームワーク",
+   "members": [
+    {
+     "skill_id": "react",
+     "name": "React",
+     "so_item": "React",
+     "p_skill_given_goal": 0.714177,
+     "region_p_skill_given_goal": 0.727517
+    },
+    {
+     "skill_id": "vue",
+     "name": "Vue.js",
+     "so_item": "Vue.js",
+     "p_skill_given_goal": 0.23247,
+     "region_p_skill_given_goal": 0.293303
+    },
+    {
+     "skill_id": "angular",
+     "name": "Angular",
+     "so_item": "Angular",
+     "p_skill_given_goal": 0.252287,
+     "region_p_skill_given_goal": 0.251435
+    },
+    {
+     "skill_id": "svelte",
+     "name": "Svelte",
+     "so_item": "Svelte",
+     "p_skill_given_goal": 0.082317,
+     "region_p_skill_given_goal": 0.098211
+    },
+    {
+     "skill_id": "angularjs",
+     "name": "AngularJS",
+     "so_item": "AngularJS",
+     "p_skill_given_goal": 0.056402,
+     "region_p_skill_given_goal": 0.097463
+    },
+    {
+     "skill_id": "blazor",
+     "name": "Blazor",
+     "so_item": "Blazor",
+     "p_skill_given_goal": 0.01372,
+     "region_p_skill_given_goal": 0.016369
+    },
+    {
+     "skill_id": "solidjs",
+     "name": "SolidJS",
+     "so_item": "Solid.js",
+     "p_skill_given_goal": 0.019237,
+     "region_p_skill_given_goal": 0.01298
+    },
+    {
+     "skill_id": "htmx",
+     "name": "htmx",
+     "so_item": "Htmx",
+     "p_skill_given_goal": 0.014998,
+     "region_p_skill_given_goal": 0.012025
+    },
+    {
+     "skill_id": "elm",
+     "name": "Elm",
+     "so_item": "Elm",
+     "p_skill_given_goal": 0.002608,
+     "region_p_skill_given_goal": 0.00176
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 1312,
+   "other_respondents": 19588,
+   "p_skill_given_goal": 0.932165,
+   "p_skill_given_other": 0.708393,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 48,
+   "region_other_respondents": 505,
+   "region_p_skill_given_goal": 0.949667,
+   "region_p_skill_given_other": 0.655929,
+   "quantity": 0.949667,
+   "quality": 59.1473,
+   "contribution": 0.561703,
+   "p_value": 4.76e-69,
+   "significant": true,
+   "selected": true
+  },
+  {
+   "unit_id": "js-package-manager",
+   "type": "group",
+   "name": "JavaScript パッケージマネージャー",
+   "members": [
+    {
+     "skill_id": "npm",
+     "name": "npm",
+     "so_item": "npm",
+     "p_skill_given_goal": 0.795309,
+     "region_p_skill_given_goal": 0.798528
+    },
+    {
+     "skill_id": "yarn",
+     "name": "Yarn",
+     "so_item": "Yarn",
+     "p_skill_given_goal": 0.398721,
+     "region_p_skill_given_goal": 0.461497
+    },
+    {
+     "skill_id": "pnpm",
+     "name": "pnpm",
+     "so_item": "pnpm",
+     "p_skill_given_goal": 0.301706,
+     "region_p_skill_given_goal": 0.274061
+    },
+    {
+     "skill_id": "bun",
+     "name": "Bun",
+     "so_item": "Bun",
+     "p_skill_given_goal": 0.08209,
+     "region_p_skill_given_goal": 0.062683
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 938,
+   "other_respondents": 21253,
+   "p_skill_given_goal": 0.86887,
+   "p_skill_given_other": 0.614596,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 41,
+   "region_other_respondents": 607,
+   "region_p_skill_given_goal": 0.888364,
+   "region_p_skill_given_other": 0.567991,
+   "quantity": 0.888364,
+   "quality": 60.9992,
+   "contribution": 0.541895,
+   "p_value": 3.7e-56,
+   "significant": true,
+   "selected": true
+  },
+  {
+   "unit_id": "html-css",
+   "type": "skill",
+   "name": "HTML/CSS",
+   "category": "language",
+   "members": [
+    {
+     "skill_id": "html-css",
+     "name": "HTML/CSS",
+     "so_item": "HTML/CSS",
+     "p_skill_given_goal": 0.856633,
+     "region_p_skill_given_goal": 0.857919
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 1402,
+   "other_respondents": 26661,
+   "p_skill_given_goal": 0.856633,
+   "p_skill_given_other": 0.607217,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 50,
+   "region_other_respondents": 686,
+   "region_p_skill_given_goal": 0.857919,
+   "region_p_skill_given_other": 0.506094,
+   "quantity": 0.857919,
+   "quality": 62.8967,
+   "contribution": 0.539603,
+   "p_value": 9.6e-79,
+   "significant": true,
+   "selected": true
+  },
+  {
+   "unit_id": "js-bundler",
+   "type": "group",
+   "name": "JavaScript ビルドツール",
+   "members": [
+    {
+     "skill_id": "vite",
+     "name": "Vite",
+     "so_item": "Vite",
+     "p_skill_given_goal": 0.58742,
+     "region_p_skill_given_goal": 0.537509
+    },
+    {
+     "skill_id": "webpack",
+     "name": "webpack",
+     "so_item": "Webpack",
+     "p_skill_given_goal": 0.458422,
+     "region_p_skill_given_goal": 0.501118
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 938,
+   "other_respondents": 21253,
+   "p_skill_given_goal": 0.724947,
+   "p_skill_given_other": 0.322213,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 41,
+   "region_other_respondents": 607,
+   "region_p_skill_given_goal": 0.710814,
+   "region_p_skill_given_other": 0.295199,
+   "quantity": 0.710814,
+   "quality": 70.6566,
+   "contribution": 0.502237,
+   "p_value": 1.1e-143,
+   "significant": true,
+   "selected": true
+  },
+  {
+   "unit_id": "typescript",
+   "type": "skill",
+   "name": "TypeScript",
+   "category": "language",
+   "members": [
+    {
+     "skill_id": "typescript",
+     "name": "TypeScript",
+     "so_item": "TypeScript",
+     "p_skill_given_goal": 0.773181,
+     "region_p_skill_given_goal": 0.760507
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 1402,
+   "other_respondents": 26661,
+   "p_skill_given_goal": 0.773181,
+   "p_skill_given_other": 0.438131,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 50,
+   "region_other_respondents": 686,
+   "region_p_skill_given_goal": 0.760507,
+   "region_p_skill_given_other": 0.398285,
+   "quantity": 0.760507,
+   "quality": 65.6293,
+   "contribution": 0.499115,
+   "p_value": 1.85e-133,
+   "significant": true,
+   "selected": true
+  },
+  {
+   "unit_id": "nodejs",
+   "type": "skill",
+   "name": "Node.js",
+   "category": "framework",
+   "members": [
+    {
+     "skill_id": "nodejs",
+     "name": "Node.js",
+     "so_item": "Node.js",
+     "p_skill_given_goal": 0.623476,
+     "region_p_skill_given_goal": 0.678349
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 1312,
+   "other_respondents": 19588,
+   "p_skill_given_goal": 0.623476,
+   "p_skill_given_other": 0.488615,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 48,
+   "region_other_respondents": 505,
+   "region_p_skill_given_goal": 0.678349,
+   "region_p_skill_given_other": 0.451492,
+   "quantity": 0.678349,
+   "quality": 60.0393,
+   "contribution": 0.407276,
+   "p_value": 1.57e-21,
+   "significant": true,
+   "selected": true
+  },
+  {
+   "unit_id": "relational-database",
+   "type": "group",
+   "name": "リレーショナルデータベース",
+   "members": [
+    {
+     "skill_id": "mysql",
+     "name": "MySQL",
+     "so_item": "MySQL",
+     "p_skill_given_goal": 0.452292,
+     "region_p_skill_given_goal": 0.465198
+    },
+    {
+     "skill_id": "postgresql",
+     "name": "PostgreSQL",
+     "so_item": "PostgreSQL",
+     "p_skill_given_goal": 0.478315,
+     "region_p_skill_given_goal": 0.45713
+    },
+    {
+     "skill_id": "mariadb",
+     "name": "MariaDB",
+     "so_item": "MariaDB",
+     "p_skill_given_goal": 0.182156,
+     "region_p_skill_given_goal": 0.168949
+    },
+    {
+     "skill_id": "sql-server",
+     "name": "SQL Server",
+     "so_item": "Microsoft SQL Server",
+     "p_skill_given_goal": 0.152416,
+     "region_p_skill_given_goal": 0.12922
+    },
+    {
+     "skill_id": "oracle-database",
+     "name": "Oracle Database",
+     "so_item": "Oracle",
+     "p_skill_given_goal": 0.04461,
+     "region_p_skill_given_goal": 0.050576
+    },
+    {
+     "skill_id": "h2",
+     "name": "H2",
+     "so_item": "H2",
+     "p_skill_given_goal": 0.01487,
+     "region_p_skill_given_goal": 0.010847
+    },
+    {
+     "skill_id": "firebird",
+     "name": "Firebird",
+     "so_item": "Firebird",
+     "p_skill_given_goal": 0.006726,
+     "region_p_skill_given_goal": 0.004952
+    },
+    {
+     "skill_id": "ibm-db2",
+     "name": "IBM Db2",
+     "so_item": "IBM DB2",
+     "p_skill_given_goal": 0.004957,
+     "region_p_skill_given_goal": 0.003616
+    },
+    {
+     "skill_id": "cockroachdb",
+     "name": "CockroachDB",
+     "so_item": "Cockroachdb",
+     "p_skill_given_goal": 0.004957,
+     "region_p_skill_given_goal": 0.003616
+    },
+    {
+     "skill_id": "tidb",
+     "name": "TiDB",
+     "so_item": "TiDB",
+     "p_skill_given_goal": 0.000448,
+     "region_p_skill_given_goal": 0.00033
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 807,
+   "other_respondents": 22578,
+   "p_skill_given_goal": 0.8228,
+   "p_skill_given_other": 0.9166,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 30,
+   "region_other_respondents": 566,
+   "region_p_skill_given_goal": 0.798598,
+   "region_p_skill_given_other": 0.865903,
+   "quantity": 0.798598,
+   "quality": 47.9782,
+   "contribution": 0.383153,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "cross-platform-mobile",
+   "type": "group",
+   "name": "クロスプラットフォーム開発",
+   "members": [
+    {
+     "skill_id": "react-native",
+     "name": "React Native",
+     "so_item": "React Native",
+     "p_skill_given_goal": 0.303828,
+     "region_p_skill_given_goal": 0.31298
+    },
+    {
+     "skill_id": "flutter",
+     "name": "Flutter",
+     "so_item": "Flutter",
+     "p_skill_given_goal": 0.157895,
+     "region_p_skill_given_goal": 0.166241
+    },
+    {
+     "skill_id": "ionic",
+     "name": "Ionic",
+     "so_item": "Ionic",
+     "p_skill_given_goal": 0.090909,
+     "region_p_skill_given_goal": 0.072889
+    },
+    {
+     "skill_id": "cordova",
+     "name": "Cordova",
+     "so_item": "Cordova",
+     "p_skill_given_goal": 0.063796,
+     "region_p_skill_given_goal": 0.070972
+    },
+    {
+     "skill_id": "capacitor",
+     "name": "Capacitor",
+     "so_item": "Capacitor",
+     "p_skill_given_goal": 0.066188,
+     "region_p_skill_given_goal": 0.053069
+    },
+    {
+     "skill_id": "xamarin",
+     "name": "Xamarin",
+     "so_item": "Xamarin",
+     "p_skill_given_goal": 0.014354,
+     "region_p_skill_given_goal": 0.02142
+    },
+    {
+     "skill_id": "dotnet-maui",
+     "name": ".NET MAUI",
+     "so_item": ".NET MAUI",
+     "p_skill_given_goal": 0.019936,
+     "region_p_skill_given_goal": 0.015985
+    }
+   ],
+   "source_years": [
+    2024
+   ],
+   "goal_respondents": 1254,
+   "other_respondents": 32570,
+   "p_skill_given_goal": 0.551037,
+   "p_skill_given_other": 0.246976,
+   "region_source_years": [
+    2023,
+    2024
+   ],
+   "region_goal_respondents": 20,
+   "region_other_respondents": 333,
+   "region_p_skill_given_goal": 0.53101,
+   "region_p_skill_given_other": 0.272965,
+   "quantity": 0.53101,
+   "quality": 66.048,
+   "contribution": 0.350721,
+   "p_value": 4.63e-129,
+   "significant": true,
+   "selected": true
+  },
+  {
+   "unit_id": "frontend-meta-framework",
+   "type": "group",
+   "name": "フロントエンドのメタフレームワーク",
+   "members": [
+    {
+     "skill_id": "nextjs",
+     "name": "Next.js",
+     "so_item": "Next.js",
+     "p_skill_given_goal": 0.394055,
+     "region_p_skill_given_goal": 0.417991
+    },
+    {
+     "skill_id": "astro",
+     "name": "Astro",
+     "so_item": "Astro",
+     "p_skill_given_goal": 0.078506,
+     "region_p_skill_given_goal": 0.121484
+    },
+    {
+     "skill_id": "nuxt",
+     "name": "Nuxt",
+     "so_item": "Nuxt.js",
+     "p_skill_given_goal": 0.087652,
+     "region_p_skill_given_goal": 0.117076
+    },
+    {
+     "skill_id": "gatsby",
+     "name": "Gatsby",
+     "so_item": "Gatsby",
+     "p_skill_given_goal": 0.031627,
+     "region_p_skill_given_goal": 0.03802
+    },
+    {
+     "skill_id": "remix",
+     "name": "Remix",
+     "so_item": "Remix",
+     "p_skill_given_goal": 0.030649,
+     "region_p_skill_given_goal": 0.02902
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 1312,
+   "other_respondents": 19588,
+   "p_skill_given_goal": 0.46875,
+   "p_skill_given_other": 0.24418,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 48,
+   "region_other_respondents": 505,
+   "region_p_skill_given_goal": 0.503661,
+   "region_p_skill_given_other": 0.270958,
+   "quantity": 0.503661,
+   "quality": 65.0205,
+   "contribution": 0.327483,
+   "p_value": 1.13e-72,
+   "significant": true,
+   "selected": true
+  },
+  {
+   "unit_id": "container-runtime",
+   "type": "group",
+   "name": "コンテナ",
+   "members": [
+    {
+     "skill_id": "docker",
+     "name": "Docker",
+     "so_item": "Docker",
+     "p_skill_given_goal": 0.593817,
+     "region_p_skill_given_goal": 0.566364
+    },
+    {
+     "skill_id": "podman",
+     "name": "Podman",
+     "so_item": "Podman",
+     "p_skill_given_goal": 0.04371,
+     "region_p_skill_given_goal": 0.053619
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 938,
+   "other_respondents": 21253,
+   "p_skill_given_goal": 0.595949,
+   "p_skill_given_other": 0.748177,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 41,
+   "region_other_respondents": 607,
+   "region_p_skill_given_goal": 0.567779,
+   "region_p_skill_given_other": 0.641848,
+   "quantity": 0.567779,
+   "quality": 46.9383,
+   "contribution": 0.266506,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "nosql-database",
+   "type": "group",
+   "name": "NoSQL データベース",
+   "members": [
+    {
+     "skill_id": "mongodb",
+     "name": "MongoDB",
+     "so_item": "MongoDB",
+     "p_skill_given_goal": 0.339529,
+     "region_p_skill_given_goal": 0.310802
+    },
+    {
+     "skill_id": "firebase-realtime-database",
+     "name": "Firebase Realtime Database",
+     "so_item": "Firebase Realtime Database",
+     "p_skill_given_goal": 0.10285,
+     "region_p_skill_given_goal": 0.111096
+    },
+    {
+     "skill_id": "cloud-firestore",
+     "name": "Cloud Firestore",
+     "so_item": "Cloud Firestore",
+     "p_skill_given_goal": 0.10285,
+     "region_p_skill_given_goal": 0.102079
+    },
+    {
+     "skill_id": "dynamodb",
+     "name": "DynamoDB",
+     "so_item": "Dynamodb",
+     "p_skill_given_goal": 0.061958,
+     "region_p_skill_given_goal": 0.081266
+    },
+    {
+     "skill_id": "cosmos-db",
+     "name": "Azure Cosmos DB",
+     "so_item": "Cosmos DB",
+     "p_skill_given_goal": 0.019827,
+     "region_p_skill_given_goal": 0.014463
+    },
+    {
+     "skill_id": "cassandra",
+     "name": "Cassandra",
+     "so_item": "Cassandra",
+     "p_skill_given_goal": 0.007435,
+     "region_p_skill_given_goal": 0.014441
+    },
+    {
+     "skill_id": "couchdb",
+     "name": "CouchDB",
+     "so_item": "Couch DB",
+     "p_skill_given_goal": 0.00583,
+     "region_p_skill_given_goal": 0.01339
+    },
+    {
+     "skill_id": "couchbase",
+     "name": "Couchbase",
+     "so_item": "Couchbase",
+     "p_skill_given_goal": 0.004933,
+     "region_p_skill_given_goal": 0.003631
+    },
+    {
+     "skill_id": "ravendb",
+     "name": "RavenDB",
+     "so_item": "RavenDB",
+     "p_skill_given_goal": 0.000448,
+     "region_p_skill_given_goal": 0.00033
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 807,
+   "other_respondents": 22578,
+   "p_skill_given_goal": 0.464684,
+   "p_skill_given_other": 0.38635,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 30,
+   "region_other_respondents": 566,
+   "region_p_skill_given_goal": 0.46522,
+   "region_p_skill_given_other": 0.410041,
+   "quantity": 0.46522,
+   "quality": 53.1522,
+   "contribution": 0.247275,
+   "p_value": 3.65e-06,
+   "significant": true,
+   "selected": true
+  },
+  {
+   "unit_id": "public-cloud",
+   "type": "group",
+   "name": "パブリッククラウド",
+   "members": [
+    {
+     "skill_id": "aws",
+     "name": "AWS",
+     "so_item": "Amazon Web Services (AWS)",
+     "p_skill_given_goal": 0.380597,
+     "region_p_skill_given_goal": 0.423605
+    },
+    {
+     "skill_id": "google-cloud",
+     "name": "Google Cloud",
+     "so_item": "Google Cloud",
+     "p_skill_given_goal": 0.19936,
+     "region_p_skill_given_goal": 0.226257
+    },
+    {
+     "skill_id": "azure",
+     "name": "Azure",
+     "so_item": "Microsoft Azure",
+     "p_skill_given_goal": 0.160981,
+     "region_p_skill_given_goal": 0.125299
+    },
+    {
+     "skill_id": "alibaba-cloud",
+     "name": "Alibaba Cloud",
+     "so_item": "Alibaba Cloud",
+     "p_skill_given_goal": 0.009464,
+     "region_p_skill_given_goal": 0.017853
+    },
+    {
+     "skill_id": "ibm-cloud",
+     "name": "IBM Cloud",
+     "so_item": "IBM Cloud",
+     "p_skill_given_goal": 0.007463,
+     "region_p_skill_given_goal": 0.005035
+    },
+    {
+     "skill_id": "oracle-cloud",
+     "name": "Oracle Cloud",
+     "so_item": "Oracle Cloud Infrastructure (OCI)",
+     "p_skill_given_goal": 0.006309,
+     "region_p_skill_given_goal": 0.004404
+    },
+    {
+     "skill_id": "yandex-cloud",
+     "name": "Yandex Cloud",
+     "so_item": "Yandex Cloud",
+     "p_skill_given_goal": 0.004264,
+     "region_p_skill_given_goal": 0.004063
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 938,
+   "other_respondents": 21253,
+   "p_skill_given_goal": 0.583156,
+   "p_skill_given_other": 0.712464,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 39,
+   "region_other_respondents": 528,
+   "region_p_skill_given_goal": 0.593639,
+   "region_p_skill_given_other": 0.85012,
+   "quantity": 0.593639,
+   "quality": 41.1176,
+   "contribution": 0.24409,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "paas",
+   "type": "group",
+   "name": "PaaS・ホスティングサービス",
+   "members": [
+    {
+     "skill_id": "vercel",
+     "name": "Vercel",
+     "so_item": "Vercel",
+     "p_skill_given_goal": 0.249467,
+     "region_p_skill_given_goal": 0.251725
+    },
+    {
+     "skill_id": "netlify",
+     "name": "Netlify",
+     "so_item": "Netlify",
+     "p_skill_given_goal": 0.153518,
+     "region_p_skill_given_goal": 0.145285
+    },
+    {
+     "skill_id": "heroku",
+     "name": "Heroku",
+     "so_item": "Heroku",
+     "p_skill_given_goal": 0.066098,
+     "region_p_skill_given_goal": 0.119661
+    },
+    {
+     "skill_id": "render",
+     "name": "Render",
+     "so_item": "Render",
+     "p_skill_given_goal": 0.053177,
+     "region_p_skill_given_goal": 0.045747
+    },
+    {
+     "skill_id": "fly-io",
+     "name": "Fly.io",
+     "so_item": "Fly.io",
+     "p_skill_given_goal": 0.025237,
+     "region_p_skill_given_goal": 0.026244
+    },
+    {
+     "skill_id": "railway",
+     "name": "Railway",
+     "so_item": "Railway",
+     "p_skill_given_goal": 0.022388,
+     "region_p_skill_given_goal": 0.021333
+    },
+    {
+     "skill_id": "pythonanywhere",
+     "name": "PythonAnywhere",
+     "so_item": "PythonAnywhere",
+     "p_skill_given_goal": 0.00721,
+     "region_p_skill_given_goal": 0.005898
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 938,
+   "other_respondents": 21253,
+   "p_skill_given_goal": 0.345416,
+   "p_skill_given_other": 0.1652,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 39,
+   "region_other_respondents": 528,
+   "region_p_skill_given_goal": 0.374847,
+   "region_p_skill_given_other": 0.214099,
+   "quantity": 0.374847,
+   "quality": 63.6471,
+   "contribution": 0.238579,
+   "p_value": 1.33e-46,
+   "significant": true,
+   "selected": false
+  },
+  {
+   "unit_id": "baas",
+   "type": "group",
+   "name": "BaaS",
+   "members": [
+    {
+     "skill_id": "firebase",
+     "name": "Firebase",
+     "so_item": "Firebase",
+     "p_skill_given_goal": 0.197228,
+     "region_p_skill_given_goal": 0.27486
+    },
+    {
+     "skill_id": "supabase",
+     "name": "Supabase",
+     "so_item": "Supabase",
+     "p_skill_given_goal": 0.094883,
+     "region_p_skill_given_goal": 0.108435
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 1130,
+   "other_respondents": 24848,
+   "p_skill_given_goal": 0.248673,
+   "p_skill_given_other": 0.146974,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 41,
+   "region_other_respondents": 620,
+   "region_p_skill_given_goal": 0.320899,
+   "region_p_skill_given_other": 0.166772,
+   "quantity": 0.320899,
+   "quality": 65.8024,
+   "contribution": 0.211159,
+   "p_value": 5.4e-21,
+   "significant": true,
+   "selected": false
+  },
+  {
+   "unit_id": "os-package-manager",
+   "type": "group",
+   "name": "OS パッケージマネージャー",
+   "members": [
+    {
+     "skill_id": "homebrew",
+     "name": "Homebrew",
+     "so_item": "Homebrew",
+     "p_skill_given_goal": 0.285714,
+     "region_p_skill_given_goal": 0.329075
+    },
+    {
+     "skill_id": "chocolatey",
+     "name": "Chocolatey",
+     "so_item": "Chocolatey",
+     "p_skill_given_goal": 0.081023,
+     "region_p_skill_given_goal": 0.078382
+    },
+    {
+     "skill_id": "apt",
+     "name": "APT",
+     "so_item": "APT",
+     "p_skill_given_goal": 0.073561,
+     "region_p_skill_given_goal": 0.048819
+    },
+    {
+     "skill_id": "pacman",
+     "name": "pacman",
+     "so_item": "Pacman",
+     "p_skill_given_goal": 0.03838,
+     "region_p_skill_given_goal": 0.041878
+    },
+    {
+     "skill_id": "nix",
+     "name": "Nix",
+     "so_item": "Nix",
+     "p_skill_given_goal": 0.013005,
+     "region_p_skill_given_goal": 0.017405
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 938,
+   "other_respondents": 21253,
+   "p_skill_given_goal": 0.381663,
+   "p_skill_given_other": 0.472075,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 41,
+   "region_other_respondents": 607,
+   "region_p_skill_given_goal": 0.417363,
+   "region_p_skill_given_other": 0.466915,
+   "quantity": 0.417363,
+   "quality": 47.1982,
+   "contribution": 0.196988,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "express",
+   "type": "skill",
+   "name": "Express",
+   "category": "framework",
+   "members": [
+    {
+     "skill_id": "express",
+     "name": "Express",
+     "so_item": "Express",
+     "p_skill_given_goal": 0.273628,
+     "region_p_skill_given_goal": 0.303619
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 1312,
+   "other_respondents": 19588,
+   "p_skill_given_goal": 0.273628,
+   "p_skill_given_other": 0.19614,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 48,
+   "region_other_respondents": 505,
+   "region_p_skill_given_goal": 0.303619,
+   "region_p_skill_given_other": 0.178986,
+   "quantity": 0.303619,
+   "quality": 62.9126,
+   "contribution": 0.191015,
+   "p_value": 6e-12,
+   "significant": true,
+   "selected": false
+  },
+  {
+   "unit_id": "sqlite",
+   "type": "skill",
+   "name": "SQLite",
+   "category": "database",
+   "members": [
+    {
+     "skill_id": "sqlite",
+     "name": "SQLite",
+     "so_item": "SQLite",
+     "p_skill_given_goal": 0.27881,
+     "region_p_skill_given_goal": 0.284542
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 807,
+   "other_respondents": 22578,
+   "p_skill_given_goal": 0.27881,
+   "p_skill_given_other": 0.378067,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 30,
+   "region_other_respondents": 566,
+   "region_p_skill_given_goal": 0.284542,
+   "region_p_skill_given_other": 0.339443,
+   "quantity": 0.284542,
+   "quality": 45.6008,
+   "contribution": 0.129754,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "electron",
+   "type": "skill",
+   "name": "Electron",
+   "category": "library",
+   "members": [
+    {
+     "skill_id": "electron",
+     "name": "Electron",
+     "so_item": "Electron",
+     "p_skill_given_goal": 0.137959,
+     "region_p_skill_given_goal": 0.179988
+    }
+   ],
+   "source_years": [
+    2024
+   ],
+   "goal_respondents": 1254,
+   "other_respondents": 32570,
+   "p_skill_given_goal": 0.137959,
+   "p_skill_given_other": 0.07031,
+   "region_source_years": [
+    2023,
+    2024
+   ],
+   "region_goal_respondents": 20,
+   "region_other_respondents": 333,
+   "region_p_skill_given_goal": 0.179988,
+   "region_p_skill_given_other": 0.081392,
+   "quantity": 0.179988,
+   "quality": 68.8608,
+   "contribution": 0.123941,
+   "p_value": 7.35e-20,
+   "significant": true,
+   "selected": false
+  },
+  {
+   "unit_id": "cloudflare",
+   "type": "skill",
+   "name": "Cloudflare",
+   "category": "cloud",
+   "members": [
+    {
+     "skill_id": "cloudflare",
+     "name": "Cloudflare",
+     "so_item": "Cloudflare",
+     "p_skill_given_goal": 0.200426,
+     "region_p_skill_given_goal": 0.218636
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 938,
+   "other_respondents": 21253,
+   "p_skill_given_goal": 0.200426,
+   "p_skill_given_other": 0.201713,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 39,
+   "region_other_respondents": 528,
+   "region_p_skill_given_goal": 0.218636,
+   "region_p_skill_given_other": 0.171323,
+   "quantity": 0.218636,
+   "quality": 56.0664,
+   "contribution": 0.122582,
+   "p_value": 0.538,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "shell",
+   "type": "group",
+   "name": "シェル",
+   "members": [
+    {
+     "skill_id": "bash-shell",
+     "name": "Bash/Shell",
+     "so_item": "Bash/Shell (all shells)",
+     "p_skill_given_goal": 0.297432,
+     "region_p_skill_given_goal": 0.237298
+    },
+    {
+     "skill_id": "powershell",
+     "name": "PowerShell",
+     "so_item": "PowerShell",
+     "p_skill_given_goal": 0.115549,
+     "region_p_skill_given_goal": 0.10197
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 1402,
+   "other_respondents": 26661,
+   "p_skill_given_goal": 0.347361,
+   "p_skill_given_other": 0.588388,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 50,
+   "region_other_respondents": 686,
+   "region_p_skill_given_goal": 0.283434,
+   "region_p_skill_given_other": 0.429783,
+   "quantity": 0.283434,
+   "quality": 39.7402,
+   "contribution": 0.112637,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "jquery",
+   "type": "skill",
+   "name": "jQuery",
+   "category": "framework",
+   "members": [
+    {
+     "skill_id": "jquery",
+     "name": "jQuery",
+     "so_item": "jQuery",
+     "p_skill_given_goal": 0.211128,
+     "region_p_skill_given_goal": 0.217845
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 1312,
+   "other_respondents": 19588,
+   "p_skill_given_goal": 0.211128,
+   "p_skill_given_other": 0.249796,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 48,
+   "region_other_respondents": 505,
+   "region_p_skill_given_goal": 0.217845,
+   "region_p_skill_given_other": 0.213703,
+   "quantity": 0.217845,
+   "quality": 50.48,
+   "contribution": 0.109968,
+   "p_value": 0.999,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "python",
+   "type": "skill",
+   "name": "Python",
+   "category": "language",
+   "members": [
+    {
+     "skill_id": "python",
+     "name": "Python",
+     "so_item": "Python",
+     "p_skill_given_goal": 0.280314,
+     "region_p_skill_given_goal": 0.295473
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 1402,
+   "other_respondents": 26661,
+   "p_skill_given_goal": 0.280314,
+   "p_skill_given_other": 0.580248,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 50,
+   "region_other_respondents": 686,
+   "region_p_skill_given_goal": 0.295473,
+   "region_p_skill_given_other": 0.567143,
+   "quantity": 0.295473,
+   "quality": 34.2531,
+   "contribution": 0.101209,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "mobile-ide",
+   "type": "group",
+   "name": "モバイル開発環境",
+   "members": [
+    {
+     "skill_id": "android-studio",
+     "name": "Android Studio",
+     "so_item": "Android Studio",
+     "p_skill_given_goal": 0.117695,
+     "region_p_skill_given_goal": 0.153834
+    },
+    {
+     "skill_id": "xcode",
+     "name": "Xcode",
+     "so_item": "Xcode",
+     "p_skill_given_goal": 0.103704,
+     "region_p_skill_given_goal": 0.121274
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 1215,
+   "other_respondents": 22119,
+   "p_skill_given_goal": 0.176132,
+   "p_skill_given_other": 0.200099,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 46,
+   "region_other_respondents": 638,
+   "region_p_skill_given_goal": 0.214728,
+   "region_p_skill_given_other": 0.253426,
+   "quantity": 0.214728,
+   "quality": 45.867,
+   "contribution": 0.09849,
+   "p_value": 0.979,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "cms",
+   "type": "group",
+   "name": "CMS",
+   "members": [
+    {
+     "skill_id": "wordpress",
+     "name": "WordPress",
+     "so_item": "WordPress",
+     "p_skill_given_goal": 0.150915,
+     "region_p_skill_given_goal": 0.15678
+    },
+    {
+     "skill_id": "strapi",
+     "name": "Strapi",
+     "so_item": "Strapi",
+     "p_skill_given_goal": 0.031301,
+     "region_p_skill_given_goal": 0.035007
+    },
+    {
+     "skill_id": "drupal",
+     "name": "Drupal",
+     "so_item": "Drupal",
+     "p_skill_given_goal": 0.019055,
+     "region_p_skill_given_goal": 0.027475
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 1312,
+   "other_respondents": 19588,
+   "p_skill_given_goal": 0.160061,
+   "p_skill_given_other": 0.149071,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 48,
+   "region_other_respondents": 505,
+   "region_p_skill_given_goal": 0.178037,
+   "region_p_skill_given_other": 0.148592,
+   "quantity": 0.178037,
+   "quality": 54.5074,
+   "contribution": 0.097043,
+   "p_value": 0.14,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "sql",
+   "type": "skill",
+   "name": "SQL",
+   "category": "language",
+   "members": [
+    {
+     "skill_id": "sql",
+     "name": "SQL",
+     "so_item": "SQL",
+     "p_skill_given_goal": 0.300285,
+     "region_p_skill_given_goal": 0.269619
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 1402,
+   "other_respondents": 26661,
+   "p_skill_given_goal": 0.300285,
+   "p_skill_given_other": 0.62177,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 50,
+   "region_other_respondents": 686,
+   "region_p_skill_given_goal": 0.269619,
+   "region_p_skill_given_other": 0.484159,
+   "quantity": 0.269619,
+   "quality": 35.769,
+   "contribution": 0.09644,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "dotnet-runtime",
+   "type": "group",
+   "name": ".NET",
+   "members": [
+    {
+     "skill_id": "dotnet",
+     "name": ".NET",
+     "so_item": ".NET (5+)",
+     "p_skill_given_goal": 0.184211,
+     "region_p_skill_given_goal": 0.167519
+    },
+    {
+     "skill_id": "dotnet-framework",
+     "name": ".NET Framework",
+     "so_item": ".NET Framework (1.0 - 4.8)",
+     "p_skill_given_goal": 0.090909,
+     "region_p_skill_given_goal": 0.092711
+    }
+   ],
+   "source_years": [
+    2024
+   ],
+   "goal_respondents": 1254,
+   "other_respondents": 32570,
+   "p_skill_given_goal": 0.217703,
+   "p_skill_given_other": 0.350752,
+   "region_source_years": [
+    2023,
+    2024
+   ],
+   "region_goal_respondents": 20,
+   "region_other_respondents": 333,
+   "region_p_skill_given_goal": 0.214194,
+   "region_p_skill_given_other": 0.307746,
+   "quantity": 0.214194,
+   "quality": 41.0381,
+   "contribution": 0.087901,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "php",
+   "type": "skill",
+   "name": "PHP",
+   "category": "language",
+   "members": [
+    {
+     "skill_id": "php",
+     "name": "PHP",
+     "so_item": "PHP",
+     "p_skill_given_goal": 0.184736,
+     "region_p_skill_given_goal": 0.160009
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 1402,
+   "other_respondents": 26661,
+   "p_skill_given_goal": 0.184736,
+   "p_skill_given_other": 0.193954,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 50,
+   "region_other_respondents": 686,
+   "region_p_skill_given_goal": 0.160009,
+   "region_p_skill_given_other": 0.189974,
+   "quantity": 0.160009,
+   "quality": 45.7191,
+   "contribution": 0.073155,
+   "p_value": 0.803,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "jvm-build",
+   "type": "group",
+   "name": "Java ビルドツール",
+   "members": [
+    {
+     "skill_id": "gradle",
+     "name": "Gradle",
+     "so_item": "Gradle",
+     "p_skill_given_goal": 0.081023,
+     "region_p_skill_given_goal": 0.094789
+    },
+    {
+     "skill_id": "maven",
+     "name": "Maven",
+     "so_item": "Maven (build tool)",
+     "p_skill_given_goal": 0.072495,
+     "region_p_skill_given_goal": 0.089129
+    },
+    {
+     "skill_id": "ant",
+     "name": "Ant",
+     "so_item": "Ant",
+     "p_skill_given_goal": 0.014374,
+     "region_p_skill_given_goal": 0.009863
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 938,
+   "other_respondents": 21253,
+   "p_skill_given_goal": 0.135394,
+   "p_skill_given_other": 0.246083,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 41,
+   "region_other_respondents": 607,
+   "region_p_skill_given_goal": 0.163687,
+   "region_p_skill_given_other": 0.210653,
+   "quantity": 0.163687,
+   "quality": 43.7268,
+   "contribution": 0.071575,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "python-package-manager",
+   "type": "group",
+   "name": "Python パッケージマネージャー",
+   "members": [
+    {
+     "skill_id": "pip",
+     "name": "pip",
+     "so_item": "Pip",
+     "p_skill_given_goal": 0.184435,
+     "region_p_skill_given_goal": 0.179826
+    },
+    {
+     "skill_id": "poetry",
+     "name": "Poetry",
+     "so_item": "Poetry",
+     "p_skill_given_goal": 0.031983,
+     "region_p_skill_given_goal": 0.030476
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 938,
+   "other_respondents": 21253,
+   "p_skill_given_goal": 0.195096,
+   "p_skill_given_other": 0.430951,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 41,
+   "region_other_respondents": 607,
+   "region_p_skill_given_goal": 0.186901,
+   "region_p_skill_given_other": 0.38794,
+   "quantity": 0.186901,
+   "quality": 32.5135,
+   "contribution": 0.060768,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "in-memory-store",
+   "type": "group",
+   "name": "インメモリデータストア",
+   "members": [
+    {
+     "skill_id": "redis",
+     "name": "Redis",
+     "so_item": "Redis",
+     "p_skill_given_goal": 0.149938,
+     "region_p_skill_given_goal": 0.145446
+    },
+    {
+     "skill_id": "valkey",
+     "name": "Valkey",
+     "so_item": "Valkey",
+     "p_skill_given_goal": 0.008674,
+     "region_p_skill_given_goal": 0.008568
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 807,
+   "other_respondents": 22578,
+   "p_skill_given_goal": 0.152416,
+   "p_skill_given_other": 0.309106,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 30,
+   "region_other_respondents": 566,
+   "region_p_skill_given_goal": 0.147254,
+   "region_p_skill_given_other": 0.264348,
+   "quantity": 0.147254,
+   "quality": 35.7758,
+   "contribution": 0.052681,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "container-orchestration",
+   "type": "group",
+   "name": "コンテナオーケストレーション",
+   "members": [
+    {
+     "skill_id": "kubernetes",
+     "name": "Kubernetes",
+     "so_item": "Kubernetes",
+     "p_skill_given_goal": 0.142857,
+     "region_p_skill_given_goal": 0.127622
+    },
+    {
+     "skill_id": "openshift",
+     "name": "OpenShift",
+     "so_item": "OpenShift",
+     "p_skill_given_goal": 0.008112,
+     "region_p_skill_given_goal": 0.005662
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 938,
+   "other_respondents": 21253,
+   "p_skill_given_goal": 0.142857,
+   "p_skill_given_other": 0.309886,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 42,
+   "region_other_respondents": 626,
+   "region_p_skill_given_goal": 0.126584,
+   "region_p_skill_given_other": 0.200976,
+   "quantity": 0.126584,
+   "quality": 38.6445,
+   "contribution": 0.048918,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "mobile-native-language",
+   "type": "group",
+   "name": "モバイルネイティブ言語",
+   "members": [
+    {
+     "skill_id": "kotlin",
+     "name": "Kotlin",
+     "so_item": "Kotlin",
+     "p_skill_given_goal": 0.059914,
+     "region_p_skill_given_goal": 0.067587
+    },
+    {
+     "skill_id": "swift",
+     "name": "Swift",
+     "so_item": "Swift",
+     "p_skill_given_goal": 0.042796,
+     "region_p_skill_given_goal": 0.057007
+    },
+    {
+     "skill_id": "objective-c",
+     "name": "Objective-C",
+     "so_item": "Objective-C",
+     "p_skill_given_goal": 0.012422,
+     "region_p_skill_given_goal": 0.024651
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 1402,
+   "other_respondents": 26661,
+   "p_skill_given_goal": 0.086305,
+   "p_skill_given_other": 0.14298,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 50,
+   "region_other_respondents": 686,
+   "region_p_skill_given_goal": 0.114454,
+   "region_p_skill_given_other": 0.162429,
+   "quantity": 0.114454,
+   "quality": 41.3366,
+   "contribution": 0.047312,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "monitoring",
+   "type": "group",
+   "name": "監視・オブザーバビリティ",
+   "members": [
+    {
+     "skill_id": "datadog",
+     "name": "Datadog",
+     "so_item": "Datadog",
+     "p_skill_given_goal": 0.074627,
+     "region_p_skill_given_goal": 0.071111
+    },
+    {
+     "skill_id": "new-relic",
+     "name": "New Relic",
+     "so_item": "New Relic",
+     "p_skill_given_goal": 0.028785,
+     "region_p_skill_given_goal": 0.027428
+    },
+    {
+     "skill_id": "splunk",
+     "name": "Splunk",
+     "so_item": "Splunk",
+     "p_skill_given_goal": 0.025586,
+     "region_p_skill_given_goal": 0.024381
+    },
+    {
+     "skill_id": "prometheus",
+     "name": "Prometheus",
+     "so_item": "Prometheus",
+     "p_skill_given_goal": 0.021322,
+     "region_p_skill_given_goal": 0.020317
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 938,
+   "other_respondents": 21253,
+   "p_skill_given_goal": 0.135394,
+   "p_skill_given_other": 0.257799,
+   "region_source_years": [
+    2025
+   ],
+   "region_goal_respondents": 4,
+   "region_other_respondents": 114,
+   "region_p_skill_given_goal": 0.129015,
+   "region_p_skill_given_other": 0.235279,
+   "quantity": 0.129015,
+   "quality": 35.4151,
+   "contribution": 0.045691,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "java",
+   "type": "skill",
+   "name": "Java",
+   "category": "language",
+   "members": [
+    {
+     "skill_id": "java",
+     "name": "Java",
+     "so_item": "Java",
+     "p_skill_given_goal": 0.147646,
+     "region_p_skill_given_goal": 0.137086
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 1402,
+   "other_respondents": 26661,
+   "p_skill_given_goal": 0.147646,
+   "p_skill_given_other": 0.296613,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 50,
+   "region_other_respondents": 686,
+   "region_p_skill_given_goal": 0.137086,
+   "region_p_skill_given_other": 0.275128,
+   "quantity": 0.137086,
+   "quality": 33.256,
+   "contribution": 0.045589,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "csharp",
+   "type": "skill",
+   "name": "C#",
+   "category": "language",
+   "members": [
+    {
+     "skill_id": "csharp",
+     "name": "C#",
+     "so_item": "C#",
+     "p_skill_given_goal": 0.121255,
+     "region_p_skill_given_goal": 0.128415
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 1402,
+   "other_respondents": 26661,
+   "p_skill_given_goal": 0.121255,
+   "p_skill_given_other": 0.293912,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 50,
+   "region_other_respondents": 686,
+   "region_p_skill_given_goal": 0.128415,
+   "region_p_skill_given_other": 0.237029,
+   "quantity": 0.128415,
+   "quality": 35.1395,
+   "contribution": 0.045124,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "nestjs",
+   "type": "skill",
+   "name": "NestJS",
+   "category": "framework",
+   "members": [
+    {
+     "skill_id": "nestjs",
+     "name": "NestJS",
+     "so_item": "NestJS",
+     "p_skill_given_goal": 0.099848,
+     "region_p_skill_given_goal": 0.078182
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 1312,
+   "other_respondents": 19588,
+   "p_skill_given_goal": 0.099848,
+   "p_skill_given_other": 0.071319,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 48,
+   "region_other_respondents": 505,
+   "region_p_skill_given_goal": 0.078182,
+   "region_p_skill_given_other": 0.062758,
+   "quantity": 0.078182,
+   "quality": 55.472,
+   "contribution": 0.043369,
+   "p_value": 6.08e-05,
+   "significant": true,
+   "selected": false
+  },
+  {
+   "unit_id": "numpy",
+   "type": "skill",
+   "name": "NumPy",
+   "category": "library",
+   "members": [
+    {
+     "skill_id": "numpy",
+     "name": "NumPy",
+     "so_item": "NumPy",
+     "p_skill_given_goal": 0.100478,
+     "region_p_skill_given_goal": 0.130116
+    }
+   ],
+   "source_years": [
+    2024
+   ],
+   "goal_respondents": 1254,
+   "other_respondents": 32570,
+   "p_skill_given_goal": 0.100478,
+   "p_skill_given_other": 0.233866,
+   "region_source_years": [
+    2023,
+    2024
+   ],
+   "region_goal_respondents": 20,
+   "region_other_respondents": 333,
+   "region_p_skill_given_goal": 0.130116,
+   "region_p_skill_given_other": 0.280067,
+   "quantity": 0.130116,
+   "quality": 31.7214,
+   "contribution": 0.041275,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "deep-learning-framework",
+   "type": "group",
+   "name": "深層学習フレームワーク",
+   "members": [
+    {
+     "skill_id": "tensorflow",
+     "name": "TensorFlow",
+     "so_item": "TensorFlow",
+     "p_skill_given_goal": 0.067783,
+     "region_p_skill_given_goal": 0.08408
+    },
+    {
+     "skill_id": "pytorch",
+     "name": "PyTorch",
+     "so_item": "Torch/PyTorch",
+     "p_skill_given_goal": 0.047049,
+     "region_p_skill_given_goal": 0.037724
+    },
+    {
+     "skill_id": "keras",
+     "name": "Keras",
+     "so_item": "Keras",
+     "p_skill_given_goal": 0.018341,
+     "region_p_skill_given_goal": 0.014706
+    },
+    {
+     "skill_id": "jax",
+     "name": "JAX",
+     "so_item": "JAX",
+     "p_skill_given_goal": 0.00319,
+     "region_p_skill_given_goal": 0.002558
+    }
+   ],
+   "source_years": [
+    2024
+   ],
+   "goal_respondents": 1254,
+   "other_respondents": 32570,
+   "p_skill_given_goal": 0.095694,
+   "p_skill_given_other": 0.175407,
+   "region_source_years": [
+    2023,
+    2024
+   ],
+   "region_goal_respondents": 20,
+   "region_other_respondents": 333,
+   "region_p_skill_given_goal": 0.106458,
+   "region_p_skill_given_other": 0.198576,
+   "quantity": 0.106458,
+   "quality": 34.9005,
+   "contribution": 0.037154,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "spring-framework",
+   "type": "skill",
+   "name": "Spring Framework",
+   "category": "library",
+   "members": [
+    {
+     "skill_id": "spring-framework",
+     "name": "Spring Framework",
+     "so_item": "Spring Framework",
+     "p_skill_given_goal": 0.060606,
+     "region_p_skill_given_goal": 0.078325
+    }
+   ],
+   "source_years": [
+    2024
+   ],
+   "goal_respondents": 1254,
+   "other_respondents": 32570,
+   "p_skill_given_goal": 0.060606,
+   "p_skill_given_other": 0.139423,
+   "region_source_years": [
+    2023,
+    2024
+   ],
+   "region_goal_respondents": 20,
+   "region_other_respondents": 333,
+   "region_p_skill_given_goal": 0.078325,
+   "region_p_skill_given_other": 0.097317,
+   "quantity": 0.078325,
+   "quality": 44.5938,
+   "contribution": 0.034928,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "infrastructure-as-code",
+   "type": "group",
+   "name": "Infrastructure as Code",
+   "members": [
+    {
+     "skill_id": "terraform",
+     "name": "Terraform",
+     "so_item": "Terraform",
+     "p_skill_given_goal": 0.060768,
+     "region_p_skill_given_goal": 0.08955
+    },
+    {
+     "skill_id": "pulumi",
+     "name": "Pulumi",
+     "so_item": "Pulumi",
+     "p_skill_given_goal": 0.00308,
+     "region_p_skill_given_goal": 0.002113
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 938,
+   "other_respondents": 21253,
+   "p_skill_given_goal": 0.060768,
+   "p_skill_given_other": 0.195219,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 41,
+   "region_other_respondents": 607,
+   "region_p_skill_given_goal": 0.08955,
+   "region_p_skill_given_other": 0.153792,
+   "quantity": 0.08955,
+   "quality": 36.8,
+   "contribution": 0.032954,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "opengl",
+   "type": "skill",
+   "name": "OpenGL",
+   "category": "library",
+   "members": [
+    {
+     "skill_id": "opengl",
+     "name": "OpenGL",
+     "so_item": "OpenGL",
+     "p_skill_given_goal": 0.057416,
+     "region_p_skill_given_goal": 0.075768
+    }
+   ],
+   "source_years": [
+    2024
+   ],
+   "goal_respondents": 1254,
+   "other_respondents": 32570,
+   "p_skill_given_goal": 0.057416,
+   "p_skill_given_other": 0.068806,
+   "region_source_years": [
+    2023,
+    2024
+   ],
+   "region_goal_respondents": 20,
+   "region_other_respondents": 333,
+   "region_p_skill_given_goal": 0.075768,
+   "region_p_skill_given_other": 0.100426,
+   "quantity": 0.075768,
+   "quality": 43.0025,
+   "contribution": 0.032582,
+   "p_value": 0.942,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "swiftui",
+   "type": "skill",
+   "name": "SwiftUI",
+   "category": "library",
+   "members": [
+    {
+     "skill_id": "swiftui",
+     "name": "SwiftUI",
+     "so_item": "SwiftUI",
+     "p_skill_given_goal": 0.060606,
+     "region_p_skill_given_goal": 0.068415
+    }
+   ],
+   "source_years": [
+    2024
+   ],
+   "goal_respondents": 1254,
+   "other_respondents": 32570,
+   "p_skill_given_goal": 0.060606,
+   "p_skill_given_other": 0.049586,
+   "region_source_years": [
+    2023,
+    2024
+   ],
+   "region_goal_respondents": 20,
+   "region_other_respondents": 333,
+   "region_p_skill_given_goal": 0.068415,
+   "region_p_skill_given_other": 0.082173,
+   "quantity": 0.068415,
+   "quality": 45.4317,
+   "contribution": 0.031082,
+   "p_value": 0.0394,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "composer",
+   "type": "skill",
+   "name": "Composer",
+   "category": "build_tool",
+   "members": [
+    {
+     "skill_id": "composer",
+     "name": "Composer",
+     "so_item": "Composer",
+     "p_skill_given_goal": 0.078891,
+     "region_p_skill_given_goal": 0.068764
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 938,
+   "other_respondents": 21253,
+   "p_skill_given_goal": 0.078891,
+   "p_skill_given_other": 0.116642,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 41,
+   "region_other_respondents": 607,
+   "region_p_skill_given_goal": 0.068764,
+   "region_p_skill_given_other": 0.086403,
+   "quantity": 0.068764,
+   "quality": 44.3162,
+   "contribution": 0.030473,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "lit",
+   "type": "skill",
+   "name": "Lit",
+   "category": "framework",
+   "members": [
+    {
+     "skill_id": "lit",
+     "name": "Lit",
+     "so_item": "Lit",
+     "p_skill_given_goal": 0.018208,
+     "region_p_skill_given_goal": 0.034765
+    }
+   ],
+   "source_years": [
+    2023
+   ],
+   "goal_respondents": 4833,
+   "other_respondents": 51468,
+   "p_skill_given_goal": 0.018208,
+   "p_skill_given_other": 0.006587,
+   "region_source_years": [
+    2023
+   ],
+   "region_goal_respondents": 19,
+   "region_other_respondents": 216,
+   "region_p_skill_given_goal": 0.034765,
+   "region_p_skill_given_other": 0.005163,
+   "quantity": 0.034765,
+   "quality": 87.0695,
+   "contribution": 0.03027,
+   "p_value": 2.7e-19,
+   "significant": true,
+   "selected": false
+  },
+  {
+   "unit_id": "django",
+   "type": "skill",
+   "name": "Django",
+   "category": "framework",
+   "members": [
+    {
+     "skill_id": "django",
+     "name": "Django",
+     "so_item": "Django",
+     "p_skill_given_goal": 0.056402,
+     "region_p_skill_given_goal": 0.074189
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 1312,
+   "other_respondents": 19588,
+   "p_skill_given_goal": 0.056402,
+   "p_skill_given_other": 0.130233,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 48,
+   "region_other_respondents": 505,
+   "region_p_skill_given_goal": 0.074189,
+   "region_p_skill_given_other": 0.128923,
+   "quantity": 0.074189,
+   "quality": 36.5262,
+   "contribution": 0.027098,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "opencv",
+   "type": "skill",
+   "name": "OpenCV",
+   "category": "library",
+   "members": [
+    {
+     "skill_id": "opencv",
+     "name": "OpenCV",
+     "so_item": "Opencv",
+     "p_skill_given_goal": 0.055821,
+     "region_p_skill_given_goal": 0.074489
+    }
+   ],
+   "source_years": [
+    2024
+   ],
+   "goal_respondents": 1254,
+   "other_respondents": 32570,
+   "p_skill_given_goal": 0.055821,
+   "p_skill_given_other": 0.092263,
+   "region_source_years": [
+    2023,
+    2024
+   ],
+   "region_goal_respondents": 20,
+   "region_other_respondents": 333,
+   "region_p_skill_given_goal": 0.074489,
+   "region_p_skill_given_other": 0.131587,
+   "quantity": 0.074489,
+   "quality": 36.1463,
+   "contribution": 0.026925,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "search-engine",
+   "type": "group",
+   "name": "検索エンジン",
+   "members": [
+    {
+     "skill_id": "elasticsearch",
+     "name": "Elasticsearch",
+     "so_item": "Elasticsearch",
+     "p_skill_given_goal": 0.091698,
+     "region_p_skill_given_goal": 0.075909
+    },
+    {
+     "skill_id": "solr",
+     "name": "Solr",
+     "so_item": "Solr",
+     "p_skill_given_goal": 0.00583,
+     "region_p_skill_given_goal": 0.004291
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 807,
+   "other_respondents": 22578,
+   "p_skill_given_goal": 0.091698,
+   "p_skill_given_other": 0.182966,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 30,
+   "region_other_respondents": 566,
+   "region_p_skill_given_goal": 0.075909,
+   "region_p_skill_given_other": 0.145002,
+   "quantity": 0.075909,
+   "quality": 34.3619,
+   "contribution": 0.026084,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "data-warehouse",
+   "type": "group",
+   "name": "データウェアハウス",
+   "members": [
+    {
+     "skill_id": "bigquery",
+     "name": "BigQuery",
+     "so_item": "BigQuery",
+     "p_skill_given_goal": 0.033457,
+     "region_p_skill_given_goal": 0.051458
+    },
+    {
+     "skill_id": "databricks-sql",
+     "name": "Databricks SQL",
+     "so_item": "Databricks SQL",
+     "p_skill_given_goal": 0.01487,
+     "region_p_skill_given_goal": 0.012415
+    },
+    {
+     "skill_id": "amazon-redshift",
+     "name": "Amazon Redshift",
+     "so_item": "Amazon Redshift",
+     "p_skill_given_goal": 0.009913,
+     "region_p_skill_given_goal": 0.009792
+    },
+    {
+     "skill_id": "snowflake",
+     "name": "Snowflake",
+     "so_item": "Snowflake",
+     "p_skill_given_goal": 0.011152,
+     "region_p_skill_given_goal": 0.008136
+    },
+    {
+     "skill_id": "clickhouse",
+     "name": "ClickHouse",
+     "so_item": "Clickhouse",
+     "p_skill_given_goal": 0.004957,
+     "region_p_skill_given_goal": 0.003616
+    },
+    {
+     "skill_id": "presto",
+     "name": "Presto",
+     "so_item": "Presto",
+     "p_skill_given_goal": 0.000897,
+     "region_p_skill_given_goal": 0.000757
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 807,
+   "other_respondents": 22578,
+   "p_skill_given_goal": 0.060719,
+   "p_skill_given_other": 0.161219,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 30,
+   "region_other_respondents": 566,
+   "region_p_skill_given_goal": 0.071345,
+   "region_p_skill_given_other": 0.125278,
+   "quantity": 0.071345,
+   "quality": 36.285,
+   "contribution": 0.025887,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "cargo",
+   "type": "skill",
+   "name": "Cargo",
+   "category": "build_tool",
+   "members": [
+    {
+     "skill_id": "cargo",
+     "name": "Cargo",
+     "so_item": "Cargo",
+     "p_skill_given_goal": 0.059701,
+     "region_p_skill_given_goal": 0.0776
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 938,
+   "other_respondents": 21253,
+   "p_skill_given_goal": 0.059701,
+   "p_skill_given_other": 0.135604,
+   "region_source_years": [
+    2023,
+    2025
+   ],
+   "region_goal_respondents": 20,
+   "region_other_respondents": 377,
+   "region_p_skill_given_goal": 0.0776,
+   "region_p_skill_given_other": 0.17683,
+   "quantity": 0.0776,
+   "quality": 30.4996,
+   "contribution": 0.023668,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "unity-3d",
+   "type": "skill",
+   "name": "Unity 3D",
+   "category": "tool",
+   "members": [
+    {
+     "skill_id": "unity-3d",
+     "name": "Unity 3D",
+     "so_item": "Unity 3D",
+     "p_skill_given_goal": 0.034908,
+     "region_p_skill_given_goal": 0.049398
+    }
+   ],
+   "source_years": [
+    2024
+   ],
+   "goal_respondents": 2922,
+   "other_respondents": 42346,
+   "p_skill_given_goal": 0.034908,
+   "p_skill_given_other": 0.052118,
+   "region_source_years": [
+    2023,
+    2024
+   ],
+   "region_goal_respondents": 37,
+   "region_other_respondents": 493,
+   "region_p_skill_given_goal": 0.049398,
+   "region_p_skill_given_other": 0.056136,
+   "quantity": 0.049398,
+   "quality": 46.8077,
+   "contribution": 0.023122,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "make",
+   "type": "skill",
+   "name": "Make",
+   "category": "build_tool",
+   "members": [
+    {
+     "skill_id": "make",
+     "name": "Make",
+     "so_item": "Make",
+     "p_skill_given_goal": 0.084222,
+     "region_p_skill_given_goal": 0.088708
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 938,
+   "other_respondents": 21253,
+   "p_skill_given_goal": 0.084222,
+   "p_skill_given_other": 0.230132,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 41,
+   "region_other_respondents": 607,
+   "region_p_skill_given_goal": 0.088708,
+   "region_p_skill_given_other": 0.253842,
+   "quantity": 0.088708,
+   "quality": 25.8964,
+   "contribution": 0.022972,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "nuget",
+   "type": "skill",
+   "name": "NuGet",
+   "category": "build_tool",
+   "members": [
+    {
+     "skill_id": "nuget",
+     "name": "NuGet",
+     "so_item": "NuGet",
+     "p_skill_given_goal": 0.066098,
+     "region_p_skill_given_goal": 0.068477
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 938,
+   "other_respondents": 21253,
+   "p_skill_given_goal": 0.066098,
+   "p_skill_given_other": 0.202842,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 41,
+   "region_other_respondents": 607,
+   "region_p_skill_given_goal": 0.068477,
+   "region_p_skill_given_other": 0.13579,
+   "quantity": 0.068477,
+   "quality": 33.5233,
+   "contribution": 0.022956,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "tauri",
+   "type": "skill",
+   "name": "Tauri",
+   "category": "library",
+   "members": [
+    {
+     "skill_id": "tauri",
+     "name": "Tauri",
+     "so_item": "Tauri",
+     "p_skill_given_goal": 0.043062,
+     "region_p_skill_given_goal": 0.044437
+    }
+   ],
+   "source_years": [
+    2024
+   ],
+   "goal_respondents": 1254,
+   "other_respondents": 32570,
+   "p_skill_given_goal": 0.043062,
+   "p_skill_given_other": 0.024992,
+   "region_source_years": [
+    2023,
+    2024
+   ],
+   "region_goal_respondents": 20,
+   "region_other_respondents": 333,
+   "region_p_skill_given_goal": 0.044437,
+   "region_p_skill_given_other": 0.043542,
+   "quantity": 0.044437,
+   "quality": 50.5091,
+   "contribution": 0.022445,
+   "p_value": 3.58e-05,
+   "significant": true,
+   "selected": false
+  },
+  {
+   "unit_id": "laravel",
+   "type": "skill",
+   "name": "Laravel",
+   "category": "framework",
+   "members": [
+    {
+     "skill_id": "laravel",
+     "name": "Laravel",
+     "so_item": "Laravel",
+     "p_skill_given_goal": 0.052591,
+     "region_p_skill_given_goal": 0.064039
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 1312,
+   "other_respondents": 19588,
+   "p_skill_given_goal": 0.052591,
+   "p_skill_given_other": 0.097458,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 48,
+   "region_other_respondents": 505,
+   "region_p_skill_given_goal": 0.064039,
+   "region_p_skill_given_other": 0.119277,
+   "quantity": 0.064039,
+   "quality": 34.9337,
+   "contribution": 0.022371,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "lua",
+   "type": "skill",
+   "name": "Lua",
+   "category": "language",
+   "members": [
+    {
+     "skill_id": "lua",
+     "name": "Lua",
+     "so_item": "Lua",
+     "p_skill_given_goal": 0.047789,
+     "region_p_skill_given_goal": 0.044814
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 1402,
+   "other_respondents": 26661,
+   "p_skill_given_goal": 0.047789,
+   "p_skill_given_other": 0.086306,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 50,
+   "region_other_respondents": 686,
+   "region_p_skill_given_goal": 0.044814,
+   "region_p_skill_given_other": 0.046919,
+   "quantity": 0.044814,
+   "quality": 48.8525,
+   "contribution": 0.021893,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "pandas",
+   "type": "skill",
+   "name": "pandas",
+   "category": "library",
+   "members": [
+    {
+     "skill_id": "pandas",
+     "name": "pandas",
+     "so_item": "Pandas",
+     "p_skill_given_goal": 0.096491,
+     "region_p_skill_given_goal": 0.087276
+    }
+   ],
+   "source_years": [
+    2024
+   ],
+   "goal_respondents": 1254,
+   "other_respondents": 32570,
+   "p_skill_given_goal": 0.096491,
+   "p_skill_given_other": 0.236936,
+   "region_source_years": [
+    2023,
+    2024
+   ],
+   "region_goal_respondents": 20,
+   "region_other_respondents": 333,
+   "region_p_skill_given_goal": 0.087276,
+   "region_p_skill_given_other": 0.261339,
+   "quantity": 0.087276,
+   "quality": 25.0351,
+   "contribution": 0.02185,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "flask",
+   "type": "skill",
+   "name": "Flask",
+   "category": "framework",
+   "members": [
+    {
+     "skill_id": "flask",
+     "name": "Flask",
+     "so_item": "Flask",
+     "p_skill_given_goal": 0.041921,
+     "region_p_skill_given_goal": 0.0651
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 1312,
+   "other_respondents": 19588,
+   "p_skill_given_goal": 0.041921,
+   "p_skill_given_other": 0.147182,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 48,
+   "region_other_respondents": 505,
+   "region_p_skill_given_goal": 0.0651,
+   "region_p_skill_given_other": 0.129556,
+   "quantity": 0.0651,
+   "quality": 33.4435,
+   "contribution": 0.021772,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "jupyter",
+   "type": "skill",
+   "name": "Jupyter",
+   "category": "dev_env",
+   "members": [
+    {
+     "skill_id": "jupyter",
+     "name": "Jupyter",
+     "so_item": "Jupyter Notebook/JupyterLab",
+     "p_skill_given_goal": 0.051029,
+     "region_p_skill_given_goal": 0.064052
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 1215,
+   "other_respondents": 22119,
+   "p_skill_given_goal": 0.051029,
+   "p_skill_given_other": 0.138117,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 46,
+   "region_other_respondents": 638,
+   "region_p_skill_given_goal": 0.064052,
+   "region_p_skill_given_other": 0.130997,
+   "quantity": 0.064052,
+   "quality": 32.839,
+   "contribution": 0.021034,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "vps-hosting",
+   "type": "group",
+   "name": "VPS・レンタルサーバー",
+   "members": [
+    {
+     "skill_id": "digitalocean",
+     "name": "DigitalOcean",
+     "so_item": "Digital Ocean",
+     "p_skill_given_goal": 0.091684,
+     "region_p_skill_given_goal": 0.070202
+    },
+    {
+     "skill_id": "hetzner",
+     "name": "Hetzner",
+     "so_item": "Hetzner",
+     "p_skill_given_goal": 0.028391,
+     "region_p_skill_given_goal": 0.019817
+    },
+    {
+     "skill_id": "linode",
+     "name": "Linode (Akamai)",
+     "so_item": "Linode, now Akamai",
+     "p_skill_given_goal": 0.014872,
+     "region_p_skill_given_goal": 0.019009
+    },
+    {
+     "skill_id": "ovh",
+     "name": "OVHcloud",
+     "so_item": "OVH",
+     "p_skill_given_goal": 0.017575,
+     "region_p_skill_given_goal": 0.012268
+    },
+    {
+     "skill_id": "managed-hosting",
+     "name": "マネージドホスティング",
+     "so_item": "Managed Hosting",
+     "p_skill_given_goal": 0.017575,
+     "region_p_skill_given_goal": 0.012268
+    },
+    {
+     "skill_id": "vultr",
+     "name": "Vultr",
+     "so_item": "Vultr",
+     "p_skill_given_goal": 0.004957,
+     "region_p_skill_given_goal": 0.012088
+    },
+    {
+     "skill_id": "scaleway",
+     "name": "Scaleway",
+     "so_item": "Scaleway",
+     "p_skill_given_goal": 0.004957,
+     "region_p_skill_given_goal": 0.00346
+    },
+    {
+     "skill_id": "colocation",
+     "name": "コロケーション",
+     "so_item": "Colocation",
+     "p_skill_given_goal": 0.000451,
+     "region_p_skill_given_goal": 0.000315
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 938,
+   "other_respondents": 21253,
+   "p_skill_given_goal": 0.091684,
+   "p_skill_given_other": 0.111514,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 39,
+   "region_other_respondents": 528,
+   "region_p_skill_given_goal": 0.070202,
+   "region_p_skill_given_other": 0.175762,
+   "quantity": 0.070202,
+   "quality": 28.5417,
+   "contribution": 0.020037,
+   "p_value": 0.971,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "dart",
+   "type": "skill",
+   "name": "Dart",
+   "category": "language",
+   "members": [
+    {
+     "skill_id": "dart",
+     "name": "Dart",
+     "so_item": "Dart",
+     "p_skill_given_goal": 0.052068,
+     "region_p_skill_given_goal": 0.047459
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 1402,
+   "other_respondents": 26661,
+   "p_skill_given_goal": 0.052068,
+   "p_skill_given_other": 0.058737,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 50,
+   "region_other_respondents": 686,
+   "region_p_skill_given_goal": 0.047459,
+   "region_p_skill_given_other": 0.066178,
+   "quantity": 0.047459,
+   "quality": 41.7635,
+   "contribution": 0.01982,
+   "p_value": 0.85,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "fastapi",
+   "type": "skill",
+   "name": "FastAPI",
+   "category": "framework",
+   "members": [
+    {
+     "skill_id": "fastapi",
+     "name": "FastAPI",
+     "so_item": "FastAPI",
+     "p_skill_given_goal": 0.050305,
+     "region_p_skill_given_goal": 0.062604
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 1312,
+   "other_respondents": 19588,
+   "p_skill_given_goal": 0.050305,
+   "p_skill_given_other": 0.1602,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 48,
+   "region_other_respondents": 505,
+   "region_p_skill_given_goal": 0.062604,
+   "region_p_skill_given_other": 0.139888,
+   "quantity": 0.062604,
+   "quality": 30.9168,
+   "contribution": 0.019355,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "message-broker",
+   "type": "group",
+   "name": "メッセージブローカー",
+   "members": [
+    {
+     "skill_id": "rabbitmq",
+     "name": "RabbitMQ",
+     "so_item": "RabbitMQ",
+     "p_skill_given_goal": 0.055821,
+     "region_p_skill_given_goal": 0.044757
+    },
+    {
+     "skill_id": "apache-kafka",
+     "name": "Apache Kafka",
+     "so_item": "Apache Kafka",
+     "p_skill_given_goal": 0.033493,
+     "region_p_skill_given_goal": 0.026854
+    }
+   ],
+   "source_years": [
+    2024
+   ],
+   "goal_respondents": 1254,
+   "other_respondents": 32570,
+   "p_skill_given_goal": 0.082137,
+   "p_skill_given_other": 0.230918,
+   "region_source_years": [
+    2023,
+    2024
+   ],
+   "region_goal_respondents": 20,
+   "region_other_respondents": 333,
+   "region_p_skill_given_goal": 0.065856,
+   "region_p_skill_given_other": 0.163521,
+   "quantity": 0.065856,
+   "quality": 28.7109,
+   "contribution": 0.018908,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "deno",
+   "type": "skill",
+   "name": "Deno",
+   "category": "framework",
+   "members": [
+    {
+     "skill_id": "deno",
+     "name": "Deno",
+     "so_item": "Deno",
+     "p_skill_given_goal": 0.04497,
+     "region_p_skill_given_goal": 0.04374
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 1312,
+   "other_respondents": 19588,
+   "p_skill_given_goal": 0.04497,
+   "p_skill_given_other": 0.038697,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 48,
+   "region_other_respondents": 505,
+   "region_p_skill_given_goal": 0.04374,
+   "region_p_skill_given_other": 0.058253,
+   "quantity": 0.04374,
+   "quality": 42.885,
+   "contribution": 0.018758,
+   "p_value": 0.128,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "gdscript",
+   "type": "skill",
+   "name": "GDScript",
+   "category": "language",
+   "members": [
+    {
+     "skill_id": "gdscript",
+     "name": "GDScript",
+     "so_item": "GDScript",
+     "p_skill_given_goal": 0.029244,
+     "region_p_skill_given_goal": 0.025713
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 1402,
+   "other_respondents": 26661,
+   "p_skill_given_goal": 0.029244,
+   "p_skill_given_other": 0.028956,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 50,
+   "region_other_respondents": 686,
+   "region_p_skill_given_goal": 0.025713,
+   "region_p_skill_given_other": 0.009574,
+   "quantity": 0.025713,
+   "quality": 72.8675,
+   "contribution": 0.018736,
+   "p_value": 0.475,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "fastify",
+   "type": "skill",
+   "name": "Fastify",
+   "category": "framework",
+   "members": [
+    {
+     "skill_id": "fastify",
+     "name": "Fastify",
+     "so_item": "Fastify",
+     "p_skill_given_goal": 0.025152,
+     "region_p_skill_given_goal": 0.031302
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 1312,
+   "other_respondents": 19588,
+   "p_skill_given_goal": 0.025152,
+   "p_skill_given_other": 0.030937,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 48,
+   "region_other_respondents": 505,
+   "region_p_skill_given_goal": 0.031302,
+   "region_p_skill_given_other": 0.024753,
+   "quantity": 0.031302,
+   "quality": 55.8415,
+   "contribution": 0.01748,
+   "p_value": 0.881,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "go",
+   "type": "skill",
+   "name": "Go",
+   "category": "language",
+   "members": [
+    {
+     "skill_id": "go",
+     "name": "Go",
+     "so_item": "Go",
+     "p_skill_given_goal": 0.0699,
+     "region_p_skill_given_goal": 0.066119
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 1402,
+   "other_respondents": 26661,
+   "p_skill_given_goal": 0.0699,
+   "p_skill_given_other": 0.174074,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 50,
+   "region_other_respondents": 686,
+   "region_p_skill_given_goal": 0.066119,
+   "region_p_skill_given_other": 0.186573,
+   "quantity": 0.066119,
+   "quality": 26.1658,
+   "contribution": 0.0173,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "aspnet",
+   "type": "skill",
+   "name": "ASP.NET",
+   "category": "framework",
+   "members": [
+    {
+     "skill_id": "aspnet",
+     "name": "ASP.NET",
+     "so_item": "ASP.NET",
+     "p_skill_given_goal": 0.039634,
+     "region_p_skill_given_goal": 0.048149
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 1312,
+   "other_respondents": 19588,
+   "p_skill_given_goal": 0.039634,
+   "p_skill_given_other": 0.159434,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 48,
+   "region_other_respondents": 505,
+   "region_p_skill_given_goal": 0.048149,
+   "region_p_skill_given_other": 0.088579,
+   "quantity": 0.048149,
+   "quality": 35.2152,
+   "contribution": 0.016956,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "visual-studio-solution",
+   "type": "skill",
+   "name": "Visual Studio Solution",
+   "category": "build_tool",
+   "members": [
+    {
+     "skill_id": "visual-studio-solution",
+     "name": "Visual Studio Solution",
+     "so_item": "Visual Studio Solution",
+     "p_skill_given_goal": 0.049281,
+     "region_p_skill_given_goal": 0.050779
+    }
+   ],
+   "source_years": [
+    2024
+   ],
+   "goal_respondents": 2922,
+   "other_respondents": 42346,
+   "p_skill_given_goal": 0.049281,
+   "p_skill_given_other": 0.166722,
+   "region_source_years": [
+    2023,
+    2024
+   ],
+   "region_goal_respondents": 37,
+   "region_other_respondents": 493,
+   "region_p_skill_given_goal": 0.050779,
+   "region_p_skill_given_other": 0.11411,
+   "quantity": 0.050779,
+   "quality": 30.7959,
+   "contribution": 0.015638,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "c",
+   "type": "skill",
+   "name": "C",
+   "category": "language",
+   "members": [
+    {
+     "skill_id": "c",
+     "name": "C",
+     "so_item": "C",
+     "p_skill_given_goal": 0.067047,
+     "region_p_skill_given_goal": 0.064355
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 1402,
+   "other_respondents": 26661,
+   "p_skill_given_goal": 0.067047,
+   "p_skill_given_other": 0.19913,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 50,
+   "region_other_respondents": 686,
+   "region_p_skill_given_goal": 0.064355,
+   "region_p_skill_given_other": 0.223119,
+   "quantity": 0.064355,
+   "quality": 22.3865,
+   "contribution": 0.014407,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "rust",
+   "type": "skill",
+   "name": "Rust",
+   "category": "language",
+   "members": [
+    {
+     "skill_id": "rust",
+     "name": "Rust",
+     "so_item": "Rust",
+     "p_skill_given_goal": 0.058488,
+     "region_p_skill_given_goal": 0.059065
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 1402,
+   "other_respondents": 26661,
+   "p_skill_given_goal": 0.058488,
+   "p_skill_given_other": 0.143618,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 50,
+   "region_other_respondents": 686,
+   "region_p_skill_given_goal": 0.059065,
+   "region_p_skill_given_other": 0.18336,
+   "quantity": 0.059065,
+   "quality": 24.3644,
+   "contribution": 0.014391,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "virtualization",
+   "type": "group",
+   "name": "仮想化基盤",
+   "members": [
+    {
+     "skill_id": "vmware",
+     "name": "VMware",
+     "so_item": "VMware",
+     "p_skill_given_goal": 0.030194,
+     "region_p_skill_given_goal": 0.038332
+    },
+    {
+     "skill_id": "openstack",
+     "name": "OpenStack",
+     "so_item": "OpenStack",
+     "p_skill_given_goal": 0.004507,
+     "region_p_skill_given_goal": 0.003146
+    }
+   ],
+   "source_years": [
+    2024
+   ],
+   "goal_respondents": 2219,
+   "other_respondents": 35012,
+   "p_skill_given_goal": 0.033348,
+   "p_skill_given_other": 0.085171,
+   "region_source_years": [
+    2023,
+    2024
+   ],
+   "region_goal_respondents": 35,
+   "region_other_respondents": 414,
+   "region_p_skill_given_goal": 0.040534,
+   "region_p_skill_given_other": 0.086665,
+   "quantity": 0.040534,
+   "quality": 31.8667,
+   "contribution": 0.012917,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "qt",
+   "type": "skill",
+   "name": "Qt",
+   "category": "library",
+   "members": [
+    {
+     "skill_id": "qt",
+     "name": "Qt",
+     "so_item": "Qt",
+     "p_skill_given_goal": 0.038278,
+     "region_p_skill_given_goal": 0.040601
+    }
+   ],
+   "source_years": [
+    2024
+   ],
+   "goal_respondents": 1254,
+   "other_respondents": 32570,
+   "p_skill_given_goal": 0.038278,
+   "p_skill_given_other": 0.081517,
+   "region_source_years": [
+    2023,
+    2024
+   ],
+   "region_goal_respondents": 20,
+   "region_other_respondents": 333,
+   "region_p_skill_given_goal": 0.040601,
+   "region_p_skill_given_other": 0.088414,
+   "quantity": 0.040601,
+   "quality": 31.4699,
+   "contribution": 0.012777,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "aspnet-core",
+   "type": "skill",
+   "name": "ASP.NET Core",
+   "category": "framework",
+   "members": [
+    {
+     "skill_id": "aspnet-core",
+     "name": "ASP.NET Core",
+     "so_item": "ASP.NET Core",
+     "p_skill_given_goal": 0.047256,
+     "region_p_skill_given_goal": 0.045175
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 1312,
+   "other_respondents": 19588,
+   "p_skill_given_goal": 0.047256,
+   "p_skill_given_other": 0.222432,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 48,
+   "region_other_respondents": 505,
+   "region_p_skill_given_goal": 0.045175,
+   "region_p_skill_given_other": 0.126293,
+   "quantity": 0.045175,
+   "quality": 26.346,
+   "contribution": 0.011902,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "microsoft-access",
+   "type": "skill",
+   "name": "Microsoft Access",
+   "category": "database",
+   "members": [
+    {
+     "skill_id": "microsoft-access",
+     "name": "Microsoft Access",
+     "so_item": "Microsoft Access",
+     "p_skill_given_goal": 0.026022,
+     "region_p_skill_given_goal": 0.028
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 807,
+   "other_respondents": 22578,
+   "p_skill_given_goal": 0.026022,
+   "p_skill_given_other": 0.04531,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 30,
+   "region_other_respondents": 566,
+   "region_p_skill_given_goal": 0.028,
+   "region_p_skill_given_other": 0.044312,
+   "quantity": 0.028,
+   "quality": 38.721,
+   "contribution": 0.010842,
+   "p_value": 0.995,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "ruby",
+   "type": "skill",
+   "name": "Ruby",
+   "category": "language",
+   "members": [
+    {
+     "skill_id": "ruby",
+     "name": "Ruby",
+     "so_item": "Ruby",
+     "p_skill_given_goal": 0.038516,
+     "region_p_skill_given_goal": 0.039083
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 1402,
+   "other_respondents": 26661,
+   "p_skill_given_goal": 0.038516,
+   "p_skill_given_other": 0.068752,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 50,
+   "region_other_respondents": 686,
+   "region_p_skill_given_goal": 0.039083,
+   "region_p_skill_given_other": 0.105049,
+   "quantity": 0.039083,
+   "quality": 27.1162,
+   "contribution": 0.010598,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "solidity",
+   "type": "skill",
+   "name": "Solidity",
+   "category": "language",
+   "members": [
+    {
+     "skill_id": "solidity",
+     "name": "Solidity",
+     "so_item": "Solidity",
+     "p_skill_given_goal": 0.006211,
+     "region_p_skill_given_goal": 0.020529
+    }
+   ],
+   "source_years": [
+    2024
+   ],
+   "goal_respondents": 3220,
+   "other_respondents": 46960,
+   "p_skill_given_goal": 0.006211,
+   "p_skill_given_other": 0.010988,
+   "region_source_years": [
+    2023,
+    2024
+   ],
+   "region_goal_respondents": 41,
+   "region_other_respondents": 532,
+   "region_p_skill_given_goal": 0.020529,
+   "region_p_skill_given_other": 0.021029,
+   "quantity": 0.020529,
+   "quality": 49.3979,
+   "contribution": 0.010141,
+   "p_value": 0.995,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "cpp",
+   "type": "skill",
+   "name": "C++",
+   "category": "language",
+   "members": [
+    {
+     "skill_id": "cpp",
+     "name": "C++",
+     "so_item": "C++",
+     "p_skill_given_goal": 0.077033,
+     "region_p_skill_given_goal": 0.055248
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 1402,
+   "other_respondents": 26661,
+   "p_skill_given_goal": 0.077033,
+   "p_skill_given_other": 0.221672,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 50,
+   "region_other_respondents": 686,
+   "region_p_skill_given_goal": 0.055248,
+   "region_p_skill_given_other": 0.250272,
+   "quantity": 0.055248,
+   "quality": 18.0833,
+   "contribution": 0.009991,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "matlab",
+   "type": "skill",
+   "name": "MATLAB",
+   "category": "language",
+   "members": [
+    {
+     "skill_id": "matlab",
+     "name": "MATLAB",
+     "so_item": "MATLAB",
+     "p_skill_given_goal": 0.014979,
+     "region_p_skill_given_goal": 0.024536
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 1402,
+   "other_respondents": 26661,
+   "p_skill_given_goal": 0.014979,
+   "p_skill_given_other": 0.033607,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 50,
+   "region_other_respondents": 686,
+   "region_p_skill_given_goal": 0.024536,
+   "region_p_skill_given_other": 0.038752,
+   "quantity": 0.024536,
+   "quality": 38.7689,
+   "contribution": 0.009512,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "spring-boot",
+   "type": "skill",
+   "name": "Spring Boot",
+   "category": "framework",
+   "members": [
+    {
+     "skill_id": "spring-boot",
+     "name": "Spring Boot",
+     "so_item": "Spring Boot",
+     "p_skill_given_goal": 0.054116,
+     "region_p_skill_given_goal": 0.033964
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 1312,
+   "other_respondents": 19588,
+   "p_skill_given_goal": 0.054116,
+   "p_skill_given_other": 0.162293,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 48,
+   "region_other_respondents": 505,
+   "region_p_skill_given_goal": 0.033964,
+   "region_p_skill_given_other": 0.099214,
+   "quantity": 0.033964,
+   "quality": 25.5028,
+   "contribution": 0.008662,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "vba",
+   "type": "skill",
+   "name": "VBA",
+   "category": "language",
+   "members": [
+    {
+     "skill_id": "vba",
+     "name": "VBA",
+     "so_item": "VBA",
+     "p_skill_given_goal": 0.015692,
+     "region_p_skill_given_goal": 0.024977
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 1402,
+   "other_respondents": 26661,
+   "p_skill_given_goal": 0.015692,
+   "p_skill_given_other": 0.041971,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 50,
+   "region_other_respondents": 686,
+   "region_p_skill_given_goal": 0.024977,
+   "region_p_skill_given_other": 0.047458,
+   "quantity": 0.024977,
+   "quality": 34.4818,
+   "contribution": 0.008612,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "godot",
+   "type": "skill",
+   "name": "Godot",
+   "category": "tool",
+   "members": [
+    {
+     "skill_id": "godot",
+     "name": "Godot",
+     "so_item": "Godot",
+     "p_skill_given_goal": 0.024298,
+     "region_p_skill_given_goal": 0.016673
+    }
+   ],
+   "source_years": [
+    2024
+   ],
+   "goal_respondents": 2922,
+   "other_respondents": 42346,
+   "p_skill_given_goal": 0.024298,
+   "p_skill_given_other": 0.038516,
+   "region_source_years": [
+    2023,
+    2024
+   ],
+   "region_goal_respondents": 37,
+   "region_other_respondents": 493,
+   "region_p_skill_given_goal": 0.016673,
+   "region_p_skill_given_other": 0.015884,
+   "quantity": 0.016673,
+   "quality": 51.2114,
+   "contribution": 0.008538,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "ruby-on-rails",
+   "type": "skill",
+   "name": "Ruby on Rails",
+   "category": "framework",
+   "members": [
+    {
+     "skill_id": "ruby-on-rails",
+     "name": "Ruby on Rails",
+     "so_item": "Ruby on Rails",
+     "p_skill_given_goal": 0.03125,
+     "region_p_skill_given_goal": 0.035129
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 1312,
+   "other_respondents": 19588,
+   "p_skill_given_goal": 0.03125,
+   "p_skill_given_other": 0.064631,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 48,
+   "region_other_respondents": 505,
+   "region_p_skill_given_goal": 0.035129,
+   "region_p_skill_given_other": 0.109624,
+   "quantity": 0.035129,
+   "quality": 24.2682,
+   "contribution": 0.008525,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "unreal-engine",
+   "type": "skill",
+   "name": "Unreal Engine",
+   "category": "tool",
+   "members": [
+    {
+     "skill_id": "unreal-engine",
+     "name": "Unreal Engine",
+     "so_item": "Unreal Engine",
+     "p_skill_given_goal": 0.017796,
+     "region_p_skill_given_goal": 0.020693
+    }
+   ],
+   "source_years": [
+    2024
+   ],
+   "goal_respondents": 2922,
+   "other_respondents": 42346,
+   "p_skill_given_goal": 0.017796,
+   "p_skill_given_other": 0.02848,
+   "region_source_years": [
+    2023,
+    2024
+   ],
+   "region_goal_respondents": 37,
+   "region_other_respondents": 493,
+   "region_p_skill_given_goal": 0.020693,
+   "region_p_skill_given_other": 0.030152,
+   "quantity": 0.020693,
+   "quality": 40.6985,
+   "contribution": 0.008422,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "scikit-learn",
+   "type": "skill",
+   "name": "scikit-learn",
+   "category": "library",
+   "members": [
+    {
+     "skill_id": "scikit-learn",
+     "name": "scikit-learn",
+     "so_item": "Scikit-Learn",
+     "p_skill_given_goal": 0.043062,
+     "region_p_skill_given_goal": 0.034527
+    }
+   ],
+   "source_years": [
+    2024
+   ],
+   "goal_respondents": 1254,
+   "other_respondents": 32570,
+   "p_skill_given_goal": 0.043062,
+   "p_skill_given_other": 0.118882,
+   "region_source_years": [
+    2023,
+    2024
+   ],
+   "region_goal_respondents": 20,
+   "region_other_respondents": 333,
+   "region_p_skill_given_goal": 0.034527,
+   "region_p_skill_given_other": 0.127126,
+   "quantity": 0.034527,
+   "quality": 21.3585,
+   "contribution": 0.007374,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "configuration-management",
+   "type": "group",
+   "name": "構成管理",
+   "members": [
+    {
+     "skill_id": "ansible",
+     "name": "Ansible",
+     "so_item": "Ansible",
+     "p_skill_given_goal": 0.035181,
+     "region_p_skill_given_goal": 0.031552
+    },
+    {
+     "skill_id": "puppet",
+     "name": "Puppet",
+     "so_item": "Puppet",
+     "p_skill_given_goal": 0.003422,
+     "region_p_skill_given_goal": 0.01083
+    },
+    {
+     "skill_id": "chef",
+     "name": "Chef",
+     "so_item": "Chef",
+     "p_skill_given_goal": 0.001711,
+     "region_p_skill_given_goal": 0.009656
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 938,
+   "other_respondents": 21253,
+   "p_skill_given_goal": 0.035181,
+   "p_skill_given_other": 0.12577,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 41,
+   "region_other_respondents": 607,
+   "region_p_skill_given_goal": 0.031552,
+   "region_p_skill_given_other": 0.106374,
+   "quantity": 0.031552,
+   "quality": 22.8759,
+   "contribution": 0.007218,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "gtk",
+   "type": "skill",
+   "name": "GTK",
+   "category": "library",
+   "members": [
+    {
+     "skill_id": "gtk",
+     "name": "GTK",
+     "so_item": "GTK",
+     "p_skill_given_goal": 0.013557,
+     "region_p_skill_given_goal": 0.02078
+    }
+   ],
+   "source_years": [
+    2024
+   ],
+   "goal_respondents": 1254,
+   "other_respondents": 32570,
+   "p_skill_given_goal": 0.013557,
+   "p_skill_given_other": 0.026712,
+   "region_source_years": [
+    2023,
+    2024
+   ],
+   "region_goal_respondents": 20,
+   "region_other_respondents": 333,
+   "region_p_skill_given_goal": 0.02078,
+   "region_p_skill_given_other": 0.043878,
+   "quantity": 0.02078,
+   "quality": 32.1388,
+   "contribution": 0.006679,
+   "p_value": 0.998,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "qwik",
+   "type": "skill",
+   "name": "Qwik",
+   "category": "framework",
+   "members": [
+    {
+     "skill_id": "qwik",
+     "name": "Qwik",
+     "so_item": "Qwik",
+     "p_skill_given_goal": 0.008897,
+     "region_p_skill_given_goal": 0.007205
+    }
+   ],
+   "source_years": [
+    2023
+   ],
+   "goal_respondents": 4833,
+   "other_respondents": 51468,
+   "p_skill_given_goal": 0.008897,
+   "p_skill_given_other": 0.004955,
+   "region_source_years": [
+    2023
+   ],
+   "region_goal_respondents": 19,
+   "region_other_respondents": 216,
+   "region_p_skill_given_goal": 0.007205,
+   "region_p_skill_given_other": 0.00135,
+   "quantity": 0.007205,
+   "quality": 84.2195,
+   "contribution": 0.006068,
+   "p_value": 0.000152,
+   "significant": true,
+   "selected": false
+  },
+  {
+   "unit_id": "haskell",
+   "type": "skill",
+   "name": "Haskell",
+   "category": "language",
+   "members": [
+    {
+     "skill_id": "haskell",
+     "name": "Haskell",
+     "so_item": "Haskell",
+     "p_skill_given_goal": 0.007143,
+     "region_p_skill_given_goal": 0.012944
+    }
+   ],
+   "source_years": [
+    2024
+   ],
+   "goal_respondents": 3220,
+   "other_respondents": 46960,
+   "p_skill_given_goal": 0.007143,
+   "p_skill_given_other": 0.016844,
+   "region_source_years": [
+    2023,
+    2024
+   ],
+   "region_goal_respondents": 41,
+   "region_other_respondents": 532,
+   "region_p_skill_given_goal": 0.012944,
+   "region_p_skill_given_other": 0.018539,
+   "quantity": 0.012944,
+   "quality": 41.1137,
+   "contribution": 0.005322,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "pocketbase",
+   "type": "skill",
+   "name": "Pocketbase",
+   "category": "database",
+   "members": [
+    {
+     "skill_id": "pocketbase",
+     "name": "Pocketbase",
+     "so_item": "Pocketbase",
+     "p_skill_given_goal": 0.009913,
+     "region_p_skill_given_goal": 0.009792
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 807,
+   "other_respondents": 22578,
+   "p_skill_given_goal": 0.009913,
+   "p_skill_given_other": 0.009434,
+   "region_source_years": [
+    2025
+   ],
+   "region_goal_respondents": 1,
+   "region_other_respondents": 121,
+   "region_p_skill_given_goal": 0.009792,
+   "region_p_skill_given_other": 0.008733,
+   "quantity": 0.009792,
+   "quality": 52.8586,
+   "contribution": 0.005176,
+   "p_value": 0.445,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "lisp",
+   "type": "skill",
+   "name": "Lisp",
+   "category": "language",
+   "members": [
+    {
+     "skill_id": "lisp",
+     "name": "Lisp",
+     "so_item": "Lisp",
+     "p_skill_given_goal": 0.009986,
+     "region_p_skill_given_goal": 0.013811
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 1402,
+   "other_respondents": 26661,
+   "p_skill_given_goal": 0.009986,
+   "p_skill_given_other": 0.02168,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 50,
+   "region_other_respondents": 686,
+   "region_p_skill_given_goal": 0.013811,
+   "region_p_skill_given_other": 0.027062,
+   "quantity": 0.013811,
+   "quality": 33.7898,
+   "contribution": 0.004667,
+   "p_value": 0.999,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "visual-basic-dotnet",
+   "type": "skill",
+   "name": "Visual Basic (.Net)",
+   "category": "language",
+   "members": [
+    {
+     "skill_id": "visual-basic-dotnet",
+     "name": "Visual Basic (.Net)",
+     "so_item": "Visual Basic (.Net)",
+     "p_skill_given_goal": 0.024964,
+     "region_p_skill_given_goal": 0.015429
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 1402,
+   "other_respondents": 26661,
+   "p_skill_given_goal": 0.024964,
+   "p_skill_given_other": 0.045085,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 50,
+   "region_other_respondents": 686,
+   "region_p_skill_given_goal": 0.015429,
+   "region_p_skill_given_other": 0.036051,
+   "quantity": 0.015429,
+   "quality": 29.9706,
+   "contribution": 0.004624,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "symfony",
+   "type": "skill",
+   "name": "Symfony",
+   "category": "framework",
+   "members": [
+    {
+     "skill_id": "symfony",
+     "name": "Symfony",
+     "so_item": "Symfony",
+     "p_skill_given_goal": 0.022104,
+     "region_p_skill_given_goal": 0.013873
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 1312,
+   "other_respondents": 19588,
+   "p_skill_given_goal": 0.022104,
+   "p_skill_given_other": 0.044772,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 48,
+   "region_other_respondents": 505,
+   "region_p_skill_given_goal": 0.013873,
+   "region_p_skill_given_other": 0.02837,
+   "quantity": 0.013873,
+   "quality": 32.8403,
+   "contribution": 0.004556,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "delphi",
+   "type": "skill",
+   "name": "Delphi",
+   "category": "language",
+   "members": [
+    {
+     "skill_id": "delphi",
+     "name": "Delphi",
+     "so_item": "Delphi",
+     "p_skill_given_goal": 0.007846,
+     "region_p_skill_given_goal": 0.012488
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 1402,
+   "other_respondents": 26661,
+   "p_skill_given_goal": 0.007846,
+   "p_skill_given_other": 0.026968,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 50,
+   "region_other_respondents": 686,
+   "region_p_skill_given_goal": 0.012488,
+   "region_p_skill_given_other": 0.022404,
+   "quantity": 0.012488,
+   "quality": 35.7911,
+   "contribution": 0.00447,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "neo4j",
+   "type": "skill",
+   "name": "Neo4J",
+   "category": "database",
+   "members": [
+    {
+     "skill_id": "neo4j",
+     "name": "Neo4J",
+     "so_item": "Neo4J",
+     "p_skill_given_goal": 0.01487,
+     "region_p_skill_given_goal": 0.010847
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 807,
+   "other_respondents": 22578,
+   "p_skill_given_goal": 0.01487,
+   "p_skill_given_other": 0.02684,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 30,
+   "region_other_respondents": 566,
+   "region_p_skill_given_goal": 0.010847,
+   "region_p_skill_given_other": 0.015723,
+   "quantity": 0.010847,
+   "quality": 40.8247,
+   "contribution": 0.004428,
+   "p_value": 0.981,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "axum",
+   "type": "skill",
+   "name": "Axum",
+   "category": "framework",
+   "members": [
+    {
+     "skill_id": "axum",
+     "name": "Axum",
+     "so_item": "Axum",
+     "p_skill_given_goal": 0.004573,
+     "region_p_skill_given_goal": 0.015239
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 1312,
+   "other_respondents": 19588,
+   "p_skill_given_goal": 0.004573,
+   "p_skill_given_other": 0.028334,
+   "region_source_years": [
+    2025
+   ],
+   "region_goal_respondents": 9,
+   "region_other_respondents": 104,
+   "region_p_skill_given_goal": 0.015239,
+   "region_p_skill_given_other": 0.039439,
+   "quantity": 0.015239,
+   "quality": 27.8704,
+   "contribution": 0.004247,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "native-compiler",
+   "type": "group",
+   "name": "C/C++ コンパイラ",
+   "members": [
+    {
+     "skill_id": "gcc",
+     "name": "GCC",
+     "so_item": "GNU GCC",
+     "p_skill_given_goal": 0.020705,
+     "region_p_skill_given_goal": 0.017286
+    },
+    {
+     "skill_id": "clang",
+     "name": "Clang",
+     "so_item": "LLVM's Clang",
+     "p_skill_given_goal": 0.011674,
+     "region_p_skill_given_goal": 0.009746
+    },
+    {
+     "skill_id": "msvc",
+     "name": "MSVC",
+     "so_item": "MSVC",
+     "p_skill_given_goal": 0.00793,
+     "region_p_skill_given_goal": 0.00662
+    }
+   ],
+   "source_years": [
+    2023
+   ],
+   "goal_respondents": 4540,
+   "other_respondents": 60056,
+   "p_skill_given_goal": 0.035242,
+   "p_skill_given_other": 0.158535,
+   "region_source_years": [
+    2023
+   ],
+   "region_goal_respondents": 16,
+   "region_other_respondents": 263,
+   "region_p_skill_given_goal": 0.029423,
+   "region_p_skill_given_other": 0.179778,
+   "quantity": 0.029423,
+   "quality": 14.0646,
+   "contribution": 0.004138,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "mfc",
+   "type": "skill",
+   "name": "MFC",
+   "category": "library",
+   "members": [
+    {
+     "skill_id": "mfc",
+     "name": "MFC",
+     "so_item": "MFC",
+     "p_skill_given_goal": 0.002392,
+     "region_p_skill_given_goal": 0.011829
+    }
+   ],
+   "source_years": [
+    2024
+   ],
+   "goal_respondents": 1254,
+   "other_respondents": 32570,
+   "p_skill_given_goal": 0.002392,
+   "p_skill_given_other": 0.012865,
+   "region_source_years": [
+    2023,
+    2024
+   ],
+   "region_goal_respondents": 20,
+   "region_other_respondents": 333,
+   "region_p_skill_given_goal": 0.011829,
+   "region_p_skill_given_other": 0.024259,
+   "quantity": 0.011829,
+   "quality": 32.7782,
+   "contribution": 0.003877,
+   "p_value": 0.999,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "gleam",
+   "type": "skill",
+   "name": "Gleam",
+   "category": "language",
+   "members": [
+    {
+     "skill_id": "gleam",
+     "name": "Gleam",
+     "so_item": "Gleam",
+     "p_skill_given_goal": 0.008559,
+     "region_p_skill_given_goal": 0.007702
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 1402,
+   "other_respondents": 26661,
+   "p_skill_given_goal": 0.008559,
+   "p_skill_given_other": 0.010127,
+   "region_source_years": [
+    2025
+   ],
+   "region_goal_respondents": 9,
+   "region_other_respondents": 154,
+   "region_p_skill_given_goal": 0.007702,
+   "region_p_skill_given_other": 0.007745,
+   "quantity": 0.007702,
+   "quality": 49.8621,
+   "contribution": 0.003841,
+   "p_value": 0.717,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "assembly",
+   "type": "skill",
+   "name": "Assembly",
+   "category": "language",
+   "members": [
+    {
+     "skill_id": "assembly",
+     "name": "Assembly",
+     "so_item": "Assembly",
+     "p_skill_given_goal": 0.024964,
+     "region_p_skill_given_goal": 0.015429
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 1402,
+   "other_respondents": 26661,
+   "p_skill_given_goal": 0.024964,
+   "p_skill_given_other": 0.059263,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 50,
+   "region_other_respondents": 686,
+   "region_p_skill_given_goal": 0.015429,
+   "region_p_skill_given_other": 0.054498,
+   "quantity": 0.015429,
+   "quality": 22.0642,
+   "contribution": 0.003404,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "flow",
+   "type": "skill",
+   "name": "Flow",
+   "category": "language",
+   "members": [
+    {
+     "skill_id": "flow",
+     "name": "Flow",
+     "so_item": "Flow",
+     "p_skill_given_goal": 0.004773,
+     "region_p_skill_given_goal": 0.003827
+    }
+   ],
+   "source_years": [
+    2023
+   ],
+   "goal_respondents": 5028,
+   "other_respondents": 66328,
+   "p_skill_given_goal": 0.004773,
+   "p_skill_given_other": 0.002322,
+   "region_source_years": [
+    2023
+   ],
+   "region_goal_respondents": 20,
+   "region_other_respondents": 290,
+   "region_p_skill_given_goal": 0.003827,
+   "region_p_skill_given_other": 0.000506,
+   "quantity": 0.003827,
+   "quality": 88.3138,
+   "contribution": 0.00338,
+   "p_value": 0.00039,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "hugging-face-transformers",
+   "type": "skill",
+   "name": "Hugging Face Transformers",
+   "category": "library",
+   "members": [
+    {
+     "skill_id": "hugging-face-transformers",
+     "name": "Hugging Face Transformers",
+     "so_item": "Hugging Face Transformers",
+     "p_skill_given_goal": 0.019139,
+     "region_p_skill_given_goal": 0.015345
+    }
+   ],
+   "source_years": [
+    2024
+   ],
+   "goal_respondents": 1254,
+   "other_respondents": 32570,
+   "p_skill_given_goal": 0.019139,
+   "p_skill_given_other": 0.051612,
+   "region_source_years": [
+    2023,
+    2024
+   ],
+   "region_goal_respondents": 20,
+   "region_other_respondents": 333,
+   "region_p_skill_given_goal": 0.015345,
+   "region_p_skill_given_other": 0.055993,
+   "quantity": 0.015345,
+   "quality": 21.5105,
+   "contribution": 0.003301,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "sas",
+   "type": "skill",
+   "name": "SAS",
+   "category": "language",
+   "members": [
+    {
+     "skill_id": "sas",
+     "name": "SAS",
+     "so_item": "SAS",
+     "p_skill_given_goal": 0.006563,
+     "region_p_skill_given_goal": 0.005262
+    }
+   ],
+   "source_years": [
+    2023
+   ],
+   "goal_respondents": 5028,
+   "other_respondents": 66328,
+   "p_skill_given_goal": 0.006563,
+   "p_skill_given_other": 0.004689,
+   "region_source_years": [
+    2023
+   ],
+   "region_goal_respondents": 20,
+   "region_other_respondents": 290,
+   "region_p_skill_given_goal": 0.005262,
+   "region_p_skill_given_other": 0.003719,
+   "quantity": 0.005262,
+   "quality": 58.5927,
+   "contribution": 0.003083,
+   "p_value": 0.0322,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "groovy",
+   "type": "skill",
+   "name": "Groovy",
+   "category": "language",
+   "members": [
+    {
+     "skill_id": "groovy",
+     "name": "Groovy",
+     "so_item": "Groovy",
+     "p_skill_given_goal": 0.015692,
+     "region_p_skill_given_goal": 0.009698
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 1402,
+   "other_respondents": 26661,
+   "p_skill_given_goal": 0.015692,
+   "p_skill_given_other": 0.054049,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 50,
+   "region_other_respondents": 686,
+   "region_p_skill_given_goal": 0.009698,
+   "region_p_skill_given_other": 0.022653,
+   "quantity": 0.009698,
+   "quality": 29.9775,
+   "contribution": 0.002907,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "native-build",
+   "type": "group",
+   "name": "C/C++ ビルドツール",
+   "members": [
+    {
+     "skill_id": "cmake",
+     "name": "CMake",
+     "so_item": "CMake",
+     "p_skill_given_goal": 0.031057,
+     "region_p_skill_given_goal": 0.036249
+    },
+    {
+     "skill_id": "ninja",
+     "name": "Ninja",
+     "so_item": "Ninja",
+     "p_skill_given_goal": 0.012793,
+     "region_p_skill_given_goal": 0.00849
+    },
+    {
+     "skill_id": "qmake",
+     "name": "qmake",
+     "so_item": "QMake",
+     "p_skill_given_goal": 0.002643,
+     "region_p_skill_given_goal": 0.002207
+    },
+    {
+     "skill_id": "meson",
+     "name": "Meson",
+     "so_item": "Meson",
+     "p_skill_given_goal": 0.000881,
+     "region_p_skill_given_goal": 0.000736
+    },
+    {
+     "skill_id": "build2",
+     "name": "build2",
+     "so_item": "build2",
+     "p_skill_given_goal": 0.000661,
+     "region_p_skill_given_goal": 0.000552
+    },
+    {
+     "skill_id": "scons",
+     "name": "SCons",
+     "so_item": "SCons",
+     "p_skill_given_goal": 0.0,
+     "region_p_skill_given_goal": 0.0
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 938,
+   "other_respondents": 21253,
+   "p_skill_given_goal": 0.012793,
+   "p_skill_given_other": 0.049687,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 41,
+   "region_other_respondents": 607,
+   "region_p_skill_given_goal": 0.016694,
+   "region_p_skill_given_other": 0.082889,
+   "quantity": 0.016694,
+   "quality": 16.7636,
+   "contribution": 0.002798,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "uno-platform",
+   "type": "skill",
+   "name": "Uno Platform",
+   "category": "library",
+   "members": [
+    {
+     "skill_id": "uno-platform",
+     "name": "Uno Platform",
+     "so_item": "Uno Platform",
+     "p_skill_given_goal": 0.004032,
+     "region_p_skill_given_goal": 0.003629
+    }
+   ],
+   "source_years": [
+    2023
+   ],
+   "goal_respondents": 1984,
+   "other_respondents": 45107,
+   "p_skill_given_goal": 0.004032,
+   "p_skill_given_other": 0.00572,
+   "region_source_years": [
+    2023
+   ],
+   "region_goal_respondents": 9,
+   "region_other_respondents": 176,
+   "region_p_skill_given_goal": 0.003629,
+   "region_p_skill_given_other": 0.001801,
+   "quantity": 0.003629,
+   "quality": 66.8275,
+   "contribution": 0.002425,
+   "p_value": 0.837,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "msbuild",
+   "type": "skill",
+   "name": "MSBuild",
+   "category": "build_tool",
+   "members": [
+    {
+     "skill_id": "msbuild",
+     "name": "MSBuild",
+     "so_item": "MSBuild",
+     "p_skill_given_goal": 0.021322,
+     "region_p_skill_given_goal": 0.014151
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 938,
+   "other_respondents": 21253,
+   "p_skill_given_goal": 0.021322,
+   "p_skill_given_other": 0.118901,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 41,
+   "region_other_respondents": 607,
+   "region_p_skill_given_goal": 0.014151,
+   "region_p_skill_given_other": 0.075039,
+   "quantity": 0.014151,
+   "quality": 15.8657,
+   "contribution": 0.002245,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "perl",
+   "type": "skill",
+   "name": "Perl",
+   "category": "language",
+   "members": [
+    {
+     "skill_id": "perl",
+     "name": "Perl",
+     "so_item": "Perl",
+     "p_skill_given_goal": 0.006419,
+     "region_p_skill_given_goal": 0.011607
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 1402,
+   "other_respondents": 26661,
+   "p_skill_given_goal": 0.006419,
+   "p_skill_given_other": 0.039196,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 50,
+   "region_other_respondents": 686,
+   "region_p_skill_given_goal": 0.011607,
+   "region_p_skill_given_other": 0.049773,
+   "quantity": 0.011607,
+   "quality": 18.9098,
+   "contribution": 0.002195,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "ada",
+   "type": "skill",
+   "name": "Ada",
+   "category": "language",
+   "members": [
+    {
+     "skill_id": "ada",
+     "name": "Ada",
+     "so_item": "Ada",
+     "p_skill_given_goal": 0.008559,
+     "region_p_skill_given_goal": 0.00529
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 1402,
+   "other_respondents": 26661,
+   "p_skill_given_goal": 0.008559,
+   "p_skill_given_other": 0.012528,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 50,
+   "region_other_respondents": 686,
+   "region_p_skill_given_goal": 0.00529,
+   "region_p_skill_given_other": 0.007841,
+   "quantity": 0.00529,
+   "quality": 40.2847,
+   "contribution": 0.002131,
+   "p_value": 0.905,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "duckdb",
+   "type": "skill",
+   "name": "DuckDB",
+   "category": "database",
+   "members": [
+    {
+     "skill_id": "duckdb",
+     "name": "DuckDB",
+     "so_item": "DuckDB",
+     "p_skill_given_goal": 0.011152,
+     "region_p_skill_given_goal": 0.008136
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 807,
+   "other_respondents": 22578,
+   "p_skill_given_goal": 0.011152,
+   "p_skill_given_other": 0.035123,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 30,
+   "region_other_respondents": 566,
+   "region_p_skill_given_goal": 0.008136,
+   "region_p_skill_given_other": 0.02758,
+   "quantity": 0.008136,
+   "quality": 22.7788,
+   "contribution": 0.001853,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "r",
+   "type": "skill",
+   "name": "R",
+   "category": "language",
+   "members": [
+    {
+     "skill_id": "r",
+     "name": "R",
+     "so_item": "R",
+     "p_skill_given_goal": 0.014979,
+     "region_p_skill_given_goal": 0.009257
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 1402,
+   "other_respondents": 26661,
+   "p_skill_given_goal": 0.014979,
+   "p_skill_given_other": 0.047635,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 50,
+   "region_other_respondents": 686,
+   "region_p_skill_given_goal": 0.009257,
+   "region_p_skill_given_other": 0.037624,
+   "quantity": 0.009257,
+   "quality": 19.7462,
+   "contribution": 0.001828,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "hadoop",
+   "type": "skill",
+   "name": "Hadoop",
+   "category": "library",
+   "members": [
+    {
+     "skill_id": "hadoop",
+     "name": "Hadoop",
+     "so_item": "Hadoop",
+     "p_skill_given_goal": 0.009569,
+     "region_p_skill_given_goal": 0.007673
+    }
+   ],
+   "source_years": [
+    2024
+   ],
+   "goal_respondents": 1254,
+   "other_respondents": 32570,
+   "p_skill_given_goal": 0.009569,
+   "p_skill_given_other": 0.028155,
+   "region_source_years": [
+    2023,
+    2024
+   ],
+   "region_goal_respondents": 20,
+   "region_other_respondents": 333,
+   "region_p_skill_given_goal": 0.007673,
+   "region_p_skill_given_other": 0.027247,
+   "quantity": 0.007673,
+   "quality": 21.9719,
+   "contribution": 0.001686,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "yii",
+   "type": "skill",
+   "name": "Yii",
+   "category": "framework",
+   "members": [
+    {
+     "skill_id": "yii",
+     "name": "Yii",
+     "so_item": "Yii 2",
+     "p_skill_given_goal": 0.004891,
+     "region_p_skill_given_goal": 0.003921
+    }
+   ],
+   "source_years": [
+    2024
+   ],
+   "goal_respondents": 3067,
+   "other_respondents": 36057,
+   "p_skill_given_goal": 0.004891,
+   "p_skill_given_other": 0.011094,
+   "region_source_years": [
+    2024
+   ],
+   "region_goal_respondents": 20,
+   "region_other_respondents": 185,
+   "region_p_skill_given_goal": 0.003921,
+   "region_p_skill_given_other": 0.007136,
+   "quantity": 0.003921,
+   "quality": 35.4636,
+   "contribution": 0.001391,
+   "p_value": 0.999,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "codeigniter",
+   "type": "skill",
+   "name": "CodeIgniter",
+   "category": "framework",
+   "members": [
+    {
+     "skill_id": "codeigniter",
+     "name": "CodeIgniter",
+     "so_item": "CodeIgniter",
+     "p_skill_given_goal": 0.009455,
+     "region_p_skill_given_goal": 0.00638
+    }
+   ],
+   "source_years": [
+    2024
+   ],
+   "goal_respondents": 3067,
+   "other_respondents": 36057,
+   "p_skill_given_goal": 0.009455,
+   "p_skill_given_other": 0.019303,
+   "region_source_years": [
+    2023,
+    2024
+   ],
+   "region_goal_respondents": 39,
+   "region_other_respondents": 401,
+   "region_p_skill_given_goal": 0.00638,
+   "region_p_skill_given_other": 0.023992,
+   "quantity": 0.00638,
+   "quality": 21.0062,
+   "contribution": 0.00134,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "datomic",
+   "type": "skill",
+   "name": "Datomic",
+   "category": "database",
+   "members": [
+    {
+     "skill_id": "datomic",
+     "name": "Datomic",
+     "so_item": "Datomic",
+     "p_skill_given_goal": 0.002478,
+     "region_p_skill_given_goal": 0.001808
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 807,
+   "other_respondents": 22578,
+   "p_skill_given_goal": 0.002478,
+   "p_skill_given_other": 0.005403,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 30,
+   "region_other_respondents": 566,
+   "region_p_skill_given_goal": 0.001808,
+   "region_p_skill_given_other": 0.000676,
+   "quantity": 0.001808,
+   "quality": 72.792,
+   "contribution": 0.001316,
+   "p_value": 0.87,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "cuda",
+   "type": "skill",
+   "name": "CUDA",
+   "category": "library",
+   "members": [
+    {
+     "skill_id": "cuda",
+     "name": "CUDA",
+     "so_item": "CUDA",
+     "p_skill_given_goal": 0.014354,
+     "region_p_skill_given_goal": 0.011509
+    }
+   ],
+   "source_years": [
+    2024
+   ],
+   "goal_respondents": 1254,
+   "other_respondents": 32570,
+   "p_skill_given_goal": 0.014354,
+   "p_skill_given_other": 0.066503,
+   "region_source_years": [
+    2023,
+    2024
+   ],
+   "region_goal_respondents": 20,
+   "region_other_respondents": 333,
+   "region_p_skill_given_goal": 0.011509,
+   "region_p_skill_given_other": 0.090312,
+   "quantity": 0.011509,
+   "quality": 11.3031,
+   "contribution": 0.001301,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "directx",
+   "type": "skill",
+   "name": "DirectX",
+   "category": "library",
+   "members": [
+    {
+     "skill_id": "directx",
+     "name": "DirectX",
+     "so_item": "DirectX",
+     "p_skill_given_goal": 0.008772,
+     "region_p_skill_given_goal": 0.007722
+    }
+   ],
+   "source_years": [
+    2024
+   ],
+   "goal_respondents": 1254,
+   "other_respondents": 32570,
+   "p_skill_given_goal": 0.008772,
+   "p_skill_given_other": 0.021216,
+   "region_source_years": [
+    2024
+   ],
+   "region_goal_respondents": 11,
+   "region_other_respondents": 157,
+   "region_p_skill_given_goal": 0.007722,
+   "region_p_skill_given_other": 0.040842,
+   "quantity": 0.007722,
+   "quality": 15.9006,
+   "contribution": 0.001228,
+   "p_value": 0.999,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "micropython",
+   "type": "skill",
+   "name": "MicroPython",
+   "category": "language",
+   "members": [
+    {
+     "skill_id": "micropython",
+     "name": "MicroPython",
+     "so_item": "MicroPython",
+     "p_skill_given_goal": 0.006419,
+     "region_p_skill_given_goal": 0.004683
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 1402,
+   "other_respondents": 26661,
+   "p_skill_given_goal": 0.006419,
+   "p_skill_given_other": 0.020854,
+   "region_source_years": [
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 30,
+   "region_other_respondents": 396,
+   "region_p_skill_given_goal": 0.004683,
+   "region_p_skill_given_other": 0.014022,
+   "quantity": 0.004683,
+   "quality": 25.0355,
+   "contribution": 0.001172,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "apache-spark",
+   "type": "skill",
+   "name": "Apache Spark",
+   "category": "library",
+   "members": [
+    {
+     "skill_id": "apache-spark",
+     "name": "Apache Spark",
+     "so_item": "Apache Spark",
+     "p_skill_given_goal": 0.010367,
+     "region_p_skill_given_goal": 0.008312
+    }
+   ],
+   "source_years": [
+    2024
+   ],
+   "goal_respondents": 1254,
+   "other_respondents": 32570,
+   "p_skill_given_goal": 0.010367,
+   "p_skill_given_other": 0.055603,
+   "region_source_years": [
+    2023,
+    2024
+   ],
+   "region_goal_respondents": 20,
+   "region_other_respondents": 333,
+   "region_p_skill_given_goal": 0.008312,
+   "region_p_skill_given_other": 0.059189,
+   "quantity": 0.008312,
+   "quality": 12.3138,
+   "contribution": 0.001024,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "roslyn",
+   "type": "skill",
+   "name": "Roslyn",
+   "category": "library",
+   "members": [
+    {
+     "skill_id": "roslyn",
+     "name": "Roslyn",
+     "so_item": "Roslyn",
+     "p_skill_given_goal": 0.005582,
+     "region_p_skill_given_goal": 0.004914
+    }
+   ],
+   "source_years": [
+    2024
+   ],
+   "goal_respondents": 1254,
+   "other_respondents": 32570,
+   "p_skill_given_goal": 0.005582,
+   "p_skill_given_other": 0.021001,
+   "region_source_years": [
+    2024
+   ],
+   "region_goal_respondents": 11,
+   "region_other_respondents": 157,
+   "region_p_skill_given_goal": 0.004914,
+   "region_p_skill_given_other": 0.028159,
+   "quantity": 0.004914,
+   "quality": 14.8581,
+   "contribution": 0.00073,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "rstudio",
+   "type": "skill",
+   "name": "RStudio",
+   "category": "dev_env",
+   "members": [
+    {
+     "skill_id": "rstudio",
+     "name": "RStudio",
+     "so_item": "RStudio",
+     "p_skill_given_goal": 0.006365,
+     "region_p_skill_given_goal": 0.004295
+    }
+   ],
+   "source_years": [
+    2024
+   ],
+   "goal_respondents": 3142,
+   "other_respondents": 46116,
+   "p_skill_given_goal": 0.006365,
+   "p_skill_given_other": 0.027734,
+   "region_source_years": [
+    2023,
+    2024
+   ],
+   "region_goal_respondents": 39,
+   "region_other_respondents": 525,
+   "region_p_skill_given_goal": 0.004295,
+   "region_p_skill_given_other": 0.021858,
+   "quantity": 0.004295,
+   "quality": 16.4223,
+   "contribution": 0.000705,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "erlang",
+   "type": "skill",
+   "name": "Erlang",
+   "category": "language",
+   "members": [
+    {
+     "skill_id": "erlang",
+     "name": "Erlang",
+     "so_item": "Erlang",
+     "p_skill_given_goal": 0.005706,
+     "region_p_skill_given_goal": 0.003527
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 1402,
+   "other_respondents": 26661,
+   "p_skill_given_goal": 0.005706,
+   "p_skill_given_other": 0.015228,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 50,
+   "region_other_respondents": 686,
+   "region_p_skill_given_goal": 0.003527,
+   "region_p_skill_given_other": 0.01595,
+   "quantity": 0.003527,
+   "quality": 18.1068,
+   "contribution": 0.000639,
+   "p_value": 0.998,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "fortran",
+   "type": "skill",
+   "name": "Fortran",
+   "category": "language",
+   "members": [
+    {
+     "skill_id": "fortran",
+     "name": "Fortran",
+     "so_item": "Fortran",
+     "p_skill_given_goal": 0.005706,
+     "region_p_skill_given_goal": 0.003527
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 1402,
+   "other_respondents": 26661,
+   "p_skill_given_goal": 0.005706,
+   "p_skill_given_other": 0.01309,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 50,
+   "region_other_respondents": 686,
+   "region_p_skill_given_goal": 0.003527,
+   "region_p_skill_given_other": 0.017028,
+   "quantity": 0.003527,
+   "quality": 17.1568,
+   "contribution": 0.000605,
+   "p_value": 0.992,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "ocaml",
+   "type": "skill",
+   "name": "OCaml",
+   "category": "language",
+   "members": [
+    {
+     "skill_id": "ocaml",
+     "name": "OCaml",
+     "so_item": "OCaml",
+     "p_skill_given_goal": 0.003566,
+     "region_p_skill_given_goal": 0.002204
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 1402,
+   "other_respondents": 26661,
+   "p_skill_given_goal": 0.003566,
+   "p_skill_given_other": 0.009527,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 50,
+   "region_other_respondents": 686,
+   "region_p_skill_given_goal": 0.002204,
+   "region_p_skill_given_other": 0.006221,
+   "quantity": 0.002204,
+   "quality": 26.1617,
+   "contribution": 0.000577,
+   "p_value": 0.989,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "ktor",
+   "type": "skill",
+   "name": "Ktor",
+   "category": "framework",
+   "members": [
+    {
+     "skill_id": "ktor",
+     "name": "Ktor",
+     "so_item": "Ktor",
+     "p_skill_given_goal": 0.004785,
+     "region_p_skill_given_goal": 0.003836
+    }
+   ],
+   "source_years": [
+    2024
+   ],
+   "goal_respondents": 1254,
+   "other_respondents": 32570,
+   "p_skill_given_goal": 0.004785,
+   "p_skill_given_other": 0.015106,
+   "region_source_years": [
+    2023,
+    2024
+   ],
+   "region_goal_respondents": 20,
+   "region_other_respondents": 333,
+   "region_p_skill_given_goal": 0.003836,
+   "region_p_skill_given_other": 0.022281,
+   "quantity": 0.003836,
+   "quality": 14.6887,
+   "contribution": 0.000564,
+   "p_value": 0.999,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "prolog",
+   "type": "skill",
+   "name": "Prolog",
+   "category": "language",
+   "members": [
+    {
+     "skill_id": "prolog",
+     "name": "Prolog",
+     "so_item": "Prolog",
+     "p_skill_given_goal": 0.00428,
+     "region_p_skill_given_goal": 0.002645
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 1402,
+   "other_respondents": 26661,
+   "p_skill_given_goal": 0.00428,
+   "p_skill_given_other": 0.009039,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 50,
+   "region_other_respondents": 686,
+   "region_p_skill_given_goal": 0.002645,
+   "region_p_skill_given_other": 0.010081,
+   "quantity": 0.002645,
+   "quality": 20.7834,
+   "contribution": 0.00055,
+   "p_value": 0.969,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "cobol",
+   "type": "skill",
+   "name": "COBOL",
+   "category": "language",
+   "members": [
+    {
+     "skill_id": "cobol",
+     "name": "COBOL",
+     "so_item": "COBOL",
+     "p_skill_given_goal": 0.00428,
+     "region_p_skill_given_goal": 0.002645
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 1402,
+   "other_respondents": 26661,
+   "p_skill_given_goal": 0.00428,
+   "p_skill_given_other": 0.009715,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 50,
+   "region_other_respondents": 686,
+   "region_p_skill_given_goal": 0.002645,
+   "region_p_skill_given_other": 0.010152,
+   "quantity": 0.002645,
+   "quality": 20.6677,
+   "contribution": 0.000547,
+   "p_value": 0.98,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "google-test",
+   "type": "skill",
+   "name": "Google Test",
+   "category": "tool",
+   "members": [
+    {
+     "skill_id": "google-test",
+     "name": "Google Test",
+     "so_item": "Google Test",
+     "p_skill_given_goal": 0.007187,
+     "region_p_skill_given_goal": 0.004931
+    }
+   ],
+   "source_years": [
+    2024
+   ],
+   "goal_respondents": 2922,
+   "other_respondents": 42346,
+   "p_skill_given_goal": 0.007187,
+   "p_skill_given_other": 0.03384,
+   "region_source_years": [
+    2023,
+    2024
+   ],
+   "region_goal_respondents": 37,
+   "region_other_respondents": 493,
+   "region_p_skill_given_goal": 0.004931,
+   "region_p_skill_given_other": 0.03962,
+   "quantity": 0.004931,
+   "quality": 11.0692,
+   "contribution": 0.000546,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "influxdb",
+   "type": "skill",
+   "name": "InfluxDB",
+   "category": "database",
+   "members": [
+    {
+     "skill_id": "influxdb",
+     "name": "InfluxDB",
+     "so_item": "InfluxDB",
+     "p_skill_given_goal": 0.004957,
+     "region_p_skill_given_goal": 0.003616
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 807,
+   "other_respondents": 22578,
+   "p_skill_given_goal": 0.004957,
+   "p_skill_given_other": 0.039729,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 30,
+   "region_other_respondents": 566,
+   "region_p_skill_given_goal": 0.003616,
+   "region_p_skill_given_other": 0.020427,
+   "quantity": 0.003616,
+   "quality": 15.0391,
+   "contribution": 0.000544,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "wasmer",
+   "type": "skill",
+   "name": "Wasmer",
+   "category": "tool",
+   "members": [
+    {
+     "skill_id": "wasmer",
+     "name": "Wasmer",
+     "so_item": "Wasmer",
+     "p_skill_given_goal": 0.003084,
+     "region_p_skill_given_goal": 0.002575
+    }
+   ],
+   "source_years": [
+    2023
+   ],
+   "goal_respondents": 4540,
+   "other_respondents": 60056,
+   "p_skill_given_goal": 0.003084,
+   "p_skill_given_other": 0.005412,
+   "region_source_years": [
+    2023
+   ],
+   "region_goal_respondents": 16,
+   "region_other_respondents": 263,
+   "region_p_skill_given_goal": 0.002575,
+   "region_p_skill_given_other": 0.009997,
+   "quantity": 0.002575,
+   "quality": 20.4798,
+   "contribution": 0.000527,
+   "p_value": 0.982,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "elixir",
+   "type": "skill",
+   "name": "Elixir",
+   "category": "language",
+   "members": [
+    {
+     "skill_id": "elixir",
+     "name": "Elixir",
+     "so_item": "Elixir",
+     "p_skill_given_goal": 0.007846,
+     "region_p_skill_given_goal": 0.004849
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 1402,
+   "other_respondents": 26661,
+   "p_skill_given_goal": 0.007846,
+   "p_skill_given_other": 0.028394,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 50,
+   "region_other_respondents": 686,
+   "region_p_skill_given_goal": 0.004849,
+   "region_p_skill_given_other": 0.044722,
+   "quantity": 0.004849,
+   "quality": 9.782,
+   "contribution": 0.000474,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "tidyverse",
+   "type": "skill",
+   "name": "tidyverse",
+   "category": "library",
+   "members": [
+    {
+     "skill_id": "tidyverse",
+     "name": "tidyverse",
+     "so_item": "Tidyverse",
+     "p_skill_given_goal": 0.003987,
+     "region_p_skill_given_goal": 0.003197
+    }
+   ],
+   "source_years": [
+    2024
+   ],
+   "goal_respondents": 1254,
+   "other_respondents": 32570,
+   "p_skill_given_goal": 0.003987,
+   "p_skill_given_other": 0.019681,
+   "region_source_years": [
+    2023,
+    2024
+   ],
+   "region_goal_respondents": 20,
+   "region_other_respondents": 333,
+   "region_p_skill_given_goal": 0.003197,
+   "region_p_skill_given_other": 0.018343,
+   "quantity": 0.003197,
+   "quality": 14.8418,
+   "contribution": 0.000474,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "apex",
+   "type": "skill",
+   "name": "Apex",
+   "category": "language",
+   "members": [
+    {
+     "skill_id": "apex",
+     "name": "Apex",
+     "so_item": "Apex",
+     "p_skill_given_goal": 0.003416,
+     "region_p_skill_given_goal": 0.002267
+    }
+   ],
+   "source_years": [
+    2024
+   ],
+   "goal_respondents": 3220,
+   "other_respondents": 46960,
+   "p_skill_given_goal": 0.003416,
+   "p_skill_given_other": 0.008816,
+   "region_source_years": [
+    2023,
+    2024
+   ],
+   "region_goal_respondents": 41,
+   "region_other_respondents": 532,
+   "region_p_skill_given_goal": 0.002267,
+   "region_p_skill_given_other": 0.009322,
+   "quantity": 0.002267,
+   "quality": 19.5634,
+   "contribution": 0.000444,
+   "p_value": 0.999,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "lest",
+   "type": "skill",
+   "name": "lest",
+   "category": "tool",
+   "members": [
+    {
+     "skill_id": "lest",
+     "name": "lest",
+     "so_item": "lest",
+     "p_skill_given_goal": 0.000661,
+     "region_p_skill_given_goal": 0.000552
+    }
+   ],
+   "source_years": [
+    2023
+   ],
+   "goal_respondents": 4540,
+   "other_respondents": 60056,
+   "p_skill_given_goal": 0.000661,
+   "p_skill_given_other": 0.000566,
+   "region_source_years": [
+    2023
+   ],
+   "region_goal_respondents": 16,
+   "region_other_respondents": 263,
+   "region_p_skill_given_goal": 0.000552,
+   "region_p_skill_given_other": 0.000133,
+   "quantity": 0.000552,
+   "quality": 80.5538,
+   "contribution": 0.000444,
+   "p_value": 0.399,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "clojure",
+   "type": "skill",
+   "name": "Clojure",
+   "category": "language",
+   "members": [
+    {
+     "skill_id": "clojure",
+     "name": "Clojure",
+     "so_item": "Clojure",
+     "p_skill_given_goal": 0.003106,
+     "region_p_skill_given_goal": 0.002061
+    }
+   ],
+   "source_years": [
+    2024
+   ],
+   "goal_respondents": 3220,
+   "other_respondents": 46960,
+   "p_skill_given_goal": 0.003106,
+   "p_skill_given_other": 0.013416,
+   "region_source_years": [
+    2023,
+    2024
+   ],
+   "region_goal_respondents": 41,
+   "region_other_respondents": 532,
+   "region_p_skill_given_goal": 0.002061,
+   "region_p_skill_given_other": 0.009929,
+   "quantity": 0.002061,
+   "quality": 17.1901,
+   "contribution": 0.000354,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "dagger",
+   "type": "skill",
+   "name": "Dagger",
+   "category": "build_tool",
+   "members": [
+    {
+     "skill_id": "dagger",
+     "name": "Dagger",
+     "so_item": "Dagger",
+     "p_skill_given_goal": 0.004107,
+     "region_p_skill_given_goal": 0.002818
+    }
+   ],
+   "source_years": [
+    2024
+   ],
+   "goal_respondents": 2922,
+   "other_respondents": 42346,
+   "p_skill_given_goal": 0.004107,
+   "p_skill_given_other": 0.013484,
+   "region_source_years": [
+    2023,
+    2024
+   ],
+   "region_goal_respondents": 37,
+   "region_other_respondents": 493,
+   "region_p_skill_given_goal": 0.002818,
+   "region_p_skill_given_other": 0.021068,
+   "quantity": 0.002818,
+   "quality": 11.7976,
+   "contribution": 0.000332,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "ruff",
+   "type": "skill",
+   "name": "Ruff",
+   "category": "library",
+   "members": [
+    {
+     "skill_id": "ruff",
+     "name": "Ruff",
+     "so_item": "Ruff",
+     "p_skill_given_goal": 0.005582,
+     "region_p_skill_given_goal": 0.004914
+    }
+   ],
+   "source_years": [
+    2024
+   ],
+   "goal_respondents": 1254,
+   "other_respondents": 32570,
+   "p_skill_given_goal": 0.005582,
+   "p_skill_given_other": 0.03666,
+   "region_source_years": [
+    2024
+   ],
+   "region_goal_respondents": 11,
+   "region_other_respondents": 157,
+   "region_p_skill_given_goal": 0.004914,
+   "region_p_skill_given_other": 0.071315,
+   "quantity": 0.004914,
+   "quality": 6.4464,
+   "contribution": 0.000317,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "zig",
+   "type": "skill",
+   "name": "Zig",
+   "category": "language",
+   "members": [
+    {
+     "skill_id": "zig",
+     "name": "Zig",
+     "so_item": "Zig",
+     "p_skill_given_goal": 0.003566,
+     "region_p_skill_given_goal": 0.002204
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 1402,
+   "other_respondents": 26661,
+   "p_skill_given_goal": 0.003566,
+   "p_skill_given_other": 0.019617,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 50,
+   "region_other_respondents": 686,
+   "region_p_skill_given_goal": 0.002204,
+   "region_p_skill_given_other": 0.013805,
+   "quantity": 0.002204,
+   "quality": 13.7679,
+   "contribution": 0.000303,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "fsharp",
+   "type": "skill",
+   "name": "F#",
+   "category": "language",
+   "members": [
+    {
+     "skill_id": "fsharp",
+     "name": "F#",
+     "so_item": "F#",
+     "p_skill_given_goal": 0.003566,
+     "region_p_skill_given_goal": 0.002204
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 1402,
+   "other_respondents": 26661,
+   "p_skill_given_goal": 0.003566,
+   "p_skill_given_other": 0.012828,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 50,
+   "region_other_respondents": 686,
+   "region_p_skill_given_goal": 0.002204,
+   "region_p_skill_given_other": 0.014393,
+   "quantity": 0.002204,
+   "quality": 13.2803,
+   "contribution": 0.000293,
+   "p_value": 0.999,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "raku",
+   "type": "skill",
+   "name": "Raku",
+   "category": "language",
+   "members": [
+    {
+     "skill_id": "raku",
+     "name": "Raku",
+     "so_item": "Raku",
+     "p_skill_given_goal": 0.000597,
+     "region_p_skill_given_goal": 0.000478
+    }
+   ],
+   "source_years": [
+    2023
+   ],
+   "goal_respondents": 5028,
+   "other_respondents": 66328,
+   "p_skill_given_goal": 0.000597,
+   "p_skill_given_other": 0.001568,
+   "region_source_years": [
+    2023
+   ],
+   "region_goal_respondents": 20,
+   "region_other_respondents": 290,
+   "region_p_skill_given_goal": 0.000478,
+   "region_p_skill_given_other": 0.000342,
+   "quantity": 0.000478,
+   "quality": 58.3124,
+   "contribution": 0.000279,
+   "p_value": 0.957,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "cute",
+   "type": "skill",
+   "name": "CUTE",
+   "category": "tool",
+   "members": [
+    {
+     "skill_id": "cute",
+     "name": "CUTE",
+     "so_item": "CUTE",
+     "p_skill_given_goal": 0.000441,
+     "region_p_skill_given_goal": 0.000368
+    }
+   ],
+   "source_years": [
+    2023
+   ],
+   "goal_respondents": 4540,
+   "other_respondents": 60056,
+   "p_skill_given_goal": 0.000441,
+   "p_skill_given_other": 0.000566,
+   "region_source_years": [
+    2023
+   ],
+   "region_goal_respondents": 16,
+   "region_other_respondents": 263,
+   "region_p_skill_given_goal": 0.000368,
+   "region_p_skill_given_other": 0.000133,
+   "quantity": 0.000368,
+   "quality": 73.4155,
+   "contribution": 0.00027,
+   "p_value": 0.635,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "phoenix",
+   "type": "skill",
+   "name": "Phoenix",
+   "category": "framework",
+   "members": [
+    {
+     "skill_id": "phoenix",
+     "name": "Phoenix",
+     "so_item": "Phoenix",
+     "p_skill_given_goal": 0.005335,
+     "region_p_skill_given_goal": 0.003349
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 1312,
+   "other_respondents": 19588,
+   "p_skill_given_goal": 0.005335,
+   "p_skill_given_other": 0.026802,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 48,
+   "region_other_respondents": 505,
+   "region_p_skill_given_goal": 0.003349,
+   "region_p_skill_given_other": 0.044663,
+   "quantity": 0.003349,
+   "quality": 6.9745,
+   "contribution": 0.000234,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "scala",
+   "type": "skill",
+   "name": "Scala",
+   "category": "language",
+   "members": [
+    {
+     "skill_id": "scala",
+     "name": "Scala",
+     "so_item": "Scala",
+     "p_skill_given_goal": 0.004993,
+     "region_p_skill_given_goal": 0.003086
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 1402,
+   "other_respondents": 26661,
+   "p_skill_given_goal": 0.004993,
+   "p_skill_given_other": 0.028356,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 50,
+   "region_other_respondents": 686,
+   "region_p_skill_given_goal": 0.003086,
+   "region_p_skill_given_other": 0.04211,
+   "quantity": 0.003086,
+   "quality": 6.8275,
+   "contribution": 0.000211,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "mojo",
+   "type": "skill",
+   "name": "Mojo",
+   "category": "language",
+   "members": [
+    {
+     "skill_id": "mojo",
+     "name": "Mojo",
+     "so_item": "Mojo",
+     "p_skill_given_goal": 0.000713,
+     "region_p_skill_given_goal": 0.000642
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 1402,
+   "other_respondents": 26661,
+   "p_skill_given_goal": 0.000713,
+   "p_skill_given_other": 0.004313,
+   "region_source_years": [
+    2025
+   ],
+   "region_goal_respondents": 9,
+   "region_other_respondents": 154,
+   "region_p_skill_given_goal": 0.000642,
+   "region_p_skill_given_other": 0.001486,
+   "quantity": 0.000642,
+   "quality": 30.171,
+   "contribution": 0.000194,
+   "p_value": 0.98,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "micronaut",
+   "type": "skill",
+   "name": "Micronaut",
+   "category": "framework",
+   "members": [
+    {
+     "skill_id": "micronaut",
+     "name": "Micronaut",
+     "so_item": "Micronaut",
+     "p_skill_given_goal": 0.001512,
+     "region_p_skill_given_goal": 0.001361
+    }
+   ],
+   "source_years": [
+    2023
+   ],
+   "goal_respondents": 1984,
+   "other_respondents": 45107,
+   "p_skill_given_goal": 0.001512,
+   "p_skill_given_other": 0.008624,
+   "region_source_years": [
+    2023
+   ],
+   "region_goal_respondents": 9,
+   "region_other_respondents": 176,
+   "region_p_skill_given_goal": 0.001361,
+   "region_p_skill_given_other": 0.010501,
+   "quantity": 0.001361,
+   "quality": 11.4716,
+   "contribution": 0.000156,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "quarkus",
+   "type": "skill",
+   "name": "Quarkus",
+   "category": "framework",
+   "members": [
+    {
+     "skill_id": "quarkus",
+     "name": "Quarkus",
+     "so_item": "Quarkus",
+     "p_skill_given_goal": 0.001595,
+     "region_p_skill_given_goal": 0.001279
+    }
+   ],
+   "source_years": [
+    2024
+   ],
+   "goal_respondents": 1254,
+   "other_respondents": 32570,
+   "p_skill_given_goal": 0.001595,
+   "p_skill_given_other": 0.016549,
+   "region_source_years": [
+    2023,
+    2024
+   ],
+   "region_goal_respondents": 20,
+   "region_other_respondents": 333,
+   "region_p_skill_given_goal": 0.001279,
+   "region_p_skill_given_other": 0.010483,
+   "quantity": 0.001279,
+   "quality": 10.8724,
+   "contribution": 0.000139,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "cppunit",
+   "type": "skill",
+   "name": "cppunit",
+   "category": "tool",
+   "members": [
+    {
+     "skill_id": "cppunit",
+     "name": "cppunit",
+     "so_item": "cppunit",
+     "p_skill_given_goal": 0.000881,
+     "region_p_skill_given_goal": 0.000736
+    }
+   ],
+   "source_years": [
+    2023
+   ],
+   "goal_respondents": 4540,
+   "other_respondents": 60056,
+   "p_skill_given_goal": 0.000881,
+   "p_skill_given_other": 0.004829,
+   "region_source_years": [
+    2023
+   ],
+   "region_goal_respondents": 16,
+   "region_other_respondents": 263,
+   "region_p_skill_given_goal": 0.000736,
+   "region_p_skill_given_other": 0.004044,
+   "quantity": 0.000736,
+   "quality": 15.3908,
+   "contribution": 0.000113,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "eventstoredb",
+   "type": "skill",
+   "name": "EventStoreDB",
+   "category": "database",
+   "members": [
+    {
+     "skill_id": "eventstoredb",
+     "name": "EventStoreDB",
+     "so_item": "EventStoreDB",
+     "p_skill_given_goal": 0.000448,
+     "region_p_skill_given_goal": 0.000378
+    }
+   ],
+   "source_years": [
+    2024
+   ],
+   "goal_respondents": 2230,
+   "other_respondents": 41282,
+   "p_skill_given_goal": 0.000448,
+   "p_skill_given_other": 0.003343,
+   "region_source_years": [
+    2024
+   ],
+   "region_goal_respondents": 15,
+   "region_other_respondents": 204,
+   "region_p_skill_given_goal": 0.000378,
+   "region_p_skill_given_other": 0.000949,
+   "quantity": 0.000378,
+   "quality": 28.4958,
+   "contribution": 0.000108,
+   "p_value": 0.991,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "opencl",
+   "type": "skill",
+   "name": "OpenCL",
+   "category": "library",
+   "members": [
+    {
+     "skill_id": "opencl",
+     "name": "OpenCL",
+     "so_item": "OpenCL",
+     "p_skill_given_goal": 0.001595,
+     "region_p_skill_given_goal": 0.001404
+    }
+   ],
+   "source_years": [
+    2024
+   ],
+   "goal_respondents": 1254,
+   "other_respondents": 32570,
+   "p_skill_given_goal": 0.001595,
+   "p_skill_given_other": 0.018637,
+   "region_source_years": [
+    2024
+   ],
+   "region_goal_respondents": 11,
+   "region_other_respondents": 157,
+   "region_p_skill_given_goal": 0.001404,
+   "region_p_skill_given_other": 0.018948,
+   "quantity": 0.001404,
+   "quality": 6.8986,
+   "contribution": 9.7e-05,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "databricks",
+   "type": "skill",
+   "name": "Databricks",
+   "category": "cloud",
+   "members": [
+    {
+     "skill_id": "databricks",
+     "name": "Databricks",
+     "so_item": "Databricks",
+     "p_skill_given_goal": 0.001803,
+     "region_p_skill_given_goal": 0.001475
+    }
+   ],
+   "source_years": [
+    2024
+   ],
+   "goal_respondents": 2219,
+   "other_respondents": 35012,
+   "p_skill_given_goal": 0.001803,
+   "p_skill_given_other": 0.023792,
+   "region_source_years": [
+    2024
+   ],
+   "region_goal_respondents": 18,
+   "region_other_respondents": 191,
+   "region_p_skill_given_goal": 0.001475,
+   "region_p_skill_given_other": 0.02179,
+   "quantity": 0.001475,
+   "quality": 6.3381,
+   "contribution": 9.3e-05,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "tunit",
+   "type": "skill",
+   "name": "tunit",
+   "category": "tool",
+   "members": [
+    {
+     "skill_id": "tunit",
+     "name": "tunit",
+     "so_item": "tunit",
+     "p_skill_given_goal": 0.00022,
+     "region_p_skill_given_goal": 0.000184
+    }
+   ],
+   "source_years": [
+    2023
+   ],
+   "goal_respondents": 4540,
+   "other_respondents": 60056,
+   "p_skill_given_goal": 0.00022,
+   "p_skill_given_other": 0.000783,
+   "region_source_years": [
+    2023
+   ],
+   "region_goal_respondents": 16,
+   "region_other_respondents": 263,
+   "region_p_skill_given_goal": 0.000184,
+   "region_p_skill_given_other": 0.000184,
+   "quantity": 0.000184,
+   "quality": 49.9718,
+   "contribution": 9.2e-05,
+   "p_value": 0.91,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "boost-test",
+   "type": "skill",
+   "name": "Boost.Test",
+   "category": "tool",
+   "members": [
+    {
+     "skill_id": "boost-test",
+     "name": "Boost.Test",
+     "so_item": "Boost.Test",
+     "p_skill_given_goal": 0.000661,
+     "region_p_skill_given_goal": 0.000552
+    }
+   ],
+   "source_years": [
+    2023
+   ],
+   "goal_respondents": 4540,
+   "other_respondents": 60056,
+   "p_skill_given_goal": 0.000661,
+   "p_skill_given_other": 0.004413,
+   "region_source_years": [
+    2023
+   ],
+   "region_goal_respondents": 16,
+   "region_other_respondents": 263,
+   "region_p_skill_given_goal": 0.000552,
+   "region_p_skill_given_other": 0.003946,
+   "quantity": 0.000552,
+   "quality": 12.2664,
+   "contribution": 6.8e-05,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "apl",
+   "type": "skill",
+   "name": "APL",
+   "category": "language",
+   "members": [
+    {
+     "skill_id": "apl",
+     "name": "APL",
+     "so_item": "APL",
+     "p_skill_given_goal": 0.000597,
+     "region_p_skill_given_goal": 0.000478
+    }
+   ],
+   "source_years": [
+    2023
+   ],
+   "goal_respondents": 5028,
+   "other_respondents": 66328,
+   "p_skill_given_goal": 0.000597,
+   "p_skill_given_other": 0.001839,
+   "region_source_years": [
+    2023
+   ],
+   "region_goal_respondents": 20,
+   "region_other_respondents": 290,
+   "region_p_skill_given_goal": 0.000478,
+   "region_p_skill_given_other": 0.003097,
+   "quantity": 0.000478,
+   "quality": 13.3789,
+   "contribution": 6.4e-05,
+   "p_value": 0.979,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "catch2",
+   "type": "skill",
+   "name": "Catch2",
+   "category": "tool",
+   "members": [
+    {
+     "skill_id": "catch2",
+     "name": "Catch2",
+     "so_item": "Catch2",
+     "p_skill_given_goal": 0.000881,
+     "region_p_skill_given_goal": 0.000736
+    }
+   ],
+   "source_years": [
+    2023
+   ],
+   "goal_respondents": 4540,
+   "other_respondents": 60056,
+   "p_skill_given_goal": 0.000881,
+   "p_skill_given_other": 0.009108,
+   "region_source_years": [
+    2023
+   ],
+   "region_goal_respondents": 16,
+   "region_other_respondents": 263,
+   "region_p_skill_given_goal": 0.000736,
+   "region_p_skill_given_other": 0.007958,
+   "quantity": 0.000736,
+   "quality": 8.4609,
+   "contribution": 6.2e-05,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "snitch",
+   "type": "skill",
+   "name": "snitch",
+   "category": "tool",
+   "members": [
+    {
+     "skill_id": "snitch",
+     "name": "snitch",
+     "so_item": "snitch",
+     "p_skill_given_goal": 0.000441,
+     "region_p_skill_given_goal": 0.000368
+    }
+   ],
+   "source_years": [
+    2023
+   ],
+   "goal_respondents": 4540,
+   "other_respondents": 60056,
+   "p_skill_given_goal": 0.000441,
+   "p_skill_given_other": 0.000633,
+   "region_source_years": [
+    2023
+   ],
+   "region_goal_respondents": 16,
+   "region_other_respondents": 263,
+   "region_p_skill_given_goal": 0.000368,
+   "region_p_skill_given_other": 0.003057,
+   "quantity": 0.000368,
+   "quality": 10.7401,
+   "contribution": 4e-05,
+   "p_value": 0.692,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "play-framework",
+   "type": "skill",
+   "name": "Play Framework",
+   "category": "framework",
+   "members": [
+    {
+     "skill_id": "play-framework",
+     "name": "Play Framework",
+     "so_item": "Play Framework",
+     "p_skill_given_goal": 0.001304,
+     "region_p_skill_given_goal": 0.00088
+    }
+   ],
+   "source_years": [
+    2024
+   ],
+   "goal_respondents": 3067,
+   "other_respondents": 36057,
+   "p_skill_given_goal": 0.001304,
+   "p_skill_given_other": 0.00943,
+   "region_source_years": [
+    2023,
+    2024
+   ],
+   "region_goal_respondents": 39,
+   "region_other_respondents": 401,
+   "region_p_skill_given_goal": 0.00088,
+   "region_p_skill_given_other": 0.024409,
+   "quantity": 0.00088,
+   "quality": 3.4797,
+   "contribution": 3.1e-05,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "crystal",
+   "type": "skill",
+   "name": "Crystal",
+   "category": "language",
+   "members": [
+    {
+     "skill_id": "crystal",
+     "name": "Crystal",
+     "so_item": "Crystal",
+     "p_skill_given_goal": 0.000621,
+     "region_p_skill_given_goal": 0.000412
+    }
+   ],
+   "source_years": [
+    2024
+   ],
+   "goal_respondents": 3220,
+   "other_respondents": 46960,
+   "p_skill_given_goal": 0.000621,
+   "p_skill_given_other": 0.004365,
+   "region_source_years": [
+    2023,
+    2024
+   ],
+   "region_goal_respondents": 41,
+   "region_other_respondents": 532,
+   "region_p_skill_given_goal": 0.000412,
+   "region_p_skill_given_other": 0.005471,
+   "quantity": 0.000412,
+   "quality": 7.0066,
+   "contribution": 2.9e-05,
+   "p_value": 0.999,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "nim",
+   "type": "skill",
+   "name": "Nim",
+   "category": "language",
+   "members": [
+    {
+     "skill_id": "nim",
+     "name": "Nim",
+     "so_item": "Nim",
+     "p_skill_given_goal": 0.000311,
+     "region_p_skill_given_goal": 0.000206
+    }
+   ],
+   "source_years": [
+    2024
+   ],
+   "goal_respondents": 3220,
+   "other_respondents": 46960,
+   "p_skill_given_goal": 0.000311,
+   "p_skill_given_other": 0.003024,
+   "region_source_years": [
+    2023,
+    2024
+   ],
+   "region_goal_respondents": 41,
+   "region_other_respondents": 532,
+   "region_p_skill_given_goal": 0.000206,
+   "region_p_skill_given_other": 0.002031,
+   "quantity": 0.000206,
+   "quality": 9.2142,
+   "contribution": 1.9e-05,
+   "p_value": 0.997,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "zephyr",
+   "type": "skill",
+   "name": "Zephyr",
+   "category": "language",
+   "members": [
+    {
+     "skill_id": "zephyr",
+     "name": "Zephyr",
+     "so_item": "Zephyr",
+     "p_skill_given_goal": 0.000311,
+     "region_p_skill_given_goal": 0.000247
+    }
+   ],
+   "source_years": [
+    2024
+   ],
+   "goal_respondents": 3220,
+   "other_respondents": 46960,
+   "p_skill_given_goal": 0.000311,
+   "p_skill_given_other": 0.003088,
+   "region_source_years": [
+    2024
+   ],
+   "region_goal_respondents": 21,
+   "region_other_respondents": 242,
+   "region_p_skill_given_goal": 0.000247,
+   "region_p_skill_given_other": 0.003871,
+   "quantity": 0.000247,
+   "quality": 5.9886,
+   "contribution": 1.5e-05,
+   "p_value": 0.998,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "julia",
+   "type": "skill",
+   "name": "Julia",
+   "category": "language",
+   "members": [
+    {
+     "skill_id": "julia",
+     "name": "Julia",
+     "so_item": "Julia",
+     "p_skill_given_goal": 0.000621,
+     "region_p_skill_given_goal": 0.000412
+    }
+   ],
+   "source_years": [
+    2024
+   ],
+   "goal_respondents": 3220,
+   "other_respondents": 46960,
+   "p_skill_given_goal": 0.000621,
+   "p_skill_given_other": 0.01135,
+   "region_source_years": [
+    2023,
+    2024
+   ],
+   "region_goal_respondents": 41,
+   "region_other_respondents": 532,
+   "region_p_skill_given_goal": 0.000412,
+   "region_p_skill_given_other": 0.017814,
+   "quantity": 0.000412,
+   "quality": 2.2616,
+   "contribution": 9e-06,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "doctest",
+   "type": "skill",
+   "name": "doctest",
+   "category": "tool",
+   "members": [
+    {
+     "skill_id": "doctest",
+     "name": "doctest",
+     "so_item": "doctest",
+     "p_skill_given_goal": 0.00022,
+     "region_p_skill_given_goal": 0.000184
+    }
+   ],
+   "source_years": [
+    2023
+   ],
+   "goal_respondents": 4540,
+   "other_respondents": 60056,
+   "p_skill_given_goal": 0.00022,
+   "p_skill_given_other": 0.005012,
+   "region_source_years": [
+    2023
+   ],
+   "region_goal_respondents": 16,
+   "region_other_respondents": 263,
+   "region_p_skill_given_goal": 0.000184,
+   "region_p_skill_given_other": 0.006995,
+   "quantity": 0.000184,
+   "quality": 2.5617,
+   "contribution": 5e-06,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "elfspy",
+   "type": "skill",
+   "name": "ELFspy",
+   "category": "tool",
+   "members": [
+    {
+     "skill_id": "elfspy",
+     "name": "ELFspy",
+     "so_item": "ELFspy",
+     "p_skill_given_goal": 0.0,
+     "region_p_skill_given_goal": 0.0
+    }
+   ],
+   "source_years": [
+    2023
+   ],
+   "goal_respondents": 4540,
+   "other_respondents": 60056,
+   "p_skill_given_goal": 0.0,
+   "p_skill_given_other": 0.00045,
+   "region_source_years": [
+    2023
+   ],
+   "region_goal_respondents": 16,
+   "region_other_respondents": 263,
+   "region_p_skill_given_goal": 0.0,
+   "region_p_skill_given_other": 0.000106,
+   "quantity": 0.0,
+   "quality": 0.0,
+   "contribution": 0.0,
+   "p_value": 0.923,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "bandit",
+   "type": "skill",
+   "name": "bandit",
+   "category": "tool",
+   "members": [
+    {
+     "skill_id": "bandit",
+     "name": "bandit",
+     "so_item": "bandit",
+     "p_skill_given_goal": 0.0,
+     "region_p_skill_given_goal": 0.0
+    }
+   ],
+   "source_years": [
+    2023
+   ],
+   "goal_respondents": 4540,
+   "other_respondents": 60056,
+   "p_skill_given_goal": 0.0,
+   "p_skill_given_other": 0.005079,
+   "region_source_years": [
+    2023
+   ],
+   "region_goal_respondents": 16,
+   "region_other_respondents": 263,
+   "region_p_skill_given_goal": 0.0,
+   "region_p_skill_given_other": 0.004103,
+   "quantity": 0.0,
+   "quality": 0.0,
+   "contribution": 0.0,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "liblittletest",
+   "type": "skill",
+   "name": "liblittletest",
+   "category": "tool",
+   "members": [
+    {
+     "skill_id": "liblittletest",
+     "name": "liblittletest",
+     "so_item": "liblittletest",
+     "p_skill_given_goal": 0.0,
+     "region_p_skill_given_goal": 0.0
+    }
+   ],
+   "source_years": [
+    2023
+   ],
+   "goal_respondents": 4540,
+   "other_respondents": 60056,
+   "p_skill_given_goal": 0.0,
+   "p_skill_given_other": 0.000316,
+   "region_source_years": [
+    2023
+   ],
+   "region_goal_respondents": 16,
+   "region_other_respondents": 263,
+   "region_p_skill_given_goal": 0.0,
+   "region_p_skill_given_other": 7.4e-05,
+   "quantity": 0.0,
+   "quality": 0.0,
+   "contribution": 0.0,
+   "p_value": 0.885,
+   "significant": false,
+   "selected": false
+  },
+  {
+   "unit_id": "mlflow",
+   "type": "skill",
+   "name": "MLflow",
+   "category": "library",
+   "members": [
+    {
+     "skill_id": "mlflow",
+     "name": "MLflow",
+     "so_item": "mlflow",
+     "p_skill_given_goal": 0.0,
+     "region_p_skill_given_goal": 0.0
+    }
+   ],
+   "source_years": [
+    2024
+   ],
+   "goal_respondents": 1254,
+   "other_respondents": 32570,
+   "p_skill_given_goal": 0.0,
+   "p_skill_given_other": 0.014799,
+   "region_source_years": [
+    2024
+   ],
+   "region_goal_respondents": 11,
+   "region_other_respondents": 157,
+   "region_p_skill_given_goal": 0.0,
+   "region_p_skill_given_other": 0.013439,
+   "quantity": 0.0,
+   "quality": 0.0,
+   "contribution": 0.0,
+   "p_value": 1.0,
+   "significant": false,
+   "selected": false
+  }
+ ]
+}

@@ -1,0 +1,149 @@
+{
+  "version": "1.0.0",
+  "source": "stack_overflow_developer_survey",
+  "years": [2023, 2024, 2025],
+  "license": "Open Database License (ODbL) v1.0 / Database Contents License (DbCL) v1.0",
+  "note": "Goal に対応する Stack Overflow Developer Survey の DevType（1 人 1 つ選択）。年ごとに職種名が変わるため年別に定義する。年のリストが空なら、その年は対応する職種が無い。Other = 同じ年の母集団のうち、この Goal の DevType 以外の人。",
+  "population_excluded_devtypes": ["Student", "Retired", "Other (please specify):"],
+  "dev_env_allowlist": ["Jupyter Notebook/JupyterLab", "Xcode", "Android Studio", "RStudio"],
+  "dev_env_note": "開発環境（エディタ・IDE・AI コーディングツール）はスキルとしないが、特定の職種の作業環境を表すものだけ残す",
+  "item_aliases": {
+    "ASP.NET CORE": "ASP.NET Core",
+    "Cobol": "COBOL",
+    "IBM Cloud Or Watson": "IBM Cloud"
+  },
+  "goals": [
+    {
+      "goal_id": "frontend-developer",
+      "mapping_status": "exact",
+      "devtypes": {
+        "2023": ["Developer, front-end"],
+        "2024": ["Developer, front-end"],
+        "2025": ["Developer, front-end"]
+      }
+    },
+    {
+      "goal_id": "backend-developer",
+      "mapping_status": "exact",
+      "devtypes": {
+        "2023": ["Developer, back-end"],
+        "2024": ["Developer, back-end"],
+        "2025": ["Developer, back-end"]
+      }
+    },
+    {
+      "goal_id": "full-stack-developer",
+      "mapping_status": "exact",
+      "devtypes": {
+        "2023": ["Developer, full-stack"],
+        "2024": ["Developer, full-stack"],
+        "2025": ["Developer, full-stack"]
+      }
+    },
+    {
+      "goal_id": "data-analyst",
+      "mapping_status": "exact",
+      "devtypes": {
+        "2023": ["Data or business analyst"],
+        "2024": ["Data or business analyst"],
+        "2025": ["Data or business analyst"]
+      }
+    },
+    {
+      "goal_id": "data-scientist",
+      "mapping_status": "proxy",
+      "mapping_note": "2023〜2024 年は Data scientist と ML specialist が 1 つの職種だったため、2025 年も Data scientist と AI/ML engineer を合わせて同じ範囲にそろえる",
+      "devtypes": {
+        "2023": ["Data scientist or machine learning specialist"],
+        "2024": ["Data scientist or machine learning specialist"],
+        "2025": ["Data scientist", "AI/ML engineer"]
+      }
+    },
+    {
+      "goal_id": "data-engineer",
+      "mapping_status": "exact",
+      "devtypes": {
+        "2023": ["Engineer, data"],
+        "2024": ["Data engineer"],
+        "2025": ["Data engineer"]
+      }
+    },
+    {
+      "goal_id": "it-project-manager",
+      "mapping_status": "proxy",
+      "mapping_note": "IT に限定しない Project manager（回答者は開発者向け調査の参加者）",
+      "devtypes": {
+        "2023": ["Project manager"],
+        "2024": ["Project manager"],
+        "2025": ["Project manager"]
+      }
+    },
+    {
+      "goal_id": "product-manager",
+      "mapping_status": "exact",
+      "devtypes": {
+        "2023": ["Product manager"],
+        "2024": ["Product manager"],
+        "2025": ["Product manager"]
+      }
+    },
+    {
+      "goal_id": "software-architect",
+      "mapping_status": "exact",
+      "mapping_note": "2025 年に新設された職種。2023〜2024 年のみの選択肢（モバイル・機械学習ライブラリ等）は統計なし",
+      "devtypes": {
+        "2023": [],
+        "2024": [],
+        "2025": ["Architect, software or solutions"]
+      }
+    },
+    {
+      "goal_id": "mobile-app-developer",
+      "mapping_status": "exact",
+      "devtypes": {
+        "2023": ["Developer, mobile"],
+        "2024": ["Developer, mobile"],
+        "2025": ["Developer, mobile"]
+      }
+    },
+    {
+      "goal_id": "network-engineer",
+      "mapping_status": "proxy",
+      "mapping_note": "ネットワーク専門の職種が無いため System administrator で代用する",
+      "devtypes": {
+        "2023": ["System administrator"],
+        "2024": ["System administrator"],
+        "2025": ["System administrator"]
+      }
+    },
+    {
+      "goal_id": "test-analyst",
+      "mapping_status": "exact",
+      "devtypes": {
+        "2023": ["Developer, QA or test"],
+        "2024": ["Developer, QA or test"],
+        "2025": ["Developer, QA or test"]
+      }
+    },
+    {
+      "goal_id": "devops-sre",
+      "mapping_status": "exact",
+      "mapping_note": "2023〜2024 年の DevOps specialist と Engineer, site reliability が、2025 年に DevOps engineer or professional にまとまった",
+      "devtypes": {
+        "2023": ["DevOps specialist", "Engineer, site reliability"],
+        "2024": ["DevOps specialist", "Engineer, site reliability"],
+        "2025": ["DevOps engineer or professional"]
+      }
+    },
+    {
+      "goal_id": "cloud-architect",
+      "mapping_status": "proxy",
+      "mapping_note": "アーキテクト専門の職種が無いため Cloud infrastructure engineer で代用する",
+      "devtypes": {
+        "2023": ["Cloud infrastructure engineer"],
+        "2024": ["Cloud infrastructure engineer"],
+        "2025": ["Cloud infrastructure engineer"]
+      }
+    }
+  ]
+}
