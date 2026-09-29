@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Noto_Sans_JP } from "next/font/google";
 import Link from "next/link";
+import type { ReactNode } from "react";
 import { Logo } from "@/components/logo";
-import { SITE_DESCRIPTION, SITE_NAME, SITE_URL, STACK_OVERFLOW_SURVEY } from "@/lib/site";
+import { ESCO, JOBHOP, SITE_DESCRIPTION, SITE_NAME, SITE_URL, STACK_OVERFLOW_SURVEY } from "@/lib/site";
 import "./globals.css";
 
 const notoSansJp = Noto_Sans_JP({
@@ -28,7 +29,13 @@ const NAV = [
   { href: "/blog", label: "Blog" },
 ];
 
-const footerLinkClass = "underline hover:text-indigo";
+function ExternalLink({ href, children }: { href: string; children: ReactNode }) {
+  return (
+    <a href={href} className="underline hover:text-indigo" target="_blank" rel="noopener noreferrer">
+      {children}
+    </a>
+  );
+}
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
@@ -63,45 +70,38 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
                 運営：AID CIRCLES ／ 姉妹サービス：8Wheel（Webサービス検索）
               </p>
             </div>
-            <div className="space-y-3 text-xs leading-relaxed">
-              <p className="font-bold text-ink">データソース</p>
-              <p>
-                This service uses the ESCO classification of the European Commission.
-                8FitLabは、ESCOの職業分類を独自のGoal（目標職種）に再構成・翻訳して使用しています。表示内容は欧州委員会が公開するESCOの原文とは異なり、欧州委員会はその正確性・最新性・完全性を保証しません。
-              </p>
-              <p>
-                Career statistics are derived from JobHop v2 (Ghent University AIDA / VDAB, CC BY 4.0).
-                8FitLabはJobHopの職歴データを集計・加工して統計値を算出しています。
-              </p>
-              <p>
-                Skill statistics contain information from the{" "}
-                <a href={STACK_OVERFLOW_SURVEY.url} className={footerLinkClass} target="_blank" rel="noopener noreferrer">
-                  {STACK_OVERFLOW_SURVEY.name}
-                </a>{" "}
-                2023–2025, which is made available under the{" "}
-                <a href={STACK_OVERFLOW_SURVEY.licenseUrl} className={footerLinkClass} target="_blank" rel="noopener noreferrer">
-                  {STACK_OVERFLOW_SURVEY.license}
-                </a>{" "}
-                (individual contents:{" "}
-                <a
-                  href={STACK_OVERFLOW_SURVEY.contentsLicenseUrl}
-                  className={footerLinkClass}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {STACK_OVERFLOW_SURVEY.contentsLicense}
-                </a>
-                ). 8FitLabは回答データを独自に集計・加工（Goal別の集計、日本市場向けの補正を含む）して統計値を算出しています。算出した統計データはODbLで
-                <a
-                  href={STACK_OVERFLOW_SURVEY.derivedDatabaseUrl}
-                  className={footerLinkClass}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  公開しています
-                </a>
-                。
-              </p>
+            <div className="space-y-2 text-xs leading-relaxed">
+              <p className="font-bold text-ink">データ出典・ライセンス表記</p>
+              <p>本サービスのマッチ度算出およびスキル分析には、以下のオープンデータセットを利用しています。</p>
+              <ul className="list-inside list-disc space-y-2">
+                <li>
+                  <ExternalLink href={JOBHOP.url}>
+                    <strong>{JOBHOP.name}</strong>
+                  </ExternalLink>{" "}
+                  - {JOBHOP.creator} ／ <ExternalLink href={JOBHOP.licenseUrl}>{JOBHOP.license}</ExternalLink>
+                  。8FitLabが職歴データを集計・加工して統計値を算出しています。
+                </li>
+                <li>
+                  <ExternalLink href={ESCO.url}>
+                    <strong>{ESCO.name}</strong>
+                  </ExternalLink>{" "}
+                  - {ESCO.creator} ／ <ExternalLink href={ESCO.licenseUrl}>{ESCO.license}</ExternalLink>。{ESCO.statement}
+                  8FitLabは、ESCOの職業分類を独自のGoal（目標職種）に再構成・翻訳して使用しています。表示内容は欧州委員会が公開するESCOの原文とは異なり、欧州委員会はその正確性・最新性・完全性を保証しません。
+                </li>
+                <li>
+                  <ExternalLink href={STACK_OVERFLOW_SURVEY.url}>
+                    <strong>
+                      {STACK_OVERFLOW_SURVEY.name} {STACK_OVERFLOW_SURVEY.years}
+                    </strong>
+                  </ExternalLink>{" "}
+                  - {STACK_OVERFLOW_SURVEY.creator} ／{" "}
+                  <ExternalLink href={STACK_OVERFLOW_SURVEY.licenseUrl}>{STACK_OVERFLOW_SURVEY.license}</ExternalLink>
+                  （個々の内容は
+                  <ExternalLink href={STACK_OVERFLOW_SURVEY.contentsLicenseUrl}>{STACK_OVERFLOW_SURVEY.contentsLicense}</ExternalLink>
+                  ）。8FitLabは回答データを独自に集計・加工（Goal別の集計、日本市場向けの補正を含む）して統計値を算出しており、算出した統計データはODbLで
+                  <ExternalLink href={STACK_OVERFLOW_SURVEY.derivedDatabaseUrl}>公開しています</ExternalLink>。
+                </li>
+              </ul>
               <p>Career Matchは就職・転職・採用を保証するものではありません。</p>
             </div>
           </div>

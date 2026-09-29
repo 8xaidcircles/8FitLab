@@ -4,9 +4,30 @@ export const SITE_DESCRIPTION =
   "目指す職種（Goal）を選び、スキル・経験・学歴を入力すると、Goalとの一致度（Career Match）と不足スキル、日本向けの学習順（Learning Path）がわかります。";
 export const ORGANIZATION_NAME = "AID CIRCLES";
 
+const CC_BY_4_0 = { license: "CC BY 4.0", licenseUrl: "https://creativecommons.org/licenses/by/4.0/deed.ja" } as const;
+
+/** JobHop（CC BY 4.0）。表示者は Ghent University AIDA、データ提供は VDAB（欧州委員会ではない） */
+export const JOBHOP = {
+  name: "JobHop v2",
+  url: "https://huggingface.co/datasets/aida-ugent/JobHop",
+  creator: "Ghent University（AIDA）、データ提供：VDAB（ベルギー・フランダース地域公共職業安定所）",
+  ...CC_BY_4_0,
+} as const;
+
+/** ESCO（© European Union, CC BY 4.0）。利用時は英語の定型文と、改変・翻訳している旨の表示が必要 */
+export const ESCO = {
+  name: "ESCO（European Skills, Competences, Qualifications and Occupations）v1.1.2",
+  url: "https://esco.ec.europa.eu/",
+  creator: "© European Union",
+  statement: "This service uses the ESCO classification of the European Commission.",
+  ...CC_BY_4_0,
+} as const;
+
 /** Stack Overflow Developer Survey（ODbL）の出典表示。ODbL 4.6 により派生データベース（Skill Statistics）の入手先も示す */
 export const STACK_OVERFLOW_SURVEY = {
   name: "Stack Overflow Developer Survey",
+  creator: "Stack Exchange, Inc.",
+  years: "2023–2025",
   url: "https://survey.stackoverflow.co/",
   license: "Open Database License (ODbL) v1.0",
   licenseUrl: "https://opendatacommons.org/licenses/odbl/1-0/",

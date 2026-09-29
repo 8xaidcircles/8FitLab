@@ -7,7 +7,6 @@ import { getAnonymousUserId, isUuid } from "@/lib/anonymous-user";
 import { getAssessment } from "@/lib/assessment/repository";
 import {
   COMPOSITE_UNMET_GROUP_CAP,
-  goalOccupations,
   goalSkillUnits,
   humanRequirementStatus,
   loadEducation,
@@ -25,9 +24,8 @@ import {
   skillMatchScope,
   skillUnitGaps,
 } from "@/lib/career-match";
-import { CONFIDENCE_LABELS, EVIDENCE_LABELS, SKILL_LAYER_WEIGHT_SOURCE_LABELS, formatPercent } from "@/lib/labels";
+import { SKILL_LAYER_WEIGHT_SOURCE_LABELS, formatPercent } from "@/lib/labels";
 import { LearningSteps } from "@/components/learning-steps";
-import { STACK_OVERFLOW_SURVEY } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Career Matchの結果",
@@ -154,40 +152,27 @@ export default async function ResultPage({ params }: PageProps<"/career-match/re
   const level = education.levels.find((l) => l.level_id === assessment.education_level_id);
   const field = education.fields.find((f) => f.field_id === assessment.field_id);
 
-  const statsNotes: string[] = [];
-  if (match.evidence_mode === "proxy") {
-    statsNotes.push(
-      `このGoalの職業はデータに直接存在しないため、職務内容が近い職業（${goalOccupations(goal)
-        .map((o) => roleName(o.code))
-        .join("、")}）の統計を代わりに使用しています。`,
-    );
-  }
-  if (match.goal_sample_size > 0 && match.goal_sample_size < 100) {
-    statsNotes.push(`統計の母数が少ない（N = ${match.goal_sample_size}）ため、解釈には注意が必要です。`);
-  }
   const groups = goal.requirement_groups;
   const satisfied = satisfiedGroupIds(
     groups.map((g) => ({ group_id: g.group_id, occupations: g.occupations.map((o) => o.code) })),
     assessment.experiences,
   );
   const groupNames = (met: boolean) => groups.filter((g) => satisfied.has(g.group_id) === met).map((g) => g.name).join("・");
-  const compositeNote = `このGoalは${groups.map((g) => g.name).join("と")}の達成率の平均で、両方の経験があって100になります（${groups
+  const compositeNote = `このGoalは${groups.map((g) => g.name).join("と")}の達成率の平均です（${groups
     .map((g) => `${g.name}：${g.occupations.map((o) => roleName(o.code)).join(" または ")}`)
-    .join("、")}）。経験していない側の達成率は、前職経験の統計から最大${COMPOSITE_UNMET_GROUP_CAP}まで評価します。`;
+    .join("、")}）。職業そのものの経験が無い側の達成率は、前職経験の統計から最大${COMPOSITE_UNMET_GROUP_CAP}まで評価します。`;
+  const tenureNote =
+    "このGoalの職業そのものの経験は、同じ職業に就いた人の在職年数と比べて評価しています。在職年数が長い人ほど高くなり、半数の人より長ければ50を超えます。前職経験の評価のほうが高い場合はそちらを使います。";
   const statisticalNote =
     "このGoalに就いた人が、Goalに就く前にどんな職種を何年経験していたかと比べています。上位10%の人と同程度の前職経験で100になります。";
-  const experienceNotes =
-    satisfied.size === groups.length
-      ? ["このGoalの職業そのものの経験があるため、すでにGoalに到達しているとみなして100としています。"]
-      : [
-          ...(groups.length > 1 ? [compositeNote] : []),
-          ...(satisfied.size > 0
-            ? [
-                `${groupNames(true)}は経験済みのため100、${groupNames(false)}は前職経験の統計から達成率を出し、平均しています。`,
-              ]
-            : []),
-          statisticalNote,
-        ];
+  const experienceNotes = [
+    ...(groups.length > 1 ? [compositeNote] : []),
+    ...(satisfied.size > 0 ? [tenureNote] : []),
+    ...(groups.length > 1 && satisfied.size > 0 && satisfied.size < groups.length
+      ? [`${groupNames(true)}は在職年数、${groupNames(false)}は前職経験の統計から達成率を出し、平均しています。`]
+      : []),
+    ...(satisfied.size < groups.length ? [statisticalNote] : []),
+  ];
   const educationNotes = [
     "このGoalに就いた人に最も多く、特徴的な学歴を100としています。",
     ...(level?.mapping_note ? [level.mapping_note] : []),
@@ -212,27 +197,6 @@ export default async function ResultPage({ params }: PageProps<"/career-match/re
             {match.evidence_mode === "skill_only" &&
               "このGoalは職歴・学歴の統計を算出できないため、スキルのみで算出しています。"}
           </p>
-          <dl className="mt-4 flex flex-wrap gap-2 text-xs">
-            <div className="rounded-full bg-indigo-soft px-3 py-1">
-              <dt className="inline text-muted">根拠：</dt>
-              <dd className="inline font-bold text-indigo">{EVIDENCE_LABELS[match.evidence_mode]}</dd>
-            </div>
-            <div className="rounded-full bg-indigo-soft px-3 py-1">
-              <dt className="inline text-muted">信頼度：</dt>
-              <dd className="inline font-bold text-indigo">{CONFIDENCE_LABELS[match.confidence]}</dd>
-            </div>
-            <div className="rounded-full bg-indigo-soft px-3 py-1">
-              <dt className="inline text-muted">統計の母数：</dt>
-              <dd className="inline font-bold text-indigo">N = {match.goal_sample_size.toLocaleString()}</dd>
-            </div>
-          </dl>
-          {statsNotes.length > 0 && (
-            <ul className="mt-4 space-y-1.5 text-xs leading-relaxed text-muted">
-              {statsNotes.map((note) => (
-                <li key={note}>※ {note}</li>
-              ))}
-            </ul>
-          )}
         </div>
       </section>
 
@@ -395,36 +359,6 @@ export default async function ResultPage({ params }: PageProps<"/career-match/re
         </Link>
       </div>
 
-      <section aria-label="この結果について" className="mt-16 space-y-2 border-t border-line pt-6 text-[11px] leading-relaxed text-muted">
-        <p className="font-bold">この結果について</p>
-        <p>
-          Experience・Educationの一致度は欧州の労働市場データ（JobHop / ESCO）に基づいており、日本の労働市場を完全に反映するものではありません。
-          Skillは、調査データのあるGoalでは世界の開発者調査（Stack Overflow Developer Survey）を8FitLabが集計し、日本の回答で補正した技術で評価します。
-          調査に対応する職種が無いGoal（PM・PdM・テスト・ネットワーク）は、8FitLabが定義した手法・知識・資格で評価します。
-          Career Matchは就職・転職・採用を保証するものではありません。
-        </p>
-        <p>
-          Data Source：Experience / Education：JobHop v2（CC BY 4.0）＋ ESCO v1.1.2 ／ Skill：
-          <a href={STACK_OVERFLOW_SURVEY.url} className="underline hover:text-indigo" target="_blank" rel="noopener noreferrer">
-            {STACK_OVERFLOW_SURVEY.name}
-          </a>{" "}
-          2023–2025（
-          <a
-            href={STACK_OVERFLOW_SURVEY.licenseUrl}
-            className="underline hover:text-indigo"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {STACK_OVERFLOW_SURVEY.license}
-          </a>
-          。8FitLabが集計・日本補正）＋ 8FitLab 手法・知識・資格マスタ
-        </p>
-        <p>
-          計算バージョン {match.calculation_version}
-          {stored && ` ／ Skill計算 ${stored.skill_calculation_version}`}
-          {stored?.skill_statistics_version && ` ／ Skill統計 ${stored.skill_statistics_version}`}
-        </p>
-      </section>
     </div>
   );
 }
