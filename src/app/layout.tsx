@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import { Noto_Sans_JP } from "next/font/google";
 import Link from "next/link";
-import type { ReactNode } from "react";
 import { Logo } from "@/components/logo";
-import { ESCO, JOBHOP, SITE_DESCRIPTION, SITE_NAME, SITE_URL, STACK_OVERFLOW_SURVEY } from "@/lib/site";
+import { ORGANIZATION_URL, SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
 import "./globals.css";
 
 const notoSansJp = Noto_Sans_JP({
@@ -29,13 +28,15 @@ const NAV = [
   { href: "/blog", label: "Blog" },
 ];
 
-function ExternalLink({ href, children }: { href: string; children: ReactNode }) {
-  return (
-    <a href={href} className="underline hover:text-indigo" target="_blank" rel="noopener noreferrer">
-      {children}
-    </a>
-  );
-}
+const FOOTER_LINKS = [
+  { href: ORGANIZATION_URL, label: "運営元" },
+  { href: `${ORGANIZATION_URL}/privacy-policy`, label: "プライバシーポリシー" },
+  { href: `${ORGANIZATION_URL}/terms-of-service`, label: "利用規約" },
+  { href: "/disclaimer", label: "免責事項" },
+  { href: "/contact", label: "問い合わせ" },
+];
+
+const COPYRIGHT_YEAR = 2026;
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
@@ -66,43 +67,36 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             <div className="space-y-3">
               <Logo />
               <p>Goalから逆算して、エンジニアのキャリアをつくる。</p>
-              <p className="text-xs">
-                運営：AID CIRCLES ／ 姉妹サービス：8Wheel（Webサービス検索）
-              </p>
             </div>
             <div className="space-y-2 text-xs leading-relaxed">
-              <p className="font-bold text-ink">データ出典・ライセンス表記</p>
-              <p>本サービスのマッチ度算出およびスキル分析には、以下のオープンデータセットを利用しています。</p>
-              <ul className="list-inside list-disc space-y-2">
-                <li>
-                  <ExternalLink href={JOBHOP.url}>
-                    <strong>{JOBHOP.name}</strong>
-                  </ExternalLink>{" "}
-                  - {JOBHOP.creator} ／ <ExternalLink href={JOBHOP.licenseUrl}>{JOBHOP.license}</ExternalLink>
-                  。8FitLabが職歴データを集計・加工して統計値を算出しています。
-                </li>
-                <li>
-                  <ExternalLink href={ESCO.url}>
-                    <strong>{ESCO.name}</strong>
-                  </ExternalLink>{" "}
-                  - {ESCO.creator} ／ <ExternalLink href={ESCO.licenseUrl}>{ESCO.license}</ExternalLink>。{ESCO.statement}
-                  8FitLabは、ESCOの職業分類を独自のGoal（目標職種）に再構成・翻訳して使用しています。表示内容は欧州委員会が公開するESCOの原文とは異なり、欧州委員会はその正確性・最新性・完全性を保証しません。
-                </li>
-                <li>
-                  <ExternalLink href={STACK_OVERFLOW_SURVEY.url}>
-                    <strong>
-                      {STACK_OVERFLOW_SURVEY.name} {STACK_OVERFLOW_SURVEY.years}
-                    </strong>
-                  </ExternalLink>{" "}
-                  - {STACK_OVERFLOW_SURVEY.creator} ／{" "}
-                  <ExternalLink href={STACK_OVERFLOW_SURVEY.licenseUrl}>{STACK_OVERFLOW_SURVEY.license}</ExternalLink>
-                  （個々の内容は
-                  <ExternalLink href={STACK_OVERFLOW_SURVEY.contentsLicenseUrl}>{STACK_OVERFLOW_SURVEY.contentsLicense}</ExternalLink>
-                  ）。8FitLabは回答データを独自に集計・加工（Goal別の集計、日本市場向けの補正を含む）して統計値を算出しており、算出した統計データはODbLで
-                  <ExternalLink href={STACK_OVERFLOW_SURVEY.derivedDatabaseUrl}>公開しています</ExternalLink>。
-                </li>
-              </ul>
-              <p>Career Matchは就職・転職・採用を保証するものではありません。</p>
+              <p className="font-bold text-ink">データ出典・ライセンス</p>
+              <p>
+                本サービスは JobHop（CC BY 4.0）、ESCO（CC BY 4.0）、Stack Overflow Developer Survey（ODbL）のオープンデータを利用・加工しています。
+                詳細なライセンス表記・クレジット・改変通知は
+                <Link href="/disclaimer#licenses" className="underline hover:text-indigo">
+                  データ出典・ライセンス表記
+                </Link>
+                をご確認ください。
+              </p>
+              <p>※ Career Matchは就職・転職・採用を保証するものではありません。</p>
+            </div>
+          </div>
+          <div className="border-t border-line">
+            <div className="mx-auto flex max-w-5xl flex-col gap-3 px-4 py-5 text-xs text-muted md:flex-row md:items-center md:justify-between">
+              <nav aria-label="フッターメニュー">
+                <ul className="flex flex-wrap gap-x-5 gap-y-2">
+                  {FOOTER_LINKS.map((item) => (
+                    <li key={item.href}>
+                      <Link href={item.href} className="hover:text-indigo hover:underline">
+                        {item.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+              <p>
+                © {COPYRIGHT_YEAR} - {SITE_NAME}. All rights reserved.
+              </p>
             </div>
           </div>
         </footer>

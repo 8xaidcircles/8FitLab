@@ -3,6 +3,16 @@ export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://8fitlab.co
 export const SITE_DESCRIPTION =
   "目指す職種（Goal）を選び、スキル・経験・学歴を入力すると、Goalとの一致度（Career Match）と不足スキル、日本向けの学習順（Learning Path）がわかります。";
 export const ORGANIZATION_NAME = "AID CIRCLES";
+export const ORGANIZATION_URL = "https://8xaidcircles.com";
+export const CONTACT_FORM = {
+  url: "https://forms.gle/oTZjzmU8ChxcCyGH6",
+  embedUrl: "https://docs.google.com/forms/d/e/1FAIpQLSfIqaxi9Twu3uw9dno9GvnbVGi2kuxgqhu21WX402EWlD30Ew/viewform?embedded=true",
+} as const;
+export const OPERATOR = {
+  name: "8X Aid Circles",
+  address: "京都府京都市下京区朱雀宝蔵町44番地協栄ビル2階京都朱雀スタジオAR-204",
+  email: "8xaidcircles@gmail.com",
+} as const;
 
 const CC_BY_4_0 = { license: "CC BY 4.0", licenseUrl: "https://creativecommons.org/licenses/by/4.0/deed.ja" } as const;
 
