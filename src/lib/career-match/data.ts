@@ -10,6 +10,7 @@ import type {
   HumanSkill,
   LearningPathMaster,
   MappingStatus,
+  Resource,
   SkillLayersMaster,
   SkillStatistics,
 } from "./types";
@@ -24,6 +25,8 @@ export interface Goal {
   summary: string;
   mapping_status: MappingStatus;
   requirement_groups: GoalRequirementGroup[];
+  /** true の Goal は、全 Learning Step に教材が 1 件以上ある（Data Test で保証） */
+  learning_resources_ready: boolean;
 }
 
 export interface GoalRequirementGroup {
@@ -196,6 +199,10 @@ export async function loadSkillStatistics(goalId: string): Promise<SkillStatisti
     if ((error as NodeJS.ErrnoException).code === "ENOENT") return null;
     throw error;
   }
+}
+
+export async function loadResources(): Promise<Resource[]> {
+  return (await readJson<{ resources: Resource[] }>("resources/resources.json")).resources;
 }
 
 export async function loadLearningPath(goalId: string): Promise<LearningPathMaster> {

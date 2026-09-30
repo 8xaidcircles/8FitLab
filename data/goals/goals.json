@@ -24,7 +24,8 @@
         }
       ],
       "name": "フロントエンドエンジニア",
-      "summary": "Webサービスの画面やUIを作る"
+      "summary": "Webサービスの画面やUIを作る",
+      "learning_resources_ready": false
     },
     {
       "goal_id": "backend-developer",
@@ -43,7 +44,8 @@
         }
       ],
       "name": "バックエンドエンジニア",
-      "summary": "サーバー・API・データベースを作る"
+      "summary": "サーバー・API・データベースを作る",
+      "learning_resources_ready": false
     },
     {
       "goal_id": "full-stack-developer",
@@ -76,7 +78,8 @@
         }
       ],
       "name": "フルスタックエンジニア",
-      "summary": "画面からサーバーまで一通り作る"
+      "summary": "画面からサーバーまで一通り作る",
+      "learning_resources_ready": false
     },
     {
       "goal_id": "data-analyst",
@@ -95,7 +98,8 @@
         }
       ],
       "name": "データアナリスト",
-      "summary": "データを集計・可視化して意思決定を支える"
+      "summary": "データを集計・可視化して意思決定を支える",
+      "learning_resources_ready": false
     },
     {
       "goal_id": "data-scientist",
@@ -114,7 +118,8 @@
         }
       ],
       "name": "データサイエンティスト",
-      "summary": "統計や機械学習で課題を解く"
+      "summary": "統計や機械学習で課題を解く",
+      "learning_resources_ready": false
     },
     {
       "goal_id": "data-engineer",
@@ -141,7 +146,8 @@
         }
       ],
       "name": "データエンジニア",
-      "summary": "データ基盤やパイプラインを作る"
+      "summary": "データ基盤やパイプラインを作る",
+      "learning_resources_ready": false
     },
     {
       "goal_id": "it-project-manager",
@@ -160,7 +166,8 @@
         }
       ],
       "name": "ITプロジェクトマネージャー",
-      "summary": "システム開発プロジェクトを計画・推進する"
+      "summary": "システム開発プロジェクトを計画・推進する",
+      "learning_resources_ready": false
     },
     {
       "goal_id": "product-manager",
@@ -179,7 +186,8 @@
         }
       ],
       "name": "プロダクトマネージャー",
-      "summary": "何を作るかを決め、プロダクトを育てる"
+      "summary": "何を作るかを決め、プロダクトを育てる",
+      "learning_resources_ready": false
     },
     {
       "goal_id": "software-architect",
@@ -198,7 +206,8 @@
         }
       ],
       "name": "ソフトウェアアーキテクト",
-      "summary": "システム全体の設計方針を決める"
+      "summary": "システム全体の設計方針を決める",
+      "learning_resources_ready": false
     },
     {
       "goal_id": "mobile-app-developer",
@@ -217,7 +226,8 @@
         }
       ],
       "name": "モバイルアプリエンジニア",
-      "summary": "iOS / Android アプリを作る"
+      "summary": "iOS / Android アプリを作る",
+      "learning_resources_ready": false
     },
     {
       "goal_id": "network-engineer",
@@ -236,7 +246,8 @@
         }
       ],
       "name": "ネットワークエンジニア",
-      "summary": "ネットワークを設計・構築・運用する"
+      "summary": "ネットワークを設計・構築・運用する",
+      "learning_resources_ready": false
     },
     {
       "goal_id": "test-analyst",
@@ -255,7 +266,8 @@
         }
       ],
       "name": "テストエンジニア / QA",
-      "summary": "テストを設計し、品質を保証する"
+      "summary": "テストを設計し、品質を保証する",
+      "learning_resources_ready": false
     },
     {
       "goal_id": "devops-sre",
@@ -278,7 +290,8 @@
         }
       ],
       "name": "DevOps / SREエンジニア",
-      "summary": "開発と運用をつなぎ、安定稼働を支える"
+      "summary": "開発と運用をつなぎ、安定稼働を支える",
+      "learning_resources_ready": false
     },
     {
       "goal_id": "cloud-architect",
@@ -301,7 +314,8 @@
         }
       ],
       "name": "クラウドアーキテクト",
-      "summary": "クラウド上のインフラを設計する"
+      "summary": "クラウド上のインフラを設計する",
+      "learning_resources_ready": false
     }
   ]
 }

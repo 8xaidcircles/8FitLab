@@ -5,3 +5,4 @@ export * from "./skill-score";
 export * from "./skill-layers";
 export * from "./skill-migration";
 export * from "./data";
+export * from "./resources";

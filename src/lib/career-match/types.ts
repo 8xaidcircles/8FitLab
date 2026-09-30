@@ -10,7 +10,50 @@ export interface LearningStep {
   step_id: string;
   name: string;
   any_of: string[];
+  summary?: string;
+  done_criteria?: string;
+  phase?: { id: string; label: string };
 }
+
+export interface ResourceAffiliate {
+  status: "active" | "inactive";
+  program: string;
+  url: string;
+}
+
+/** 教材・キャリアサービス共通。editorial_rank は小さいほど上位（アフィリエイトの有無では変えない） */
+export interface BaseResource {
+  resource_id: string;
+  provider: string;
+  name: string;
+  official_url: string;
+  selection_reason: string;
+  editorial_rank: number;
+  is_active: boolean;
+  verified_at: string;
+  price_note?: string;
+  isbn?: string;
+  affiliate: ResourceAffiliate | null;
+}
+
+/** Learning Step の学習教材。covers は教えている skill_id */
+export interface LearningResource extends BaseResource {
+  type: "book" | "online_course" | "free_doc" | "school";
+  covers: string[];
+  level: "beginner" | "intermediate" | "advanced" | "all";
+  cost: "free" | "paid";
+}
+
+/** 転職・フリーランスのキャリアサービス */
+export interface CareerService extends BaseResource {
+  type: "job_service";
+  goal_ids: string[];
+  audience: "freelance" | "career_change" | "all";
+  /** Goal の職業の経験が無いと使えない（フリーランス案件など） */
+  requires_goal_experience: boolean;
+}
+
+export type Resource = LearningResource | CareerService;
 
 export interface LearningPathMaster {
   goal_id: string;
