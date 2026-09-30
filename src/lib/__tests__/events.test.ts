@@ -1,12 +1,25 @@
 import { describe, expect, it } from "vitest";
-import { EVENT_NAMES, isEventName, isValidEventData } from "../events";
+import { EVENT_NAMES, LEGACY_EVENT_NAMES, isClientEventName, isEventName, isValidEventData } from "../events";
 
 describe("events", () => {
   it("MVP Event（§45）の 10 種類のみ受け付ける", () => {
     expect(EVENT_NAMES).toHaveLength(10);
     expect(isEventName("goal_selected")).toBe(true);
+    expect(isEventName("resource_clicked")).toBe(true);
     expect(isEventName("purchase")).toBe(false);
     expect(isEventName(undefined)).toBe(false);
+  });
+
+  it("learning_skill_clicked は廃止（過去ログ用の名前としてだけ残す）", () => {
+    expect(isEventName("learning_skill_clicked")).toBe(false);
+    expect(LEGACY_EVENT_NAMES).toContain("learning_skill_clicked");
+    for (const name of LEGACY_EVENT_NAMES) expect(EVENT_NAMES).not.toContain(name);
+  });
+
+  it("resource_clicked はサーバーだけが記録し、クライアント（/api/events）からは受け付けない", () => {
+    expect(isClientEventName("resource_clicked")).toBe(false);
+    expect(isClientEventName("goal_selected")).toBe(true);
+    expect(isClientEventName("learning_skill_clicked")).toBe(false);
   });
 
   it("event_data はオブジェクトかつ 2KB 以下", () => {

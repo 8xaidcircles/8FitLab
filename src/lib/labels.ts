@@ -1,4 +1,26 @@
-import type { Confidence, EvidenceMode, HumanSkillDomain, SkillLayerWeightSource } from "@/lib/career-match/types";
+import type {
+  Confidence,
+  EvidenceMode,
+  HumanSkillDomain,
+  LearningResource,
+  Resource,
+  SkillLayerWeightSource,
+} from "@/lib/career-match/types";
+
+export const RESOURCE_TYPE_LABELS: Record<Resource["type"], string> = {
+  book: "書籍",
+  online_course: "オンライン講座",
+  free_doc: "無料ドキュメント",
+  school: "スクール",
+  job_service: "キャリアサービス",
+};
+
+export const RESOURCE_LEVEL_LABELS: Record<LearningResource["level"], string> = {
+  beginner: "初級",
+  intermediate: "中級",
+  advanced: "上級",
+  all: "全対応",
+};
 
 /** data/skills/tech-skills.json の category（表示順） */
 export const TECH_SKILL_CATEGORIES: { id: string; name: string }[] = [

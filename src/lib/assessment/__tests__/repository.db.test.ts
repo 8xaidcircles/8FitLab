@@ -37,9 +37,9 @@ describe.skipIf(!hasDb)("Supabase repository（実 DB）", () => {
     ]);
     const result = { ...calculateCareerMatch(submission, stats, skill, known), ...override };
     const missingSteps = learningPath(path, resolveUserSkills(submission, skill, known).held);
-    const id = await saveAssessment({ anonymousUserId, submission, result, missingSteps });
+    const id = await saveAssessment({ anonymousUserId, submission, result, missingSteps, learningPathVersion: path.version });
     createdIds.push(id);
-    return { id, result, missingSteps };
+    return { id, result, missingSteps, learningPathVersion: path.version };
   }
 
   it("Assessment を保存し、同じ内容を読み出せる", async () => {
@@ -102,6 +102,26 @@ describe.skipIf(!hasDb)("Supabase repository（実 DB）", () => {
     expect(stored!.career_match.skill_match).toBe(0);
     expect(stored!.career_match.education_match).toBe(0);
     expect(stored!.learning_path.length).toBeGreaterThan(0);
+  });
+
+  it("Learning Path の各行に、判定に使った Learning Path Master の version を保存する", async () => {
+    const { id, missingSteps, learningPathVersion } = await save({
+      goal_id: "data-analyst",
+      skill_ids: [],
+      certification_ids: [],
+      experiences: [],
+      education_level_id: null,
+      degree_id: null,
+      field_id: null,
+    });
+    expect(learningPathVersion).toMatch(/\S/);
+    const { data, error } = await createClient()
+      .from("learning_path_results")
+      .select("learning_path_version")
+      .eq("assessment_id", id);
+    expect(error).toBeNull();
+    expect(data).toHaveLength(missingSteps.length);
+    for (const row of data!) expect(row.learning_path_version).toBe(learningPathVersion);
   });
 
   it("保存済みの旧 skill_id は読み出し時に新しい skill_id に変換し、split は計算対象外として分ける", async () => {

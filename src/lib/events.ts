@@ -11,9 +11,20 @@ export const EVENT_NAMES = [
   "career_match_calculated",
   "skill_gap_viewed",
   "learning_path_viewed",
-  "learning_skill_clicked",
+  "resource_clicked",
 ] as const;
 export type EventName = (typeof EVENT_NAMES)[number];
+
+/** 新規には記録しないが、過去の events 行に残っている名前（集計で読むときに使う） */
+export const LEGACY_EVENT_NAMES = ["learning_skill_clicked"] as const;
+export type StoredEventName = EventName | (typeof LEGACY_EVENT_NAMES)[number];
+
+/** サーバー（/go リダイレクト）だけが記録する。/api/events からは受け付けない（クリック数の水増しを防ぐ） */
+const SERVER_ONLY_EVENT_NAMES: readonly EventName[] = ["resource_clicked"];
+
+export function isClientEventName(value: unknown): value is EventName {
+  return isEventName(value) && !SERVER_ONLY_EVENT_NAMES.includes(value);
+}
 
 const MAX_EVENT_DATA_BYTES = 2048;
 

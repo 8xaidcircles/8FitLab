@@ -111,6 +111,8 @@ CREATE TABLE IF NOT EXISTS public.learning_path_results (
     assessment_id UUID NOT NULL REFERENCES public.assessment_sessions(id) ON DELETE CASCADE,
     step_id TEXT NOT NULL,
     learning_order INTEGER NOT NULL,
+    -- 判定に使った Learning Path Master（data/learning-paths）の version。列の追加前の行は NULL
+    learning_path_version TEXT,
     created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 

@@ -1,7 +1,7 @@
 "use client";
 
+import type { ReactNode } from "react";
 import { TrackView } from "@/components/track-view";
-import { track } from "@/lib/track";
 
 export interface StepView {
   step_id: string;
@@ -10,6 +10,8 @@ export interface StepView {
   satisfied: boolean;
   /** scored が false の選択肢は、Step を満たしても Skill Match には効かない */
   options: { skill_id: string; name: string; owned: boolean; scored?: boolean }[];
+  /** 開いたときに選択肢の下に出す内容（Step の説明・教材カード。サーバーで組み立てる） */
+  details?: ReactNode;
 }
 
 export function LearningSteps({
@@ -58,6 +60,7 @@ export function LearningSteps({
                       ))}
                     </div>
                   )}
+                  {step.details}
                 </div>
               </li>
             );
@@ -65,12 +68,7 @@ export function LearningSteps({
           const order = missingOrder.get(step.step_id);
           return (
             <li key={step.step_id}>
-              <details
-                className={`group rounded-2xl border bg-white ${step.satisfied ? "border-line" : "border-flame/40"}`}
-                onToggle={(e) => {
-                  if (e.currentTarget.open) track("learning_skill_clicked", { goal_id: goalId, step_id: step.step_id });
-                }}
-              >
+              <details className={`group rounded-2xl border bg-white ${step.satisfied ? "border-line" : "border-flame/40"}`}>
                 <summary className="flex cursor-pointer list-none items-center gap-3 p-4">
                   <span
                     className={`inline-flex size-8 shrink-0 items-center justify-center rounded-full text-sm font-extrabold ${
@@ -111,6 +109,7 @@ export function LearningSteps({
                       </span>
                     ))}
                   </div>
+                  {step.details}
                 </div>
               </details>
             </li>

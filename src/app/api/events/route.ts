@@ -1,5 +1,5 @@
 import { getOrCreateAnonymousUserId } from "@/lib/anonymous-user";
-import { isEventName, isValidEventData, recordEvent } from "@/lib/events";
+import { isClientEventName, isValidEventData, recordEvent } from "@/lib/events";
 
 // Server Action はクライアントごとに直列実行されるため、頻度の高い計測は Route Handler で受ける
 export async function POST(request: Request) {
@@ -15,7 +15,7 @@ export async function POST(request: Request) {
     return new Response(null, { status: 400 });
   }
   const { event_name, event_data = {} } = (body ?? {}) as Record<string, unknown>;
-  if (!isEventName(event_name) || !isValidEventData(event_data)) {
+  if (!isClientEventName(event_name) || !isValidEventData(event_data)) {
     return new Response(null, { status: 400 });
   }
 

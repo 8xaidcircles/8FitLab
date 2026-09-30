@@ -6,3 +6,4 @@ export * from "./skill-layers";
 export * from "./skill-migration";
 export * from "./data";
 export * from "./resources";
+export * from "./go-link";

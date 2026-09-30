@@ -17,6 +17,8 @@ export interface SaveAssessmentArgs {
   result: CareerMatchResult;
   // 未習得の Learning Step（learning_order 順）。Skill Gap と Learning Path の両方に保存する
   missingSteps: LearningStep[];
+  /** missingSteps の判定に使った Learning Path Master の version */
+  learningPathVersion: string;
 }
 
 export interface StoredAssessment {
@@ -60,6 +62,7 @@ export async function saveAssessment({
   submission,
   result,
   missingSteps,
+  learningPathVersion,
 }: SaveAssessmentArgs): Promise<string> {
   const supabase = createClient();
 
@@ -139,7 +142,11 @@ export async function saveAssessment({
   }
   if (steps.length > 0) {
     inserts.push(supabase.from("skill_gap_results").insert(steps));
-    inserts.push(supabase.from("learning_path_results").insert(steps));
+    inserts.push(
+      supabase
+        .from("learning_path_results")
+        .insert(steps.map((step) => ({ ...step, learning_path_version: learningPathVersion }))),
+    );
   }
 
   const results = await Promise.all(inserts);
