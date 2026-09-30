@@ -7,3 +7,4 @@ export * from "./skill-migration";
 export * from "./data";
 export * from "./resources";
 export * from "./go-link";
+export * from "./recommendations";

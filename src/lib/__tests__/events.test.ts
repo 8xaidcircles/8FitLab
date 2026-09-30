@@ -1,11 +1,19 @@
 import { describe, expect, it } from "vitest";
-import { EVENT_NAMES, LEGACY_EVENT_NAMES, isClientEventName, isEventName, isValidEventData } from "../events";
+import {
+  EVENT_NAMES,
+  LEGACY_EVENT_NAMES,
+  hasValidEventFields,
+  isClientEventName,
+  isEventName,
+  isValidEventData,
+} from "../events";
 
 describe("events", () => {
-  it("MVP Event（§45）の 10 種類のみ受け付ける", () => {
-    expect(EVENT_NAMES).toHaveLength(10);
+  it("MVP Event（§45）の 11 種類のみ受け付ける", () => {
+    expect(EVENT_NAMES).toHaveLength(11);
     expect(isEventName("goal_selected")).toBe(true);
     expect(isEventName("resource_clicked")).toBe(true);
+    expect(isClientEventName("recommendation_clicked")).toBe(true);
     expect(isEventName("purchase")).toBe(false);
     expect(isEventName(undefined)).toBe(false);
   });
@@ -20,6 +28,16 @@ describe("events", () => {
     expect(isClientEventName("resource_clicked")).toBe(false);
     expect(isClientEventName("goal_selected")).toBe(true);
     expect(isClientEventName("learning_skill_clicked")).toBe(false);
+  });
+
+  it("recommendation_clicked は placement が決められた値のときだけ受け付ける", () => {
+    for (const placement of ["step_learn", "step_review", "career_learning", "career_experienced"]) {
+      expect(hasValidEventFields("recommendation_clicked", { placement }), placement).toBe(true);
+    }
+    for (const placement of [undefined, null, "", "career_next", "STEP_LEARN", 1]) {
+      expect(hasValidEventFields("recommendation_clicked", { placement }), String(placement)).toBe(false);
+    }
+    expect(hasValidEventFields("goal_selected", {})).toBe(true);
   });
 
   it("event_data はオブジェクトかつ 2KB 以下", () => {

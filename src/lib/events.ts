@@ -1,4 +1,5 @@
 import "server-only";
+import { isRecommendationPlacement } from "@/lib/career-match/recommendations";
 import { createClient } from "@/lib/supabase/server";
 
 export const EVENT_NAMES = [
@@ -12,6 +13,7 @@ export const EVENT_NAMES = [
   "skill_gap_viewed",
   "learning_path_viewed",
   "resource_clicked",
+  "recommendation_clicked",
 ] as const;
 export type EventName = (typeof EVENT_NAMES)[number];
 
@@ -30,6 +32,12 @@ const MAX_EVENT_DATA_BYTES = 2048;
 
 export function isEventName(value: unknown): value is EventName {
   return (EVENT_NAMES as readonly unknown[]).includes(value);
+}
+
+/** Event ごとの必須項目。recommendation_clicked は placement が決められた値のときだけ保存する */
+export function hasValidEventFields(eventName: EventName, data: Record<string, unknown>): boolean {
+  if (eventName === "recommendation_clicked") return isRecommendationPlacement(data.placement);
+  return true;
 }
 
 export function isValidEventData(value: unknown): value is Record<string, unknown> {

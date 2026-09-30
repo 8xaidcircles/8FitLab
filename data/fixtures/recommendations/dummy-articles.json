@@ -1,0 +1,138 @@
+{
+  "_comment": "表示確認用のダミー（手書き）。RECOMMENDATION_FIXTURE=1 かつ production 以外のときだけ読む。記事は microCMS に存在しないため、カードのリンク先 /blog/{id} は 404 になる",
+  "contents": [
+    {
+      "id": "dummy-html-basics",
+      "title": "【ダミー】HTML/CSS の基礎を学べる教材",
+      "description": "【ダミー】html-css の 1 件目。dummy-html-layout と同順位（10）で、id 順で先に出るはずです。",
+      "eyecatch": null,
+      "category": null,
+      "recommend_type": ["material"],
+      "recommend_skill_ids": "html-css",
+      "recommend_order": 10
+    },
+    {
+      "id": "dummy-html-layout",
+      "title": "【ダミー】レイアウトに強くなる CSS 教材",
+      "description": "【ダミー】大文字と改行で入力（HTML-CSS）。同順位の 2 件目。",
+      "eyecatch": null,
+      "category": null,
+      "recommend_type": ["material"],
+      "recommend_skill_ids": " HTML-CSS\n",
+      "recommend_order": 10
+    },
+    {
+      "id": "dummy-js-intro",
+      "title": "【ダミー】JavaScript 入門",
+      "description": "【ダミー】javascript と typescript の両方に一致。未習得の Step が優先されるため、JavaScript を習得済みなら未習得の TypeScript に出て、JavaScript の復習には出ないはずです。",
+      "eyecatch": null,
+      "category": null,
+      "recommend_type": "material",
+      "recommend_skill_ids": "javascript, typescript",
+      "recommend_order": 20
+    },
+    {
+      "id": "dummy-js-practice",
+      "title": "【ダミー】JavaScript 実践ドリル",
+      "description": "【ダミー】recommend_order 未入力（100 扱い）。JavaScript の Step で dummy-js-intro の後ろに出るはずです。",
+      "eyecatch": null,
+      "category": null,
+      "recommend_type": ["material"],
+      "recommend_skill_ids": "javascript"
+    },
+    {
+      "id": "dummy-git-guide",
+      "title": "【ダミー】Git / GitHub はじめてガイド",
+      "description": "【ダミー】git-github の 1 件。",
+      "eyecatch": null,
+      "category": null,
+      "recommend_type": ["material"],
+      "recommend_skill_ids": "git-github",
+      "recommend_order": 5
+    },
+    {
+      "id": "dummy-career-learning-a",
+      "title": "【ダミー】未経験から使えるキャリアスクール A",
+      "description": "【ダミー】学習中・未経験向け（audience = learning、order 10）。",
+      "eyecatch": null,
+      "category": null,
+      "recommend_type": ["career_service"],
+      "recommend_goal_ids": "frontend-developer",
+      "recommend_audience": ["learning"],
+      "recommend_order": 10
+    },
+    {
+      "id": "dummy-career-learning-b",
+      "title": "【ダミー】未経験歓迎の転職サポート B",
+      "description": "【ダミー】学習中・未経験向け（audience は文字列で入力、order 未入力 → 100）。A の後ろに出るはずです。",
+      "eyecatch": null,
+      "category": null,
+      "recommend_type": ["career_service"],
+      "recommend_goal_ids": "frontend-developer, backend-developer",
+      "recommend_audience": "learning"
+    },
+    {
+      "id": "dummy-career-experienced-a",
+      "title": "【ダミー】経験者向け転職サービス A",
+      "description": "【ダミー】経験者向け（audience = experienced、order 10）。",
+      "eyecatch": null,
+      "category": null,
+      "recommend_type": ["career_service"],
+      "recommend_goal_ids": "frontend-developer",
+      "recommend_audience": ["experienced"],
+      "recommend_order": 10
+    },
+    {
+      "id": "dummy-career-experienced-b",
+      "title": "【ダミー】フリーランス案件サービス B",
+      "description": "【ダミー】経験者向け（order 20）。",
+      "eyecatch": null,
+      "category": null,
+      "recommend_type": ["career_service"],
+      "recommend_goal_ids": "frontend-developer\nbackend-developer",
+      "recommend_audience": ["experienced"],
+      "recommend_order": 20
+    },
+    {
+      "id": "dummy-career-all",
+      "title": "【ダミー】全職種共通のキャリア相談サービス",
+      "description": "【ダミー】recommend_goal_ids = all（全 Goal 共通）。audience 未入力なので経験者向けの 3 件目に出るはずです。",
+      "eyecatch": null,
+      "category": null,
+      "recommend_type": ["career_service"],
+      "recommend_goal_ids": "all",
+      "recommend_order": 30
+    },
+    {
+      "id": "dummy-career-unknown-goal",
+      "title": "【ダミー】表示されないはずの記事（未知の goal_id）",
+      "description": "【ダミー】既知でない goal_id だけを持つため除外されるはずです。",
+      "eyecatch": null,
+      "category": null,
+      "recommend_type": ["career_service"],
+      "recommend_goal_ids": "astronaut",
+      "recommend_audience": ["learning"],
+      "recommend_order": 1
+    },
+    {
+      "id": "dummy-unknown-skill",
+      "title": "【ダミー】表示されないはずの記事（未知の skill_id）",
+      "description": "【ダミー】既知でない skill_id だけを持つため除外されるはずです。",
+      "eyecatch": null,
+      "category": null,
+      "recommend_type": ["material"],
+      "recommend_skill_ids": "not-a-real-skill",
+      "recommend_order": 1
+    },
+    {
+      "id": "dummy-invalid-type",
+      "title": "【ダミー】表示されないはずの記事（不正な種別）",
+      "description": "【ダミー】recommend_type が不正なため除外されるはずです。",
+      "eyecatch": null,
+      "category": null,
+      "recommend_type": ["course"],
+      "recommend_skill_ids": "html-css",
+      "recommend_order": 1
+    }
+  ]
+}

@@ -7,36 +7,26 @@ import { getAnonymousUserId, isUuid } from "@/lib/anonymous-user";
 import { getAssessment } from "@/lib/assessment/repository";
 import {
   COMPOSITE_UNMET_GROUP_CAP,
-  goHref,
   goalSkillUnits,
   humanRequirementStatus,
-  isAffiliateLink,
   learningPath,
   loadEducation,
   loadGoals,
   loadKnownIds,
   loadLearningPath,
-  loadResources,
   loadRoleGroups,
   loadRoles,
   loadSkillContext,
   loadSkillNames,
   normalizeHumanRequirements,
-  resolveCareerNextResources,
-  resolveStepResources,
   resolveUserSkills,
   satisfiedGroupIds,
   skillGap,
   skillMatchScope,
   skillUnitGaps,
-  type GoParams,
-  type LearningResource,
-  type LearningStep,
-  type Resource,
 } from "@/lib/career-match";
 import { SKILL_LAYER_WEIGHT_SOURCE_LABELS, formatPercent } from "@/lib/labels";
 import { LearningSteps } from "@/components/learning-steps";
-import { ResourcePending, StepResourceCard } from "@/components/step-resource-card";
 
 export const metadata: Metadata = {
   title: "Career Matchの結果",
@@ -82,58 +72,6 @@ function CategoryCard({
   );
 }
 
-function ResourceCard({ resource, params }: { resource: Resource; params: Omit<GoParams, "resource_id"> }) {
-  return (
-    <StepResourceCard
-      resource={resource}
-      href={goHref({ ...params, resource_id: resource.resource_id })}
-      isAffiliate={isAffiliateLink(resource)}
-    />
-  );
-}
-
-// resources が null の Goal（教材の準備が済んでいない）は説明だけを出す
-function StepDetails({
-  step,
-  goalId,
-  resources,
-  skillName,
-}: {
-  step: LearningStep;
-  goalId: string;
-  resources: LearningResource[] | null;
-  skillName: (id: string) => string;
-}) {
-  const uncovered = resources ? step.any_of.filter((id) => !resources.some((r) => r.covers.includes(id))) : [];
-  if (!step.summary && !step.done_criteria && !step.phase && !resources) return null;
-  return (
-    <div className="mt-4 space-y-3">
-      {step.phase && <p className="text-xs font-bold text-sky">{step.phase.label}</p>}
-      {step.summary && <p className="leading-relaxed">{step.summary}</p>}
-      {step.done_criteria && (
-        <p className="rounded-lg bg-sky-soft px-3 py-2 text-xs leading-relaxed">
-          <span className="font-bold">達成の目安：</span>
-          {step.done_criteria}
-        </p>
-      )}
-      {resources && (
-        <div className="grid gap-3 md:grid-cols-2">
-          {resources.map((resource, index) => (
-            <ResourceCard
-              key={resource.resource_id}
-              resource={resource}
-              params={{ placement: "step_resource", position_index: index, goal_id: goalId, step_id: step.step_id }}
-            />
-          ))}
-          {uncovered.map((id) => (
-            <ResourcePending key={id} name={skillName(id)} />
-          ))}
-        </div>
-      )}
-    </div>
-  );
-}
-
 export default async function ResultPage({ params }: PageProps<"/career-match/result/[id]">) {
   const { id } = await params;
   const anonymousUserId = await getAnonymousUserId();
@@ -173,17 +111,8 @@ export default async function ResultPage({ params }: PageProps<"/career-match/re
   const missingDataDriven = gap.data_driven.filter((s) => !s.satisfied).length;
   const missingChecklist = gap.checklist.filter((s) => !s.satisfied).length;
 
-  // 未習得の Step があれば教材（learning）、全部習得済みなら転職・フリーランス（career_next）。
-  // 教材の準備が済んでいない Goal は Step の説明だけを出す
+  // 学習ロードマップのページへの案内文を、未習得の Step の有無で切り替える
   const missingSteps = learningPath(path, held);
-  const resourcesReady = goal.learning_resources_ready;
-  const allResources = resourcesReady ? await loadResources() : [];
-  const stepResources = new Map(
-    resolveStepResources(resourcesReady ? missingSteps : [], allResources).map((s) => [s.step_id, s.resources]),
-  );
-  const stepDetails = (step: LearningStep) => (
-    <StepDetails step={step} goalId={goal.goal_id} resources={stepResources.get(step.step_id) ?? null} skillName={skillName} />
-  );
 
   const certificationNames = skillContext.certifications
     .filter((c) => assessment.certification_ids.includes(c.cert_id))
@@ -248,12 +177,6 @@ export default async function ResultPage({ params }: PageProps<"/career-match/re
       : []),
     ...(satisfied.size < groups.length ? [statisticalNote] : []),
   ];
-  const isFullyExperienced = groups.length > 0 && satisfied.size === groups.length;
-  const careerNext =
-    resourcesReady && missingSteps.length === 0
-      ? resolveCareerNextResources(goal.goal_id, isFullyExperienced, allResources)
-      : null;
-  const careerServices = careerNext ? [...careerNext.job_change_services, ...careerNext.freelance_services] : [];
   const educationNotes = [
     "このGoalに就いた人に最も多く、特徴的な学歴を100としています。",
     ...(level?.mapping_note ? [level.mapping_note] : []),
@@ -377,8 +300,8 @@ export default async function ResultPage({ params }: PageProps<"/career-match/re
               現在の学習ステップの定義で判定しています。
             </p>
           </div>
-          <Link href={`/learning-path/${goal.goal_id}`} className="text-sm font-bold text-indigo hover:underline">
-            {goal.name}のLearning Pathを見る →
+          <Link href={`/career-match/result/${id}/learning-path`} className="text-sm font-bold text-indigo hover:underline">
+            {missingSteps.length > 0 ? "学習ロードマップとおすすめ教材を見る →" : "おすすめの転職サービスを見る →"}
           </Link>
         </div>
 
@@ -400,7 +323,6 @@ export default async function ResultPage({ params }: PageProps<"/career-match/re
                   owned: held.has(skillId),
                   scored: s.scored_options.includes(skillId),
                 })),
-                details: stepDetails(s),
               }))}
             />
           </div>
@@ -426,32 +348,11 @@ export default async function ResultPage({ params }: PageProps<"/career-match/re
                   name: skillName(skillId),
                   owned: held.has(skillId),
                 })),
-                details: stepDetails(s),
               }))}
             />
           </div>
         )}
       </section>
-
-      {careerServices.length > 0 && (
-        <section className="mt-10">
-          <h2 className="text-xl font-extrabold">次のキャリアへ</h2>
-          <p className="mt-1 text-sm text-muted">
-            {isFullyExperienced
-              ? "学習ステップをすべて習得済みで、このGoalの職業の経験もあります。転職やフリーランスのサービスを比べてみてください。"
-              : "学習ステップをすべて習得済みです。未経験から応募できる転職サービスを紹介します。"}
-          </p>
-          <div className="mt-5 grid gap-3 md:grid-cols-2">
-            {careerServices.map((resource, index) => (
-              <ResourceCard
-                key={resource.resource_id}
-                resource={resource}
-                params={{ placement: "career_next", position_index: index, goal_id: goal.goal_id, step_id: null }}
-              />
-            ))}
-          </div>
-        </section>
-      )}
 
       <div className="mt-10 text-center">
         <Link

@@ -19,10 +19,10 @@ export function BlogCta({ goal }: { goal?: { goal_id: string; name: string } | n
         </Link>
         {goal && (
           <Link
-            href={`/learning-path/${goal.goal_id}`}
+            href={`/career-match?goal=${goal.goal_id}`}
             className="rounded-full border border-line px-6 py-3 text-sm font-bold text-indigo transition hover:border-sky"
           >
-            {goal.name}のLearning Pathを見る
+            {goal.name}の学習ロードマップを診断する
           </Link>
         )}
       </div>

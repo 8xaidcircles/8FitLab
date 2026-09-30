@@ -60,12 +60,6 @@ export default async function Home() {
             >
               Career Matchを始める
             </Link>
-            <Link
-              href="/learning-path"
-              className="rounded-full border border-line bg-white px-6 py-3 font-bold text-indigo transition hover:border-sky"
-            >
-              Learning Pathを見る
-            </Link>
           </div>
         </div>
       </section>
