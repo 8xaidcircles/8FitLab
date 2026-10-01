@@ -3,31 +3,25 @@ import {
   EVENT_NAMES,
   LEGACY_EVENT_NAMES,
   hasValidEventFields,
-  isClientEventName,
   isEventName,
   isValidEventData,
 } from "../events";
 
 describe("events", () => {
-  it("MVP Event（§45）の 11 種類のみ受け付ける", () => {
-    expect(EVENT_NAMES).toHaveLength(11);
+  it("MVP Event（§45）の 10 種類のみ受け付ける", () => {
+    expect(EVENT_NAMES).toHaveLength(10);
     expect(isEventName("goal_selected")).toBe(true);
-    expect(isEventName("resource_clicked")).toBe(true);
-    expect(isClientEventName("recommendation_clicked")).toBe(true);
+    expect(isEventName("recommendation_clicked")).toBe(true);
     expect(isEventName("purchase")).toBe(false);
     expect(isEventName(undefined)).toBe(false);
   });
 
-  it("learning_skill_clicked は廃止（過去ログ用の名前としてだけ残す）", () => {
-    expect(isEventName("learning_skill_clicked")).toBe(false);
-    expect(LEGACY_EVENT_NAMES).toContain("learning_skill_clicked");
+  it("learning_skill_clicked と resource_clicked は廃止（過去ログ用の名前としてだけ残す）", () => {
+    for (const name of ["learning_skill_clicked", "resource_clicked"]) {
+      expect(isEventName(name), name).toBe(false);
+      expect(LEGACY_EVENT_NAMES, name).toContain(name);
+    }
     for (const name of LEGACY_EVENT_NAMES) expect(EVENT_NAMES).not.toContain(name);
-  });
-
-  it("resource_clicked はサーバーだけが記録し、クライアント（/api/events）からは受け付けない", () => {
-    expect(isClientEventName("resource_clicked")).toBe(false);
-    expect(isClientEventName("goal_selected")).toBe(true);
-    expect(isClientEventName("learning_skill_clicked")).toBe(false);
   });
 
   it("recommendation_clicked は placement が決められた値のときだけ受け付ける", () => {
