@@ -14,9 +14,9 @@ const valid = {
   goal_id: "frontend-developer",
   skill_ids: ["html-css", "react"],
   certification_ids: ["ipa-fe"],
+  experience_status: "entered",
   experiences: [{ role_id: "2513.5", years: 1.5 }],
   education_level_id: "bachelor",
-  field_id: "information",
 };
 
 function parse(overrides: Record<string, unknown>) {
@@ -92,18 +92,40 @@ describe("parseAssessmentSubmission", () => {
     expect(result.ok && result.value.experiences).toEqual([{ role_id: "2513.5", years: 2 }]);
   });
 
-  it("User Experience = 0 を受け付ける", () => {
-    expect(parse({ experiences: [] }).ok).toBe(true);
+  it.each([undefined, null, "", "skipped", 1])("職歴の回答が無い・不正なら拒否（%j）", (experience_status) => {
+    expect(parse({ experience_status })).toEqual({ ok: false, error: "experience_required" });
+  });
+
+  it.each(["none", "unknown"])("職歴「%s」は職歴の行なしで受け付ける", (experience_status) => {
+    const result = parse({ experience_status, experiences: [] });
+    expect(result.ok && result.value).toMatchObject({ experience_status, experiences: [] });
+  });
+
+  it("職歴「実務経験なし」「わかりません」と職歴の行の組み合わせは拒否", () => {
+    expect(parse({ experience_status: "none" })).toEqual({ ok: false, error: "invalid_experiences" });
+    expect(parse({ experience_status: "unknown" })).toEqual({ ok: false, error: "invalid_experiences" });
+  });
+
+  it("職歴「実務経験がある」で職歴の行が無ければ拒否", () => {
+    expect(parse({ experiences: [] })).toEqual({ ok: false, error: "experience_rows_required" });
   });
 
   it.each(["Bachelor", "diploma", 1])("未知の学歴は拒否（%j）", (education_level_id) => {
-    expect(parse({ education_level_id, field_id: null })).toEqual({ ok: false, error: "unknown_education_level" });
+    expect(parse({ education_level_id })).toEqual({ ok: false, error: "unknown_education_level" });
   });
 
-  it("学歴未入力（null / 省略）を受け付ける", () => {
-    const result = parse({ education_level_id: null, field_id: null });
-    expect(result.ok && result.value).toMatchObject({ education_level_id: null, degree_id: null, field_id: null });
-    expect(parse({ education_level_id: undefined, field_id: undefined }).ok).toBe(true);
+  it.each([null, undefined, ""])("学歴の未入力は拒否（%j）", (education_level_id) => {
+    expect(parse({ education_level_id })).toEqual({ ok: false, error: "education_required" });
+  });
+
+  it("学歴「わかりません / 答えない」は統計上の学歴なし（null）として受け付ける", () => {
+    const result = parse({ education_level_id: "unknown" });
+    expect(result.ok && result.value).toMatchObject({ education_level_id: "unknown", degree_id: null });
+  });
+
+  it("学歴・職歴とも「わかりません」で、スキルなしの入力を受け付ける", () => {
+    const result = parse({ skill_ids: [], certification_ids: [], experience_status: "unknown", experiences: [], education_level_id: "unknown" });
+    expect(result.ok).toBe(true);
   });
 
   it.each([
@@ -116,49 +138,16 @@ describe("parseAssessmentSubmission", () => {
     ["master", "Master"],
     ["phd", "PhD"],
   ])("学歴 %s は統計上 %s として扱う", (education_level_id, degree_id) => {
-    const result = parse({ education_level_id, field_id: null });
+    const result = parse({ education_level_id });
     expect(result.ok && result.value).toMatchObject({ education_level_id, degree_id });
   });
 
-  it.each([
-    ["high-school", "hs-general"],
-    ["vocational-school", "information"],
-    ["technical-college", "science-engineering"],
-    ["junior-college", "economics-business"],
-    ["bachelor", "information"],
-    ["master", "math-statistics"],
-    ["phd", "information"],
-  ])("高校以上の学歴では専攻分野を選べる（%s / %s）", (education_level_id, field_id) => {
-    const result = parse({ education_level_id, field_id });
-    expect(result.ok && result.value).toMatchObject({ education_level_id, field_id });
-  });
-
-  it.each([
-    [null, "information"],
-    ["junior-high", "hs-general"],
-    ["junior-high", "information"],
-    ["high-school", "information"],
-    ["technical-college", "hs-industrial"],
-    ["bachelor", "hs-general"],
-  ])("学歴に合わない専攻分野は拒否（%s / %s）", (education_level_id, field_id) => {
-    expect(parse({ education_level_id, field_id })).toEqual({ ok: false, error: "field_not_applicable" });
-  });
-
-  it("中学校は専攻分野なしで受け付ける", () => {
-    const result = parse({ education_level_id: "junior-high", field_id: null });
-    expect(result.ok && result.value).toMatchObject({ degree_id: "None", field_id: null });
-  });
-
-  it("Field 未選択（null / 省略）を受け付ける", () => {
-    const result = parse({ field_id: null });
-    expect(result.ok && result.value.field_id).toBeNull();
-    expect(parse({ field_id: undefined }).ok).toBe(true);
-  });
-
-  it.each(["情報工学", "山田太郎 東京大学", "", "x".repeat(LIMITS.idLength + 1), 1])(
-    "選択肢にない Field は拒否（自由入力を受け付けない）: %j",
+  it.each(["information", "山田太郎 東京大学", null, 1])(
+    "専攻分野（field_id）は入力をやめたため、古い画面から送られても無視して保存しない: %j",
     (field_id) => {
-      expect(parse({ field_id })).toEqual({ ok: false, error: "unknown_field" });
+      const result = parse({ field_id });
+      expect(result.ok).toBe(true);
+      expect(result.ok && "field_id" in result.value).toBe(false);
     },
   );
 });

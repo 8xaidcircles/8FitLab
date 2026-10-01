@@ -15,8 +15,8 @@ const humanSkills: HumanSkill[] = [
   { skill_id: "project-management", name: "プロジェクト管理", domain: "management_business_tools", description: "" },
 ];
 const certifications: Certification[] = [
-  { cert_id: "stat-kentei-2", name: "統計検定 2級", issuer: "日本統計学会", proves: ["statistics"] },
-  { cert_id: "aws-saa", name: "AWS SAA", issuer: "AWS", proves: ["aws"] },
+  { cert_id: "stat-kentei-2", name: "統計検定 2級", issuer: "日本統計学会", category: "data-ai", proves: ["statistics"] },
+  { cert_id: "aws-saa", name: "AWS SAA", issuer: "AWS", category: "cloud", proves: ["aws"] },
 ];
 const masters = { humanSkills, certifications };
 

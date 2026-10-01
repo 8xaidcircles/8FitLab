@@ -3,7 +3,7 @@
  "statistics": {
   "source": "jobhop_v2",
   "source_version": "v2",
-  "calculation_version": "2.3.0",
+  "calculation_version": "2.4.0",
   "taxonomy_version": "1.1.2"
  },
  "cases": [

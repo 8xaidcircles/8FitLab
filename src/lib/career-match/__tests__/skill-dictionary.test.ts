@@ -1,6 +1,7 @@
 import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
+import { CERTIFICATION_CATEGORIES } from "@/lib/labels";
 import { normalizeHumanRequirements } from "../skill-layers";
 import type { Certification, HumanSkill, SkillLayersMaster } from "../types";
 
@@ -114,6 +115,11 @@ describe("人間定義層・資格", () => {
     const domains = Object.keys(humanMaster.domains);
     expect(domains).toHaveLength(3);
     for (const skill of humanSkills) expect(domains, skill.skill_id).toContain(skill.domain);
+  });
+
+  it("資格は入力画面のカテゴリー（CERTIFICATION_CATEGORIES）のどれかに属する", () => {
+    const categories = CERTIFICATION_CATEGORIES.map((c) => c.id);
+    for (const cert of certifications) expect(categories, cert.cert_id).toContain(cert.category);
   });
 
   it("資格が証明するスキルは、人間定義層か技術スキル層に存在する", () => {

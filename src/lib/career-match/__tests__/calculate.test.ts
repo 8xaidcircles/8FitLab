@@ -13,6 +13,7 @@ import {
   roundYears,
   skillStatisticsVersion,
   userExperienceKeys,
+  usesEducationRequirement,
   SKILL_CALCULATION_VERSION,
   type KnownIds,
   type SkillContext,
@@ -45,7 +46,7 @@ const skill: SkillContext = {
       tools: [{ tool_id: "jest", name: "Jest" }],
     },
   ],
-  certifications: [{ cert_id: "jstqb-fl", name: "JSTQB FL", issuer: "JSTQB", proves: ["testing"] }],
+  certifications: [{ cert_id: "jstqb-fl", name: "JSTQB FL", issuer: "JSTQB", category: "design-quality", proves: ["testing"] }],
   skillMigration: [
     { old_skill_id: "shell-script", action: "renamed", new_skill_ids: ["docker"] },
     { old_skill_id: "cloud", action: "split", new_skill_ids: ["aws", "azure"] },
@@ -98,6 +99,8 @@ function stats(overrides: Partial<CareerStatistics> = {}): CareerStatistics {
       { unit_id: "Master", degree_id: "Master", ...row(0.8, 0.26666666666666666) },
       { unit_id: "Bachelor", degree_id: "Bachelor", ...row(0.4, 0.4) },
     ],
+    minimum_education: "Bachelor",
+    education_at_or_above: { None: 1, "Secondary school": 0.9, Bachelor: 0.7, Master: 0.3, PhD: 0.05 },
     ...overrides,
   };
 }
@@ -376,18 +379,46 @@ describe("experienceMatch", () => {
 });
 
 describe("educationMatch", () => {
-  const rows = stats().education;
+  const requirement = stats();
 
-  it("Contribution が最大の学歴を 100 とする", () => {
-    expect(educationMatch(rows, "Master")).toBeCloseTo(100);
-    expect(educationMatch(rows, "Bachelor")).toBeCloseTo((0.2 / 0.6) * 100);
+  it("最低教育要件以上は同じ 100", () => {
+    for (const degree of ["Bachelor", "Master", "PhD"]) expect(educationMatch(requirement, degree), degree).toBe(100);
   });
 
-  it("統計に無い学歴・未入力は 0、統計が無ければ算出不可（null）", () => {
-    expect(educationMatch(rows, "PhD")).toBe(0);
-    expect(educationMatch(rows, null)).toBe(0);
-    expect(educationMatch(undefined, "Master")).toBeNull();
-    expect(educationMatch([], "Master")).toBeNull();
+  it("要件未満は「その学歴以下」の人の割合 × 100（50 未満で、学歴が低いほど下がる）", () => {
+    const secondary = educationMatch(requirement, "Secondary school")!;
+    const none = educationMatch(requirement, "None")!;
+    expect(secondary).toBeCloseTo(30); // 1 - P(学士以上) = 0.3
+    expect(none).toBeCloseTo(10); // 1 - P(高卒等以上) = 0.1
+    expect(none).toBeLessThan(secondary);
+    expect(secondary).toBeLessThan(50);
+  });
+
+  it("要件が修士なら学士も要件未満", () => {
+    const master = { ...requirement, minimum_education: "Master" as const };
+    expect(educationMatch(master, "Master")).toBe(100);
+    expect(educationMatch(master, "Bachelor")).toBeCloseTo(70); // 1 - P(修士以上) = 0.7
+  });
+
+  it("未入力・未知の学歴は 0、要件が無ければ算出不可（null）", () => {
+    expect(educationMatch(requirement, null)).toBe(0);
+    expect(educationMatch(requirement, "Diploma")).toBe(0);
+    expect(educationMatch({ ...requirement, minimum_education: undefined }, "Master")).toBeNull();
+    expect(educationMatch({ ...requirement, education_at_or_above: undefined }, "Master")).toBeNull();
+  });
+});
+
+describe("usesEducationRequirement", () => {
+  it.each([
+    ["2.4.0", true],
+    ["2.4.1", true],
+    ["2.10.0", true],
+    ["3.0.0", true],
+    ["2.3.0", false],
+    ["2.2.0", false],
+    ["1.9.9", false],
+  ])("calculation_version %s → %s", (version, expected) => {
+    expect(usesEducationRequirement(version)).toBe(expected);
   });
 });
 
@@ -470,7 +501,7 @@ describe("calculateCareerMatch", () => {
   it("Goal Sample Size = 0 なら skill_only（Experience / Education は null）", () => {
     const result = calculateCareerMatch(
       input({ skill_ids: ["html"], experiences: [{ role_id: "A", years: 1 }], degree_id: "Master" }),
-      stats({ goal_sample_size: 0, requirement_groups: [], education: undefined }),
+      stats({ goal_sample_size: 0, requirement_groups: [], education: undefined, minimum_education: undefined, education_at_or_above: undefined }),
       skill,
       known,
     );
@@ -484,7 +515,7 @@ describe("calculateCareerMatch", () => {
   it("Goal Sample Size > 0 でも Experience・Education とも算出できなければ skill_only", () => {
     const result = calculateCareerMatch(
       input({ skill_ids: ["html"], experiences: [{ role_id: "A", years: 1 }], degree_id: "Master" }),
-      stats({ requirement_groups: [{ ...group("g", ["G"]), experience_reference: 0 }], education: undefined }),
+      stats({ requirement_groups: [{ ...group("g", ["G"]), experience_reference: 0 }], education: undefined, minimum_education: undefined, education_at_or_above: undefined }),
       skill,
       known,
     );
@@ -499,7 +530,7 @@ describe("calculateCareerMatch", () => {
   it("Experience だけ算出できれば full（Education が算出不可でも）", () => {
     const result = calculateCareerMatch(
       input({ experiences: [{ role_id: "A", years: 0.5 }] }),
-      stats({ education: undefined }),
+      stats({ education: undefined, minimum_education: undefined, education_at_or_above: undefined }),
       skill,
       known,
     );

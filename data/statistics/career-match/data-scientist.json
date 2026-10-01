@@ -12,8 +12,8 @@
  "source_version": "v2",
  "taxonomy": "esco",
  "taxonomy_version": "1.1.2",
- "calculation_version": "2.3.0",
- "calculation_date": "2026-09-29",
+ "calculation_version": "2.4.0",
+ "calculation_date": "2026-10-01",
  "experience_reference_percentile": 90,
  "experience_reference_estimator": "harrell-davis",
  "requirement_groups": [
@@ -11000,5 +11000,13 @@
    "quality": 14.0057,
    "contribution": 0.002783
   }
- ]
+ ],
+ "minimum_education": "Master",
+ "education_at_or_above": {
+  "None": 1.0,
+  "Secondary school": 0.980132,
+  "Bachelor": 0.907285,
+  "Master": 0.695364,
+  "PhD": 0.145695
+ }
 }
