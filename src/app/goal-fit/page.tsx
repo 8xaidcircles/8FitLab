@@ -14,13 +14,13 @@ import {
   type SkillContext,
 } from "@/lib/career-match";
 import type { Certification, HumanSkill, LearningPathMaster } from "@/lib/career-match/types";
-import { HUMAN_SKILL_DOMAINS, TECH_SKILL_CATEGORIES } from "@/lib/labels";
+import { CERTIFICATION_CATEGORIES, HUMAN_SKILL_DOMAINS, TECH_SKILL_CATEGORIES } from "@/lib/labels";
 import { AssessmentForm } from "./assessment-form";
 
 export const metadata: Metadata = {
-  title: "Career Match",
+  title: "Goal Fit",
   description: "目指す職種（Goal）とあなたのスキル・経験・学歴の一致度を診断します。",
-  alternates: { canonical: "/career-match" },
+  alternates: { canonical: "/goal-fit" },
 };
 
 // Goal に関係する選択肢 = 計算に使う層（配分が 0 の層は除く）の技術スキル・人間定義層の要件 ∪ Learning Path の Step
@@ -48,7 +48,7 @@ function goalRelevantIds(
   return [...ids];
 }
 
-export default async function CareerMatchPage({ searchParams }: PageProps<"/career-match">) {
+export default async function GoalFitPage({ searchParams }: PageProps<"/goal-fit">) {
   const [{ goal }, goals, techSkills, humanSkills, certifications, roleGroups, roles, education] = await Promise.all([
     searchParams,
     loadGoals(),
@@ -94,14 +94,20 @@ export default async function CareerMatchPage({ searchParams }: PageProps<"/care
       .flatMap((s) => (s.tools ?? []).map((t) => ({ id: t.tool_id, name: t.name, description: `${s.name}の経験として扱います` }))),
   })).filter((group) => group.options.length > 0);
 
-  const certificationOptions = certifications.map((c) => ({ id: c.cert_id, name: c.name, description: c.issuer }));
+  const certificationGroups = CERTIFICATION_CATEGORIES.map((category) => ({
+    id: category.id,
+    name: category.name,
+    options: certifications
+      .filter((c) => c.category === category.id)
+      .map((c) => ({ id: c.cert_id, name: c.name, description: c.issuer })),
+  })).filter((group) => group.options.length > 0);
 
   const initialGoal = typeof goal === "string" && goals.some((g) => g.goal_id === goal) ? goal : null;
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-10">
-      <TrackView event="page_viewed" data={{ path: "/career-match" }} />
-      <h1 className="text-2xl font-extrabold md:text-3xl">Career Match</h1>
+      <TrackView event="page_viewed" data={{ path: "/goal-fit" }} />
+      <h1 className="text-2xl font-extrabold md:text-3xl">Goal Fit</h1>
       <p className="mt-3 text-sm leading-relaxed text-muted">
         Goalを選び、今のスキル・資格・職歴・学歴を入力してください。氏名や連絡先などの個人情報は入力しません。
       </p>
@@ -111,7 +117,7 @@ export default async function CareerMatchPage({ searchParams }: PageProps<"/care
         techGroups={techGroups}
         humanGroups={humanGroups}
         toolGroups={toolGroups}
-        certifications={certificationOptions}
+        certificationGroups={certificationGroups}
         roleGroups={roleGroups}
         allRoles={roles.map(({ role_id, label }) => ({ role_id, label }))}
         education={education}

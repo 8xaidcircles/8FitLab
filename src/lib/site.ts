@@ -1,7 +1,7 @@
 export const SITE_NAME = "8FitLab";
 export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://8fitlab.com").replace(/\/+$/, "");
 export const SITE_DESCRIPTION =
-  "目指す職種（Goal）を選び、スキル・経験・学歴を入力すると、Goalとの一致度（Career Match）と不足スキル、日本向けの学習順（Learning Path）がわかります。";
+  "目指す職種（Goal）を選び、スキル・経験・学歴を入力すると、Goalとの一致度（Goal Fit）と不足スキル、日本向けの学習順（Learning Path）がわかります。";
 export const ORGANIZATION_NAME = "AID CIRCLES";
 export const ORGANIZATION_URL = "https://8xaidcircles.com";
 export const CONTACT_FORM = {

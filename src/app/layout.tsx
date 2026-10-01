@@ -23,7 +23,7 @@ export const metadata: Metadata = {
 };
 
 const NAV = [
-  { href: "/career-match", label: "Career Match" },
+  { href: "/goal-fit", label: "Goal Fit" },
   { href: "/blog", label: "Blog" },
 ];
 
@@ -77,7 +77,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
                 </Link>
                 をご確認ください。
               </p>
-              <p>※ Career Matchは就職・転職・採用を保証するものではありません。</p>
+              <p>※ Goal Fitは就職・転職・採用を保証するものではありません。</p>
             </div>
           </div>
           <div className="border-t border-line">

@@ -51,7 +51,7 @@ function CardGrid({ cards }: { cards: Card[] }) {
   );
 }
 
-export default async function LearningPathPage({ params }: PageProps<"/career-match/result/[id]/learning-path">) {
+export default async function LearningPathPage({ params }: PageProps<"/goal-fit/result/[id]/learning-path">) {
   const { id } = await params;
   const anonymousUserId = await getAnonymousUserId();
   if (!isUuid(id) || !anonymousUserId) notFound();
@@ -83,10 +83,10 @@ export default async function LearningPathPage({ params }: PageProps<"/career-ma
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-10">
-      <TrackView event="page_viewed" data={{ path: "/career-match/result/learning-path", goal_id: goal.goal_id }} />
+      <TrackView event="page_viewed" data={{ path: "/goal-fit/result/learning-path", goal_id: goal.goal_id }} />
       <TrackView event="learning_path_viewed" data={{ goal_id: goal.goal_id, assessment_id: id }} />
 
-      <Link href={`/career-match/result/${id}`} className="text-sm font-bold text-sky hover:underline">
+      <Link href={`/goal-fit/result/${id}`} className="text-sm font-bold text-sky hover:underline">
         ← 診断結果に戻る
       </Link>
       <h1 className="mt-2 text-2xl font-extrabold md:text-3xl">{goal.name} の学習ロードマップ</h1>

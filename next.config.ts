@@ -17,11 +17,14 @@ const nextConfig: NextConfig = {
   outputFileTracingExcludes: {
     "/*": ["./data/raw/**", "./data/fixtures/**"],
   },
-  // 公開の Learning Path ページは廃止し、診断結果から開く学習ロードマップに一本化した
   async redirects() {
     return [
-      { source: "/learning-path", destination: "/career-match", permanent: true },
-      { source: "/learning-path/:path*", destination: "/career-match", permanent: true },
+      // 公開の Learning Path ページは廃止し、診断結果から開く学習ロードマップに一本化した
+      { source: "/learning-path", destination: "/goal-fit", permanent: true },
+      { source: "/learning-path/:path*", destination: "/goal-fit", permanent: true },
+      // 機能名を Career Match から Goal Fit に変えた。クエリ（?goal=）はそのまま引き継がれる
+      { source: "/career-match", destination: "/goal-fit", permanent: true },
+      { source: "/career-match/:path*", destination: "/goal-fit/:path*", permanent: true },
     ];
   },
   images: {

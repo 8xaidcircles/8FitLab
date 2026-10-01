@@ -55,10 +55,10 @@ export default async function Home() {
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <Link
-              href="/career-match"
+              href="/goal-fit"
               className="rounded-full bg-indigo px-6 py-3 font-bold text-white shadow-lg shadow-indigo/20 transition hover:bg-ink"
             >
-              Career Matchを始める
+              Goal Fitを始める
             </Link>
           </div>
         </div>
@@ -80,12 +80,12 @@ export default async function Home() {
 
       <section className="mx-auto max-w-5xl px-4">
         <h2 className="text-xl font-extrabold">Goalを選んで始める</h2>
-        <p className="mt-2 text-sm text-muted">選んだGoalでCareer Matchの入力画面が開きます。</p>
+        <p className="mt-2 text-sm text-muted">選んだGoalでGoal Fitの入力画面が開きます。</p>
         <ul className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {goals.map((goal) => (
             <li key={goal.goal_id}>
               <Link
-                href={`/career-match?goal=${goal.goal_id}`}
+                href={`/goal-fit?goal=${goal.goal_id}`}
                 className="group block h-full rounded-2xl border border-line bg-white p-5 transition hover:-translate-y-0.5 hover:border-sky hover:shadow-md"
               >
                 <p className="font-bold group-hover:text-indigo">{goal.name}</p>
