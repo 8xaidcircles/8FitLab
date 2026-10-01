@@ -1,15 +1,28 @@
 {
-  "version": "1.0.0",
+  "version": "1.1.0",
   "region": "JP",
-  "note": "経験入力で選びやすいIT関連職種の日本語表示名。role_id は ESCO v1.1.2 の職業コード。ここにない職種は英語名で検索して選ぶ。",
+  "note": "経験入力で選べる職種の日本語表示名（ESCO 職業の日本語ラベル）。role_id は ESCO v1.1.2 の職業コード（data/career/roles.json）。category は it（IT・Web 関連）/ other（IT 以外）。先頭の featured はよく選ばれる IT 職種で、各 role_id はどれか 1 つのグループにだけ含める。ここにない職種は英語名で検索して選ぶ。",
   "groups": [
     {
-      "group_id": "development",
-      "name": "開発",
+      "group_id": "featured",
+      "name": "主要なIT職種",
+      "category": "it",
       "roles": [
         { "role_id": "2512.4", "name": "ソフトウェア開発者 / バックエンド開発者（プログラマー・SE）" },
         { "role_id": "2513.5", "name": "Web開発者" },
         { "role_id": "2512.5", "name": "フロントエンド / UI開発者" },
+        { "role_id": "2512.1", "name": "クラウドエンジニア" },
+        { "role_id": "2511.4", "name": "データサイエンティスト" },
+        { "role_id": "2511.3", "name": "データアナリスト" },
+        { "role_id": "2519.7", "name": "ソフトウェアテスター（QA）" },
+        { "role_id": "1330.7", "name": "ITプロジェクトマネージャー" }
+      ]
+    },
+    {
+      "group_id": "development",
+      "name": "開発",
+      "category": "it",
+      "roles": [
         { "role_id": "2514.2", "name": "アプリケーション開発者" },
         { "role_id": "2514.2.2", "name": "モバイルアプリ開発者" },
         { "role_id": "2514.2.1", "name": "組込みソフトウェア開発者" },
@@ -22,8 +35,8 @@
     {
       "group_id": "infrastructure",
       "name": "インフラ・クラウド・ネットワーク",
+      "category": "it",
       "roles": [
-        { "role_id": "2512.1", "name": "クラウドエンジニア" },
         { "role_id": "2522.1", "name": "システム管理者（インフラエンジニア）" },
         { "role_id": "2519.3", "name": "変更・構成管理担当（DevOps）" },
         { "role_id": "2523.3", "name": "ネットワークエンジニア" },
@@ -36,9 +49,8 @@
     {
       "group_id": "data",
       "name": "データ",
+      "category": "it",
       "roles": [
-        { "role_id": "2511.3", "name": "データアナリスト" },
-        { "role_id": "2511.4", "name": "データサイエンティスト" },
         { "role_id": "2521.4", "name": "データベースインテグレーター" },
         { "role_id": "2521.5", "name": "データウェアハウス設計者" },
         { "role_id": "2521.2", "name": "データベース設計者" },
@@ -51,18 +63,18 @@
     {
       "group_id": "quality",
       "name": "テスト・品質",
+      "category": "it",
       "roles": [
         { "role_id": "2519.6", "name": "テストアナリスト" },
-        { "role_id": "2519.7", "name": "ソフトウェアテスター" },
         { "role_id": "2519.7.4", "name": "システムテスター" },
         { "role_id": "2519.7.3", "name": "結合テスター" }
       ]
     },
     {
       "group_id": "management",
-      "name": "マネジメント・企画・コンサル",
+      "name": "マネジメント・企画・コンサル（IT）",
+      "category": "it",
       "roles": [
-        { "role_id": "1330.7", "name": "ITプロジェクトマネージャー" },
         { "role_id": "1330.6", "name": "ITプロダクトマネージャー" },
         { "role_id": "1223.1", "name": "プロダクトマネージャー" },
         { "role_id": "1330.5.1", "name": "ソフトウェア開発マネージャー" },
@@ -77,6 +89,7 @@
     {
       "group_id": "support",
       "name": "サポート・運用",
+      "category": "it",
       "roles": [
         { "role_id": "3512.1", "name": "ヘルプデスク" },
         { "role_id": "3512.2", "name": "ヘルプデスクマネージャー" },
@@ -88,12 +101,176 @@
     {
       "group_id": "design-web",
       "name": "デザイン・Web",
+      "category": "it",
       "roles": [
         { "role_id": "2166.9", "name": "グラフィックデザイナー" },
         { "role_id": "2166.7", "name": "デジタルメディアデザイナー" },
         { "role_id": "2513.4", "name": "Webコンテンツマネージャー" },
         { "role_id": "2513.2", "name": "SEOスペシャリスト" },
         { "role_id": "2431.10.4", "name": "Webマーケター" }
+      ]
+    },
+    {
+      "group_id": "sales",
+      "name": "営業・販売",
+      "category": "other",
+      "roles": [
+        { "role_id": "1420.3", "name": "法人営業（アカウントマネージャー）" },
+        { "role_id": "3322.1", "name": "営業担当者" },
+        { "role_id": "1221.3.2.1", "name": "営業マネージャー" },
+        { "role_id": "2431.5", "name": "事業開発（ビジネスデベロップメント）" },
+        { "role_id": "4311.2", "name": "営業事務・営業アシスタント" },
+        { "role_id": "3334.3", "name": "不動産営業" },
+        { "role_id": "5223.4", "name": "販売スタッフ" },
+        { "role_id": "5223.6", "name": "店舗スタッフ（ショップ店員）" },
+        { "role_id": "5230.1", "name": "レジ担当" },
+        { "role_id": "1420.4", "name": "店長" }
+      ]
+    },
+    {
+      "group_id": "office",
+      "name": "事務・アシスタント",
+      "category": "other",
+      "roles": [
+        { "role_id": "3343.1", "name": "一般事務・事務アシスタント" },
+        { "role_id": "4110.1", "name": "事務員" },
+        { "role_id": "4120.1", "name": "秘書" },
+        { "role_id": "3343.4", "name": "管理部門アシスタント" },
+        { "role_id": "3343.1.6", "name": "プロジェクト事務" },
+        { "role_id": "4132.1", "name": "データ入力" },
+        { "role_id": "4226.1", "name": "受付" },
+        { "role_id": "3341.7", "name": "オフィスマネージャー" },
+        { "role_id": "2422.1", "name": "公務員（行政事務）" }
+      ]
+    },
+    {
+      "group_id": "finance",
+      "name": "経理・財務・金融",
+      "category": "other",
+      "roles": [
+        { "role_id": "2411.1", "name": "会計士・経理" },
+        { "role_id": "3313.1", "name": "経理アシスタント" },
+        { "role_id": "3313.2", "name": "簿記・記帳担当" },
+        { "role_id": "2411.1.8", "name": "財務コントローラー" },
+        { "role_id": "2413.1", "name": "財務アナリスト" },
+        { "role_id": "1211.1", "name": "財務マネージャー" },
+        { "role_id": "2411.1.12", "name": "税務アドバイザー" },
+        { "role_id": "4211.1", "name": "銀行窓口" }
+      ]
+    },
+    {
+      "group_id": "hr-legal",
+      "name": "人事・法務",
+      "category": "other",
+      "roles": [
+        { "role_id": "2423.3", "name": "人事担当" },
+        { "role_id": "1212.2", "name": "人事マネージャー" },
+        { "role_id": "4416.1", "name": "人事アシスタント" },
+        { "role_id": "2423.6", "name": "人材紹介コンサルタント（リクルーター）" },
+        { "role_id": "3411.7", "name": "法務アシスタント" },
+        { "role_id": "2611.1", "name": "弁護士" }
+      ]
+    },
+    {
+      "group_id": "marketing",
+      "name": "マーケティング・広報",
+      "category": "other",
+      "roles": [
+        { "role_id": "1221.3.2", "name": "マーケティングマネージャー" },
+        { "role_id": "1221.5", "name": "デジタルマーケティングマネージャー" },
+        { "role_id": "2431.10", "name": "マーケティングコンサルタント" },
+        { "role_id": "2431.10.3", "name": "マーケティングアシスタント" },
+        { "role_id": "2431.3", "name": "広告スペシャリスト" },
+        { "role_id": "2432.9", "name": "広報担当" }
+      ]
+    },
+    {
+      "group_id": "business",
+      "name": "経営・企画・コンサルタント",
+      "category": "other",
+      "roles": [
+        { "role_id": "2421.2", "name": "ビジネスコンサルタント（経営コンサルタント）" },
+        { "role_id": "1213.2.2", "name": "経営企画マネージャー" },
+        { "role_id": "1219.6", "name": "プロジェクトマネージャー（IT以外）" },
+        { "role_id": "1213.5", "name": "事業マネージャー" },
+        { "role_id": "1219.4", "name": "部門マネージャー" }
+      ]
+    },
+    {
+      "group_id": "customer",
+      "name": "カスタマーサポート",
+      "category": "other",
+      "roles": [
+        { "role_id": "4225.1", "name": "カスタマーサービス" },
+        { "role_id": "5244.1", "name": "コールセンターオペレーター" },
+        { "role_id": "4222.1", "name": "カスタマーセンター案内係" }
+      ]
+    },
+    {
+      "group_id": "logistics",
+      "name": "購買・物流・製造",
+      "category": "other",
+      "roles": [
+        { "role_id": "3323.2", "name": "購買担当" },
+        { "role_id": "1324.8.2", "name": "購買マネージャー" },
+        { "role_id": "1324.8", "name": "サプライチェーンマネージャー" },
+        { "role_id": "3343.1.7", "name": "サプライチェーンアシスタント" },
+        { "role_id": "1324.3.4", "name": "倉庫管理者" },
+        { "role_id": "9333.8", "name": "倉庫作業員" },
+        { "role_id": "9329.1", "name": "工場作業員" },
+        { "role_id": "8332.2", "name": "トラックドライバー" }
+      ]
+    },
+    {
+      "group_id": "engineering",
+      "name": "エンジニアリング・研究",
+      "category": "other",
+      "roles": [
+        { "role_id": "2144.1", "name": "機械エンジニア" },
+        { "role_id": "2151.1", "name": "電気エンジニア" },
+        { "role_id": "2142.1", "name": "土木エンジニア" },
+        { "role_id": "2141.4", "name": "生産技術エンジニア" },
+        { "role_id": "2161.1", "name": "建築家" },
+        { "role_id": "7411.1", "name": "電気工事士" },
+        { "role_id": "2113.1", "name": "化学者・化学研究者" },
+        { "role_id": "2120.6", "name": "統計専門家" },
+        { "role_id": "2631.2", "name": "エコノミスト" }
+      ]
+    },
+    {
+      "group_id": "education-care",
+      "name": "教育・医療・福祉",
+      "category": "other",
+      "roles": [
+        { "role_id": "2330.1", "name": "中学・高校教師" },
+        { "role_id": "2341.1", "name": "小学校教師" },
+        { "role_id": "2221.2", "name": "看護師" },
+        { "role_id": "2262.1", "name": "薬剤師" },
+        { "role_id": "3412.4", "name": "介護・福祉職" },
+        { "role_id": "5321.1", "name": "介護アシスタント" },
+        { "role_id": "5311.1", "name": "保育士" }
+      ]
+    },
+    {
+      "group_id": "service",
+      "name": "飲食・サービス",
+      "category": "other",
+      "roles": [
+        { "role_id": "5131.2", "name": "ホールスタッフ" },
+        { "role_id": "9412.1", "name": "キッチンスタッフ" },
+        { "role_id": "5120.1", "name": "調理師" },
+        { "role_id": "1412.1", "name": "飲食店店長" },
+        { "role_id": "5414.1", "name": "警備員" }
+      ]
+    },
+    {
+      "group_id": "media",
+      "name": "メディア・語学",
+      "category": "other",
+      "roles": [
+        { "role_id": "2642.1", "name": "記者・ジャーナリスト" },
+        { "role_id": "2643.6", "name": "翻訳者" },
+        { "role_id": "2643.2", "name": "通訳" }
       ]
     }
   ]

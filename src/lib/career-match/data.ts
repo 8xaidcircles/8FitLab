@@ -10,7 +10,6 @@ import type {
   HumanSkill,
   LearningPathMaster,
   MappingStatus,
-  Resource,
   SkillLayersMaster,
   SkillStatistics,
 } from "./types";
@@ -25,8 +24,6 @@ export interface Goal {
   summary: string;
   mapping_status: MappingStatus;
   requirement_groups: GoalRequirementGroup[];
-  /** true の Goal は、全 Learning Step に教材が 1 件以上ある（Data Test で保証） */
-  learning_resources_ready: boolean;
 }
 
 export interface GoalRequirementGroup {
@@ -49,22 +46,14 @@ export interface Role {
 export interface EducationLevel {
   level_id: string;
   name: string;
-  // Career Statistics（JobHop 5 段階）での扱い。Education Match はこの値で計算する
-  degree_id: DegreeId;
-  isced: number;
-  field_selectable: boolean;
+  // Career Statistics（JobHop 5 段階）での扱い。Education Match はこの値で計算する。「わかりません」は null
+  degree_id: DegreeId | null;
+  isced: number | null;
   mapping_note?: string;
-}
-
-export interface EducationField {
-  field_id: string;
-  name: string;
-  levels: string[];
 }
 
 export interface EducationMaster {
   levels: EducationLevel[];
-  fields: EducationField[];
 }
 
 const cache = new Map<string, Promise<unknown>>();
@@ -126,6 +115,8 @@ export async function loadRoles(): Promise<Role[]> {
 export interface RoleGroup {
   group_id: string;
   name: string;
+  /** it：IT・Web 関連 / other：IT 以外 */
+  category: "it" | "other";
   roles: { role_id: string; name: string }[];
 }
 
@@ -134,8 +125,8 @@ export async function loadRoleGroups(): Promise<RoleGroup[]> {
 }
 
 export async function loadEducation(): Promise<EducationMaster> {
-  const { levels, fields } = await readJson<EducationMaster>("education/education.json");
-  return { levels, fields };
+  const { levels } = await readJson<EducationMaster>("education/education.json");
+  return { levels };
 }
 
 export async function loadKnownIds(): Promise<KnownIds> {
@@ -199,10 +190,6 @@ export async function loadSkillStatistics(goalId: string): Promise<SkillStatisti
     if ((error as NodeJS.ErrnoException).code === "ENOENT") return null;
     throw error;
   }
-}
-
-export async function loadResources(): Promise<Resource[]> {
-  return (await readJson<{ resources: Resource[] }>("resources/resources.json")).resources;
 }
 
 export async function loadLearningPath(goalId: string): Promise<LearningPathMaster> {

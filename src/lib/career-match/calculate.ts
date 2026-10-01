@@ -7,7 +7,7 @@ import {
   type CareerStatistics,
   type Certification,
   type Confidence,
-  type EducationStatisticsRow,
+  type DegreeId,
   type EvidenceMode,
   type GoalSkillLayers,
   type HumanSkill,
@@ -227,16 +227,29 @@ export function experienceMatch(
   };
 }
 
-// Contribution が最大の学歴を 100 とする
+/** この calculation_version 以降の Education Match は最低教育要件方式（それより前は Contribution 最大の学歴を 100 とする方式） */
+export const EDUCATION_REQUIREMENT_SINCE = "2.4.0";
+
+export function usesEducationRequirement(calculationVersion: string): boolean {
+  const [actual, since] = [calculationVersion, EDUCATION_REQUIREMENT_SINCE].map((v) => v.split(".").map(Number));
+  for (let i = 0; i < since.length; i++) {
+    if (actual[i] !== since[i]) return (actual[i] ?? 0) > since[i];
+  }
+  return true;
+}
+
+// 最低教育要件以上は 100。要件未満は、Goal Population のうち「その学歴以下」だった人の割合 × 100
+// （要件以上の人が 50% を超えるので 50 未満に収まり、学歴が低いほど下がる）
 export function educationMatch(
-  rows: readonly Pick<EducationStatisticsRow, "degree_id" | "contribution">[] | undefined,
+  stats: Pick<CareerStatistics, "minimum_education" | "education_at_or_above">,
   degreeId: string | null,
 ): number | null {
-  if (!rows || rows.length === 0) return null;
-  const max = Math.max(...rows.map((row) => row.contribution));
-  if (!(max > 0)) return null;
-  const user = rows.find((row) => row.degree_id === degreeId)?.contribution ?? 0;
-  return Math.min(100, (user / max) * 100);
+  const { minimum_education: minimum, education_at_or_above: atOrAbove } = stats;
+  if (!minimum || !atOrAbove) return null;
+  const rank = DEGREES.indexOf(degreeId as DegreeId);
+  if (rank < 0) return 0;
+  if (rank >= DEGREES.indexOf(minimum)) return 100;
+  return (1 - atOrAbove[DEGREES[rank + 1]]) * 100;
 }
 
 export function goalMatch(categories: readonly (number | null)[]): number {
@@ -299,7 +312,7 @@ export function calculateCareerMatch(
   let education: number | null = null;
   if (stats.goal_sample_size > 0) {
     ({ value: experience, coverage } = experienceMatch(stats, validExperiences));
-    education = educationMatch(stats.education, degreeIsKnown ? input.degree_id : null);
+    education = educationMatch(stats, degreeIsKnown ? input.degree_id : null);
   }
   const mode = evidenceMode(stats, { experience, education });
 
