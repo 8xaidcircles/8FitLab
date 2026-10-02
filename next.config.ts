@@ -25,6 +25,7 @@ const nextConfig: NextConfig = {
       // 機能名を Career Match から Goal Fit に変えた。クエリ（?goal=）はそのまま引き継がれる
       { source: "/career-match", destination: "/goal-fit", permanent: true },
       { source: "/career-match/:path*", destination: "/goal-fit/:path*", permanent: true },
+      { source: "/editorial-policy", destination: "/disclaimer#editorial-policy", permanent: true },
     ];
   },
   images: {
