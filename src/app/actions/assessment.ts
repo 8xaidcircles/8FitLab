@@ -41,7 +41,13 @@ export async function submitAssessment(raw: unknown): Promise<SubmitAssessmentRe
   const anonymousUserId = await getOrCreateAnonymousUserId();
   let assessmentId: string;
   try {
-    assessmentId = await saveAssessment({ anonymousUserId, submission, result, missingSteps });
+    assessmentId = await saveAssessment({
+      anonymousUserId,
+      submission,
+      result,
+      missingSteps,
+      learningPathVersion: path.version,
+    });
   } catch (error) {
     console.error(error);
     return { ok: false, error: "save_failed" };

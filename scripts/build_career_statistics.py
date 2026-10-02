@@ -47,10 +47,14 @@ HF_BASE = "https://huggingface.co/datasets/aida-ugent/JobHop/resolve/main"
 
 SOURCE = "jobhop_v2"
 SOURCE_VERSION = "v2"
-CALCULATION_VERSION = "2.3.0"
+CALCULATION_VERSION = "2.4.0"
 MIN_RELIABLE_SAMPLE = 100
 MAX_YEARS = 50.0
 REFERENCE_PERCENTILE = 90
+# 学歴の低い順（src/lib/career-match/types.ts の DEGREES と同じ）
+DEGREE_ORDER = ["None", "Secondary school", "Bachelor", "Master", "PhD"]
+# 最低教育要件 = 「その学歴以上」の人がこの割合を超える、最も高い学歴
+MINIMUM_EDUCATION_SHARE = 0.5
 
 
 def load_jobhop() -> pd.DataFrame:
@@ -214,6 +218,17 @@ def education_statistics(edu, goal_ids, other_ids, n_goal, n_other):
     return sorted(rows, key=lambda r: r["contribution"], reverse=True)
 
 
+def education_requirement(edu, goal_ids, n_goal) -> dict:
+    """Goal Population の「その学歴以上」の割合と、最低教育要件。"""
+    goal_counts = edu[edu.person_id.isin(goal_ids)].degree_id.value_counts()
+    at_or_above = {
+        degree: round(sum(int(goal_counts.get(d, 0)) for d in DEGREE_ORDER[i:]) / n_goal, 6)
+        for i, degree in enumerate(DEGREE_ORDER)
+    }
+    minimum = [d for d in DEGREE_ORDER if at_or_above[d] > MINIMUM_EDUCATION_SHARE][-1]
+    return {"minimum_education": minimum, "education_at_or_above": at_or_above}
+
+
 def reference_value(scores: pd.Series) -> float:
     """Harrell-Davis 推定量は 2 人未満では NaN を返すため、その場合は 0（Experience は算出不可）。"""
     if scores.size < 2:
@@ -308,6 +323,8 @@ def main() -> None:
                 education_statistics(edu, goal_ids, other_ids, n_goal, n_other) if n_goal > 0 else []
             ),
         }
+        if n_goal > 0:
+            result.update(education_requirement(edu, goal_ids, n_goal))
 
         path = OUT_DIR / f"{goal['goal_id']}.json"
         path.write_text(json.dumps(result, ensure_ascii=False, indent=1, allow_nan=False), encoding="utf-8")

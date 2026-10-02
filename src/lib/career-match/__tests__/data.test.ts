@@ -1,3 +1,5 @@
+import { readFile } from "node:fs/promises";
+import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { calculateCareerMatch, contribution, quality } from "../calculate";
 import {
@@ -21,7 +23,7 @@ import {
 } from "../data";
 import { heldSkillIds, layeredSkillProgress, normalizeHumanRequirements } from "../skill-layers";
 import { goalSkillUnits, weightedSkillProgress } from "../skill-score";
-import { DEGREES } from "../types";
+import { DEGREES, UNKNOWN_EDUCATION_LEVEL_ID } from "../types";
 
 const goals = await loadGoals();
 const roles = await loadRoles();
@@ -95,6 +97,33 @@ describe("職種・Goal の日本語表示名", () => {
     expect(ids.filter((id) => !roleById.has(id))).toEqual([]);
   });
 
+  it("先頭は主要な IT 職種（8 種）で、IT 職種のグループの後に IT 以外のグループが並ぶ", async () => {
+    const groups = await loadRoleGroups();
+    expect(groups[0]).toMatchObject({ group_id: "featured", category: "it" });
+    expect(groups[0].roles).toHaveLength(8);
+    const categories = groups.map((g) => g.category);
+    expect(categories).toEqual([...categories].sort((a, b) => (a === b ? 0 : a === "it" ? -1 : 1)));
+    for (const group of groups) {
+      expect(["it", "other"], group.group_id).toContain(group.category);
+      expect(group.roles.length, group.group_id).toBeGreaterThan(0);
+      for (const role of group.roles) expect(role.name, role.role_id).toMatch(/[ぁ-んァ-ヶ一-龠]/);
+    }
+  });
+
+  it("IT 以外の主要な職種（営業・事務・経理・人事・マーケティング・コンサルタント）を日本語で選べる", async () => {
+    const byName = new Map((await loadRoleGroups()).flatMap((g) => g.roles.map((r) => [r.name, r.role_id] as const)));
+    for (const [name, label] of [
+      ["営業担当者", "commercial sales representative"],
+      ["一般事務・事務アシスタント", "administrative assistant"],
+      ["会計士・経理", "accountant"],
+      ["人事担当", "human resources officer"],
+      ["マーケティングマネージャー", "marketing manager"],
+      ["ビジネスコンサルタント（経営コンサルタント）", "business consultant"],
+    ]) {
+      expect(roleById.get(byName.get(name)!)?.label, name).toBe(label);
+    }
+  });
+
   it("全 Goal の職業が日本語職種リストに含まれる", async () => {
     const ids = new Set((await loadRoleGroups()).flatMap((g) => g.roles.map((r) => r.role_id)));
     const missing = goals.flatMap((g) => goalOccupations(g).map((o) => o.code)).filter((code) => !ids.has(code));
@@ -112,14 +141,31 @@ describe("職種・Goal の日本語表示名", () => {
 describe("Education Master", () => {
   it("学歴 ID は一意で、統計上の学歴はすべて JobHop の 5 段階に含まれ、5 段階すべてに対応がある", async () => {
     const { levels } = await loadEducation();
+    const known = levels.filter((l) => l.level_id !== UNKNOWN_EDUCATION_LEVEL_ID);
     expect(new Set(levels.map((l) => l.level_id)).size).toBe(levels.length);
-    for (const level of levels) expect(DEGREES).toContain(level.degree_id);
-    expect(new Set(levels.map((l) => l.degree_id))).toEqual(new Set(DEGREES));
+    for (const level of known) expect(DEGREES).toContain(level.degree_id);
+    expect(new Set(known.map((l) => l.degree_id))).toEqual(new Set(DEGREES));
   });
 
-  it("学歴は ISCED レベル順に並ぶ", async () => {
-    const isced = (await loadEducation()).levels.map((l) => l.isced);
+  it("「わかりません / 答えない」は最後の選択肢で、統計上の学歴を持たない", async () => {
+    const { levels } = await loadEducation();
+    expect(levels.at(-1)).toMatchObject({
+      level_id: UNKNOWN_EDUCATION_LEVEL_ID,
+      name: "わかりません / 答えない",
+      degree_id: null,
+      isced: null,
+    });
+  });
+
+  it("学歴（「わかりません」を除く）は ISCED レベル順に並ぶ", async () => {
+    const isced = (await loadEducation()).levels.slice(0, -1).map((l) => l.isced!);
     expect(isced).toEqual([...isced].sort((a, b) => a - b));
+  });
+
+  it("専攻分野（fields / field_selectable）は持たない", async () => {
+    const raw = JSON.parse(await readFile(path.join(process.cwd(), "data", "education", "education.json"), "utf-8"));
+    expect(raw).not.toHaveProperty("fields");
+    for (const level of raw.levels) expect(level).not.toHaveProperty("field_selectable");
   });
 
   it("専門学校・高専・短大（ISCED 5）は高校相当として計算し、補足説明を持つ", async () => {
@@ -132,43 +178,6 @@ describe("Education Master", () => {
     }
   });
 
-  it("中学校のみ専攻分野を選ばない", async () => {
-    const { levels } = await loadEducation();
-    expect(levels.filter((l) => !l.field_selectable).map((l) => l.level_id)).toEqual(["junior-high"]);
-  });
-
-  it("専攻分野の選択肢は ID が一意で、学歴内で表示名が重複しない", async () => {
-    const { levels, fields } = await loadEducation();
-    expect(new Set(fields.map((f) => f.field_id)).size).toBe(fields.length);
-    for (const field of fields) expect(field.field_id).toMatch(/^[a-z0-9-]+$/);
-    for (const level of levels) {
-      const names = fields.filter((f) => f.levels.includes(level.level_id)).map((f) => f.name);
-      expect(new Set(names).size).toBe(names.length);
-    }
-  });
-
-  it("専攻分野を選べる学歴には選択肢があり、選べない学歴には選択肢がない", async () => {
-    const { levels, fields } = await loadEducation();
-    const levelIds = new Set(levels.map((l) => l.level_id));
-    for (const level of levels) {
-      const count = fields.filter((f) => f.levels.includes(level.level_id)).length;
-      if (level.field_selectable) expect(count, level.level_id).toBeGreaterThan(0);
-      else expect(count, level.level_id).toBe(0);
-    }
-    for (const field of fields) {
-      expect(field.levels.length).toBeGreaterThan(0);
-      for (const levelId of field.levels) expect(levelIds.has(levelId), levelId).toBe(true);
-    }
-  });
-
-  it("専門学校・高専・短大は大学・大学院と同じ専攻分野を使う", async () => {
-    const { fields } = await loadEducation();
-    const fieldsOf = (levelId: string) =>
-      fields.filter((f) => f.levels.includes(levelId)).map((f) => f.field_id);
-    for (const levelId of ["vocational-school", "technical-college", "junior-college", "master", "phd"]) {
-      expect(fieldsOf(levelId), levelId).toEqual(fieldsOf("bachelor"));
-    }
-  });
 });
 
 describe("Career Statistics Master", () => {
@@ -371,13 +380,14 @@ describe("実データでの算出", () => {
     expect(values[0]).toBeGreaterThan(0);
   });
 
-  it("Education: Contribution 最大の学歴が 100", async () => {
+  it("Education: 最低教育要件（Frontend は学士）以上は 100", async () => {
     const stats = await loadCareerStatistics("frontend-developer");
-    const top = [...(stats.education ?? [])].sort((a, b) => b.contribution - a.contribution)[0];
     const known = await loadKnownIds();
     const skill = await loadSkillContext("frontend-developer");
-    const result = calculateCareerMatch({ skill_ids: [], certification_ids: [], experiences: [], degree_id: top.degree_id }, stats, skill, known);
-    expect(result.education_match).toBeCloseTo(100);
+    for (const degree_id of ["Bachelor", "Master", "PhD"]) {
+      const result = calculateCareerMatch({ skill_ids: [], certification_ids: [], experiences: [], degree_id }, stats, skill, known);
+      expect(result.education_match, degree_id).toBe(100);
+    }
   });
 });
 

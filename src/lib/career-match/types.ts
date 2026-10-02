@@ -10,6 +10,9 @@ export interface LearningStep {
   step_id: string;
   name: string;
   any_of: string[];
+  summary?: string;
+  done_criteria?: string;
+  phase?: { id: string; label: string };
 }
 
 export interface LearningPathMaster {
@@ -83,6 +86,10 @@ export interface CareerStatistics {
   experience_reference_estimator: "harrell-davis";
   requirement_groups: RequirementGroupStatistics[];
   education?: EducationStatisticsRow[];
+  /** 最低教育要件：Goal Population のうち「その学歴以上」の人が 50% を超える、最も高い学歴（Goal Population が 0 人なら無い） */
+  minimum_education?: DegreeId;
+  /** Goal Population のうち「その学歴以上」の人の割合 */
+  education_at_or_above?: Record<DegreeId, number>;
 }
 
 export interface SkillUnitMember {
@@ -167,10 +174,20 @@ export interface HumanSkill {
 }
 
 /** 資格。proves のスキル（人間定義層・技術スキル層のどちらでもよい）を持っていることの証明 */
+export type CertificationCategory =
+  | "it-general"
+  | "management"
+  | "design-quality"
+  | "data-ai"
+  | "infrastructure"
+  | "cloud"
+  | "programming";
+
 export interface Certification {
   cert_id: string;
   name: string;
   issuer: string;
+  category: CertificationCategory;
   proves: string[];
 }
 
@@ -224,6 +241,13 @@ export interface UserExperience {
   role_id: string;
   years: number;
 }
+
+/** 職歴の回答。entered は職種と年数を 1 件以上入力、none は実務経験なし、unknown は「わかりません / 答えない」 */
+export const EXPERIENCE_STATUSES = ["entered", "none", "unknown"] as const;
+export type ExperienceStatus = (typeof EXPERIENCE_STATUSES)[number];
+
+/** 学歴の「わかりません / 答えない」の level_id（data/education/education.json） */
+export const UNKNOWN_EDUCATION_LEVEL_ID = "unknown";
 
 export interface UserInput {
   /** 技術スキル層・人間定義層の skill_id と、人間定義層のツールの tool_id */

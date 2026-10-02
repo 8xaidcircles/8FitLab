@@ -1,8 +1,18 @@
 export const SITE_NAME = "8FitLab";
 export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://8fitlab.com").replace(/\/+$/, "");
 export const SITE_DESCRIPTION =
-  "目指す職種（Goal）を選び、スキル・経験・学歴を入力すると、Goalとの一致度（Career Match）と不足スキル、日本向けの学習順（Learning Path）がわかります。";
+  "目指す職種（Goal）を選び、スキル・経験・学歴を入力すると、Goalとの一致度（Goal Fit）と不足スキル、日本向けの学習順（Learning Path）がわかります。";
 export const ORGANIZATION_NAME = "AID CIRCLES";
+export const ORGANIZATION_URL = "https://8xaidcircles.com";
+export const CONTACT_FORM = {
+  url: "https://forms.gle/oTZjzmU8ChxcCyGH6",
+  embedUrl: "https://docs.google.com/forms/d/e/1FAIpQLSfIqaxi9Twu3uw9dno9GvnbVGi2kuxgqhu21WX402EWlD30Ew/viewform?embedded=true",
+} as const;
+export const OPERATOR = {
+  name: "8X Aid Circles",
+  address: "京都府京都市下京区朱雀宝蔵町44番地協栄ビル2階京都朱雀スタジオAR-204",
+  email: "8xaidcircles@gmail.com",
+} as const;
 
 const CC_BY_4_0 = { license: "CC BY 4.0", licenseUrl: "https://creativecommons.org/licenses/by/4.0/deed.ja" } as const;
 
@@ -35,6 +45,17 @@ export const STACK_OVERFLOW_SURVEY = {
   contentsLicenseUrl: "https://opendatacommons.org/licenses/dbcl/1-0/",
   derivedDatabaseUrl: "https://github.com/8xaidcircles/8career/tree/main/data/statistics/skill-match",
 } as const;
+
+// インラインのタグに埋め込むため、形式が正しい ID だけを使う（それ以外は未設定と同じ扱い）
+function matchedEnv(value: string | undefined, pattern: RegExp): string | null {
+  const trimmed = value?.trim();
+  return trimmed && pattern.test(trimmed) ? trimmed : null;
+}
+
+/** Google アナリティクス 4 の測定 ID。null ならタグを読み込まない */
+export const GA_MEASUREMENT_ID = matchedEnv(process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID, /^G-[A-Z0-9]+$/);
+/** Google AdSense のサイト運営者 ID。null なら広告を読み込まない */
+export const ADSENSE_CLIENT_ID = matchedEnv(process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID, /^ca-pub-\d{10,20}$/);
 
 export function absoluteUrl(path: string): string {
   return `${SITE_URL}${path.startsWith("/") ? path : `/${path}`}`;

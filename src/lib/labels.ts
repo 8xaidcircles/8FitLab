@@ -1,4 +1,39 @@
-import type { Confidence, EvidenceMode, HumanSkillDomain, SkillLayerWeightSource } from "@/lib/career-match/types";
+import type {
+  CertificationCategory,
+  Confidence,
+  DegreeId,
+  EvidenceMode,
+  ExperienceStatus,
+  HumanSkillDomain,
+  SkillLayerWeightSource,
+} from "@/lib/career-match/types";
+
+/** 職歴の回答（診断フォームの選択肢の表示順） */
+export const EXPERIENCE_STATUS_LABELS: Record<ExperienceStatus, string> = {
+  entered: "実務経験がある",
+  none: "実務経験なし",
+  unknown: "わかりません / 答えない",
+};
+
+/** 統計上の学歴（data/education/education.json の degree_id）の表示名 */
+export const DEGREE_LABELS: Record<DegreeId, string> = {
+  None: "中学校",
+  "Secondary school": "高校・専門学校・高専・短大",
+  Bachelor: "大学（学士）",
+  Master: "大学院（修士）",
+  PhD: "大学院（博士）",
+};
+
+/** data/skills/certifications.json の category（表示順） */
+export const CERTIFICATION_CATEGORIES: { id: CertificationCategory; name: string }[] = [
+  { id: "it-general", name: "情報処理技術者試験（IPA）" },
+  { id: "programming", name: "プログラミング言語・データベース" },
+  { id: "cloud", name: "クラウド・コンテナ" },
+  { id: "infrastructure", name: "ネットワーク・Linux" },
+  { id: "data-ai", name: "データ分析・AI" },
+  { id: "management", name: "プロジェクト管理・アジャイル" },
+  { id: "design-quality", name: "デザイン・テスト" },
+];
 
 /** data/skills/tech-skills.json の category（表示順） */
 export const TECH_SKILL_CATEGORIES: { id: string; name: string }[] = [
@@ -41,6 +76,9 @@ export const SUBMIT_ERRORS: Record<string, string> = {
   unknown_goal: "Goalを選んでください。",
   unknown_skill: "選択肢に無いスキルが含まれています。ページを再読み込みしてもう一度お試しください。",
   unknown_certification: "選択肢に無い資格が含まれています。ページを再読み込みしてもう一度お試しください。",
+  experience_required: "職務経歴を選択してください。",
+  experience_rows_required: "職種と年数を入力した職歴を1件以上追加してください。",
+  education_required: "最終学歴を選択してください。",
   save_failed: "結果の保存に失敗しました。時間をおいてもう一度お試しください。",
 };
 

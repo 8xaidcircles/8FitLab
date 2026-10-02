@@ -1,16 +1,15 @@
 {
-  "version": "1.2.0",
+  "version": "1.3.0",
   "region": "JP",
-  "note": "学歴（日本の学校区分）と専攻分野の選択肢。levels[].degree_id は Career Statistics（JobHop v2 の 5 段階）への対応で、Education Match の計算に使う。専攻分野は自由入力による個人情報の混入を防ぐため選択式とし、Education Match の計算には使用しない（将来の分析用）。",
+  "note": "学歴（日本の学校区分）。levels[].degree_id は Career Statistics（JobHop v2 の 5 段階）への対応で、Education Match の計算に使う。「わかりません / 答えない」（unknown）は対応する学歴が無いため degree_id を null とし、Education Match は 0 になる。",
   "levels": [
-    { "level_id": "junior-high", "name": "中学校", "degree_id": "None", "isced": 2, "field_selectable": false },
-    { "level_id": "high-school", "name": "高校", "degree_id": "Secondary school", "isced": 3, "field_selectable": true },
+    { "level_id": "junior-high", "name": "中学校", "degree_id": "None", "isced": 2 },
+    { "level_id": "high-school", "name": "高校", "degree_id": "Secondary school", "isced": 3 },
     {
       "level_id": "vocational-school",
       "name": "専門学校",
       "degree_id": "Secondary school",
       "isced": 5,
-      "field_selectable": true,
       "mapping_note": "日本の専門学校・高専・短大（ISCEDレベル5）は、欧州データ（JobHop）の分類定義に基づき「中等教育（高校相当）」のカテゴリにマッピングして一致度を計算しています。"
     },
     {
@@ -18,7 +17,6 @@
       "name": "高専",
       "degree_id": "Secondary school",
       "isced": 5,
-      "field_selectable": true,
       "mapping_note": "日本の専門学校・高専・短大（ISCEDレベル5）は、欧州データ（JobHop）の分類定義に基づき「中等教育（高校相当）」のカテゴリにマッピングして一致度を計算しています。"
     },
     {
@@ -26,27 +24,11 @@
       "name": "短大",
       "degree_id": "Secondary school",
       "isced": 5,
-      "field_selectable": true,
       "mapping_note": "日本の専門学校・高専・短大（ISCEDレベル5）は、欧州データ（JobHop）の分類定義に基づき「中等教育（高校相当）」のカテゴリにマッピングして一致度を計算しています。"
     },
-    { "level_id": "bachelor", "name": "大学（学士）", "degree_id": "Bachelor", "isced": 6, "field_selectable": true },
-    { "level_id": "master", "name": "大学院（修士）", "degree_id": "Master", "isced": 7, "field_selectable": true },
-    { "level_id": "phd", "name": "大学院（博士）", "degree_id": "PhD", "isced": 8, "field_selectable": true }
-  ],
-  "fields": [
-    { "field_id": "hs-general", "name": "普通科", "levels": ["high-school"] },
-    { "field_id": "hs-science-math", "name": "理数科", "levels": ["high-school"] },
-    { "field_id": "hs-information", "name": "情報科", "levels": ["high-school"] },
-    { "field_id": "hs-industrial", "name": "工業科", "levels": ["high-school"] },
-    { "field_id": "hs-commercial", "name": "商業科", "levels": ["high-school"] },
-    { "field_id": "hs-comprehensive", "name": "総合学科", "levels": ["high-school"] },
-    { "field_id": "hs-other", "name": "その他の学科", "levels": ["high-school"] },
-    { "field_id": "information", "name": "情報系（情報工学・情報科学など）", "levels": ["vocational-school", "technical-college", "junior-college", "bachelor", "master", "phd"] },
-    { "field_id": "math-statistics", "name": "数学・統計系", "levels": ["vocational-school", "technical-college", "junior-college", "bachelor", "master", "phd"] },
-    { "field_id": "science-engineering", "name": "理工系（情報系以外）", "levels": ["vocational-school", "technical-college", "junior-college", "bachelor", "master", "phd"] },
-    { "field_id": "economics-business", "name": "経済・経営・商学系", "levels": ["vocational-school", "technical-college", "junior-college", "bachelor", "master", "phd"] },
-    { "field_id": "humanities-social", "name": "人文・社会科学系（文学・法学・教育など）", "levels": ["vocational-school", "technical-college", "junior-college", "bachelor", "master", "phd"] },
-    { "field_id": "art-design", "name": "芸術・デザイン系", "levels": ["vocational-school", "technical-college", "junior-college", "bachelor", "master", "phd"] },
-    { "field_id": "other", "name": "その他", "levels": ["vocational-school", "technical-college", "junior-college", "bachelor", "master", "phd"] }
+    { "level_id": "bachelor", "name": "大学（学士）", "degree_id": "Bachelor", "isced": 6 },
+    { "level_id": "master", "name": "大学院（修士）", "degree_id": "Master", "isced": 7 },
+    { "level_id": "phd", "name": "大学院（博士）", "degree_id": "PhD", "isced": 8 },
+    { "level_id": "unknown", "name": "わかりません / 答えない", "degree_id": null, "isced": null }
   ]
 }

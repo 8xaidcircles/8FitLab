@@ -6,9 +6,9 @@ import { TrackView } from "@/components/track-view";
 import { getAnonymousUserId, isUuid } from "@/lib/anonymous-user";
 import { getAssessment } from "@/lib/assessment/repository";
 import {
-  COMPOSITE_UNMET_GROUP_CAP,
   goalSkillUnits,
   humanRequirementStatus,
+  learningPath,
   loadEducation,
   loadGoals,
   loadKnownIds,
@@ -19,16 +19,16 @@ import {
   loadSkillNames,
   normalizeHumanRequirements,
   resolveUserSkills,
-  satisfiedGroupIds,
   skillGap,
   skillMatchScope,
   skillUnitGaps,
 } from "@/lib/career-match";
-import { SKILL_LAYER_WEIGHT_SOURCE_LABELS, formatPercent } from "@/lib/labels";
+import { UNKNOWN_EDUCATION_LEVEL_ID } from "@/lib/career-match/types";
+import { EXPERIENCE_STATUS_LABELS, formatPercent } from "@/lib/labels";
 import { LearningSteps } from "@/components/learning-steps";
 
 export const metadata: Metadata = {
-  title: "Career Matchの結果",
+  title: "Goal Fitの診断結果",
   robots: { index: false },
 };
 
@@ -36,11 +36,13 @@ function CategoryCard({
   title,
   value,
   source,
+  description,
   notes = [],
 }: {
   title: string;
   value: number | null;
   source: string;
+  description: string;
   notes?: string[];
 }) {
   return (
@@ -62,6 +64,7 @@ function CategoryCard({
         </div>
       )}
       <p className="mt-3 text-xs text-muted">{source}</p>
+      <p className="mt-2 text-sm leading-relaxed text-ink">{description}</p>
       {notes.map((note) => (
         <p key={note} className="mt-2 rounded-lg bg-sky-soft px-3 py-2 text-xs leading-relaxed text-ink">
           {note}
@@ -71,7 +74,7 @@ function CategoryCard({
   );
 }
 
-export default async function ResultPage({ params }: PageProps<"/career-match/result/[id]">) {
+export default async function ResultPage({ params }: PageProps<"/goal-fit/result/[id]">) {
   const { id } = await params;
   const anonymousUserId = await getAnonymousUserId();
   if (!isUuid(id) || !anonymousUserId) notFound();
@@ -110,6 +113,9 @@ export default async function ResultPage({ params }: PageProps<"/career-match/re
   const missingDataDriven = gap.data_driven.filter((s) => !s.satisfied).length;
   const missingChecklist = gap.checklist.filter((s) => !s.satisfied).length;
 
+  // 学習ロードマップのページへの案内文を、未習得の Step の有無で切り替える
+  const missingSteps = learningPath(path, held);
+
   const certificationNames = skillContext.certifications
     .filter((c) => assessment.certification_ids.includes(c.cert_id))
     .map((c) => c.name);
@@ -138,52 +144,41 @@ export default async function ResultPage({ params }: PageProps<"/career-match/re
         .filter(Boolean)
         .join(" ＋ ")
     : "旧方式（8FitLabの学習ステップの達成率）で計算した結果です";
-  const skillNotes = stored
-    ? [
-        `技術はStack Overflow Developer Surveyで、このGoalの人に特徴的な技術を重要度で重み付けしています（${SKILL_LAYER_WEIGHT_SOURCE_LABELS[stored.skill_layer_weights.source]}）。`,
-        ...(certificationNames.length > 0 ? [`資格（${certificationNames.join("、")}）が証明するスキルも含めています。`] : []),
-      ]
-    : ["もう一度計算すると、現在の方式（技術 × 手法・知識の2層）で算出します。"];
-  if (assessment.legacy_skill_ids.length > 0) {
-    skillNotes.push(
-      "以前の入力のうち、具体的な技術が分からない項目（例：「クラウド」）は計算に含めていません。もう一度計算するときに具体的な技術を選んでください。",
-    );
-  }
+  const skillDescription = `目標ポジションで求められる技術やスキルの保有状況です。不足しているスキルを習得することでスコアが上がります。${
+    certificationNames.length > 0 ? " 保有資格によるスキル証明を含んでいます。" : ""
+  }`;
+  const skillNotes =
+    assessment.legacy_skill_ids.length > 0
+      ? [
+          "以前の入力のうち、具体的な技術が分からない項目（例：「クラウド」）は計算に含めていません。もう一度計算するときに具体的な技術を選んでください。",
+        ]
+      : [];
   const level = education.levels.find((l) => l.level_id === assessment.education_level_id);
-  const field = education.fields.find((f) => f.field_id === assessment.field_id);
-
-  const groups = goal.requirement_groups;
-  const satisfied = satisfiedGroupIds(
-    groups.map((g) => ({ group_id: g.group_id, occupations: g.occupations.map((o) => o.code) })),
-    assessment.experiences,
-  );
-  const groupNames = (met: boolean) => groups.filter((g) => satisfied.has(g.group_id) === met).map((g) => g.name).join("・");
-  const compositeNote = `このGoalは${groups.map((g) => g.name).join("と")}の達成率の平均です（${groups
-    .map((g) => `${g.name}：${g.occupations.map((o) => roleName(o.code)).join(" または ")}`)
-    .join("、")}）。職業そのものの経験が無い側の達成率は、前職経験の統計から最大${COMPOSITE_UNMET_GROUP_CAP}まで評価します。`;
-  const tenureNote =
-    "このGoalの職業そのものの経験は、同じ職業に就いた人の在職年数と比べて評価しています。在職年数が長い人ほど高くなり、半数の人より長ければ50を超えます。前職経験の評価のほうが高い場合はそちらを使います。";
-  const statisticalNote =
-    "このGoalに就いた人が、Goalに就く前にどんな職種を何年経験していたかと比べています。上位10%の人と同程度の前職経験で100になります。";
-  const experienceNotes = [
-    ...(groups.length > 1 ? [compositeNote] : []),
-    ...(satisfied.size > 0 ? [tenureNote] : []),
-    ...(groups.length > 1 && satisfied.size > 0 && satisfied.size < groups.length
-      ? [`${groupNames(true)}は在職年数、${groupNames(false)}は前職経験の統計から達成率を出し、平均しています。`]
-      : []),
-    ...(satisfied.size < groups.length ? [statisticalNote] : []),
-  ];
-  const educationNotes = [
-    "このGoalに就いた人に最も多く、特徴的な学歴を100としています。",
-    ...(level?.mapping_note ? [level.mapping_note] : []),
-  ];
+  const experienceSource =
+    assessment.experiences.length > 0
+      ? assessment.experiences.map((e) => `${roleName(e.role_id)} ${e.years}年`).join("、")
+      : assessment.experience_status && assessment.experience_status !== "entered"
+        ? EXPERIENCE_STATUS_LABELS[assessment.experience_status]
+        : "職歴の入力なし";
+  const experienceNotes =
+    match.experience_match === null
+      ? []
+      : assessment.experience_status === "unknown"
+        ? ["職歴が未入力のため、実務経験の適合度は参考値です。"]
+        : assessment.experience_status === "none"
+          ? ["実務経験がないため、経験面での適合度は 0 です。未経験からの転職では、スキル習得が成功の鍵になります。"]
+          : [];
+  const educationNotes =
+    match.education_match !== null && assessment.education_level_id === UNKNOWN_EDUCATION_LEVEL_ID
+      ? ["学歴が未入力のため、教育面での適合度は参考値です。"]
+      : [];
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-10">
-      <TrackView event="page_viewed" data={{ path: "/career-match/result", goal_id: goal.goal_id }} />
+      <TrackView event="page_viewed" data={{ path: "/goal-fit/result", goal_id: goal.goal_id }} />
       <TrackView event="skill_gap_viewed" data={{ assessment_id: id, goal_id: goal.goal_id, missing: missingDataDriven + missingChecklist }} />
 
-      <p className="text-sm font-bold text-sky">Career Match</p>
+      <p className="text-sm font-bold text-sky">Goal Fit</p>
       <h1 className="mt-1 text-2xl font-extrabold md:text-3xl">{goal.name}との一致度</h1>
 
       <section className="mt-6 grid items-center gap-8 rounded-3xl border border-line bg-white p-6 md:grid-cols-[auto_1fr] md:p-8">
@@ -191,9 +186,9 @@ export default async function ResultPage({ params }: PageProps<"/career-match/re
           <ScoreRing value={match.goal_match} />
         </div>
         <div>
-          <p className="text-sm font-bold text-muted">Goal Match</p>
+          <p className="text-sm font-bold text-muted">Goal Fit</p>
           <p className="mt-2 leading-relaxed">
-            スキル・職歴・学歴のうち、算出できたカテゴリの平均です。
+            スキル・職歴・学歴を総合的に評価した、目標ポジションとの適合度です。
             {match.evidence_mode === "skill_only" &&
               "このGoalは職歴・学歴の統計を算出できないため、スキルのみで算出しています。"}
           </p>
@@ -205,22 +200,21 @@ export default async function ResultPage({ params }: PageProps<"/career-match/re
           title="Skill"
           value={match.skill_match}
           source={skillSource}
+          description={skillDescription}
           notes={skillNotes}
         />
         <CategoryCard
           title="Experience"
           value={match.experience_match}
-          source={
-            assessment.experiences.length > 0
-              ? assessment.experiences.map((e) => `${roleName(e.role_id)} ${e.years}年`).join("、")
-              : "職歴の入力なし"
-          }
+          source={experienceSource}
+          description="これまでの実務経験や関連職種での実績に基づく適合度です。"
           notes={experienceNotes}
         />
         <CategoryCard
           title="Education"
           value={match.education_match}
-          source={level ? [level.name, field?.name].filter(Boolean).join("・") : "学歴の入力なし"}
+          source={level ? level.name : "学歴の入力なし"}
+          description="目標ポジションに就いている人々の学歴傾向に対する適合度です。"
           notes={educationNotes}
         />
       </section>
@@ -296,8 +290,16 @@ export default async function ResultPage({ params }: PageProps<"/career-match/re
               現在の学習ステップの定義で判定しています。
             </p>
           </div>
-          <Link href={`/learning-path/${goal.goal_id}`} className="text-sm font-bold text-indigo hover:underline">
-            {goal.name}のLearning Pathを見る →
+          <Link
+            href={`/goal-fit/result/${id}/learning-path`}
+            className="group inline-block rounded-full p-[3px] shadow-md transition hover:shadow-lg"
+            style={{
+              backgroundImage: "linear-gradient(90deg, #e84545, #f27035, #f2e26e, #8ee8c8, #22c3e0, #38a6f2, #2b3192, #a855f7)",
+            }}
+          >
+            <span className="block rounded-full bg-white px-5 py-2.5 text-sm font-extrabold text-indigo transition group-hover:bg-indigo-soft">
+              {missingSteps.length > 0 ? "学習ロードマップとおすすめ教材を見る →" : "おすすめの転職サービスを見る →"}
+            </span>
           </Link>
         </div>
 
@@ -352,7 +354,7 @@ export default async function ResultPage({ params }: PageProps<"/career-match/re
 
       <div className="mt-10 text-center">
         <Link
-          href={`/career-match?goal=${goal.goal_id}`}
+          href={`/goal-fit?goal=${goal.goal_id}`}
           className="inline-block rounded-full border border-line bg-white px-6 py-3 text-sm font-bold text-indigo hover:border-sky"
         >
           入力を変えてもう一度計算する

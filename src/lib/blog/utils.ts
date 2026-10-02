@@ -31,6 +31,18 @@ export function resolveGoalId(
   return null;
 }
 
+/** 記事一覧からカテゴリと記事数を集める（記事数の多い順、同数は名前順） */
+export function collectCategories(posts: { category?: { id: string; name: string } | null }[]): { id: string; name: string; count: number }[] {
+  const counts = new Map<string, { id: string; name: string; count: number }>();
+  for (const { category } of posts) {
+    if (!category || !isValidSlug(category.id)) continue;
+    const entry = counts.get(category.id) ?? { id: category.id, name: category.name, count: 0 };
+    entry.count += 1;
+    counts.set(category.id, entry);
+  }
+  return [...counts.values()].sort((a, b) => b.count - a.count || a.name.localeCompare(b.name, "ja"));
+}
+
 /** <script type="application/ld+json"> に埋め込んでも </script> で閉じられないようにする */
 export function serializeJsonLd(data: unknown): string {
   return JSON.stringify(data).replace(/</g, "\\u003c");

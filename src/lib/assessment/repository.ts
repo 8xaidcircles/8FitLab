@@ -6,6 +6,7 @@ import type {
   CareerMatchResult,
   Confidence,
   EvidenceMode,
+  ExperienceStatus,
   LearningStep,
   StoredSkillBreakdown,
 } from "@/lib/career-match/types";
@@ -17,6 +18,8 @@ export interface SaveAssessmentArgs {
   result: CareerMatchResult;
   // 未習得の Learning Step（learning_order 順）。Skill Gap と Learning Path の両方に保存する
   missingSteps: LearningStep[];
+  /** missingSteps の判定に使った Learning Path Master の version */
+  learningPathVersion: string;
 }
 
 export interface StoredAssessment {
@@ -28,10 +31,11 @@ export interface StoredAssessment {
   /** 移行先を 1 つに決められない旧 skill_id（例：backend-framework）。計算・表示の対象外 */
   legacy_skill_ids: string[];
   certification_ids: string[];
+  /** 職歴の入力を必須にする前に保存した結果は null */
+  experience_status: ExperienceStatus | null;
   experiences: { role_id: string; years: number }[];
   education_level_id: string | null;
   degree_id: string | null;
-  field_id: string | null;
   career_match: {
     goal_match: number;
     skill_match: number;
@@ -60,6 +64,7 @@ export async function saveAssessment({
   submission,
   result,
   missingSteps,
+  learningPathVersion,
 }: SaveAssessmentArgs): Promise<string> {
   const supabase = createClient();
 
@@ -68,6 +73,7 @@ export async function saveAssessment({
     .insert({
       anonymous_user_id: anonymousUserId,
       goal_id: submission.goal_id,
+      experience_status: submission.experience_status,
       calculation_version: result.calculation_version,
       data_source_version: result.data_source_version,
       taxonomy_version: result.taxonomy_version,
@@ -127,19 +133,20 @@ export async function saveAssessment({
         .insert(submission.experiences.map((e) => ({ assessment_id: assessmentId, role_id: e.role_id, years: e.years }))),
     );
   }
-  if (submission.education_level_id !== null && submission.degree_id !== null) {
-    inserts.push(
-      supabase.from("assessment_education").insert({
-        assessment_id: assessmentId,
-        education_level_id: submission.education_level_id,
-        degree_id: submission.degree_id,
-        field_id: submission.field_id,
-      }),
-    );
-  }
+  inserts.push(
+    supabase.from("assessment_education").insert({
+      assessment_id: assessmentId,
+      education_level_id: submission.education_level_id,
+      degree_id: submission.degree_id,
+    }),
+  );
   if (steps.length > 0) {
     inserts.push(supabase.from("skill_gap_results").insert(steps));
-    inserts.push(supabase.from("learning_path_results").insert(steps));
+    inserts.push(
+      supabase
+        .from("learning_path_results")
+        .insert(steps.map((step) => ({ ...step, learning_path_version: learningPathVersion }))),
+    );
   }
 
   const results = await Promise.all(inserts);
@@ -159,7 +166,7 @@ export async function getAssessment(assessmentId: string, anonymousUserId: strin
 
   const { data: session, error } = await supabase
     .from("assessment_sessions")
-    .select("id, goal_id, created_at")
+    .select("id, goal_id, created_at, experience_status")
     .eq("id", assessmentId)
     .eq("anonymous_user_id", anonymousUserId)
     .maybeSingle();
@@ -172,7 +179,7 @@ export async function getAssessment(assessmentId: string, anonymousUserId: strin
     supabase.from("assessment_experiences").select("role_id, years").eq("assessment_id", assessmentId),
     supabase
       .from("assessment_education")
-      .select("education_level_id, degree_id, field_id")
+      .select("education_level_id, degree_id")
       .eq("assessment_id", assessmentId)
       .maybeSingle(),
     supabase
@@ -206,10 +213,10 @@ export async function getAssessment(assessmentId: string, anonymousUserId: strin
     skill_ids: migrated.skillIds,
     legacy_skill_ids: migrated.unresolved,
     certification_ids: certifications.data!.map((r) => r.cert_id),
+    experience_status: session.experience_status,
     experiences: experiences.data!.map((r) => ({ role_id: r.role_id, years: Number(r.years) })),
     education_level_id: education.data?.education_level_id ?? null,
     degree_id: education.data?.degree_id ?? null,
-    field_id: education.data?.field_id ?? null,
     career_match: {
       goal_match: Number(m.goal_match),
       skill_match: Number(m.skill_match),

@@ -10,6 +10,9 @@ CREATE TABLE IF NOT EXISTS public.assessment_sessions (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     anonymous_user_id UUID NOT NULL,
     goal_id TEXT NOT NULL,
+    -- 職歴の回答。entered：職種と年数を 1 件以上入力 / none：実務経験なし / unknown：わかりません・答えない。
+    -- 必須化の前に保存した行は NULL
+    experience_status TEXT CHECK (experience_status IN ('entered', 'none', 'unknown')),
     calculation_version TEXT NOT NULL,
     data_source_version TEXT NOT NULL,
     taxonomy_version TEXT NOT NULL,
@@ -40,10 +43,10 @@ CREATE TABLE IF NOT EXISTS public.assessment_education (
     assessment_id UUID NOT NULL REFERENCES public.assessment_sessions(id) ON DELETE CASCADE,
     -- ユーザーが選んだ学歴（data/education/education.json の level_id。例：technical-college）
     education_level_id TEXT NOT NULL,
-    -- 統計上の学歴（JobHop 5 段階）。Education Match はこの値で計算する（例：高専 → Secondary school）
-    degree_id TEXT NOT NULL,
-    -- 任意入力。data/education/education.json の選択肢 ID のみ（自由入力は受け付けない）。高校以上で選択可。
-    -- JobHop に専攻データがないため Education Match の計算には使わない（将来の分析用）
+    -- 統計上の学歴（JobHop 5 段階）。Education Match はこの値で計算する（例：高専 → Secondary school）。
+    -- 「わかりません / 答えない」（education_level_id = 'unknown'）は NULL
+    degree_id TEXT,
+    -- 専攻分野。入力をやめたため新しい行は NULL（以前に保存した行のために列を残している）
     field_id TEXT,
     created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
@@ -111,6 +114,8 @@ CREATE TABLE IF NOT EXISTS public.learning_path_results (
     assessment_id UUID NOT NULL REFERENCES public.assessment_sessions(id) ON DELETE CASCADE,
     step_id TEXT NOT NULL,
     learning_order INTEGER NOT NULL,
+    -- 判定に使った Learning Path Master（data/learning-paths）の version。列の追加前の行は NULL
+    learning_path_version TEXT,
     created_at TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 

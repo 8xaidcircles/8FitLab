@@ -16,7 +16,7 @@ import {
   userYearsByRole,
 } from "../calculate";
 import { loadCareerStatistics, loadGoals, loadKnownIds, loadSkillContext } from "../data";
-import type { CareerStatistics, RequirementGroupStatistics, UserExperience } from "../types";
+import { DEGREES, type CareerStatistics, type DegreeId, type RequirementGroupStatistics, type UserExperience } from "../types";
 
 const FIXTURE_DIR = path.join(process.cwd(), "data", "fixtures", "career-match");
 
@@ -123,14 +123,26 @@ describe.each(goals.map((g) => [g.goal_id] as const))("計算の性質: %s", (go
     }
   });
 
-  it.skipIf(!computable)("同じ Role の年数を増やしても、Group 達成率は下がらない", () => {
-    for (const group of groups) {
-      const topRoles = [...new Set(group.experience.map((row) => row.role_id))].slice(0, 5);
-      for (const role_id of topRoles) {
-        const values = [0.5, 1, 2, 3, 5, 10, 20, 50].map((years) => groupAchievement(group, [{ role_id, years }], cap)!);
-        for (let i = 1; i < values.length; i++) expect(values[i]).toBeGreaterThanOrEqual(values[i - 1]);
+  it.skipIf(!computable)("統計にあるどの Role でも、年数を増やして（1 → 3 → 5 → 8 年…）Experience Match が逆転しない", () => {
+    const yearsList = [0.5, 1, 3, 5, 8, 10, 20, 50];
+    const roles = new Set(groups.flatMap((group) => group.experience.map((row) => row.role_id)));
+    // 他の Role の Unit は一致しないため、その Role の Unit だけに絞っても結果は同じ（全 Unit を毎回走査すると遅い）。
+    // 絞って空になる Group は「Unit が無い」扱いにならないよう、一致しない寄与 0 の Unit を残す
+    const rowsByRole = groups.map((group) => Map.groupBy(group.experience, (row) => row.role_id));
+    const decreases: string[] = [];
+    for (const role_id of roles) {
+      const narrowed = {
+        requirement_groups: groups.map((group, i) => ({
+          ...group,
+          experience: rowsByRole[i].get(role_id) ?? [{ ...group.experience[0], role_id: "__none__", contribution: 0 }],
+        })),
+      };
+      const values = yearsList.map((years) => experienceMatch(narrowed, [{ role_id, years }]).value!);
+      for (let i = 1; i < values.length; i++) {
+        if (values[i] < values[i - 1]) decreases.push(`${role_id} ${yearsList[i - 1]}→${yearsList[i]}年`);
       }
     }
+    expect(decreases).toEqual([]);
   });
 
   it.skipIf(!computable)("全 Group の職業を経験していれば coverage = 1 で年数に応じて上がり、経験が無ければ 0", () => {
@@ -172,20 +184,106 @@ describe.each(goals.map((g) => [g.goal_id] as const))("計算の性質: %s", (go
     expect(withUnknown.experience_match).toBe(without.experience_match);
   });
 
-  it("Education は Contribution 最大の学歴が 100、ほかは 100 以下", async () => {
+  it("Education は最低教育要件以上が同じ 100、要件未満は 50 未満で学歴が低いほど下がる", async () => {
     const skill = await loadSkillContext(goalId);
-    const rows = stats.education ?? [];
-    const max = Math.max(...rows.map((row) => row.contribution));
-    for (const row of rows) {
-      const result = calculateCareerMatch(
-        { skill_ids: [], certification_ids: [], experiences: [], degree_id: row.degree_id },
-        stats,
-        skill,
-        known,
-      );
-      if (row.contribution === max) expect(result.education_match).toBeCloseTo(100);
-      else expect(result.education_match!).toBeLessThanOrEqual(100);
+    const minimum = DEGREES.indexOf(stats.minimum_education!);
+    expect(minimum).toBeGreaterThanOrEqual(0);
+    const scores = DEGREES.map(
+      (degree_id) =>
+        calculateCareerMatch({ skill_ids: [], certification_ids: [], experiences: [], degree_id }, stats, skill, known)
+          .education_match!,
+    );
+    scores.forEach((score, rank) => {
+      if (rank >= minimum) expect(score, DEGREES[rank]).toBe(100);
+      else {
+        expect(score, DEGREES[rank]).toBeLessThan(50);
+        expect(score, DEGREES[rank]).toBeGreaterThanOrEqual(0);
+        if (rank > 0) expect(score, DEGREES[rank]).toBeGreaterThanOrEqual(scores[rank - 1]);
+      }
+    });
+  });
+
+  it("学歴・職歴の「わかりません」（統計上の学歴 null・職歴の行なし）と「実務経験なし」は 0", async () => {
+    const skill = await loadSkillContext(goalId);
+    const result = calculateCareerMatch(
+      { skill_ids: [], certification_ids: [], experiences: [], degree_id: null },
+      stats,
+      skill,
+      known,
+    );
+    expect(result.education_match).toBe(0);
+    expect(result.experience_match).toBe(0);
+  });
+});
+
+describe("Experience は経験年数の単純累積（年数以下の Unit を全て合算）", () => {
+  it.each([
+    ["5223.4", "sales assistant"],
+    ["3343.1", "administrative assistant"],
+    ["2411.1", "accountant"],
+  ])("IT 以外の前職 %s（%s）でも、1 → 3 → 5 → 8 年で Frontend Developer の Experience が上がる", (role_id) => {
+    const stats = statsByGoal.get("frontend-developer")!;
+    const values = [1, 3, 5, 8].map((years) => experienceMatch(stats, [{ role_id, years }]).value!);
+    expect(values[0]).toBeGreaterThan(0);
+    for (let i = 1; i < values.length; i++) expect(values[i]).toBeGreaterThan(values[i - 1]);
+  });
+});
+
+describe("最低教育要件（2.4.0 で確定）", () => {
+  const expected: Record<string, DegreeId> = {
+    "frontend-developer": "Bachelor",
+    "backend-developer": "Bachelor",
+    "full-stack-developer": "Bachelor",
+    "data-analyst": "Bachelor",
+    "data-scientist": "Master",
+    "data-engineer": "Bachelor",
+    "it-project-manager": "Bachelor",
+    "product-manager": "Bachelor",
+    "software-architect": "Bachelor",
+    "mobile-app-developer": "Bachelor",
+    "network-engineer": "Bachelor",
+    "test-analyst": "Bachelor",
+    "devops-sre": "Bachelor",
+    "cloud-architect": "Bachelor",
+  };
+
+  it("14 Goal すべてに最低教育要件があり、承認した表と一致する", () => {
+    expect(Object.keys(expected).sort()).toEqual(goals.map((g) => g.goal_id).sort());
+    for (const [goalId, minimum] of Object.entries(expected)) {
+      expect(statsByGoal.get(goalId)!.minimum_education, goalId).toBe(minimum);
     }
+  });
+
+  it.each(goals.map((g) => [g.goal_id] as const))("%s: 要件以上の割合は 50% 超、1 つ上の学歴以上は 50% 以下", (goalId) => {
+    const stats = statsByGoal.get(goalId)!;
+    const atOrAbove = stats.education_at_or_above!;
+    const minimum = DEGREES.indexOf(stats.minimum_education!);
+    expect(atOrAbove.None).toBeCloseTo(1, 5);
+    expect(atOrAbove[DEGREES[minimum]]).toBeGreaterThan(0.5);
+    if (minimum + 1 < DEGREES.length) expect(atOrAbove[DEGREES[minimum + 1]]).toBeLessThanOrEqual(0.5);
+    // 学歴の行（P(学歴 | Goal)）と同じ分布から作られている
+    const share = (degree: DegreeId) => stats.education?.find((r) => r.degree_id === degree)?.p_unit_given_goal ?? 0;
+    DEGREES.forEach((degree, i) => {
+      expect(atOrAbove[degree], degree).toBeCloseTo(DEGREES.slice(i).reduce((sum, d) => sum + share(d), 0), 4);
+    });
+  });
+
+  it("frontend-developer：学士・修士・博士は 100、高卒等 22.8、中学校 9.2", () => {
+    const stats = statsByGoal.get("frontend-developer")!;
+    expect(educationMatch(stats, "Bachelor")).toBe(100);
+    expect(educationMatch(stats, "Master")).toBe(100);
+    expect(educationMatch(stats, "PhD")).toBe(100);
+    expect(educationMatch(stats, "Secondary school")).toBeCloseTo(22.8, 1);
+    expect(educationMatch(stats, "None")).toBeCloseTo(9.2, 1);
+  });
+
+  it("data-scientist：修士・博士は 100、学士 30.5、高卒等 9.3、中学校 2.0", () => {
+    const stats = statsByGoal.get("data-scientist")!;
+    expect(educationMatch(stats, "Master")).toBe(100);
+    expect(educationMatch(stats, "PhD")).toBe(100);
+    expect(educationMatch(stats, "Bachelor")).toBeCloseTo(30.5, 1);
+    expect(educationMatch(stats, "Secondary school")).toBeCloseTo(9.3, 1);
+    expect(educationMatch(stats, "None")).toBeCloseTo(2.0, 1);
   });
 });
 
@@ -288,11 +386,12 @@ describe("算出不可（null）", () => {
     expect(result.goal_match).toBeCloseTo((result.skill_match + result.education_match!) / 2, 10);
   });
 
-  it("学歴の行が無い・Contribution がすべて 0 なら Education は null", () => {
-    expect(educationMatch(undefined, "Bachelor")).toBeNull();
-    expect(educationMatch([], "Bachelor")).toBeNull();
-    expect(educationMatch([{ degree_id: "Bachelor", contribution: 0 }], "Bachelor")).toBeNull();
-    expect(educationMatch([{ degree_id: "Bachelor", contribution: 0.3 }], null)).toBe(0);
+  it("最低教育要件・「その学歴以上」の割合が無ければ Education は null", () => {
+    const atOrAbove = statsByGoal.get("frontend-developer")!.education_at_or_above;
+    expect(educationMatch({}, "Bachelor")).toBeNull();
+    expect(educationMatch({ minimum_education: "Bachelor" }, "Bachelor")).toBeNull();
+    expect(educationMatch({ education_at_or_above: atOrAbove }, "Bachelor")).toBeNull();
+    expect(educationMatch({ minimum_education: "Bachelor", education_at_or_above: atOrAbove }, null)).toBe(0);
   });
 });
 

@@ -46,22 +46,14 @@ export interface Role {
 export interface EducationLevel {
   level_id: string;
   name: string;
-  // Career Statistics（JobHop 5 段階）での扱い。Education Match はこの値で計算する
-  degree_id: DegreeId;
-  isced: number;
-  field_selectable: boolean;
+  // Career Statistics（JobHop 5 段階）での扱い。Education Match はこの値で計算する。「わかりません」は null
+  degree_id: DegreeId | null;
+  isced: number | null;
   mapping_note?: string;
-}
-
-export interface EducationField {
-  field_id: string;
-  name: string;
-  levels: string[];
 }
 
 export interface EducationMaster {
   levels: EducationLevel[];
-  fields: EducationField[];
 }
 
 const cache = new Map<string, Promise<unknown>>();
@@ -123,6 +115,8 @@ export async function loadRoles(): Promise<Role[]> {
 export interface RoleGroup {
   group_id: string;
   name: string;
+  /** it：IT・Web 関連 / other：IT 以外 */
+  category: "it" | "other";
   roles: { role_id: string; name: string }[];
 }
 
@@ -131,8 +125,8 @@ export async function loadRoleGroups(): Promise<RoleGroup[]> {
 }
 
 export async function loadEducation(): Promise<EducationMaster> {
-  const { levels, fields } = await readJson<EducationMaster>("education/education.json");
-  return { levels, fields };
+  const { levels } = await readJson<EducationMaster>("education/education.json");
+  return { levels };
 }
 
 export async function loadKnownIds(): Promise<KnownIds> {

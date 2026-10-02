@@ -1,5 +1,5 @@
 import type { EducationMaster } from "@/lib/career-match/data";
-import type { DegreeId, UserExperience } from "@/lib/career-match/types";
+import { EXPERIENCE_STATUSES, type DegreeId, type ExperienceStatus, type UserExperience } from "@/lib/career-match/types";
 
 export const LIMITS = {
   skills: 100,
@@ -14,12 +14,13 @@ export interface AssessmentSubmission {
   // 技術スキル層・人間定義層の skill_id と、人間定義層のツールの tool_id
   skill_ids: string[];
   certification_ids: string[];
+  experience_status: ExperienceStatus;
+  // experience_status が entered のときだけ 1 件以上。none / unknown は空
   experiences: UserExperience[];
-  // ユーザーが選んだ学歴（日本の学校区分）
-  education_level_id: string | null;
-  // education_level_id から導いた統計上の学歴。Education Match はこの値で計算する
+  // ユーザーが選んだ学歴（日本の学校区分。「わかりません」も 1 つの選択肢）
+  education_level_id: string;
+  // education_level_id から導いた統計上の学歴。Education Match はこの値で計算する。「わかりません」は null
   degree_id: DegreeId | null;
-  field_id: string | null;
 }
 
 export interface KnownAssessmentIds {
@@ -27,16 +28,13 @@ export interface KnownAssessmentIds {
   skillIds: ReadonlySet<string>;
   certificationIds: ReadonlySet<string>;
   roleIds: ReadonlySet<string>;
-  // 学歴 ID → 統計上の学歴
-  levelDegrees: ReadonlyMap<string, DegreeId>;
-  // 専攻分野 ID → その分野を選べる学歴 ID
-  fieldLevels: ReadonlyMap<string, ReadonlySet<string>>;
+  // 学歴 ID → 統計上の学歴（「わかりません」は null）
+  levelDegrees: ReadonlyMap<string, DegreeId | null>;
 }
 
-export function educationIds(education: EducationMaster): Pick<KnownAssessmentIds, "levelDegrees" | "fieldLevels"> {
+export function educationIds(education: EducationMaster): Pick<KnownAssessmentIds, "levelDegrees"> {
   return {
     levelDegrees: new Map(education.levels.map((level) => [level.level_id, level.degree_id])),
-    fieldLevels: new Map(education.fields.map((field) => [field.field_id, new Set(field.levels)])),
   };
 }
 
@@ -57,7 +55,8 @@ export function parseAssessmentSubmission(
 ): ParseResult<AssessmentSubmission> {
   if (!isRecord(raw)) return { ok: false, error: "invalid_payload" };
 
-  const { goal_id, skill_ids, experiences, education_level_id, field_id } = raw;
+  // 専攻分野（field_id）は入力をやめた。開いたままの古い画面から送られても無視する
+  const { goal_id, skill_ids, experience_status, experiences, education_level_id } = raw;
   // 資格の入力より前のクライアント（デプロイ直後に開いたままの画面）からは送られないため、未指定は資格なしとする
   const certification_ids = raw.certification_ids ?? [];
 
@@ -73,9 +72,14 @@ export function parseAssessmentSubmission(
     return { ok: false, error: "unknown_certification" };
   }
 
+  if (!EXPERIENCE_STATUSES.includes(experience_status as ExperienceStatus)) {
+    return { ok: false, error: "experience_required" };
+  }
   if (!Array.isArray(experiences) || experiences.length > LIMITS.experiences) {
     return { ok: false, error: "invalid_experiences" };
   }
+  if (experience_status !== "entered" && experiences.length > 0) return { ok: false, error: "invalid_experiences" };
+  if (experience_status === "entered" && experiences.length === 0) return { ok: false, error: "experience_rows_required" };
   const parsedExperiences: UserExperience[] = [];
   for (const experience of experiences) {
     if (!isRecord(experience)) return { ok: false, error: "invalid_experiences" };
@@ -87,25 +91,12 @@ export function parseAssessmentSubmission(
     parsedExperiences.push({ role_id, years });
   }
 
-  let level: string | null = null;
-  let degree: DegreeId | null = null;
-  if (education_level_id !== null && education_level_id !== undefined) {
-    if (!isId(education_level_id)) return { ok: false, error: "unknown_education_level" };
-    const mapped = known.levelDegrees.get(education_level_id);
-    if (mapped === undefined) return { ok: false, error: "unknown_education_level" };
-    level = education_level_id;
-    degree = mapped;
+  if (education_level_id === null || education_level_id === undefined || education_level_id === "") {
+    return { ok: false, error: "education_required" };
   }
-
-  // 専攻分野は選択肢の ID のみ受け付ける（自由入力で個人情報が混入しないようにする）
-  let field: string | null = null;
-  if (field_id !== null && field_id !== undefined) {
-    if (!isId(field_id)) return { ok: false, error: "unknown_field" };
-    const levels = known.fieldLevels.get(field_id);
-    if (!levels) return { ok: false, error: "unknown_field" };
-    if (level === null || !levels.has(level)) return { ok: false, error: "field_not_applicable" };
-    field = field_id;
-  }
+  if (!isId(education_level_id)) return { ok: false, error: "unknown_education_level" };
+  const degree = known.levelDegrees.get(education_level_id);
+  if (degree === undefined) return { ok: false, error: "unknown_education_level" };
 
   return {
     ok: true,
@@ -113,10 +104,10 @@ export function parseAssessmentSubmission(
       goal_id,
       skill_ids: [...new Set(skill_ids as string[])],
       certification_ids: [...new Set(certification_ids as string[])],
+      experience_status: experience_status as ExperienceStatus,
       experiences: parsedExperiences,
-      education_level_id: level,
+      education_level_id,
       degree_id: degree,
-      field_id: field,
     },
   };
 }
