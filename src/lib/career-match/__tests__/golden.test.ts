@@ -126,15 +126,24 @@ describe.each(goals.map((g) => [g.goal_id] as const))("計算の性質: %s", (go
   it.skipIf(!computable)("統計にあるどの Role でも、年数を増やして（1 → 3 → 5 → 8 年…）Experience Match が逆転しない", () => {
     const yearsList = [0.5, 1, 3, 5, 8, 10, 20, 50];
     const roles = new Set(groups.flatMap((group) => group.experience.map((row) => row.role_id)));
+    // 他の Role の Unit は一致しないため、その Role の Unit だけに絞っても結果は同じ（全 Unit を毎回走査すると遅い）。
+    // 絞って空になる Group は「Unit が無い」扱いにならないよう、一致しない寄与 0 の Unit を残す
+    const rowsByRole = groups.map((group) => Map.groupBy(group.experience, (row) => row.role_id));
     const decreases: string[] = [];
     for (const role_id of roles) {
-      const values = yearsList.map((years) => experienceMatch(stats, [{ role_id, years }]).value!);
+      const narrowed = {
+        requirement_groups: groups.map((group, i) => ({
+          ...group,
+          experience: rowsByRole[i].get(role_id) ?? [{ ...group.experience[0], role_id: "__none__", contribution: 0 }],
+        })),
+      };
+      const values = yearsList.map((years) => experienceMatch(narrowed, [{ role_id, years }]).value!);
       for (let i = 1; i < values.length; i++) {
         if (values[i] < values[i - 1]) decreases.push(`${role_id} ${yearsList[i - 1]}→${yearsList[i]}年`);
       }
     }
     expect(decreases).toEqual([]);
-  }, 60_000);
+  });
 
   it.skipIf(!computable)("全 Group の職業を経験していれば coverage = 1 で年数に応じて上がり、経験が無ければ 0", () => {
     const all = (years: number) => groups.map((group) => ({ role_id: group.occupations[0], years }));
