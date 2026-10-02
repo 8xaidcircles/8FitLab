@@ -46,6 +46,17 @@ export const STACK_OVERFLOW_SURVEY = {
   derivedDatabaseUrl: "https://github.com/8xaidcircles/8career/tree/main/data/statistics/skill-match",
 } as const;
 
+// インラインのタグに埋め込むため、形式が正しい ID だけを使う（それ以外は未設定と同じ扱い）
+function matchedEnv(value: string | undefined, pattern: RegExp): string | null {
+  const trimmed = value?.trim();
+  return trimmed && pattern.test(trimmed) ? trimmed : null;
+}
+
+/** Google アナリティクス 4 の測定 ID。null ならタグを読み込まない */
+export const GA_MEASUREMENT_ID = matchedEnv(process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID, /^G-[A-Z0-9]+$/);
+/** Google AdSense のサイト運営者 ID。null なら広告を読み込まない */
+export const ADSENSE_CLIENT_ID = matchedEnv(process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID, /^ca-pub-\d{10,20}$/);
+
 export function absoluteUrl(path: string): string {
   return `${SITE_URL}${path.startsWith("/") ? path : `/${path}`}`;
 }

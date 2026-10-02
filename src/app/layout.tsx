@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { Noto_Sans_JP } from "next/font/google";
 import Link from "next/link";
 import { Logo } from "@/components/logo";
-import { ORGANIZATION_URL, SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
+import { ThirdPartyScripts } from "@/components/third-party-scripts";
+import { ADSENSE_CLIENT_ID, ORGANIZATION_URL, SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
 import "./globals.css";
 
 const notoSansJp = Noto_Sans_JP({
@@ -20,6 +21,8 @@ export const metadata: Metadata = {
   description: SITE_DESCRIPTION,
   openGraph: { siteName: SITE_NAME, locale: "ja_JP", type: "website" },
   twitter: { card: "summary_large_image" },
+  // AdSense のサイト所有権の確認用
+  ...(ADSENSE_CLIENT_ID && { other: { "google-adsense-account": ADSENSE_CLIENT_ID } }),
 };
 
 const NAV = [
@@ -29,7 +32,8 @@ const NAV = [
 
 const FOOTER_LINKS = [
   { href: ORGANIZATION_URL, label: "運営元" },
-  { href: `${ORGANIZATION_URL}/privacy-policy`, label: "プライバシーポリシー" },
+  { href: "/privacy-policy", label: "プライバシーポリシー" },
+  { href: "/cookie-policy", label: "Cookie・外部送信" },
   { href: `${ORGANIZATION_URL}/terms-of-service`, label: "利用規約" },
   { href: "/disclaimer", label: "免責事項" },
   { href: "/contact", label: "問い合わせ" },
@@ -99,6 +103,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
             </div>
           </div>
         </footer>
+        <ThirdPartyScripts />
       </body>
     </html>
   );
