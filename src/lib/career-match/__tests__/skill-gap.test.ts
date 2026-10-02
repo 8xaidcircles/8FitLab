@@ -100,6 +100,16 @@ describe("skillGap（Skill Match に効く Step と前提・基本要件の分�
     expect(all.map((s) => s.step_id)).toEqual(evaluateSteps(path, []).map((s) => s.step_id));
   });
 
+  it("辞書に無い skill_id だけの Step は checklist に入る", () => {
+    const withUnknown: LearningPathMaster = {
+      ...path,
+      steps: [...path.steps, { learning_order: 5, step_id: "unknown", name: "未知", any_of: ["unknown-skill-123"] }],
+    };
+    const gap = skillGap(withUnknown, [], new Set(["html", "react"]));
+    expect(gap.checklist.map((s) => s.step_id)).toContain("unknown");
+    expect(gap.data_driven.map((s) => s.step_id)).not.toContain("unknown");
+  });
+
   it("Skill Match に効く skill_id が無ければ、すべて checklist", () => {
     const gap = skillGap(path, [], new Set());
     expect(gap.data_driven).toEqual([]);

@@ -249,7 +249,9 @@ export function educationMatch(
   const rank = DEGREES.indexOf(degreeId as DegreeId);
   if (rank < 0) return 0;
   if (rank >= DEGREES.indexOf(minimum)) return 100;
-  return (1 - atOrAbove[DEGREES[rank + 1]]) * 100;
+  const nextDegree = DEGREES[rank + 1];
+  if (!nextDegree) return 0;
+  return (1 - atOrAbove[nextDegree]) * 100;
 }
 
 export function goalMatch(categories: readonly (number | null)[]): number {
