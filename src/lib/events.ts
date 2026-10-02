@@ -13,6 +13,8 @@ export const EVENT_NAMES = [
   "skill_gap_viewed",
   "learning_path_viewed",
   "recommendation_clicked",
+  "blog_cta_clicked",
+  "service_clicked",
 ] as const;
 export type EventName = (typeof EVENT_NAMES)[number];
 

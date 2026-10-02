@@ -3,7 +3,8 @@ import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { cookies, draftMode } from "next/headers";
 import type { RawRecommendationArticle } from "@/lib/career-match/recommendations";
-import type { BlogPost, BlogPostSummary, ListResponse } from "./types";
+import type { RawService } from "./services";
+import type { BlogAuthor, BlogPost, BlogPostSummary, ListResponse } from "./types";
 import { isValidSlug } from "./utils";
 
 export const BLOG_CACHE_TAG = "microcms";
@@ -50,6 +51,33 @@ export async function listPosts(limit = 100): Promise<BlogPostSummary[]> {
     orders: "-publishedAt",
   });
   return data?.contents ?? [];
+}
+
+/**
+ * 比較ページに掲載するスクール・転職サービス（services API。未検証の生データ。normalizeServices で整える）。
+ * API を作る前（404）や取得に失敗したときは空配列（比較欄に「準備中」を出す）
+ */
+export async function listServices(): Promise<RawService[]> {
+  try {
+    const data = await request<ListResponse<RawService>>("services", { limit: "100" });
+    return data?.contents ?? [];
+  } catch (error) {
+    console.error("掲載サービスの取得に失敗しました", error);
+    return [];
+  }
+}
+
+/**
+ * 編集者（authors API）。API を作る前（404）や取得に失敗したときは空配列（プロフィール欄を出さないだけにする）
+ */
+export async function listAuthors(): Promise<BlogAuthor[]> {
+  try {
+    const data = await request<ListResponse<BlogAuthor>>("authors", { limit: "10", orders: "createdAt" });
+    return data?.contents ?? [];
+  } catch (error) {
+    console.error("編集者の取得に失敗しました", error);
+    return [];
+  }
 }
 
 /**

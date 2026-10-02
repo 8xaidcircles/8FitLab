@@ -8,10 +8,12 @@ import {
 } from "../events";
 
 describe("events", () => {
-  it("MVP Event（§45）の 10 種類のみ受け付ける", () => {
-    expect(EVENT_NAMES).toHaveLength(10);
+  it("MVP Event（§45）の 12 種類のみ受け付ける", () => {
+    expect(EVENT_NAMES).toHaveLength(12);
+    expect(isEventName("service_clicked")).toBe(true);
     expect(isEventName("goal_selected")).toBe(true);
     expect(isEventName("recommendation_clicked")).toBe(true);
+    expect(isEventName("blog_cta_clicked")).toBe(true);
     expect(isEventName("purchase")).toBe(false);
     expect(isEventName(undefined)).toBe(false);
   });
