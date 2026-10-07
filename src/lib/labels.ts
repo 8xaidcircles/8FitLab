@@ -7,6 +7,7 @@ import type {
   ExperienceStatus,
   HumanSkillDomain,
   SkillLayerWeightSource,
+  SkillScoringMethod,
   SkillStatus,
   SKIPPED_EDUCATION_LEVEL_ID,
 } from "@/lib/career-match/types";
@@ -61,6 +62,12 @@ export const SKILL_LAYER_WEIGHT_SOURCE_LABELS: Record<SkillLayerWeightSource, st
   default: "標準の配分",
   goal: "このGoal用の配分",
   fallback: "片方の層が無いため、もう片方で100%",
+};
+
+/** Skill Match のスコアリング方式（career_match_results.skill_scoring_method） */
+export const SKILL_SCORING_METHOD_LABELS: Record<SkillScoringMethod, string> = {
+  linear: "達成率をそのまま点数に換算",
+  ecdf: "同じGoalを目指す利用者内での位置",
 };
 
 export const EVIDENCE_LABELS: Record<EvidenceMode, string> = {

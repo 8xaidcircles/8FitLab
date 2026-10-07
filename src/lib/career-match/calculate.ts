@@ -1,6 +1,6 @@
 import { heldSkillIds, layeredSkillProgress } from "./skill-layers";
 import { migrateLegacySkillIds, type SkillMigrationMapping } from "./skill-migration";
-import { scoreSkill, selectSkillScoringModel } from "./skill-score";
+import { LINEAR_SKILL_SCORING, scoreSkill, selectSkillScoringModel } from "./skill-score";
 import {
   DEGREES,
   type CareerMatchResult,
@@ -25,6 +25,11 @@ export const SMALL_SAMPLE_THRESHOLD = 100;
 export const MAX_YEARS = 50;
 /** Skill の計算方式（技術スキル層 × 人間定義層）。保存済みの結果で NULL のものは旧方式（Learning Step の達成率） */
 export const SKILL_CALCULATION_VERSION = "layered-1.0.0";
+/**
+ * Skill Match に ECDF（同じ Goal の利用者内での位置）を使うか。false の間は分布が渡されても linear で計算する。
+ * ECDF は中央順位のため、全スキルを習得しても 100 点にならず、Skill の内訳（達成率）とも一致しなくなる（§11）
+ */
+export const ECDF_SKILL_MATCH_ENABLED = false;
 
 export interface KnownIds {
   /** 技術スキル層・人間定義層の skill_id と、人間定義層のツールの tool_id */
@@ -306,7 +311,17 @@ export function calculateCareerMatch(
     goalLayers: skill.goalLayers,
     defaultWeights: skill.defaultWeights,
   });
-  const skillModel = selectSkillScoringModel(skillDistribution);
+  // 配分 0 の Goal でも技術層は計算するが、結果が依存しない統計の由来は残さない
+  const statisticsVersion =
+    skill.techStats && layered.tech_progress !== null && layered.weights.tech > 0
+      ? skillStatisticsVersion(skill.techStats)
+      : null;
+  const skillModel = ECDF_SKILL_MATCH_ENABLED
+    ? selectSkillScoringModel(skillDistribution, {
+        skill_calculation_version: SKILL_CALCULATION_VERSION,
+        skill_statistics_version: statisticsVersion,
+      })
+    : LINEAR_SKILL_SCORING;
   const skillScore = scoreSkill(layered.progress, skillModel);
 
   let experience: number | null = null;
@@ -324,12 +339,11 @@ export function calculateCareerMatch(
     skill_match: skillScore,
     skill_progress: layered.progress,
     skill_scoring_method: skillModel.method,
+    skill_distribution_sample_size: skillModel.method === "ecdf" ? skillModel.sample_size : null,
+    skill_distribution_version:
+      skillModel.method === "ecdf" ? `${SKILL_CALCULATION_VERSION}|${statisticsVersion ?? "none"}` : null,
     skill_calculation_version: SKILL_CALCULATION_VERSION,
-    // 配分 0 の Goal でも技術層は計算するが、結果が依存しない統計の由来は残さない
-    skill_statistics_version:
-      skill.techStats && layered.tech_progress !== null && layered.weights.tech > 0
-        ? skillStatisticsVersion(skill.techStats)
-        : null,
+    skill_statistics_version: statisticsVersion,
     tech_skill_progress: layered.tech_progress,
     human_skill_progress: layered.human_progress,
     skill_layer_weights: layered.weights,

@@ -1,6 +1,7 @@
 import type {
   SkillProgressDistribution,
   SkillScoringModel,
+  SkillScoringVersions,
   SkillStatistics,
   SkillStatisticsUnit,
 } from "./types";
@@ -73,9 +74,19 @@ export function ecdfPercentile(sortedScores: readonly number[], x: number): numb
 }
 
 // 蓄積データが十分なら全ユーザーの達成率の経験分布（ECDF）で変換、無ければ（コールドスタート）線形。
-// 全員が同じ達成率なら順位の情報が無い（全員 50 になる）ため線形のまま
-export function selectSkillScoringModel(distribution: SkillProgressDistribution | null | undefined): SkillScoringModel {
+// 全員が同じ達成率なら順位の情報が無い（全員 50 になる）ため線形のまま。
+// 分布が現在の計算と別のバージョンの結果から集計されていれば、達成率の意味が違うため線形にする
+export function selectSkillScoringModel(
+  distribution: SkillProgressDistribution | null | undefined,
+  current: SkillScoringVersions,
+): SkillScoringModel {
   if (!distribution || distribution.scores.length < SKILL_DISTRIBUTION_MIN_SAMPLE) return LINEAR_SKILL_SCORING;
+  if (
+    distribution.skill_calculation_version !== current.skill_calculation_version ||
+    distribution.skill_statistics_version !== current.skill_statistics_version
+  ) {
+    return LINEAR_SKILL_SCORING;
+  }
   if (!distribution.scores.every((s) => Number.isFinite(s) && s >= 0 && s <= 100)) return LINEAR_SKILL_SCORING;
   const sorted = [...distribution.scores].sort((a, b) => a - b);
   if (sorted[0] === sorted[sorted.length - 1]) return LINEAR_SKILL_SCORING;

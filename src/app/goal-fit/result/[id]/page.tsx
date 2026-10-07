@@ -134,7 +134,7 @@ export default async function ResultPage({ params }: PageProps<"/goal-fit/result
   const percent = (w: number) => `${Math.round(w * 100)}%`;
 
   const stored = match.skill;
-  const skillSource = stored
+  const layerBreakdown = stored
     ? [
         stored.skill_layer_weights.tech > 0 &&
           `技術 ${formatPercent(stored.tech_skill_progress ?? 0)}（配分 ${percent(stored.skill_layer_weights.tech)}）`,
@@ -143,16 +143,32 @@ export default async function ResultPage({ params }: PageProps<"/goal-fit/result
       ]
         .filter(Boolean)
         .join(" ＋ ")
-    : "旧方式（8FitLabの学習ステップの達成率）で計算した結果です";
-  const skillDescription = `目標ポジションで求められる技術やスキルの保有状況です。不足しているスキルを習得することでスコアが上がります。${
-    certificationNames.length > 0 ? " 保有資格によるスキル証明を含んでいます。" : ""
-  }`;
-  const skillNotes =
-    assessment.legacy_skill_ids.length > 0
+    : "";
+  // 現在は linear 固定。ecdf で保存された結果を読んだ場合は、点数が達成率ではなく利用者内での位置であることを示す
+  const rankedSkill = stored?.skill_scoring_method === "ecdf";
+  const skillSource = !stored
+    ? "旧方式（8FitLabの学習ステップの達成率）で計算した結果です"
+    : rankedSkill
+      ? `同じGoalを目指す ${stored.skill_distribution_sample_size} 人の中での位置。達成率 ${formatPercent(stored.skill_progress)}%（${layerBreakdown}）`
+      : layerBreakdown;
+  const skillDescription = `目標ポジションで求められる技術やスキルの保有状況です。${
+    rankedSkill
+      ? "達成率が上がると位置も上がります。満点にならない場合があります。"
+      : "不足しているスキルを習得することでスコアが上がります。"
+  }${certificationNames.length > 0 ? " 保有資格によるスキル証明を含んでいます。" : ""}`;
+  const usesHumanLayer = (stored?.skill_layer_weights.human ?? 0) > 0;
+  const skillNotes = [
+    ...(usesHumanLayer
+      ? [
+          "この職種は公開統計（Stack Overflow 開発者調査）から必要な技術を特定できないため、Skill は 8FitLab が定義した要件（手法・知識）の達成度で評価しています。",
+        ]
+      : []),
+    ...(assessment.legacy_skill_ids.length > 0
       ? [
           "以前の入力のうち、具体的な技術が分からない項目（例：「クラウド」）は計算に含めていません。もう一度計算するときに具体的な技術を選んでください。",
         ]
-      : [];
+      : []),
+  ];
   const level = education.levels.find((l) => l.level_id === assessment.education_level_id);
   const experienceSource =
     assessment.experiences.length > 0
@@ -258,7 +274,7 @@ export default async function ResultPage({ params }: PageProps<"/goal-fit/result
           {showHuman && (
             <div className="rounded-2xl border border-line bg-white p-5">
               <h3 className="font-bold">手法・知識（配分 {percent(currentWeights.human)}）</h3>
-              <p className="mt-1 text-xs text-muted">各項目を同じ重さで数えています。</p>
+              <p className="mt-1 text-xs text-muted">8FitLab が定義した要件です。各項目を同じ重さで数えています。</p>
               <ul className="mt-3 space-y-2 text-sm">
                 {humanRequirements.map((r) => (
                   <li key={r.requirement_id} className="flex items-start gap-2">

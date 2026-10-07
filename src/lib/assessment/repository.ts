@@ -124,6 +124,9 @@ export async function saveAssessment({
       skill_weight_tech: result.skill_layer_weights.tech,
       skill_weight_human: result.skill_layer_weights.human,
       skill_weight_source: result.skill_layer_weights.source,
+      skill_scoring_method: result.skill_scoring_method,
+      skill_distribution_sample_size: result.skill_distribution_sample_size,
+      skill_distribution_version: result.skill_distribution_version,
     }),
   ];
   if (submission.skill_ids.length > 0) {
@@ -199,7 +202,7 @@ export async function getAssessment(assessmentId: string, anonymousUserId: strin
     supabase
       .from("career_match_results")
       .select(
-        "goal_match, skill_match, experience_match, education_match, evidence_mode, confidence, goal_sample_size, calculation_version, data_source_version, taxonomy_version, skill_calculation_version, skill_statistics_version, skill_progress, tech_skill_progress, human_skill_progress, skill_weight_tech, skill_weight_human, skill_weight_source",
+        "goal_match, skill_match, experience_match, education_match, evidence_mode, confidence, goal_sample_size, calculation_version, data_source_version, taxonomy_version, skill_calculation_version, skill_statistics_version, skill_progress, tech_skill_progress, human_skill_progress, skill_weight_tech, skill_weight_human, skill_weight_source, skill_scoring_method, skill_distribution_sample_size, skill_distribution_version",
       )
       .eq("assessment_id", assessmentId)
       .single(),
@@ -258,6 +261,10 @@ export async function getAssessment(assessmentId: string, anonymousUserId: strin
                 human: Number(m.skill_weight_human),
                 source: m.skill_weight_source,
               },
+              // 列を追加する前の行は DEFAULT の linear（分布の 2 列は NULL）になっている
+              skill_scoring_method: m.skill_scoring_method,
+              skill_distribution_sample_size: m.skill_distribution_sample_size,
+              skill_distribution_version: m.skill_distribution_version,
             },
     },
     learning_path: path.data!,

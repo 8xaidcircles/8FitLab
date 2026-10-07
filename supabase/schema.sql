@@ -82,6 +82,10 @@ CREATE TABLE IF NOT EXISTS public.career_match_results (
     skill_weight_tech NUMERIC,
     skill_weight_human NUMERIC,
     skill_weight_source TEXT,
+    -- Skill Match のスコアリング方式（linear / ecdf）と、ecdf に使った分布の標本数・バージョン（linear は NULL）
+    skill_scoring_method TEXT NOT NULL DEFAULT 'linear',
+    skill_distribution_sample_size INTEGER,
+    skill_distribution_version TEXT,
     created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
     CONSTRAINT career_match_results_skill_weights_check CHECK (
         (skill_weight_tech IS NULL AND skill_weight_human IS NULL AND skill_weight_source IS NULL)
@@ -95,6 +99,20 @@ CREATE TABLE IF NOT EXISTS public.career_match_results (
     -- 旧方式（skill_calculation_version が NULL）の行は配分も NULL、2 層方式の行は配分を必ず持つ
     CONSTRAINT career_match_results_skill_version_weights_check CHECK (
         (skill_calculation_version IS NULL) = (skill_weight_source IS NULL)
+    ),
+    CONSTRAINT career_match_results_skill_scoring_method_check CHECK (
+        skill_scoring_method IN ('linear', 'ecdf')
+    ),
+    -- linear なら分布の 2 列は NULL、ecdf なら標本数 100 以上・バージョンあり
+    CONSTRAINT career_match_results_skill_scoring_consistent CHECK (
+        (
+            skill_scoring_method = 'linear'
+            AND skill_distribution_sample_size IS NULL AND skill_distribution_version IS NULL
+        )
+        OR (
+            skill_scoring_method = 'ecdf'
+            AND skill_distribution_sample_size >= 100 AND skill_distribution_version IS NOT NULL
+        )
     )
 );
 

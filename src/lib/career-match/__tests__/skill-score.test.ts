@@ -9,7 +9,7 @@ import {
   skillUnitGaps,
   weightedSkillProgress,
 } from "../skill-score";
-import type { SkillProgressDistribution, SkillStatistics } from "../types";
+import type { SkillProgressDistribution, SkillScoringVersions, SkillStatistics } from "../types";
 import { unit } from "./skill-fixtures";
 
 const skillStats: Pick<SkillStatistics, "goal_id" | "units"> = {
@@ -28,8 +28,14 @@ function spread(n: number): number[] {
   return Array.from({ length: n }, (_, i) => (i * 99) / Math.max(1, n - 1));
 }
 
+// 現在の計算のバージョン。分布はこれと同じバージョンの結果から集計したものだけ使う
+const current: SkillScoringVersions = {
+  skill_calculation_version: "layered-1.0.0",
+  skill_statistics_version: "stack_overflow_developer_survey:2023-2024-2025:0.3.1:k=80.9",
+};
+
 function distribution(overrides: Partial<SkillProgressDistribution> = {}): SkillProgressDistribution {
-  return { goal_id: "test-goal", scores: spread(SKILL_DISTRIBUTION_MIN_SAMPLE), ...overrides };
+  return { goal_id: "test-goal", scores: spread(SKILL_DISTRIBUTION_MIN_SAMPLE), ...current, ...overrides };
 }
 
 describe("weightedSkillProgress（技術スキル層）", () => {
@@ -102,33 +108,50 @@ describe("ecdfPercentile（同率は中央順位）", () => {
 
 describe("selectSkillScoringModel", () => {
   it("蓄積データが無い（コールドスタート）なら linear", () => {
-    expect(selectSkillScoringModel(null)).toEqual(LINEAR_SKILL_SCORING);
-    expect(selectSkillScoringModel(undefined)).toEqual(LINEAR_SKILL_SCORING);
+    expect(selectSkillScoringModel(null, current)).toEqual(LINEAR_SKILL_SCORING);
+    expect(selectSkillScoringModel(undefined, current)).toEqual(LINEAR_SKILL_SCORING);
   });
 
   it("ユーザー数が基準未満なら linear", () => {
-    expect(selectSkillScoringModel(distribution({ scores: spread(SKILL_DISTRIBUTION_MIN_SAMPLE - 1) }))).toEqual(
+    expect(selectSkillScoringModel(distribution({ scores: spread(SKILL_DISTRIBUTION_MIN_SAMPLE - 1) }), current)).toEqual(
       LINEAR_SKILL_SCORING,
     );
   });
 
   it("全員が同点なら linear（順位の情報が無い）", () => {
-    expect(selectSkillScoringModel(distribution({ scores: Array(SKILL_DISTRIBUTION_MIN_SAMPLE).fill(40) }))).toEqual(
+    expect(selectSkillScoringModel(distribution({ scores: Array(SKILL_DISTRIBUTION_MIN_SAMPLE).fill(40) }), current)).toEqual(
       LINEAR_SKILL_SCORING,
     );
   });
 
   it("0〜100 の範囲外・不正値を含むなら linear", () => {
     for (const bad of [NaN, -1, 101, Infinity]) {
-      expect(selectSkillScoringModel(distribution({ scores: [...spread(SKILL_DISTRIBUTION_MIN_SAMPLE), bad] }))).toEqual(
+      expect(
+        selectSkillScoringModel(distribution({ scores: [...spread(SKILL_DISTRIBUTION_MIN_SAMPLE), bad] }), current),
+      ).toEqual(LINEAR_SKILL_SCORING);
+    }
+  });
+
+  it("分布のバージョンが現在の計算と一致しなければ linear", () => {
+    for (const mismatch of [
+      { skill_calculation_version: "layered-0.9.0" },
+      { skill_statistics_version: "stack_overflow_developer_survey:2023-2024-2025:0.2.0:k=50" },
+      { skill_statistics_version: null },
+    ]) {
+      expect(selectSkillScoringModel(distribution(mismatch), current), JSON.stringify(mismatch)).toEqual(
         LINEAR_SKILL_SCORING,
       );
     }
   });
 
-  it("ユーザー数が基準以上なら ecdf に切り替わり、達成率を昇順に並べて持つ", () => {
+  it("技術スキル層を計算しない Goal（統計のバージョンが null）同士は一致として扱う", () => {
+    const humanOnly = { ...current, skill_statistics_version: null };
+    expect(selectSkillScoringModel(distribution(humanOnly), humanOnly).method).toBe("ecdf");
+  });
+
+  it("バージョンが一致し、ユーザー数が基準以上なら ecdf に切り替わり、達成率を昇順に並べて持つ", () => {
     const scores = spread(SKILL_DISTRIBUTION_MIN_SAMPLE).reverse();
-    const model = selectSkillScoringModel(distribution({ scores }));
+    const model = selectSkillScoringModel(distribution({ scores }), current);
     expect(model.method).toBe("ecdf");
     if (model.method !== "ecdf") return;
     expect(model.sample_size).toBe(SKILL_DISTRIBUTION_MIN_SAMPLE);
@@ -143,7 +166,7 @@ describe("scoreSkill", () => {
   });
 
   describe("ecdf：全ユーザーの達成率の経験分布上のパーセンタイル", () => {
-    const model = selectSkillScoringModel(distribution());
+    const model = selectSkillScoringModel(distribution(), current);
 
     it("中央の達成率は 50 付近", () => {
       expect(scoreSkill(49.5, model)).toBeCloseTo(50, 10);

@@ -14,12 +14,19 @@ import {
   skillStatisticsVersion,
   userExperienceKeys,
   usesEducationRequirement,
+  ECDF_SKILL_MATCH_ENABLED,
   SKILL_CALCULATION_VERSION,
   type KnownIds,
   type SkillContext,
 } from "../calculate";
 import { learningPath } from "../skill-gap";
-import type { CareerStatistics, LearningPathMaster, RequirementGroupStatistics, UserInput } from "../types";
+import type {
+  CareerStatistics,
+  LearningPathMaster,
+  RequirementGroupStatistics,
+  SkillProgressDistribution,
+  UserInput,
+} from "../types";
 import { skillStatistics, unit } from "./skill-fixtures";
 
 function row(pGoal: number, pOther: number) {
@@ -260,20 +267,36 @@ describe("calculateCareerMatch の Skill Scoring", () => {
     expect(result.skill_progress).toBeCloseTo(50, 10);
     expect(result.skill_match).toBeCloseTo(50, 10);
     expect(result.skill_scoring_method).toBe("linear");
+    expect(result.skill_distribution_sample_size).toBeNull();
+    expect(result.skill_distribution_version).toBeNull();
   });
 
-  it("蓄積データの分布があれば ECDF で変換し、Goal Match にも反映する", () => {
-    // 400 人が 0 点、100 人が 50 点、100 人が 100 点 → 50 点は (400 + 0.5 × 100) / 600
-    const scores = [...Array(400).fill(0), ...Array(100).fill(50), ...Array(100).fill(100)];
-    const result = calculateCareerMatch(input({ skill_ids: skillIds }), stats(), skill, known, { goal_id: "test-goal", scores });
-    expect(result.skill_progress).toBeCloseTo(50, 10);
-    expect(result.skill_scoring_method).toBe("ecdf");
-    expect(result.skill_match).toBeCloseTo(75, 10);
-    expect(result.goal_match).toBeCloseTo((result.skill_match + 0 + 0) / 3);
+  it("ECDF は無効（ECDF_SKILL_MATCH_ENABLED = false）で、100 人以上・偏った分布を渡しても linear で計算する", () => {
+    expect(ECDF_SKILL_MATCH_ENABLED).toBe(false);
+    // 半数が 100 点の分布。ECDF なら全部持っている人でも 75 点になる
+    const scores = [...Array(100).fill(0), ...Array(100).fill(100)];
+    const distribution: SkillProgressDistribution = {
+      goal_id: "test-goal",
+      scores,
+      skill_calculation_version: SKILL_CALCULATION_VERSION,
+      skill_statistics_version: skillStatisticsVersion(skill.techStats!),
+    };
+    for (const skill_ids of [skillIds, ["html", "python", "sql", "docker"]]) {
+      const result = calculateCareerMatch(input({ skill_ids }), stats(), skill, known, distribution);
+      expect(result.skill_match).toBe(result.skill_progress);
+      expect(result.skill_scoring_method).toBe("linear");
+      expect(result.skill_distribution_sample_size).toBeNull();
+      expect(result.skill_distribution_version).toBeNull();
+    }
   });
 
   it("別 Goal の分布はエラー", () => {
-    const distribution = { goal_id: "other", scores: [0, 100] };
+    const distribution: SkillProgressDistribution = {
+      goal_id: "other",
+      scores: [0, 100],
+      skill_calculation_version: SKILL_CALCULATION_VERSION,
+      skill_statistics_version: null,
+    };
     expect(() => calculateCareerMatch(input(), stats(), skill, known, distribution)).toThrow();
   });
 });

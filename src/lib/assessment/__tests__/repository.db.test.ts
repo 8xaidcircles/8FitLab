@@ -72,6 +72,9 @@ describe.skipIf(!hasDb)("Supabase repository（実 DB）", () => {
       tech_skill_progress: expect.closeTo(result.tech_skill_progress!, 6),
       human_skill_progress: expect.closeTo(result.human_skill_progress!, 6),
       skill_layer_weights: result.skill_layer_weights,
+      skill_scoring_method: "linear",
+      skill_distribution_sample_size: null,
+      skill_distribution_version: null,
     });
     expect(stored!.experience_status).toBe("entered");
     expect(stored!.experiences).toEqual([{ role_id: "2513.5", years: 1.5 }]);
@@ -220,7 +223,55 @@ describe.skipIf(!hasDb)("Supabase repository（実 DB）", () => {
       tech_skill_progress: 10,
       human_skill_progress: 22.5,
       skill_layer_weights: { tech: 0.8, human: 0.2, source: "default" },
+      skill_scoring_method: "linear",
+      skill_distribution_sample_size: null,
+      skill_distribution_version: null,
     });
+  });
+
+  it("スコアリング方式と分布の標本数・バージョンを保存し、そのまま読み出せる（ecdf で保存された結果を想定）", async () => {
+    const version = `${SKILL_CALCULATION_VERSION}|stack_overflow_developer_survey:2023-2024-2025:0.3.1:k=80.9`;
+    const { id } = await save(
+      {
+        goal_id: "frontend-developer",
+        skill_ids: ["html-css"],
+        skill_status: null,
+        certification_ids: [],
+        certification_status: "none",
+        experience_status: "none",
+        experiences: [],
+        education_level_id: "skipped",
+        degree_id: null,
+      },
+      {
+        skill_match: 37.5,
+        skill_scoring_method: "ecdf",
+        skill_distribution_sample_size: 120,
+        skill_distribution_version: version,
+      },
+    );
+
+    const stored = await getAssessment(id, anonymousUserId);
+    expect(stored!.career_match.skill_match).toBe(37.5);
+    expect(stored!.career_match.skill).toMatchObject({
+      skill_scoring_method: "ecdf",
+      skill_distribution_sample_size: 120,
+      skill_distribution_version: version,
+    });
+  });
+
+  it("スコアリング方式の制約：未定義の方式・linear で分布あり・ecdf で標本数 100 未満やバージョン無しは保存できない", async () => {
+    const id = createdIds[0];
+    const supabase = createClient();
+    for (const invalid of [
+      { skill_scoring_method: "normal_cdf" },
+      { skill_scoring_method: "linear", skill_distribution_sample_size: 120, skill_distribution_version: "v" },
+      { skill_scoring_method: "ecdf", skill_distribution_sample_size: 99, skill_distribution_version: "v" },
+      { skill_scoring_method: "ecdf", skill_distribution_sample_size: 120, skill_distribution_version: null },
+    ]) {
+      const { error } = await supabase.from("career_match_results").update(invalid).eq("assessment_id", id);
+      expect(error?.message, JSON.stringify(invalid)).toMatch(/check constraint/);
+    }
   });
 
   it("旧方式の結果（skill_calculation_version が NULL）は skill を null とし、保存時の Skill Match を返す", async () => {

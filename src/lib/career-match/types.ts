@@ -225,6 +225,16 @@ export interface SkillLayersMaster {
 export interface SkillProgressDistribution {
   goal_id: string;
   scores: readonly number[];
+  /** 集計した結果の Skill の計算方式。現在の SKILL_CALCULATION_VERSION と違えば使わない */
+  skill_calculation_version: string;
+  /** 集計した結果の Skill Statistics の由来。技術スキル層を計算しない Goal は null。現在の値と違えば使わない */
+  skill_statistics_version: string | null;
+}
+
+/** 分布が現在の計算と同じバージョンかを判定するための値 */
+export interface SkillScoringVersions {
+  skill_calculation_version: string;
+  skill_statistics_version: string | null;
 }
 
 /**
@@ -292,6 +302,9 @@ export interface StoredSkillBreakdown {
   tech_skill_progress: number | null;
   human_skill_progress: number | null;
   skill_layer_weights: ResolvedSkillLayerWeights;
+  skill_scoring_method: SkillScoringMethod;
+  skill_distribution_sample_size: number | null;
+  skill_distribution_version: string | null;
 }
 
 export interface CareerMatchResult {
@@ -301,6 +314,10 @@ export interface CareerMatchResult {
   /** 2 層を配分で合算した達成率（0〜100）。skill_match はこれを skill_scoring_method で変換した値 */
   skill_progress: number;
   skill_scoring_method: SkillScoringMethod;
+  /** ecdf に使った分布の標本数（ユーザー数）。linear は null */
+  skill_distribution_sample_size: number | null;
+  /** ecdf に使った分布のバージョン（skill_calculation_version|skill_statistics_version）。linear は null */
+  skill_distribution_version: string | null;
   skill_calculation_version: string;
   /** 技術スキル層に使った Skill Statistics の由来（出典:年:計算バージョン:k）。技術スキル層を計算できない Goal は null */
   skill_statistics_version: string | null;
