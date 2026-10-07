@@ -119,7 +119,8 @@ export function layeredSkillProgress(params: {
     human: humanProgress !== null,
   });
   return {
-    progress: (techProgress ?? 0) * weights.tech + (humanProgress ?? 0) * weights.human,
+    // 配分の正規化による浮動小数点の誤差で 100 を超えないようにする
+    progress: Math.min(100, (techProgress ?? 0) * weights.tech + (humanProgress ?? 0) * weights.human),
     tech_progress: techProgress,
     human_progress: humanProgress,
     weights,
