@@ -24,6 +24,9 @@ export const LANGUAGE_SKILL_IDS: ReadonlySet<string> = new Set([
   "bash-shell",
 ]);
 
+/** 学習ロードマップの各 Step に教材を表示するか。言語スキルごとの教材が揃うまでは false（スクール・転職サービスのみ表示） */
+export const SHOW_STEP_MATERIALS = false;
+
 /** この年数以上、Goal の職業に就いていれば experienced とする */
 export const EXPERIENCED_MIN_YEARS = 0.5;
 

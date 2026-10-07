@@ -15,7 +15,7 @@ import {
   normalizeRecommendationArticles,
   resolveUserSkills,
 } from "@/lib/career-match";
-import { STAGE_LABELS } from "@/lib/learning-path/constants";
+import { SHOW_STEP_MATERIALS, STAGE_LABELS } from "@/lib/learning-path/constants";
 import { determineUserStage, isLanguageStep } from "@/lib/learning-path/determine-stage";
 import { stepMaterialCards } from "@/lib/learning-path/materials";
 import { LearningPathSection, StageServicesSection } from "./learning-path-section";
@@ -40,7 +40,7 @@ export default async function LearningPathPage({ params }: PageProps<"/goal-fit/
     loadSkillNames(),
     loadKnownIds(),
     loadSkillContext(assessment.goal_id),
-    listRecommendationArticles(),
+    SHOW_STEP_MATERIALS ? listRecommendationArticles() : Promise.resolve([]),
   ]);
   const goal = goals.find((g) => g.goal_id === assessment.goal_id)!;
   const skillName = (skillId: string) => skillNames.get(skillId) ?? skillId;

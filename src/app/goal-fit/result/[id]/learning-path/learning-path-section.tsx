@@ -1,4 +1,4 @@
-import { SERVICE_GROUP_ORDER } from "@/lib/learning-path/constants";
+import { SERVICE_GROUP_ORDER, SHOW_STEP_MATERIALS } from "@/lib/learning-path/constants";
 import type { UserStage } from "@/lib/learning-path/types";
 import { ServiceCardGroup } from "./service-card-group";
 import { SkillCard, type RoadmapStep } from "./skill-card";
@@ -23,7 +23,8 @@ export function LearningPathSection({
             ? `数字は学ぶ順番です。未習得のステップは ${missingCount} つです。`
             : "すべての学習ステップを習得済みです。"}
       </p>
-      {languageSteps.length + otherSteps.length > 0 &&
+      {SHOW_STEP_MATERIALS &&
+        languageSteps.length + otherSteps.length > 0 &&
         [...languageSteps, ...otherSteps].every((s) => s.materials.length === 0) && (
           <p className="mt-4 rounded-xl border border-dashed border-line bg-white px-4 py-3 text-center text-sm text-muted">
             このGoalのおすすめ教材は準備中です。
