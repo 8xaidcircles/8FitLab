@@ -58,7 +58,7 @@ export interface RequirementGroupStatistics extends RequirementGroup {
   goal_sample_size: number;
   /** Group Population のうち、Group の職業に就く前の職歴がある人数 */
   pre_goal_experience_persons: number;
-  /** Group 達成率 = 100 とする Σ Contribution（前職歴の Σ Contribution のパーセンタイル） */
+  /** 前職歴の Σ Contribution のパーセンタイル。点数には使わず、0 以下なら前職歴の統計が成り立たない（算出不可）とする */
   experience_reference: number;
   /** Unit = Role × 「years 年以上」（Group の職業に就く前の職歴のみ） */
   experience: ExperienceStatisticsRow[];

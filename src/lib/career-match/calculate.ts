@@ -9,6 +9,7 @@ import {
   type Confidence,
   type DegreeId,
   type EvidenceMode,
+  type ExperienceStatisticsRow,
   type GoalSkillLayers,
   type HumanSkill,
   type OccupationTenure,
@@ -114,15 +115,6 @@ export function userYearsByRole(experiences: readonly UserExperience[]): Map<str
   return new Map([...yearsByRole].map(([roleId, years]) => [roleId, roundYears(years)]));
 }
 
-// Unit は「Role × years 年以上」なので、Y 年の経験は 0.5〜Y 年のすべての Unit に該当する
-export function userExperienceKeys(experiences: readonly UserExperience[]): Set<string> {
-  const keys = new Set<string>();
-  for (const [roleId, years] of userYearsByRole(experiences)) {
-    for (let half = 1; half <= years * 2; half++) keys.add(experienceUnitKey(roleId, half / 2));
-  }
-  return keys;
-}
-
 export function satisfiedGroupIds(
   groups: readonly RequirementGroup[],
   experiences: readonly UserExperience[],
@@ -169,7 +161,8 @@ export type ExperienceUnavailableReason =
   | "INSUFFICIENT_REFERENCE_DATA";
 
 // 前職歴による評価の可否。統計生成は、前職歴のある人が 2 人未満・パーセンタイルが 0 以下・非有限なら
-// experience_reference = 0 を出す（§56 Statistics Build）。JSON の欠落（undefined / null）も同じく算出不可として扱い、割り算に進ませない
+// experience_reference = 0 を出す（§56 Statistics Build）。JSON の欠落（undefined / null）も同じく算出不可として扱う。
+// 前職歴の点数には experience_reference を使わないが、前職歴の統計が成り立つかの判定に使う
 export function groupUnavailableReason(
   group: Pick<RequirementGroupStatistics, "experience" | "experience_reference">,
 ): ExperienceUnavailableReason | null {
@@ -179,30 +172,60 @@ export function groupUnavailableReason(
   return null;
 }
 
-function preGoalAchievement(group: RequirementGroupStatistics, experiences: readonly UserExperience[]): number | null {
-  if (groupUnavailableReason(group) !== null) return null;
-  const keys = userExperienceKeys(experiences);
-  const matched = group.experience.reduce(
-    (sum, row) => (keys.has(experienceUnitKey(row.role_id, row.years)) ? sum + row.contribution : sum),
-    0,
-  );
-  return (matched / group.experience_reference) * 100;
+/**
+ * 前職歴の関連度を 50（関連なし）へ縮める強さ（人）。Goal の前にその Role を経験した人がこの人数のとき、
+ * Quality の 50 からの差を半分にする。経験者が数人の Role は、Quality が偶然高く（低く）出やすいため
+ */
+export const RELEVANCE_PRIOR_PERSONS = 5;
+
+// Role の関連度（0〜1）= 最短の Unit（0.5 年以上 = Goal の前にその Role を経験した人全員）の Quality / 100。
+// 経験者が少ないほど Quality を 50（Goal の人にもそれ以外の人にも同じ割合でいる経歴）へ縮める（経験者 /（経験者 + RELEVANCE_PRIOR_PERSONS））。
+// 人数の多さ（Quantity）は掛けない。少数派でも Goal に近い経歴を、経験者の少なさだけで低く評価しないため。
+// IT 以外の前職のように Goal の人に少ない経歴（Quality < 50）も 0 にはせず、関連の弱さに応じて小さく評価する。
+// Goal の前にその Role を経験した人が統計に 1 人もいなければ 0
+export function roleRelevance(
+  group: Pick<RequirementGroupStatistics, "experience" | "goal_sample_size">,
+  roleId: string,
+): number {
+  let row: ExperienceStatisticsRow | undefined;
+  for (const candidate of group.experience) {
+    if (candidate.role_id === roleId && (!row || candidate.years < row.years)) row = candidate;
+  }
+  if (!row) return 0;
+  const persons = row.p_unit_given_goal * group.goal_sample_size;
+  const weight = persons / (persons + RELEVANCE_PRIOR_PERSONS);
+  return (50 + (row.quality - 50) * weight) / 100;
 }
 
-// 前職歴：Σ Contribution(該当 Unit) / reference × 100。Group の職業の経験が無い Group はこれだけで、cap まで。
-// Group の職業の経験がある Group は、在職年数のパーセンタイルと前職歴（100 まで）の高いほう。
+// 前職歴：Group の職業以外の Role ごとに「関連度 × その年数での Group の職業の在職年数パーセンタイル」を出し、最も高い Role を使う。
+// 年数の伸び方は Goal ごとの在職年数の分布に合わせ、同じ年数だけ Group の職業そのものを経験した人の点数を超えない。
+// 前職歴の統計か在職年数の分布が無ければ null
+export function priorExperienceAchievement(
+  group: RequirementGroupStatistics,
+  experiences: readonly UserExperience[],
+): number | null {
+  if (groupUnavailableReason(group) !== null || !isTenureCalculable(group.occupation_tenure)) return null;
+  let best = 0;
+  for (const [roleId, years] of userYearsByRole(experiences)) {
+    if (group.occupations.includes(roleId)) continue;
+    best = Math.max(best, roleRelevance(group, roleId) * tenurePercentile(group.occupation_tenure, years));
+  }
+  return best;
+}
+
+// Group の職業の経験が無い Group は前職歴だけで、cap まで。
+// Group の職業の経験がある Group は、在職年数のパーセンタイルと前職歴の高いほう。
 // 使える評価がどちらも統計から算出できなければ null
 export function groupAchievement(
   group: RequirementGroupStatistics,
   experiences: readonly UserExperience[],
   cap = 100,
 ): number | null {
-  const preGoal = preGoalAchievement(group, experiences);
+  const prior = priorExperienceAchievement(group, experiences);
   const years = groupOccupationYears(group, experiences);
-  if (years === 0) return preGoal === null ? null : Math.min(cap, preGoal);
-  const tenure = isTenureCalculable(group.occupation_tenure) ? tenurePercentile(group.occupation_tenure, years) : null;
-  if (tenure === null && preGoal === null) return null;
-  return Math.max(tenure ?? 0, Math.min(100, preGoal ?? 0));
+  if (years === 0) return prior === null ? null : Math.min(cap, prior);
+  if (!isTenureCalculable(group.occupation_tenure)) return null;
+  return Math.max(tenurePercentile(group.occupation_tenure, years), prior ?? 0);
 }
 
 export type ExperienceMatchResult =
