@@ -26,8 +26,8 @@
   "attribution": "Contains information from the Stack Overflow Developer Survey (https://survey.stackoverflow.co/), which is made available under the Open Database License (ODbL).",
   "modifications": "8FitLab aggregated the survey responses by Goal and adjusted them to the Japanese market (empirical Bayes shrinkage). Method: scripts/build_skill_statistics.py"
  },
- "calculation_version": "0.3.1",
- "calculation_date": "2026-09-29",
+ "calculation_version": "0.4.0",
+ "calculation_date": "2026-10-07",
  "min_reliable_sample": 100,
  "region": {
   "country": "Japan",
@@ -42,6 +42,91 @@
   "contribution_scope": "region"
  },
  "units": [
+  {
+   "unit_id": "analysis-language",
+   "type": "group",
+   "name": "データ分析の言語（Python または R）",
+   "members": [
+    {
+     "skill_id": "python",
+     "name": "Python",
+     "so_item": "Python",
+     "p_skill_given_goal": 0.755365,
+     "region_p_skill_given_goal": 0.749204
+    },
+    {
+     "skill_id": "pandas",
+     "name": "pandas",
+     "so_item": "Pandas",
+     "p_skill_given_goal": 0.626781,
+     "region_p_skill_given_goal": 0.623722
+    },
+    {
+     "skill_id": "numpy",
+     "name": "NumPy",
+     "so_item": "NumPy",
+     "p_skill_given_goal": 0.501425,
+     "region_p_skill_given_goal": 0.50139
+    },
+    {
+     "skill_id": "jupyter",
+     "name": "Jupyter",
+     "so_item": "Jupyter Notebook/JupyterLab",
+     "p_skill_given_goal": 0.449704,
+     "region_p_skill_given_goal": 0.450918
+    },
+    {
+     "skill_id": "scikit-learn",
+     "name": "scikit-learn",
+     "so_item": "Scikit-Learn",
+     "p_skill_given_goal": 0.324786,
+     "region_p_skill_given_goal": 0.329013
+    },
+    {
+     "skill_id": "r",
+     "name": "R",
+     "so_item": "R",
+     "p_skill_given_goal": 0.27897,
+     "region_p_skill_given_goal": 0.284302
+    },
+    {
+     "skill_id": "tidyverse",
+     "name": "tidyverse",
+     "so_item": "Tidyverse",
+     "p_skill_given_goal": 0.182336,
+     "region_p_skill_given_goal": 0.19
+    },
+    {
+     "skill_id": "rstudio",
+     "name": "RStudio",
+     "so_item": "RStudio",
+     "p_skill_given_goal": 0.174569,
+     "region_p_skill_given_goal": 0.18242
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 239,
+   "other_respondents": 28146,
+   "p_skill_given_goal": 0.828452,
+   "p_skill_given_other": 0.570951,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 2,
+   "region_other_respondents": 736,
+   "region_p_skill_given_goal": 0.832591,
+   "region_p_skill_given_other": 0.565785,
+   "quantity": 0.832591,
+   "quality": 59.5398,
+   "contribution": 0.495723,
+   "p_value": 5.54e-16,
+   "significant": true,
+   "selected": true
+  },
   {
    "unit_id": "sql",
    "type": "skill",
@@ -76,42 +161,6 @@
    "quality": 61.9057,
    "contribution": 0.468985,
    "p_value": 3.47e-07,
-   "significant": true,
-   "selected": true
-  },
-  {
-   "unit_id": "pandas",
-   "type": "skill",
-   "name": "pandas",
-   "category": "library",
-   "members": [
-    {
-     "skill_id": "pandas",
-     "name": "pandas",
-     "so_item": "Pandas",
-     "p_skill_given_goal": 0.626781,
-     "region_p_skill_given_goal": 0.623722
-    }
-   ],
-   "source_years": [
-    2024
-   ],
-   "goal_respondents": 351,
-   "other_respondents": 33473,
-   "p_skill_given_goal": 0.626781,
-   "p_skill_given_other": 0.227586,
-   "region_source_years": [
-    2023,
-    2024
-   ],
-   "region_goal_respondents": 2,
-   "region_other_respondents": 351,
-   "region_p_skill_given_goal": 0.623722,
-   "region_p_skill_given_other": 0.248696,
-   "quantity": 0.623722,
-   "quality": 71.4935,
-   "contribution": 0.445921,
-   "p_value": 6.88e-70,
    "significant": true,
    "selected": true
   },
@@ -215,43 +264,6 @@
    "selected": false
   },
   {
-   "unit_id": "python",
-   "type": "skill",
-   "name": "Python",
-   "category": "language",
-   "members": [
-    {
-     "skill_id": "python",
-     "name": "Python",
-     "so_item": "Python",
-     "p_skill_given_goal": 0.755365,
-     "region_p_skill_given_goal": 0.749204
-    }
-   ],
-   "source_years": [
-    2025
-   ],
-   "goal_respondents": 233,
-   "other_respondents": 27830,
-   "p_skill_given_goal": 0.755365,
-   "p_skill_given_other": 0.563672,
-   "region_source_years": [
-    2023,
-    2024,
-    2025
-   ],
-   "region_goal_respondents": 2,
-   "region_other_respondents": 734,
-   "region_p_skill_given_goal": 0.749204,
-   "region_p_skill_given_other": 0.550498,
-   "quantity": 0.749204,
-   "quality": 57.6443,
-   "contribution": 0.431873,
-   "p_value": 2.08e-09,
-   "significant": true,
-   "selected": true
-  },
-  {
    "unit_id": "public-cloud",
    "type": "group",
    "name": "パブリッククラウド",
@@ -328,79 +340,6 @@
    "p_value": 0.0359,
    "significant": false,
    "selected": false
-  },
-  {
-   "unit_id": "jupyter",
-   "type": "skill",
-   "name": "Jupyter",
-   "category": "dev_env",
-   "members": [
-    {
-     "skill_id": "jupyter",
-     "name": "Jupyter",
-     "so_item": "Jupyter Notebook/JupyterLab",
-     "p_skill_given_goal": 0.449704,
-     "region_p_skill_given_goal": 0.450918
-    }
-   ],
-   "source_years": [
-    2025
-   ],
-   "goal_respondents": 169,
-   "other_respondents": 23165,
-   "p_skill_given_goal": 0.449704,
-   "p_skill_given_other": 0.131276,
-   "region_source_years": [
-    2023,
-    2024,
-    2025
-   ],
-   "region_goal_respondents": 2,
-   "region_other_respondents": 682,
-   "region_p_skill_given_goal": 0.450918,
-   "region_p_skill_given_other": 0.126649,
-   "quantity": 0.450918,
-   "quality": 78.072,
-   "contribution": 0.35204,
-   "p_value": 3.95e-34,
-   "significant": true,
-   "selected": true
-  },
-  {
-   "unit_id": "numpy",
-   "type": "skill",
-   "name": "NumPy",
-   "category": "library",
-   "members": [
-    {
-     "skill_id": "numpy",
-     "name": "NumPy",
-     "so_item": "NumPy",
-     "p_skill_given_goal": 0.501425,
-     "region_p_skill_given_goal": 0.50139
-    }
-   ],
-   "source_years": [
-    2024
-   ],
-   "goal_respondents": 351,
-   "other_respondents": 33473,
-   "p_skill_given_goal": 0.501425,
-   "p_skill_given_other": 0.226063,
-   "region_source_years": [
-    2023,
-    2024
-   ],
-   "region_goal_respondents": 2,
-   "region_other_respondents": 351,
-   "region_p_skill_given_goal": 0.50139,
-   "region_p_skill_given_other": 0.276195,
-   "quantity": 0.50139,
-   "quality": 64.4804,
-   "contribution": 0.323299,
-   "p_value": 1.29e-34,
-   "significant": true,
-   "selected": true
   },
   {
    "unit_id": "data-warehouse",
@@ -509,79 +448,6 @@
    "p_value": 0.994,
    "significant": false,
    "selected": false
-  },
-  {
-   "unit_id": "r",
-   "type": "skill",
-   "name": "R",
-   "category": "language",
-   "members": [
-    {
-     "skill_id": "r",
-     "name": "R",
-     "so_item": "R",
-     "p_skill_given_goal": 0.27897,
-     "region_p_skill_given_goal": 0.284302
-    }
-   ],
-   "source_years": [
-    2025
-   ],
-   "goal_respondents": 233,
-   "other_respondents": 27830,
-   "p_skill_given_goal": 0.27897,
-   "p_skill_given_other": 0.044053,
-   "region_source_years": [
-    2023,
-    2024,
-    2025
-   ],
-   "region_goal_respondents": 2,
-   "region_other_respondents": 734,
-   "region_p_skill_given_goal": 0.284302,
-   "region_p_skill_given_other": 0.033825,
-   "quantity": 0.284302,
-   "quality": 89.3675,
-   "contribution": 0.254074,
-   "p_value": 1.88e-65,
-   "significant": true,
-   "selected": true
-  },
-  {
-   "unit_id": "scikit-learn",
-   "type": "skill",
-   "name": "scikit-learn",
-   "category": "library",
-   "members": [
-    {
-     "skill_id": "scikit-learn",
-     "name": "scikit-learn",
-     "so_item": "Scikit-Learn",
-     "p_skill_given_goal": 0.324786,
-     "region_p_skill_given_goal": 0.329013
-    }
-   ],
-   "source_years": [
-    2024
-   ],
-   "goal_respondents": 351,
-   "other_respondents": 33473,
-   "p_skill_given_goal": 0.324786,
-   "p_skill_given_other": 0.113883,
-   "region_source_years": [
-    2023,
-    2024
-   ],
-   "region_goal_respondents": 2,
-   "region_other_respondents": 351,
-   "region_p_skill_given_goal": 0.329013,
-   "region_p_skill_given_other": 0.118576,
-   "quantity": 0.329013,
-   "quality": 73.5078,
-   "contribution": 0.241851,
-   "p_value": 6.43e-35,
-   "significant": true,
-   "selected": true
   },
   {
    "unit_id": "shell",
@@ -818,42 +684,6 @@
    "selected": false
   },
   {
-   "unit_id": "tidyverse",
-   "type": "skill",
-   "name": "tidyverse",
-   "category": "library",
-   "members": [
-    {
-     "skill_id": "tidyverse",
-     "name": "tidyverse",
-     "so_item": "Tidyverse",
-     "p_skill_given_goal": 0.182336,
-     "region_p_skill_given_goal": 0.19
-    }
-   ],
-   "source_years": [
-    2024
-   ],
-   "goal_respondents": 351,
-   "other_respondents": 33473,
-   "p_skill_given_goal": 0.182336,
-   "p_skill_given_other": 0.017387,
-   "region_source_years": [
-    2023,
-    2024
-   ],
-   "region_goal_respondents": 2,
-   "region_other_respondents": 351,
-   "region_p_skill_given_goal": 0.19,
-   "region_p_skill_given_other": 0.014834,
-   "quantity": 0.19,
-   "quality": 92.7582,
-   "contribution": 0.176241,
-   "p_value": 5.04e-112,
-   "significant": true,
-   "selected": true
-  },
-  {
    "unit_id": "sqlite",
    "type": "skill",
    "name": "SQLite",
@@ -983,42 +813,6 @@
    "selected": false
   },
   {
-   "unit_id": "rstudio",
-   "type": "skill",
-   "name": "RStudio",
-   "category": "dev_env",
-   "members": [
-    {
-     "skill_id": "rstudio",
-     "name": "RStudio",
-     "so_item": "RStudio",
-     "p_skill_given_goal": 0.174569,
-     "region_p_skill_given_goal": 0.18242
-    }
-   ],
-   "source_years": [
-    2024
-   ],
-   "goal_respondents": 464,
-   "other_respondents": 48794,
-   "p_skill_given_goal": 0.174569,
-   "p_skill_given_other": 0.024962,
-   "region_source_years": [
-    2023,
-    2024
-   ],
-   "region_goal_respondents": 2,
-   "region_other_respondents": 562,
-   "region_p_skill_given_goal": 0.18242,
-   "region_p_skill_given_other": 0.018696,
-   "quantity": 0.18242,
-   "quality": 90.704,
-   "contribution": 0.165462,
-   "p_value": 1.97e-89,
-   "significant": true,
-   "selected": false
-  },
-  {
    "unit_id": "container-runtime",
    "type": "group",
    "name": "コンテナ",
@@ -1096,7 +890,7 @@
    "contribution": 0.15495,
    "p_value": 2.56e-22,
    "significant": true,
-   "selected": false
+   "selected": true
   },
   {
    "unit_id": "flask",

@@ -69,11 +69,26 @@ describe("技術スキル辞書", () => {
 });
 
 describe("代わりのきく技術のグループ", () => {
-  it("グループ ID が一意で、メンバーは辞書にあり、1 つの技術は 1 グループだけに入る", () => {
+  it("グループ ID が一意で、メンバーは辞書にあり、1 つの Goal の中では 1 つの技術は 1 グループだけに入る", () => {
     expect(new Set(groups.map((g) => g.group_id)).size).toBe(groups.length);
-    const members = groups.flatMap((g) => g.members);
-    expect(new Set(members).size).toBe(members.length);
-    for (const id of members) expect(techIds).toContain(id);
+    for (const id of groups.flatMap((g) => g.members)) expect(techIds).toContain(id);
+    for (const goal of statistics) {
+      const members = groups.filter((g) => !g.goals || g.goals.includes(goal.goal_id)).flatMap((g) => g.members);
+      expect(new Set(members).size, goal.goal_id).toBe(members.length);
+    }
+  });
+
+  it("データ分析の言語は、Python と R のどちらか（各言語のライブラリ・開発環境を含む）で満たす 1 項目になる", () => {
+    for (const goalId of ["data-analyst", "data-scientist"]) {
+      const goal = statistics.find((s) => s.goal_id === goalId)!;
+      const units = (goal.units as StatisticsUnit[]).filter((u) => u.selected);
+      const language = units.find((u) => u.unit_id === "analysis-language");
+      expect(language, goalId).toBeDefined();
+      expect(language!.members.map((m) => m.skill_id), goalId).toEqual(expect.arrayContaining(["python", "r"]));
+      for (const id of ["python", "r", "pandas", "numpy", "scikit-learn", "jupyter", "tidyverse", "rstudio"]) {
+        expect(units.some((u) => u.type === "skill" && u.unit_id === id), `${goalId}: ${id}`).toBe(false);
+      }
+    }
   });
 
   it("グループは 2 つ以上のメンバーを持ち、対象 Goal は実在する", () => {

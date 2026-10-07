@@ -53,7 +53,7 @@ DICTIONARY_PATH = ROOT / "data" / "skills" / "tech-skills.json"
 GROUPS_PATH = ROOT / "data" / "skills" / "tech-skill-groups.json"
 OUT_DIR = ROOT / "data" / "statistics" / "skill-match"
 
-CALCULATION_VERSION = "0.3.1"
+CALCULATION_VERSION = "0.4.0"
 # 出力は Stack Overflow Developer Survey（ODbL）の派生データベースのため、同じ ODbL で提供する（ODbL 4.4）
 DERIVED_DATABASE_LICENSE = {
     "name": "Open Database License (ODbL) v1.0",
@@ -195,14 +195,16 @@ def load_year(year: int, excluded: set, aliases: dict) -> tuple:
 
 def load_groups(dictionary_by_id: dict) -> list:
     groups = json.loads(GROUPS_PATH.read_text(encoding="utf-8"))["groups"]
-    seen = set()
+    seen = {}
     for group in groups:
         for skill_id in group["members"]:
             if skill_id not in dictionary_by_id:
                 raise SystemExit(f"{group['group_id']}: メンバー {skill_id} が {DICTIONARY_PATH.name} にありません")
-            if skill_id in seen:
-                raise SystemExit(f"{skill_id} が複数のグループに入っています")
-            seen.add(skill_id)
+            # 同じ技術を複数のグループに入れてよいのは、どちらも goals があり、goals が重ならない場合だけ
+            for other in seen.get(skill_id, []):
+                if "goals" not in group or "goals" not in other or set(group["goals"]) & set(other["goals"]):
+                    raise SystemExit(f"{skill_id} が {other['group_id']} と {group['group_id']} の両方に入っています（同じ Goal で使われます）")
+            seen.setdefault(skill_id, []).append(group)
         group["so_items"] = {item for skill_id in group["members"] for item in dictionary_by_id[skill_id]["so_items"]}
     return groups
 

@@ -1,7 +1,14 @@
 {
-  "version": "1.0.0",
-  "description": "代わりのきく技術のグループ。グループ内のどれか 1 つを使えればそのグループを満たす（Experience の要件グループと同じ OR）。1 つの技術は最大 1 グループにしか入らない。goals がある場合はその Goal でだけグループとして扱い、それ以外の Goal ではメンバーを個別の技術として扱う",
+  "version": "1.1.0",
+  "description": "代わりのきく技術のグループ。グループ内のどれか 1 つを使えればそのグループを満たす（Experience の要件グループと同じ OR）。1 つの Goal の中では、1 つの技術は最大 1 グループにしか入らない（goals が重ならないグループどうしは同じ技術を含めてよい）。goals がある場合はその Goal でだけグループとして扱い、それ以外の Goal ではメンバーを個別の技術として扱う",
   "groups": [
+    {
+      "group_id": "analysis-language",
+      "name": "データ分析の言語（Python または R）",
+      "description": "Python と R はどちらか 1 つで分析できるため 1 項目にまとめる。各言語の分析ライブラリ・開発環境（Python は pandas・NumPy・scikit-learn・Jupyter、R は tidyverse・RStudio）も同じ項目に含め、言語を使えばまとめて満たす",
+      "goals": ["data-analyst", "data-scientist"],
+      "members": ["python", "pandas", "numpy", "scikit-learn", "jupyter", "r", "tidyverse", "rstudio"]
+    },
     {
       "group_id": "server-language",
       "name": "サーバーサイドの言語・ランタイム",
