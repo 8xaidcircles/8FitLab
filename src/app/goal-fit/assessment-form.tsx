@@ -4,8 +4,20 @@ import { useRouter } from "next/navigation";
 import { useEffect, useId, useMemo, useRef, useState, useTransition } from "react";
 import { submitAssessment } from "@/app/actions/assessment";
 import type { EducationMaster, RoleGroup } from "@/lib/career-match/data";
-import { EXPERIENCE_STATUSES, type ExperienceStatus } from "@/lib/career-match/types";
-import { EXPERIENCE_STATUS_LABELS, SUBMIT_ERRORS } from "@/lib/labels";
+import {
+  EXPERIENCE_STATUSES,
+  SKIPPED_EDUCATION_LEVEL_ID,
+  type CertificationStatus,
+  type ExperienceStatus,
+  type SkillStatus,
+} from "@/lib/career-match/types";
+import {
+  CERTIFICATION_STATUS_LABELS,
+  EDUCATION_STATUS_LABELS,
+  EXPERIENCE_STATUS_LABELS,
+  SKILL_STATUS_LABELS,
+  SUBMIT_ERRORS,
+} from "@/lib/labels";
 import { track } from "@/lib/track";
 
 interface Option {
@@ -66,7 +78,7 @@ function Section({
           {step}
         </span>
         <h2 className="text-lg font-bold">{title}</h2>
-        {required && <span className="rounded bg-coral px-1.5 py-0.5 text-[10px] font-bold text-white">必須</span>}
+        {required && <span className="rounded bg-coral/10 px-1.5 py-0.5 text-[10px] font-bold text-red-700">必須</span>}
       </div>
       {hint && <p className="mt-2 text-xs leading-relaxed text-muted">{hint}</p>}
       <div className="mt-4">{children}</div>
@@ -85,14 +97,17 @@ const selectClass =
 /** カテゴリーごとのアコーディオン。検索中（expandAll）は一致したものが見えるよう全カテゴリーを開く */
 function ChipGroups({
   title,
+  hint,
   groups,
   selected,
   visible,
   onToggle,
   expandAll,
   marked,
+  disabled = false,
 }: {
   title?: string;
+  hint?: string;
   groups: OptionGroup[];
   selected: ReadonlySet<string>;
   visible: (option: Option) => boolean;
@@ -100,6 +115,8 @@ function ChipGroups({
   expandAll: boolean;
   /** ★を付けて各カテゴリーの先頭に並べる選択肢 */
   marked?: (option: Option) => boolean;
+  /** 「回答をスキップする」などを選んでいる間は個別に選べない */
+  disabled?: boolean;
 }) {
   const baseId = useId();
   const [open, setOpen] = useState<ReadonlySet<string>>(new Set());
@@ -113,7 +130,8 @@ function ChipGroups({
   if (shown.length === 0) return null;
   return (
     <div>
-      {title && <h3 className="mb-3 text-sm font-bold">{title}</h3>}
+      {title && <h3 className={`text-sm font-bold ${hint ? "mb-1" : "mb-3"}`}>{title}</h3>}
+      {hint && <p className="mb-3 text-xs text-muted">{hint}</p>}
       <div className="divide-y divide-line rounded-xl border border-line">
         {shown.map((group) => {
           const expanded = expandAll || open.has(group.id);
@@ -157,11 +175,12 @@ function ChipGroups({
                       type="button"
                       onClick={() => onToggle(option.id)}
                       aria-pressed={on}
+                      disabled={disabled}
                       title={option.description}
-                      className={`flex min-h-10 items-center justify-center rounded-lg border px-1.5 py-1.5 text-center text-xs leading-snug [overflow-wrap:anywhere] transition ${
+                      className={`flex min-h-10 items-center justify-center rounded-lg border px-1.5 py-1.5 text-center text-xs leading-snug [overflow-wrap:anywhere] transition disabled:cursor-not-allowed disabled:opacity-40 ${
                         on
                           ? "border-cyan bg-cyan-soft font-bold text-ink"
-                          : "border-line bg-white text-muted hover:border-sky hover:text-ink"
+                          : "border-line bg-white text-muted enabled:hover:border-sky enabled:hover:text-ink"
                       }`}
                     >
                       <span>
@@ -326,6 +345,55 @@ function RoleSelect({
   );
 }
 
+/** 個別の選択肢の代わりに選ぶもの（どれか 1 つ。選んでいる項目をもう一度押すと外れ、個別の選択肢を選べるようになる） */
+function StatusChoice<K extends string>({
+  name,
+  label,
+  options,
+  value,
+  onChange,
+}: {
+  name: string;
+  label: string;
+  options: Record<K, string>;
+  value: K | null;
+  onChange: (value: K | null) => void;
+}) {
+  const count = Object.keys(options).length;
+  const columns = count > 2 ? "sm:grid-cols-3" : count === 2 ? "sm:grid-cols-2" : "";
+  return (
+    <div>
+      <div role="radiogroup" aria-label={label} className={`grid gap-2 ${columns}`}>
+        {(Object.entries(options) as [K, string][]).map(([key, text]) => {
+          const on = value === key;
+          return (
+            <label
+              key={key}
+              className={`flex cursor-pointer items-center gap-2 rounded-xl border px-3 py-2.5 text-sm transition ${
+                on ? "border-indigo bg-indigo-soft font-bold text-indigo" : "border-line hover:border-sky"
+              }`}
+            >
+              <input
+                type="radio"
+                name={name}
+                value={key}
+                checked={on}
+                onChange={() => onChange(key)}
+                onClick={() => {
+                  if (on) onChange(null);
+                }}
+                className="size-4 shrink-0 accent-indigo"
+              />
+              {text}
+            </label>
+          );
+        })}
+      </div>
+      {value && <p className="mt-2 text-xs text-muted">個別に選び直すときは、選択中の項目をもう一度押してください。</p>}
+    </div>
+  );
+}
+
 function toggled(set: ReadonlySet<string>, id: string): Set<string> {
   const next = new Set(set);
   if (next.has(id)) next.delete(id);
@@ -350,6 +418,8 @@ export function AssessmentForm({
   const [goalId, setGoalId] = useState<string | null>(initialGoal);
   const [skills, setSkills] = useState<Set<string>>(new Set());
   const [certs, setCerts] = useState<Set<string>>(new Set());
+  const [skillStatus, setSkillStatus] = useState<SkillStatus | null>(null);
+  const [certStatus, setCertStatus] = useState<CertificationStatus | null>(null);
   const [onlyGoalSkills, setOnlyGoalSkills] = useState(true);
   const [query, setQuery] = useState("");
   const [experienceStatus, setExperienceStatus] = useState<ExperienceStatus | null>(null);
@@ -357,7 +427,9 @@ export function AssessmentForm({
   const [nextKey, setNextKey] = useState(1);
   const [levelId, setLevelId] = useState("");
   const [error, setError] = useState<string | null>(null);
-  const [fieldErrors, setFieldErrors] = useState<{ experience?: string; education?: string }>({});
+  const [fieldErrors, setFieldErrors] = useState<{ skills?: string; certifications?: string; experience?: string; education?: string }>(
+    {},
+  );
   const [pending, startTransition] = useTransition();
 
   // 検索は日本語表示名（日本語職種リスト）と ESCO の英語名のどちらでも選べる
@@ -386,11 +458,25 @@ export function AssessmentForm({
   function toggleSkill(skillId: string) {
     track(skills.has(skillId) ? "skill_removed" : "skill_added", { skill_id: skillId, goal_id: goalId });
     setSkills((prev) => toggled(prev, skillId));
+    setFieldErrors((errors) => ({ ...errors, skills: undefined }));
   }
 
   function toggleCertification(certId: string) {
     track(certs.has(certId) ? "skill_removed" : "skill_added", { cert_id: certId, goal_id: goalId });
     setCerts((prev) => toggled(prev, certId));
+    setFieldErrors((errors) => ({ ...errors, certifications: undefined }));
+  }
+
+  function chooseSkillStatus(status: SkillStatus | null) {
+    setSkillStatus(status);
+    if (status) setSkills(new Set());
+    setFieldErrors((errors) => ({ ...errors, skills: undefined }));
+  }
+
+  function chooseCertificationStatus(status: CertificationStatus | null) {
+    setCertStatus(status);
+    if (status) setCerts(new Set());
+    setFieldErrors((errors) => ({ ...errors, certifications: undefined }));
   }
 
   function updateExperience(key: number, patch: Partial<ExperienceRow>) {
@@ -429,6 +515,8 @@ export function AssessmentForm({
     if (id) track("education_added", { education_level_id: id });
   }
 
+  const educationSkipped = levelId === SKIPPED_EDUCATION_LEVEL_ID;
+
   const validExperiences = experiences
     .filter((e) => e.role_id && Number(e.years) > 0)
     .map((e) => ({ role_id: e.role_id, years: Number(e.years) }));
@@ -440,6 +528,8 @@ export function AssessmentForm({
     if (!goalId) return;
     setError(null);
     const errors = {
+      skills: skills.size > 0 || skillStatus ? undefined : SUBMIT_ERRORS.skills_required,
+      certifications: certs.size > 0 || certStatus ? undefined : SUBMIT_ERRORS.certifications_required,
       experience: !experienceStatus
         ? SUBMIT_ERRORS.experience_required
         : experienceStatus === "entered" && validExperiences.length === 0
@@ -448,12 +538,14 @@ export function AssessmentForm({
       education: levelId ? undefined : SUBMIT_ERRORS.education_required,
     };
     setFieldErrors(errors);
-    if (errors.experience || errors.education) return;
+    if (Object.values(errors).some(Boolean)) return;
     startTransition(async () => {
       const result = await submitAssessment({
         goal_id: goalId,
-        skill_ids: [...skills],
-        certification_ids: [...certs],
+        skill_ids: skillStatus ? [] : [...skills],
+        skill_status: skillStatus,
+        certification_ids: certStatus ? [] : [...certs],
+        certification_status: certStatus,
         experience_status: experienceStatus,
         experiences: experienceStatus === "entered" ? validExperiences : [],
         education_level_id: levelId,
@@ -496,7 +588,13 @@ export function AssessmentForm({
         </div>
       </Section>
 
-      <Section step={2} title="持っているスキル" hint="実務・学習を問わず、基本的な使い方がわかるものを選んでください。">
+      <Section
+        step={2}
+        title="持っているスキル"
+        hint="実務・学習を問わず、基本的な使い方がわかるものを選んでください。まだ無い場合は、下のどちらかを選んでください。"
+        required
+        error={fieldErrors.skills}
+      >
         <div className="mb-5 grid gap-3 sm:grid-cols-[1fr_auto] sm:items-center">
           <input
             type="search"
@@ -526,31 +624,47 @@ export function AssessmentForm({
             visible={(o) => visible(o, skills)}
             onToggle={toggleSkill}
             expandAll={normalizedQuery !== ""}
+            disabled={skillStatus !== null}
           />
           <ChipGroups
             title="手法・知識"
+            hint="開発手法・テスト・プロジェクト管理・ネットワークなど、技術以外に求められる知識です。"
             groups={humanGroups}
             selected={skills}
             visible={(o) => visible(o, skills)}
             onToggle={toggleSkill}
             expandAll={normalizedQuery !== ""}
+            disabled={skillStatus !== null}
           />
           <ChipGroups
             title="使っているツール"
+            hint="ツールを選ぶと、そのツールに関係する手法・知識（例：Jest → テスト（単体・結合））を持っているものとして計算します。"
             groups={toolGroups}
             selected={skills}
             visible={(o) => visible(o, skills)}
             onToggle={toggleSkill}
             expandAll={normalizedQuery !== ""}
+            disabled={skillStatus !== null}
           />
         </div>
         <p className="mt-4 text-xs text-muted">選択中：{skills.size}件</p>
+        <div className="mt-5 border-t border-line pt-5">
+          <StatusChoice
+            name="skill_status"
+            label="あてはまるスキルがない場合"
+            options={SKILL_STATUS_LABELS}
+            value={skillStatus}
+            onChange={chooseSkillStatus}
+          />
+        </div>
       </Section>
 
       <Section
         step={3}
         title="資格"
-        hint="取得済みの資格を選んでください（任意）。資格が証明するスキルを持っているものとして計算します。"
+        hint="取得済みの資格を選んでください。資格が証明するスキルを持っているものとして計算します。"
+        required
+        error={fieldErrors.certifications}
       >
         {markedCertification && (
           <p className="mb-3 text-xs text-muted">
@@ -565,11 +679,21 @@ export function AssessmentForm({
           onToggle={toggleCertification}
           expandAll={normalizedQuery !== ""}
           marked={markedCertification}
+          disabled={certStatus !== null}
         />
         {certificationGroups.every((g) => g.options.every((o) => !visibleCertification(o))) && (
           <p className="text-sm text-muted">条件に合う資格はありません。</p>
         )}
         <p className="mt-4 text-xs text-muted">選択中：{certs.size}件</p>
+        <div className="mt-5 border-t border-line pt-5">
+          <StatusChoice
+            name="certification_status"
+            label="あてはまる資格がない場合"
+            options={CERTIFICATION_STATUS_LABELS}
+            value={certStatus}
+            onChange={chooseCertificationStatus}
+          />
+        </div>
       </Section>
 
       <Section
@@ -583,7 +707,7 @@ export function AssessmentForm({
           {EXPERIENCE_STATUSES.map((status) => (
             <label
               key={status}
-              className={`flex cursor-pointer items-center gap-2 rounded-lg border px-3 py-2.5 text-sm transition ${
+              className={`flex cursor-pointer items-center gap-2 rounded-xl border px-3 py-2.5 text-sm transition ${
                 experienceStatus === status ? "border-indigo bg-indigo-soft font-bold text-indigo" : "border-line hover:border-sky"
               }`}
             >
@@ -674,30 +798,40 @@ export function AssessmentForm({
       >
         <div className="grid gap-3 sm:grid-cols-2">
           <select
-            value={levelId}
+            value={educationSkipped ? "" : levelId}
             onChange={(e) => chooseLevel(e.target.value)}
             aria-label="最終学歴"
             aria-required="true"
             aria-invalid={fieldErrors.education ? true : undefined}
-            className={selectClass}
+            disabled={educationSkipped}
+            className={`${selectClass} disabled:cursor-not-allowed disabled:opacity-50`}
           >
             <option value="" disabled>
               最終学歴を選択してください
             </option>
-            {education.levels.map((l) => (
-              <option key={l.level_id} value={l.level_id}>
-                {l.name}
-              </option>
-            ))}
+            {education.levels
+              .filter((l) => l.level_id !== SKIPPED_EDUCATION_LEVEL_ID)
+              .map((l) => (
+                <option key={l.level_id} value={l.level_id}>
+                  {l.name}
+                </option>
+              ))}
           </select>
+          <StatusChoice
+            name="education_status"
+            label="最終学歴を回答しない場合"
+            options={EDUCATION_STATUS_LABELS}
+            value={educationSkipped ? SKIPPED_EDUCATION_LEVEL_ID : null}
+            onChange={(status) => chooseLevel(status ?? "")}
+          />
         </div>
       </Section>
 
       <div className="sticky bottom-4 rounded-2xl border border-line bg-white/95 p-4 shadow-lg backdrop-blur">
         {error && <p className="mb-3 text-sm text-coral">{error}</p>}
-        {(fieldErrors.experience || fieldErrors.education) && (
+        {Object.values(fieldErrors).some(Boolean) && (
           <p className="mb-3 text-sm text-coral">
-            {[fieldErrors.experience, fieldErrors.education].filter(Boolean).join(" ")}
+            {[fieldErrors.skills, fieldErrors.certifications, fieldErrors.experience, fieldErrors.education].filter(Boolean).join(" ")}
           </p>
         )}
         {incompleteExperience && <p className="mb-3 text-xs text-flame">職種と年数の両方が入力された職歴だけが計算に使われます。</p>}

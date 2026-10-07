@@ -46,7 +46,7 @@ export interface Role {
 export interface EducationLevel {
   level_id: string;
   name: string;
-  // Career Statistics（JobHop 5 段階）での扱い。Education Match はこの値で計算する。「わかりません」は null
+  // Career Statistics（JobHop 5 段階）での扱い。Education Match はこの値で計算する。「回答をスキップする」は null
   degree_id: DegreeId | null;
   isced: number | null;
   mapping_note?: string;

@@ -10,9 +10,15 @@ CREATE TABLE IF NOT EXISTS public.assessment_sessions (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     anonymous_user_id UUID NOT NULL,
     goal_id TEXT NOT NULL,
-    -- 職歴の回答。entered：職種と年数を 1 件以上入力 / none：実務経験なし / unknown：わかりません・答えない。
-    -- 必須化の前に保存した行は NULL
-    experience_status TEXT CHECK (experience_status IN ('entered', 'none', 'unknown')),
+    -- 職歴の回答。entered：職種と年数を 1 件以上入力 / none：実務経験なし / skipped：回答をスキップする。
+    -- 必須化の前に保存した行は NULL。unknown は skipped の旧値（読み出し時に skipped とみなす）
+    experience_status TEXT CHECK (experience_status IN ('entered', 'none', 'skipped', 'unknown')),
+    -- スキルを 1 つも選ばなかった理由。none_intent_to_learn：まだ無いが、これから学習を開始する / skipped：回答をスキップする。
+    -- スキルを選んだ行と、この列より前に保存した行は NULL
+    skill_status TEXT CHECK (skill_status IN ('none_intent_to_learn', 'skipped')),
+    -- 資格を 1 つも選ばなかった理由。none：保有している資格はない / planning_to_certify：これから学習を開始する /
+    -- skipped：回答をスキップする。資格を選んだ行と、この列より前に保存した行は NULL
+    certification_status TEXT CHECK (certification_status IN ('none', 'planning_to_certify', 'skipped')),
     calculation_version TEXT NOT NULL,
     data_source_version TEXT NOT NULL,
     taxonomy_version TEXT NOT NULL,
@@ -44,7 +50,7 @@ CREATE TABLE IF NOT EXISTS public.assessment_education (
     -- ユーザーが選んだ学歴（data/education/education.json の level_id。例：technical-college）
     education_level_id TEXT NOT NULL,
     -- 統計上の学歴（JobHop 5 段階）。Education Match はこの値で計算する（例：高専 → Secondary school）。
-    -- 「わかりません / 答えない」（education_level_id = 'unknown'）は NULL
+    -- 「回答をスキップする」（education_level_id = 'skipped'。旧値は 'unknown'）は NULL
     degree_id TEXT,
     -- 専攻分野。入力をやめたため新しい行は NULL（以前に保存した行のために列を残している）
     field_id TEXT,

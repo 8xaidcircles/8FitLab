@@ -23,7 +23,7 @@ import {
 } from "../data";
 import { heldSkillIds, layeredSkillProgress, normalizeHumanRequirements } from "../skill-layers";
 import { goalSkillUnits, weightedSkillProgress } from "../skill-score";
-import { DEGREES, UNKNOWN_EDUCATION_LEVEL_ID } from "../types";
+import { DEGREES, SKIPPED_EDUCATION_LEVEL_ID } from "../types";
 
 const goals = await loadGoals();
 const roles = await loadRoles();
@@ -141,23 +141,23 @@ describe("職種・Goal の日本語表示名", () => {
 describe("Education Master", () => {
   it("学歴 ID は一意で、統計上の学歴はすべて JobHop の 5 段階に含まれ、5 段階すべてに対応がある", async () => {
     const { levels } = await loadEducation();
-    const known = levels.filter((l) => l.level_id !== UNKNOWN_EDUCATION_LEVEL_ID);
+    const known = levels.filter((l) => l.level_id !== SKIPPED_EDUCATION_LEVEL_ID);
     expect(new Set(levels.map((l) => l.level_id)).size).toBe(levels.length);
     for (const level of known) expect(DEGREES).toContain(level.degree_id);
     expect(new Set(known.map((l) => l.degree_id))).toEqual(new Set(DEGREES));
   });
 
-  it("「わかりません / 答えない」は最後の選択肢で、統計上の学歴を持たない", async () => {
+  it("「回答をスキップする」は最後の選択肢で、統計上の学歴を持たない", async () => {
     const { levels } = await loadEducation();
     expect(levels.at(-1)).toMatchObject({
-      level_id: UNKNOWN_EDUCATION_LEVEL_ID,
-      name: "わかりません / 答えない",
+      level_id: SKIPPED_EDUCATION_LEVEL_ID,
+      name: "回答をスキップする",
       degree_id: null,
       isced: null,
     });
   });
 
-  it("学歴（「わかりません」を除く）は ISCED レベル順に並ぶ", async () => {
+  it("学歴（「回答をスキップする」を除く）は ISCED レベル順に並ぶ", async () => {
     const isced = (await loadEducation()).levels.slice(0, -1).map((l) => l.isced!);
     expect(isced).toEqual([...isced].sort((a, b) => a - b));
   });

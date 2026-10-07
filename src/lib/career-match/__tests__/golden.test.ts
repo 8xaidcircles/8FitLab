@@ -203,7 +203,7 @@ describe.each(goals.map((g) => [g.goal_id] as const))("計算の性質: %s", (go
     });
   });
 
-  it("学歴・職歴の「わかりません」（統計上の学歴 null・職歴の行なし）と「実務経験なし」は 0", async () => {
+  it("学歴・職歴の「回答をスキップする」（統計上の学歴 null・職歴の行なし）と「実務経験なし」は 0", async () => {
     const skill = await loadSkillContext(goalId);
     const result = calculateCareerMatch(
       { skill_ids: [], certification_ids: [], experiences: [], degree_id: null },

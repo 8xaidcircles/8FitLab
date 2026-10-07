@@ -23,7 +23,7 @@ import {
   skillMatchScope,
   skillUnitGaps,
 } from "@/lib/career-match";
-import { UNKNOWN_EDUCATION_LEVEL_ID } from "@/lib/career-match/types";
+import { SKIPPED_EDUCATION_LEVEL_ID } from "@/lib/career-match/types";
 import { EXPERIENCE_STATUS_LABELS, formatPercent } from "@/lib/labels";
 import { LearningSteps } from "@/components/learning-steps";
 
@@ -157,20 +157,22 @@ export default async function ResultPage({ params }: PageProps<"/goal-fit/result
   const experienceSource =
     assessment.experiences.length > 0
       ? assessment.experiences.map((e) => `${roleName(e.role_id)} ${e.years}年`).join("、")
-      : assessment.experience_status && assessment.experience_status !== "entered"
-        ? EXPERIENCE_STATUS_LABELS[assessment.experience_status]
-        : "職歴の入力なし";
+      : assessment.experience_status === "skipped"
+        ? "回答をスキップ"
+        : assessment.experience_status === "none"
+          ? EXPERIENCE_STATUS_LABELS.none
+          : "職歴の入力なし";
   const experienceNotes =
     match.experience_match === null
       ? []
-      : assessment.experience_status === "unknown"
-        ? ["職歴が未入力のため、実務経験の適合度は参考値です。"]
+      : assessment.experience_status === "skipped"
+        ? ["職歴の回答をスキップしたため、実務経験の適合度は参考値です。"]
         : assessment.experience_status === "none"
           ? ["実務経験がないため、経験面での適合度は 0 です。未経験からの転職では、スキル習得が成功の鍵になります。"]
           : [];
   const educationNotes =
-    match.education_match !== null && assessment.education_level_id === UNKNOWN_EDUCATION_LEVEL_ID
-      ? ["学歴が未入力のため、教育面での適合度は参考値です。"]
+    match.education_match !== null && assessment.education_level_id === SKIPPED_EDUCATION_LEVEL_ID
+      ? ["学歴の回答をスキップしたため、教育面での適合度は参考値です。"]
       : [];
 
   return (
@@ -213,7 +215,7 @@ export default async function ResultPage({ params }: PageProps<"/goal-fit/result
         <CategoryCard
           title="Education"
           value={match.education_match}
-          source={level ? level.name : "学歴の入力なし"}
+          source={level?.level_id === SKIPPED_EDUCATION_LEVEL_ID ? "回答をスキップ" : level ? level.name : "学歴の入力なし"}
           description="目標ポジションに就いている人々の学歴傾向に対する適合度です。"
           notes={educationNotes}
         />

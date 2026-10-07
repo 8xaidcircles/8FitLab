@@ -2,13 +2,17 @@ import "server-only";
 import { loadSkillMigration } from "@/lib/career-match/data";
 import { migrateLegacySkillIds } from "@/lib/career-match/skill-migration";
 import { createClient } from "@/lib/supabase/server";
-import type {
-  CareerMatchResult,
-  Confidence,
-  EvidenceMode,
-  ExperienceStatus,
-  LearningStep,
-  StoredSkillBreakdown,
+import {
+  LEGACY_SKIPPED_VALUE,
+  SKIPPED_EDUCATION_LEVEL_ID,
+  type CareerMatchResult,
+  type CertificationStatus,
+  type Confidence,
+  type EvidenceMode,
+  type ExperienceStatus,
+  type LearningStep,
+  type SkillStatus,
+  type StoredSkillBreakdown,
 } from "@/lib/career-match/types";
 import type { AssessmentSubmission } from "./validate";
 
@@ -30,7 +34,11 @@ export interface StoredAssessment {
   skill_ids: string[];
   /** 移行先を 1 つに決められない旧 skill_id（例：backend-framework）。計算・表示の対象外 */
   legacy_skill_ids: string[];
+  /** スキルを選ばなかった理由。スキルを選んだ結果と、この項目を保存する前の結果は null */
+  skill_status: SkillStatus | null;
   certification_ids: string[];
+  /** 資格を選ばなかった理由。資格を選んだ結果と、この項目を保存する前の結果は null */
+  certification_status: CertificationStatus | null;
   /** 職歴の入力を必須にする前に保存した結果は null */
   experience_status: ExperienceStatus | null;
   experiences: { role_id: string; years: number }[];
@@ -59,6 +67,10 @@ function fail(action: string, error: { message: string }): never {
 
 const toNumber = (value: unknown) => (value === null ? null : Number(value));
 
+// マイグレーション SQL の実行前に保存された「回答をスキップする」（旧値 unknown）を読み出し時に変換する
+const fromLegacySkipped = <T extends string>(value: string | null, skipped: T): T | null =>
+  value === LEGACY_SKIPPED_VALUE ? skipped : (value as T | null);
+
 export async function saveAssessment({
   anonymousUserId,
   submission,
@@ -74,6 +86,8 @@ export async function saveAssessment({
       anonymous_user_id: anonymousUserId,
       goal_id: submission.goal_id,
       experience_status: submission.experience_status,
+      skill_status: submission.skill_status,
+      certification_status: submission.certification_status,
       calculation_version: result.calculation_version,
       data_source_version: result.data_source_version,
       taxonomy_version: result.taxonomy_version,
@@ -166,7 +180,7 @@ export async function getAssessment(assessmentId: string, anonymousUserId: strin
 
   const { data: session, error } = await supabase
     .from("assessment_sessions")
-    .select("id, goal_id, created_at, experience_status")
+    .select("id, goal_id, created_at, experience_status, skill_status, certification_status")
     .eq("id", assessmentId)
     .eq("anonymous_user_id", anonymousUserId)
     .maybeSingle();
@@ -212,10 +226,12 @@ export async function getAssessment(assessmentId: string, anonymousUserId: strin
     created_at: session.created_at,
     skill_ids: migrated.skillIds,
     legacy_skill_ids: migrated.unresolved,
+    skill_status: session.skill_status,
     certification_ids: certifications.data!.map((r) => r.cert_id),
-    experience_status: session.experience_status,
+    certification_status: session.certification_status,
+    experience_status: fromLegacySkipped<ExperienceStatus>(session.experience_status, "skipped"),
     experiences: experiences.data!.map((r) => ({ role_id: r.role_id, years: Number(r.years) })),
-    education_level_id: education.data?.education_level_id ?? null,
+    education_level_id: fromLegacySkipped<string>(education.data?.education_level_id ?? null, SKIPPED_EDUCATION_LEVEL_ID),
     degree_id: education.data?.degree_id ?? null,
     career_match: {
       goal_match: Number(m.goal_match),

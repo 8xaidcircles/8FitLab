@@ -242,12 +242,32 @@ export interface UserExperience {
   years: number;
 }
 
-/** 職歴の回答。entered は職種と年数を 1 件以上入力、none は実務経験なし、unknown は「わかりません / 答えない」 */
-export const EXPERIENCE_STATUSES = ["entered", "none", "unknown"] as const;
+/** 職歴の回答。entered は職種と年数を 1 件以上入力、none は実務経験なし、skipped は「回答をスキップする」 */
+export const EXPERIENCE_STATUSES = ["entered", "none", "skipped"] as const;
 export type ExperienceStatus = (typeof EXPERIENCE_STATUSES)[number];
 
-/** 学歴の「わかりません / 答えない」の level_id（data/education/education.json） */
-export const UNKNOWN_EDUCATION_LEVEL_ID = "unknown";
+/** 学歴の「回答をスキップする」の level_id（data/education/education.json） */
+export const SKIPPED_EDUCATION_LEVEL_ID = "skipped";
+
+/**
+ * 「回答をスキップする」の旧保存値。20261003 のマイグレーションより前に保存した行と、
+ * デプロイ前から開いたままの画面が送る値。読み出し時・受け付け時に "skipped" とみなす
+ */
+export const LEGACY_SKIPPED_VALUE = "unknown";
+
+/**
+ * 持っているスキルを 1 つも選ばなかった理由。スキルを選んだ場合は null
+ * none_intent_to_learn：まだ無いが、これから学習を開始する（スクールのターゲット層）/ skipped：回答をスキップする
+ */
+export const SKILL_STATUSES = ["none_intent_to_learn", "skipped"] as const;
+export type SkillStatus = (typeof SKILL_STATUSES)[number];
+
+/**
+ * 資格を 1 つも選ばなかった理由。資格を選んだ場合は null
+ * none：保有している資格はない / planning_to_certify：これから学習を開始する / skipped：回答をスキップする
+ */
+export const CERTIFICATION_STATUSES = ["none", "planning_to_certify", "skipped"] as const;
+export type CertificationStatus = (typeof CERTIFICATION_STATUSES)[number];
 
 export interface UserInput {
   /** 技術スキル層・人間定義層の skill_id と、人間定義層のツールの tool_id */
