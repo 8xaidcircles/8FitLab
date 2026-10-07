@@ -15,6 +15,7 @@ import {
   skillStatisticsVersion,
   usesEducationRequirement,
   ECDF_SKILL_MATCH_ENABLED,
+  EXPERIENCE_CALCULATION_VERSION,
   SKILL_CALCULATION_VERSION,
   type KnownIds,
   type SkillContext,
@@ -174,6 +175,7 @@ describe("calculateCareerMatch の Skill（技術スキル層 × 人間定義層
     expect(result.skill_progress).toBeCloseTo(50 * 0.8 + 100 * 0.2, 10);
     expect(result.skill_layer_weights).toEqual({ tech: 0.8, human: 0.2, source: "goal" });
     expect(result.skill_calculation_version).toBe(SKILL_CALCULATION_VERSION);
+    expect(result.experience_calculation_version).toBe(EXPERIENCE_CALCULATION_VERSION);
   });
 
   it("資格が証明するスキル・使っているツールも保有しているとみなす", () => {

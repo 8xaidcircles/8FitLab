@@ -64,6 +64,8 @@ CREATE TABLE IF NOT EXISTS public.career_match_results (
     skill_match NUMERIC,
     -- 算出不可（skill_only）の場合は NULL。0 点としては保存しない
     experience_match NUMERIC,
+    -- Experience の計算方式（NULL は旧方式。relevance-1.0.0 = 前職歴を関連度 × 在職年数パーセンタイルで評価）
+    experience_calculation_version TEXT,
     education_match NUMERIC,
     evidence_mode TEXT NOT NULL CHECK (evidence_mode IN ('full', 'proxy', 'skill_only')),
     confidence TEXT NOT NULL CHECK (confidence IN ('moderate', 'moderate_low', 'low')),

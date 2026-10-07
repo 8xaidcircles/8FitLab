@@ -329,6 +329,7 @@ export interface CareerMatchResult {
   experience_match: number | null;
   /** Group の職業そのものの経験がある Requirement Group の割合（0〜1） */
   experience_goal_coverage: number;
+  experience_calculation_version: string;
   education_match: number | null;
   evidence_mode: EvidenceMode;
   confidence: Confidence;

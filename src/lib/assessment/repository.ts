@@ -109,6 +109,7 @@ export async function saveAssessment({
       goal_match: result.goal_match,
       skill_match: result.skill_match,
       experience_match: result.experience_match,
+      experience_calculation_version: result.experience_calculation_version,
       education_match: result.education_match,
       evidence_mode: result.evidence_mode,
       confidence: result.confidence,

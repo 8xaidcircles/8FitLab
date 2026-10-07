@@ -26,6 +26,8 @@ export const SMALL_SAMPLE_THRESHOLD = 100;
 export const MAX_YEARS = 50;
 /** Skill の計算方式（技術スキル層 × 人間定義層）。保存済みの結果で NULL のものは旧方式（Learning Step の達成率） */
 export const SKILL_CALCULATION_VERSION = "layered-1.0.0";
+/** Experience の計算方式（前職歴 = 関連度 × 在職年数パーセンタイル）。保存済みの結果で NULL のものは旧方式 */
+export const EXPERIENCE_CALCULATION_VERSION = "relevance-1.0.0";
 /**
  * Skill Match に ECDF（同じ Goal の利用者内での位置）を使うか。false の間は分布が渡されても linear で計算する。
  * ECDF は中央順位のため、全スキルを習得しても 100 点にならず、Skill の内訳（達成率）とも一致しなくなる（§11）
@@ -372,6 +374,7 @@ export function calculateCareerMatch(
     skill_layer_weights: layered.weights,
     experience_match: experience,
     experience_goal_coverage: coverage,
+    experience_calculation_version: EXPERIENCE_CALCULATION_VERSION,
     education_match: education,
     evidence_mode: mode,
     confidence: confidence(mode, stats.goal_sample_size),
