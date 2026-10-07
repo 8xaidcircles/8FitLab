@@ -6,9 +6,9 @@ import { TrackView } from "@/components/track-view";
 import { getAnonymousUserId, isUuid } from "@/lib/anonymous-user";
 import { getAssessment } from "@/lib/assessment/repository";
 import {
+  evaluateSteps,
   goalSkillUnits,
   humanRequirementStatus,
-  learningPath,
   loadEducation,
   loadGoals,
   loadKnownIds,
@@ -25,6 +25,7 @@ import {
 } from "@/lib/career-match";
 import { SKIPPED_EDUCATION_LEVEL_ID } from "@/lib/career-match/types";
 import { EXPERIENCE_STATUS_LABELS, formatPercent } from "@/lib/labels";
+import { determineUserStage } from "@/lib/learning-path/determine-stage";
 
 export const metadata: Metadata = {
   title: "Goal Fitの診断結果",
@@ -112,8 +113,8 @@ export default async function ResultPage({ params }: PageProps<"/goal-fit/result
   const missingDataDriven = gap.data_driven.filter((s) => !s.satisfied).length;
   const missingChecklist = gap.checklist.filter((s) => !s.satisfied).length;
 
-  // 学習ロードマップのページへの案内文を、未習得の Step の有無で切り替える
-  const missingSteps = learningPath(path, held);
+  // 学習ロードマップのページへの案内文を、ステージ（実務経験・未習得の Step の有無）で切り替える
+  const stage = determineUserStage(goal, assessment.experiences, evaluateSteps(path, held));
 
   const certificationNames = skillContext.certifications
     .filter((c) => assessment.certification_ids.includes(c.cert_id))
@@ -321,13 +322,18 @@ export default async function ResultPage({ params }: PageProps<"/goal-fit/result
             <span className="flex justify-center rounded-[13px] bg-indigo px-4 py-4 text-[clamp(0.95rem,4.5vw,1.25rem)] leading-snug font-extrabold whitespace-nowrap text-white transition group-hover:bg-ink sm:px-6 sm:py-5">
               {/* 矢印は文字の中央揃えに影響しないよう、文字ブロックの右外に絶対配置する */}
               <span className="relative text-center">
-                {missingSteps.length > 0 ? (
+                {stage === "learning" ? (
                   <>
                     <span className="block">学習ロードマップ</span>
-                    <span className="block">おすすめ教材を見る</span>
+                    <span className="block">スクール・サービスを見る</span>
                   </>
-                ) : (
+                ) : stage === "ready" ? (
                   "おすすめの転職サービスを見る"
+                ) : (
+                  <>
+                    <span className="block">キャリアアップ向けの</span>
+                    <span className="block">転職・フリーランス案件を見る</span>
+                  </>
                 )}
                 <span
                   aria-hidden
