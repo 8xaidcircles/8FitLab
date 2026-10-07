@@ -25,7 +25,6 @@ import {
 } from "@/lib/career-match";
 import { SKIPPED_EDUCATION_LEVEL_ID } from "@/lib/career-match/types";
 import { EXPERIENCE_STATUS_LABELS, formatPercent } from "@/lib/labels";
-import { LearningSteps } from "@/components/learning-steps";
 
 export const metadata: Metadata = {
   title: "Goal Fitの診断結果",
@@ -213,7 +212,13 @@ export default async function ResultPage({ params }: PageProps<"/goal-fit/result
         </div>
       </section>
 
-      <section className="mt-6 grid gap-4 md:grid-cols-3">
+      <p className="mt-4 text-center text-xs leading-relaxed text-muted">
+        Goal Fit の計算結果は、キャリア判断の参考値であり、
+        <br className="hidden sm:inline" />
+        実際の就職・転職・採用の結果を保証するものではありません。
+      </p>
+
+      <section className="mt-4 grid gap-4 md:grid-cols-3">
         <CategoryCard
           title="Skill"
           value={match.skill_match}
@@ -240,7 +245,7 @@ export default async function ResultPage({ params }: PageProps<"/goal-fit/result
       <section className="mt-10">
         <h2 className="text-xl font-extrabold">Skill の内訳</h2>
         <p className="mt-1 text-sm text-muted">
-          現在のスキル定義で、今の入力が満たしている項目です。満たしていない項目を習得すると Skill が上がります。
+          現在のスキル状況です。未習得の項目をマスターすると、スキルマッチ度がアップします。
         </p>
         <div className={`mt-5 grid gap-4 ${showTech && showHuman ? "md:grid-cols-2" : ""}`}>
           {showTech && (
@@ -298,76 +303,42 @@ export default async function ResultPage({ params }: PageProps<"/goal-fit/result
       </section>
 
       <section className="mt-10">
-        <div className="flex flex-wrap items-end justify-between gap-2">
-          <div>
-            <h2 className="text-xl font-extrabold">Skill Gap と Learning Path</h2>
-            <p className="mt-1 text-sm text-muted">
-              {missingDataDriven + missingChecklist === 0
-                ? "すべての学習ステップを習得済みです。"
-                : `未習得のステップが ${missingDataDriven + missingChecklist} つあります。それぞれ上から順に学ぶのがおすすめです。`}
-              現在の学習ステップの定義で判定しています。
-            </p>
-          </div>
+        <h2 className="text-xl font-extrabold">Skill Gap と Learning Path</h2>
+        <p className="mt-1 text-sm text-muted">
+          {missingDataDriven + missingChecklist === 0
+            ? "すべてのSkillを習得済みです。"
+            : `未習得のSkillが ${missingDataDriven + missingChecklist} つあります。`}
+        </p>
+
+        <div className="mt-6 text-center">
           <Link
             href={`/goal-fit/result/${id}/learning-path`}
-            className="group inline-block rounded-full p-[3px] shadow-md transition hover:shadow-lg"
+            className="group inline-block w-full max-w-lg rounded-2xl p-[3px] shadow-lg transition hover:-translate-y-0.5 hover:shadow-xl"
             style={{
               backgroundImage: "linear-gradient(90deg, #e84545, #f27035, #f2e26e, #8ee8c8, #22c3e0, #38a6f2, #2b3192, #a855f7)",
             }}
           >
-            <span className="block rounded-full bg-white px-5 py-2.5 text-sm font-extrabold text-indigo transition group-hover:bg-indigo-soft">
-              {missingSteps.length > 0 ? "学習ロードマップとおすすめ教材を見る →" : "おすすめの転職サービスを見る →"}
+            <span className="flex justify-center rounded-[13px] bg-indigo px-4 py-4 text-[clamp(0.95rem,4.5vw,1.25rem)] leading-snug font-extrabold whitespace-nowrap text-white transition group-hover:bg-ink sm:px-6 sm:py-5">
+              {/* 矢印は文字の中央揃えに影響しないよう、文字ブロックの右外に絶対配置する */}
+              <span className="relative text-center">
+                {missingSteps.length > 0 ? (
+                  <>
+                    <span className="block">学習ロードマップ</span>
+                    <span className="block">おすすめ教材を見る</span>
+                  </>
+                ) : (
+                  "おすすめの転職サービスを見る"
+                )}
+                <span
+                  aria-hidden
+                  className="absolute top-1/2 left-full ml-[1em] flex size-6 -translate-y-1/2 items-center justify-center rounded-full bg-white text-indigo transition-transform group-hover:translate-x-1 sm:size-8"
+                >
+                  →
+                </span>
+              </span>
             </span>
           </Link>
         </div>
-
-        {gap.data_driven.length > 0 && (
-          <div className="mt-6">
-            <h3 className="font-bold">Skillに反映されるステップ（未習得 {missingDataDriven}）</h3>
-            <p className="mt-1 text-xs text-muted">習得すると Skill が上がります。</p>
-            <LearningSteps
-              goalId={goal.goal_id}
-              assessmentId={id}
-              steps={gap.data_driven.map((s) => ({
-                step_id: s.step_id,
-                learning_order: s.learning_order,
-                name: s.name,
-                satisfied: s.satisfied,
-                options: s.any_of.map((skillId) => ({
-                  skill_id: skillId,
-                  name: skillName(skillId),
-                  owned: held.has(skillId),
-                  scored: s.scored_options.includes(skillId),
-                })),
-              }))}
-            />
-          </div>
-        )}
-
-        {gap.checklist.length > 0 && (
-          <div className="mt-8">
-            <h3 className="font-bold">前提・基本要件のチェックリスト（未習得 {missingChecklist}）</h3>
-            <p className="mt-1 text-xs text-muted">
-              仕事や学習を進めるうえで前提になる項目です。Skillの計算には含めていません（調査データでこのGoalに特徴的とは判定されなかった技術と、配分のない手法・知識）。
-            </p>
-            <LearningSteps
-              goalId={goal.goal_id}
-              assessmentId={id}
-              trackView={gap.data_driven.length === 0}
-              steps={gap.checklist.map((s) => ({
-                step_id: s.step_id,
-                learning_order: s.learning_order,
-                name: s.name,
-                satisfied: s.satisfied,
-                options: s.any_of.map((skillId) => ({
-                  skill_id: skillId,
-                  name: skillName(skillId),
-                  owned: held.has(skillId),
-                })),
-              }))}
-            />
-          </div>
-        )}
       </section>
 
       <div className="mt-10 text-center">
@@ -379,6 +350,13 @@ export default async function ResultPage({ params }: PageProps<"/goal-fit/result
         </Link>
       </div>
 
+      <p className="mt-10 text-center text-xs text-muted">
+        JobHop・ESCO・Stack Overflow Developer Survey のデータを加工して算出（
+        <Link href="/disclaimer#licenses" className="underline hover:text-indigo">
+          データ出典・ライセンス
+        </Link>
+        ）
+      </p>
     </div>
   );
 }

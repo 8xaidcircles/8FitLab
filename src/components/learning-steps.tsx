@@ -67,34 +67,27 @@ export function LearningSteps({
           }
           const order = missingOrder.get(step.step_id);
           return (
-            <li key={step.step_id}>
-              <details className={`group rounded-2xl border bg-white ${step.satisfied ? "border-line" : "border-flame/40"}`}>
-                <summary className="flex cursor-pointer list-none items-center gap-3 p-4">
-                  <span
-                    className={`inline-flex size-8 shrink-0 items-center justify-center rounded-full text-sm font-extrabold ${
-                      step.satisfied ? "bg-cyan-soft text-cyan" : "bg-flame-soft text-flame"
-                    }`}
-                    aria-hidden="true"
-                  >
-                    {step.satisfied ? "✓" : order}
-                  </span>
-                  <span className="flex-1">
-                    <span className={`font-bold ${step.satisfied ? "text-muted" : ""}`}>{step.name}</span>
-                    {choice && <span className="ml-2 text-xs text-muted">（{step.options.length}つから1つ）</span>}
-                  </span>
-                  <span className={`text-xs font-bold ${step.satisfied ? "text-cyan" : "text-flame"}`}>
-                    {step.satisfied ? "習得済み" : "未習得"}
-                  </span>
-                  <span className="text-muted transition group-open:rotate-180" aria-hidden="true">
-                    ▾
-                  </span>
-                </summary>
-                <div className="border-t border-line px-4 py-3 text-sm">
-                  <p className="text-xs text-muted">
-                    {choice
-                      ? "いずれか1つを習得すれば、このステップは達成です。"
-                      : "このスキルを習得すると、このステップは達成です。"}
-                  </p>
+            <li
+              key={step.step_id}
+              className={`flex items-start gap-3 rounded-2xl border bg-white p-4 ${step.satisfied ? "border-line" : "border-flame/40"}`}
+            >
+              <span
+                className={`inline-flex size-8 shrink-0 items-center justify-center rounded-full text-sm font-extrabold ${
+                  step.satisfied ? "bg-cyan-soft text-cyan" : "bg-flame-soft text-flame"
+                }`}
+                aria-hidden="true"
+              >
+                {step.satisfied ? "✓" : order}
+              </span>
+              <div className="min-w-0 flex-1 self-center">
+                <p className={`font-bold ${step.satisfied ? "text-muted" : ""}`}>
+                  {step.name}
+                  {choice && <span className="ml-2 text-xs font-normal text-muted">（{step.options.length}つから1つ）</span>}
+                  {!choice && step.options[0]?.scored === false && (
+                    <span className="ml-2 text-xs font-normal text-muted">（Skill対象外）</span>
+                  )}
+                </p>
+                {choice && (
                   <div className="mt-2 flex flex-wrap gap-2">
                     {step.options.map((option) => (
                       <span
@@ -109,9 +102,12 @@ export function LearningSteps({
                       </span>
                     ))}
                   </div>
-                  {step.details}
-                </div>
-              </details>
+                )}
+                {step.details}
+              </div>
+              <span className={`shrink-0 self-center text-xs font-bold ${step.satisfied ? "text-cyan" : "text-flame"}`}>
+                {step.satisfied ? "習得済み" : "未習得"}
+              </span>
             </li>
           );
         })}
