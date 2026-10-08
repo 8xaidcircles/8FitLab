@@ -50,6 +50,16 @@ const PATTERNS = [
     label: "スキルなし / Goal の職業 1年 / 学士",
     input: { skill_ids: [], experiences: "goal-occupation-1", degree_id: "Bachelor" },
   },
+  {
+    id: "kotlin-only",
+    label: "Kotlin のみ / 経験なし / 学士",
+    input: { skill_ids: ["kotlin"], experiences: [], degree_id: "Bachelor" },
+  },
+  {
+    id: "java-only",
+    label: "Java のみ / 経験なし / 学士",
+    input: { skill_ids: ["java"], experiences: [], degree_id: "Bachelor" },
+  },
 ];
 
 async function snapshot(out) {

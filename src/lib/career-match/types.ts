@@ -121,16 +121,24 @@ export interface SkillStatisticsUnit {
   region_other_respondents: number;
   region_p_skill_given_goal: number;
   region_p_skill_given_other: number;
-  /** 以下 3 つは日本補正後の値 */
+  /** 以下 3 つは日本補正後の値（参考値。Skill Progress の重みには使わない） */
   quantity: number;
   quality: number;
   contribution: number;
   /** 世界の P(unit | Goal) > P(unit | Other) の片側検定 */
   p_value: number;
   significant: boolean;
-  /** Goal Skill として採用（Skill Match の対象） */
+  /** base = 基本リスト（Goal の過半数が使う）、distinctive = 特有リスト（他職種より有意に多く使う）。両方に入ってよい */
+  roles: SkillUnitRole[];
+  /** 基本リストの重み（= 日本補正後の P(unit | Goal)）。基本リスト外は 0 */
+  base_weight: number;
+  /** 特有リストの重み（= P(unit | Goal) × 特有度）。特有リスト外は 0 */
+  distinctive_weight: number;
+  /** Goal Skill として採用（Skill Match の対象）= roles が空でない */
   selected: boolean;
 }
+
+export type SkillUnitRole = "base" | "distinctive";
 
 /** scripts/build_skill_statistics.py が Stack Overflow Developer Survey から事前計算する技術スキル統計 */
 export interface SkillStatistics {
@@ -149,6 +157,8 @@ export interface SkillStatistics {
     modifications: string;
   };
   calculation_version: string;
+  /** 統計の作成に使った data/skills/tech-skill-groups.json の version */
+  groups_version: string;
   calculation_date: string;
   min_reliable_sample: number;
   region: { country: string; method: string; prior_strength: number };
@@ -156,11 +166,24 @@ export interface SkillStatistics {
     alpha: number;
     correction: string;
     significance_scope: string;
-    cumulative_share: number;
-    contribution_scope: string;
+    /** 基本リストの線引き（P(unit | Goal) がこの値以上） */
+    base_min_share: number;
+    /** d*：基本リストの重み = pg × min(1, d / d*)。有意と判定される確率が 50% になる d（全 Goal の基本リストの候補から推定） */
+    base_discount_d_ref: number;
+    base_discount_d_ref_method: string;
+    base_discount_d_ref_n_units: number;
+    base_discount_d_ref_n_significant: number;
+    /** β：特有リストの重みの割合。技術スキル層を使う Goal の合算から求めた全 Goal 共通の値 */
+    distinctive_share: number;
+    distinctive_share_goals: string[];
+    weight_scope: string;
   };
+  skill_split: { base_total: number; distinctive_total: number };
   units: SkillStatisticsUnit[];
 }
+
+/** 技術スキル層の Skill Progress の計算に使う部分 */
+export type TechSkillStatistics = Pick<SkillStatistics, "goal_id" | "units" | "selection">;
 
 export type HumanSkillDomain = "methodology_process" | "knowledge_concepts" | "management_business_tools";
 
@@ -352,12 +375,33 @@ export interface SkillGapStep extends LearningStep {
   satisfied: boolean;
 }
 
+/** Skill Progress の計算に使う統計・定義（layeredSkillProgress の引数から held を除いたもの） */
+export interface SkillScoringContext {
+  techStats: TechSkillStatistics | null;
+  goalLayers: GoalSkillLayers;
+  defaultWeights: SkillLayerWeights;
+}
+
 /**
- * Skill Gap を Skill Match との関係で分けたもの（どちらも learning_order 順）。
- * data_driven：Skill Match の達成率に効く Step（技術スキル層の採用 unit、または配分のある人間定義層の要件を含む）
- * checklist：Skill Match には効かない前提・基本要件（Git など。学習順には必要だがスコアの分母に含まない）
+ * いまの持ちスキルで、その Step を習得すると Skill Progress が上がるか。
+ * raises：上がる / credited：同じ unit・要件の別の技術で評価済みのため上がらない /
+ * not_scored：Skill Progress の対象外（Git などの基礎項目）/ satisfied：習得済み
  */
+export type SkillGapEffect = "raises" | "credited" | "not_scored" | "satisfied";
+
+export interface SkillGapStepScored extends SkillGapStep {
+  effect: SkillGapEffect;
+  /** そのステップだけを習得した場合の Skill Progress の増加分（0〜100）。選択肢が複数なら最も上がる選択肢の値。raises 以外は 0 */
+  gain: number;
+  /** 選択肢ごとの増加分（評価対象の選択肢だけ） */
+  option_gains: { skill_id: string; gain: number }[];
+  /** credited のとき、評価済みの unit / 要件の名前（unit.name、要件は name ?? requirement_id） */
+  credited_by: string[];
+  /** raises のステップのうち、同じ unit / 要件を共有していて、gain を合計できないステップの step_id */
+  overlaps_with: string[];
+}
+
+/** Learning Path の全 Step（learning_order 順）に、Skill Progress への効き方を付けたもの */
 export interface SkillGap {
-  data_driven: (SkillGapStep & { scored_options: string[] })[];
-  checklist: SkillGapStep[];
+  steps: SkillGapStepScored[];
 }

@@ -9,6 +9,7 @@ import type {
   SkillLayerWeightSource,
   SkillScoringMethod,
   SkillStatus,
+  SkillUnitRole,
   SKIPPED_EDUCATION_LEVEL_ID,
 } from "@/lib/career-match/types";
 
@@ -63,6 +64,16 @@ export const SKILL_LAYER_WEIGHT_SOURCE_LABELS: Record<SkillLayerWeightSource, st
   goal: "このGoal用の配分",
   fallback: "片方の層が無いため、もう片方で100%",
 };
+
+/** 「Skill の内訳」で、技術スキル層の unit がどちらのリストに入っているか */
+export function skillUnitRoleLabel(roles: readonly SkillUnitRole[]): string {
+  const base = roles.includes("base");
+  const distinctive = roles.includes("distinctive");
+  if (base && distinctive) return "基本＋特有";
+  if (base) return "基本技術";
+  if (distinctive) return "特有技術";
+  throw new Error(`Skill unit has no list role: [${roles.join(", ")}]`);
+}
 
 /** Skill Match のスコアリング方式（career_match_results.skill_scoring_method） */
 export const SKILL_SCORING_METHOD_LABELS: Record<SkillScoringMethod, string> = {

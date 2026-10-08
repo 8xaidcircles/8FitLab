@@ -25,7 +25,7 @@ import {
 export const SMALL_SAMPLE_THRESHOLD = 100;
 export const MAX_YEARS = 50;
 /** Skill の計算方式（技術スキル層 × 人間定義層）。保存済みの結果で NULL のものは旧方式（Learning Step の達成率） */
-export const SKILL_CALCULATION_VERSION = "layered-1.0.0";
+export const SKILL_CALCULATION_VERSION = "layered-2.0.0";
 /** Experience の計算方式（前職歴 = 関連度 × 在職年数パーセンタイル）。保存済みの結果で NULL のものは旧方式 */
 export const EXPERIENCE_CALCULATION_VERSION = "relevance-1.0.0";
 /**
@@ -82,11 +82,22 @@ export function resolveUserSkills(
   };
 }
 
-// 例：stack_overflow_developer_survey:2023-2024-2025:0.3.1:k=80.9（k は再生成のたびにデータから推定し直すため含める）
+// 例：stack_overflow_developer_survey:2023-2024-2025:0.8.0:k=80.9:groups=1.4.0:base=0.5:beta=0.2942:dref=0.094321
+// k・β・d*（基本リストの割り引きの基準）は再生成のたびにデータから求め直すため、グループ定義と基本リストの線引きは人が変えるため含める
+// （どれかが変われば達成率の意味が変わり、ecdf の分布を混ぜられない）
 export function skillStatisticsVersion(
-  stats: Pick<SkillStatistics, "source" | "source_years" | "calculation_version" | "region">,
+  stats: Pick<SkillStatistics, "source" | "source_years" | "calculation_version" | "region" | "groups_version" | "selection">,
 ): string {
-  return `${stats.source}:${stats.source_years.join("-")}:${stats.calculation_version}:k=${stats.region.prior_strength}`;
+  return [
+    stats.source,
+    stats.source_years.join("-"),
+    stats.calculation_version,
+    `k=${stats.region.prior_strength}`,
+    `groups=${stats.groups_version}`,
+    `base=${stats.selection.base_min_share}`,
+    `beta=${stats.selection.distinctive_share}`,
+    `dref=${stats.selection.base_discount_d_ref}`,
+  ].join(":");
 }
 
 // scripts/build_career_statistics.py の round_years と一致させること（data/fixtures/career-match/cross-language.json で両方を検証）
