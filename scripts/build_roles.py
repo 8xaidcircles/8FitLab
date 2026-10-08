@@ -15,6 +15,7 @@ import pandas as pd
 ROOT = Path(__file__).resolve().parent.parent
 ESCO_DIR = ROOT / "data" / "raw" / "esco" / "v1.1.2"
 JOBHOP_DIR = ROOT / "data" / "raw" / "jobhop"
+GOALS_PATH = ROOT / "data" / "goals" / "goals.json"
 OUT_PATH = ROOT / "data" / "career" / "roles.json"
 
 
@@ -35,6 +36,13 @@ def main() -> None:
         [pd.read_parquet(JOBHOP_DIR / f"JobHop_v2_{s}.parquet") for s in ["train", "val", "test"]]
     )
     persons = jobhop.groupby("matched_code").resume_id.nunique().to_dict()
+
+    missing_isco = occ[occ.iscoGroup.isna() | (occ.iscoGroup.str.len() == 0)]
+    if not missing_isco.empty:
+        raise SystemExit(f"iscoGroup が無い職業があります: {', '.join(missing_isco.code.astype(str).head(10))}")
+    duplicated = occ.code[occ.code.duplicated()]
+    if not duplicated.empty:
+        raise SystemExit(f"role_id（ESCO の code）が重複しています: {', '.join(sorted(set(duplicated))[:10])}")
 
     roles = []
     for row in occ.itertuples():
@@ -72,8 +80,20 @@ def main() -> None:
 
     with_data = sum(1 for r in roles if r["jobhop_persons"] > 0)
     print(f"roles={len(roles)}  in_jobhop={with_data}  -> {OUT_PATH.relative_to(ROOT)}")
-    missing = set(persons) - {r["role_id"] for r in roles} - {"unknown"}
-    print(f"JobHop codes not in ESCO released occupations: {len(missing)} {sorted(missing)[:10]}")
+    role_ids = {r["role_id"] for r in roles}
+    missing = sorted(set(persons) - role_ids - {"unknown"}, key=lambda code: -persons[code])
+    affected = jobhop[jobhop.matched_code.isin(missing)].resume_id.nunique()
+    print(
+        f"JobHop codes not in ESCO released occupations: {len(missing)} codes, {affected} persons "
+        f"(top: {', '.join(f'{code}={persons[code]}' for code in missing[:10])})"
+    )
+
+    goals = json.loads(GOALS_PATH.read_text(encoding="utf-8"))["goals"]
+    unknown_goal_codes = sorted(
+        {o["code"] for g in goals for group in g["requirement_groups"] for o in group["occupations"]} - role_ids
+    )
+    if unknown_goal_codes:
+        raise SystemExit(f"{GOALS_PATH.name} の職業コードが roles.json にありません: {', '.join(unknown_goal_codes)}")
 
 
 if __name__ == "__main__":
