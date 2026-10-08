@@ -1,6 +1,6 @@
 {
-  "version": "1.1.0",
-  "description": "代わりのきく技術のグループ。グループ内のどれか 1 つを使えればそのグループを満たす（Experience の要件グループと同じ OR）。1 つの Goal の中では、1 つの技術は最大 1 グループにしか入らない（goals が重ならないグループどうしは同じ技術を含めてよい）。goals がある場合はその Goal でだけグループとして扱い、それ以外の Goal ではメンバーを個別の技術として扱う",
+  "version": "1.4.0",
+  "description": "代わりのきく技術のグループ。採用は「その職種の過半数が使う（基本リスト）」か「他職種より多く使う（特有リスト）」で決まり、有意差だけで落ちることはないため、職種ごとにメンバーを変える必要はない（1.4.0 で Software Architect 専用のサーバーサイドの言語のグループを廃止）。グループ内のどれか 1 つを使えればそのグループを満たす（Experience の要件グループと同じ OR）。1 つの Goal の中では、1 つの技術は最大 1 グループにしか入らない。1 つの技術を別の Goal で別のグループに入れるときは、goals を重ならないように付ける（goals の無いグループは全 Goal に適用されるため、他のグループと技術を共有できない）。goals がある場合はその Goal でだけグループとして扱い、それ以外の Goal ではメンバーを個別の技術として扱う",
   "groups": [
     {
       "group_id": "analysis-language",
@@ -10,15 +10,36 @@
       "members": ["python", "pandas", "numpy", "scikit-learn", "jupyter", "r", "tidyverse", "rstudio"]
     },
     {
+      "group_id": "data-engineering-python",
+      "name": "データ処理の Python（pandas・NumPy・scikit-learn・Jupyter を含む）",
+      "description": "データエンジニアの Python はデータ処理のために使い、pandas・NumPy・scikit-learn・Jupyter は Python を使う人がまとめて使うため 1 項目にまとめる（別々に数えると Python を使う人の多さを何重にも数える）",
+      "goals": ["data-engineer"],
+      "members": ["python", "pandas", "numpy", "scikit-learn", "jupyter"]
+    },
+    {
+      "group_id": "infrastructure-language",
+      "name": "インフラ自動化の言語（Python または Go）",
+      "description": "クラウド・運用の自動化ツールは Python と Go のどちらかで書けるため 1 項目にまとめる",
+      "goals": ["cloud-architect", "devops-sre"],
+      "members": ["python", "go"]
+    },
+    {
+      "group_id": "javascript-language",
+      "name": "JavaScript / TypeScript",
+      "description": "TypeScript は JavaScript に型を足した言語で、どちらか一方で同じ画面を作れるため 1 項目にまとめる",
+      "goals": ["frontend-developer", "full-stack-developer"],
+      "members": ["javascript", "typescript"]
+    },
+    {
       "group_id": "server-language",
       "name": "サーバーサイドの言語・ランタイム",
       "goals": ["backend-developer", "full-stack-developer", "software-architect"],
-      "members": ["java", "php", "ruby", "go", "python", "csharp", "rust", "scala", "elixir", "nodejs", "deno"]
+      "members": ["java", "kotlin", "php", "ruby", "go", "python", "csharp", "rust", "scala", "elixir", "nodejs", "deno"]
     },
     {
       "group_id": "server-framework",
       "name": "サーバーサイドのフレームワーク",
-      "goals": ["backend-developer", "full-stack-developer", "software-architect"],
+      "goals": ["backend-developer", "full-stack-developer", "software-architect", "data-engineer"],
       "members": [
         "spring-boot", "spring-framework", "laravel", "ruby-on-rails", "django", "fastapi", "flask",
         "express", "fastify", "nestjs", "aspnet-core", "aspnet", "symfony", "codeigniter", "yii",
@@ -138,6 +159,8 @@
     {
       "group_id": "mobile-native-language",
       "name": "モバイルネイティブ言語",
+      "description": "Swift・Kotlin・Objective-C をまとめるのはモバイルの職種だけ。他の Goal では個別の技術として扱う（Kotlin はサーバーサイドの言語のグループにも入る）",
+      "goals": ["mobile-app-developer"],
       "members": ["swift", "kotlin", "objective-c"]
     },
     {
