@@ -58,7 +58,7 @@ export interface RequirementGroupStatistics extends RequirementGroup {
   goal_sample_size: number;
   /** Group Population のうち、Group の職業に就く前の職歴がある人数 */
   pre_goal_experience_persons: number;
-  /** Group 達成率 = 100 とする Σ Contribution（前職歴の Σ Contribution のパーセンタイル） */
+  /** 前職歴の Σ Contribution のパーセンタイル。点数には使わず、0 以下なら前職歴の統計が成り立たない（算出不可）とする */
   experience_reference: number;
   /** Unit = Role × 「years 年以上」（Group の職業に就く前の職歴のみ） */
   experience: ExperienceStatisticsRow[];
@@ -121,16 +121,24 @@ export interface SkillStatisticsUnit {
   region_other_respondents: number;
   region_p_skill_given_goal: number;
   region_p_skill_given_other: number;
-  /** 以下 3 つは日本補正後の値 */
+  /** 以下 3 つは日本補正後の値（参考値。Skill Progress の重みには使わない） */
   quantity: number;
   quality: number;
   contribution: number;
   /** 世界の P(unit | Goal) > P(unit | Other) の片側検定 */
   p_value: number;
   significant: boolean;
-  /** Goal Skill として採用（Skill Match の対象） */
+  /** base = 基本リスト（Goal の過半数が使う）、distinctive = 特有リスト（他職種より有意に多く使う）。両方に入ってよい */
+  roles: SkillUnitRole[];
+  /** 基本リストの重み（= 日本補正後の P(unit | Goal)）。基本リスト外は 0 */
+  base_weight: number;
+  /** 特有リストの重み（= P(unit | Goal) × 特有度）。特有リスト外は 0 */
+  distinctive_weight: number;
+  /** Goal Skill として採用（Skill Match の対象）= roles が空でない */
   selected: boolean;
 }
+
+export type SkillUnitRole = "base" | "distinctive";
 
 /** scripts/build_skill_statistics.py が Stack Overflow Developer Survey から事前計算する技術スキル統計 */
 export interface SkillStatistics {
@@ -149,6 +157,8 @@ export interface SkillStatistics {
     modifications: string;
   };
   calculation_version: string;
+  /** 統計の作成に使った data/skills/tech-skill-groups.json の version */
+  groups_version: string;
   calculation_date: string;
   min_reliable_sample: number;
   region: { country: string; method: string; prior_strength: number };
@@ -156,11 +166,24 @@ export interface SkillStatistics {
     alpha: number;
     correction: string;
     significance_scope: string;
-    cumulative_share: number;
-    contribution_scope: string;
+    /** 基本リストの線引き（P(unit | Goal) がこの値以上） */
+    base_min_share: number;
+    /** d*：基本リストの重み = pg × min(1, d / d*)。有意と判定される確率が 50% になる d（全 Goal の基本リストの候補から推定） */
+    base_discount_d_ref: number;
+    base_discount_d_ref_method: string;
+    base_discount_d_ref_n_units: number;
+    base_discount_d_ref_n_significant: number;
+    /** β：特有リストの重みの割合。技術スキル層を使う Goal の合算から求めた全 Goal 共通の値 */
+    distinctive_share: number;
+    distinctive_share_goals: string[];
+    weight_scope: string;
   };
+  skill_split: { base_total: number; distinctive_total: number };
   units: SkillStatisticsUnit[];
 }
+
+/** 技術スキル層の Skill Progress の計算に使う部分 */
+export type TechSkillStatistics = Pick<SkillStatistics, "goal_id" | "units" | "selection">;
 
 export type HumanSkillDomain = "methodology_process" | "knowledge_concepts" | "management_business_tools";
 
@@ -225,6 +248,16 @@ export interface SkillLayersMaster {
 export interface SkillProgressDistribution {
   goal_id: string;
   scores: readonly number[];
+  /** 集計した結果の Skill の計算方式。現在の SKILL_CALCULATION_VERSION と違えば使わない */
+  skill_calculation_version: string;
+  /** 集計した結果の Skill Statistics の由来。技術スキル層を計算しない Goal は null。現在の値と違えば使わない */
+  skill_statistics_version: string | null;
+}
+
+/** 分布が現在の計算と同じバージョンかを判定するための値 */
+export interface SkillScoringVersions {
+  skill_calculation_version: string;
+  skill_statistics_version: string | null;
 }
 
 /**
@@ -242,12 +275,32 @@ export interface UserExperience {
   years: number;
 }
 
-/** 職歴の回答。entered は職種と年数を 1 件以上入力、none は実務経験なし、unknown は「わかりません / 答えない」 */
-export const EXPERIENCE_STATUSES = ["entered", "none", "unknown"] as const;
+/** 職歴の回答。entered は職種と年数を 1 件以上入力、none は実務経験なし、skipped は「回答をスキップする」 */
+export const EXPERIENCE_STATUSES = ["entered", "none", "skipped"] as const;
 export type ExperienceStatus = (typeof EXPERIENCE_STATUSES)[number];
 
-/** 学歴の「わかりません / 答えない」の level_id（data/education/education.json） */
-export const UNKNOWN_EDUCATION_LEVEL_ID = "unknown";
+/** 学歴の「回答をスキップする」の level_id（data/education/education.json） */
+export const SKIPPED_EDUCATION_LEVEL_ID = "skipped";
+
+/**
+ * 「回答をスキップする」の旧保存値。20261003 のマイグレーションより前に保存した行と、
+ * デプロイ前から開いたままの画面が送る値。読み出し時・受け付け時に "skipped" とみなす
+ */
+export const LEGACY_SKIPPED_VALUE = "unknown";
+
+/**
+ * 持っているスキルを 1 つも選ばなかった理由。スキルを選んだ場合は null
+ * none_intent_to_learn：まだ無いが、これから学習を開始する（スクールのターゲット層）/ skipped：回答をスキップする
+ */
+export const SKILL_STATUSES = ["none_intent_to_learn", "skipped"] as const;
+export type SkillStatus = (typeof SKILL_STATUSES)[number];
+
+/**
+ * 資格を 1 つも選ばなかった理由。資格を選んだ場合は null
+ * none：保有している資格はない / planning_to_certify：これから学習を開始する / skipped：回答をスキップする
+ */
+export const CERTIFICATION_STATUSES = ["none", "planning_to_certify", "skipped"] as const;
+export type CertificationStatus = (typeof CERTIFICATION_STATUSES)[number];
 
 export interface UserInput {
   /** 技術スキル層・人間定義層の skill_id と、人間定義層のツールの tool_id */
@@ -272,6 +325,9 @@ export interface StoredSkillBreakdown {
   tech_skill_progress: number | null;
   human_skill_progress: number | null;
   skill_layer_weights: ResolvedSkillLayerWeights;
+  skill_scoring_method: SkillScoringMethod;
+  skill_distribution_sample_size: number | null;
+  skill_distribution_version: string | null;
 }
 
 export interface CareerMatchResult {
@@ -281,6 +337,10 @@ export interface CareerMatchResult {
   /** 2 層を配分で合算した達成率（0〜100）。skill_match はこれを skill_scoring_method で変換した値 */
   skill_progress: number;
   skill_scoring_method: SkillScoringMethod;
+  /** ecdf に使った分布の標本数（ユーザー数）。linear は null */
+  skill_distribution_sample_size: number | null;
+  /** ecdf に使った分布のバージョン（skill_calculation_version|skill_statistics_version）。linear は null */
+  skill_distribution_version: string | null;
   skill_calculation_version: string;
   /** 技術スキル層に使った Skill Statistics の由来（出典:年:計算バージョン:k）。技術スキル層を計算できない Goal は null */
   skill_statistics_version: string | null;
@@ -292,6 +352,7 @@ export interface CareerMatchResult {
   experience_match: number | null;
   /** Group の職業そのものの経験がある Requirement Group の割合（0〜1） */
   experience_goal_coverage: number;
+  experience_calculation_version: string;
   education_match: number | null;
   evidence_mode: EvidenceMode;
   confidence: Confidence;
@@ -314,12 +375,33 @@ export interface SkillGapStep extends LearningStep {
   satisfied: boolean;
 }
 
+/** Skill Progress の計算に使う統計・定義（layeredSkillProgress の引数から held を除いたもの） */
+export interface SkillScoringContext {
+  techStats: TechSkillStatistics | null;
+  goalLayers: GoalSkillLayers;
+  defaultWeights: SkillLayerWeights;
+}
+
 /**
- * Skill Gap を Skill Match との関係で分けたもの（どちらも learning_order 順）。
- * data_driven：Skill Match の達成率に効く Step（技術スキル層の採用 unit、または配分のある人間定義層の要件を含む）
- * checklist：Skill Match には効かない前提・基本要件（Git など。学習順には必要だがスコアの分母に含まない）
+ * いまの持ちスキルで、その Step を習得すると Skill Progress が上がるか。
+ * raises：上がる / credited：同じ unit・要件の別の技術で評価済みのため上がらない /
+ * not_scored：Skill Progress の対象外（Git などの基礎項目）/ satisfied：習得済み
  */
+export type SkillGapEffect = "raises" | "credited" | "not_scored" | "satisfied";
+
+export interface SkillGapStepScored extends SkillGapStep {
+  effect: SkillGapEffect;
+  /** そのステップだけを習得した場合の Skill Progress の増加分（0〜100）。選択肢が複数なら最も上がる選択肢の値。raises 以外は 0 */
+  gain: number;
+  /** 選択肢ごとの増加分（評価対象の選択肢だけ） */
+  option_gains: { skill_id: string; gain: number }[];
+  /** credited のとき、評価済みの unit / 要件の名前（unit.name、要件は name ?? requirement_id） */
+  credited_by: string[];
+  /** raises のステップのうち、同じ unit / 要件を共有していて、gain を合計できないステップの step_id */
+  overlaps_with: string[];
+}
+
+/** Learning Path の全 Step（learning_order 順）に、Skill Progress への効き方を付けたもの */
 export interface SkillGap {
-  data_driven: (SkillGapStep & { scored_options: string[] })[];
-  checklist: SkillGapStep[];
+  steps: SkillGapStepScored[];
 }

@@ -1,0 +1,12 @@
+{
+  "version": "1.0.0",
+  "description": "学習ロードマップの Step のうち、選択肢に Skill Match で評価されるものと評価されないものが混ざっているもの（src/lib/career-match/__tests__/roadmap-scoring.test.ts）。混在は、評価されない選択肢を選んだ人の Step は習得済みなのに Skill が上がらない食い違いになる。ここに載っていない混在が見つかったらテストが失敗する。直したら、ここからも消す",
+  "exceptions": [
+    {
+      "goal_id": "data-engineer",
+      "step_id": "data-engineering-language",
+      "unscored_options": ["java", "go"],
+      "reason": "要判断：データエンジニアの言語の採用 unit はデータ処理の Python（python・pandas・numpy・scikit-learn・jupyter）と Scala（特有リスト）で、Java・Go は基本リスト（過半数が使う）にも特有リスト（他職種より有意に多い）にも入らない"
+    }
+  ]
+}

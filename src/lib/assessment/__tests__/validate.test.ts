@@ -25,7 +25,10 @@ function parse(overrides: Record<string, unknown>) {
 
 describe("parseAssessmentSubmission", () => {
   it("正しい入力を受け付け、学歴から統計上の学歴を導く", () => {
-    expect(parseAssessmentSubmission(valid, known)).toEqual({ ok: true, value: { ...valid, degree_id: "Bachelor" } });
+    expect(parseAssessmentSubmission(valid, known)).toEqual({
+      ok: true,
+      value: { ...valid, skill_status: null, certification_status: null, degree_id: "Bachelor" },
+    });
   });
 
   it.each([null, "text", 1, []])("オブジェクト以外は拒否（%j）", (raw) => {
@@ -69,8 +72,39 @@ describe("parseAssessmentSubmission", () => {
     expect(omitted.ok && omitted.value.certification_ids).toEqual([]);
   });
 
-  it("User Skill = 0 を受け付ける", () => {
-    expect(parse({ skill_ids: [] }).ok).toBe(true);
+  it("User Skill = 0 を受け付ける（スキルを選ばなかった理由の項目より前の画面）", () => {
+    const result = parse({ skill_ids: [] });
+    expect(result.ok && result.value.skill_status).toBeNull();
+  });
+
+  it.each(["none_intent_to_learn", "skipped"])("スキルを選ばなかった理由「%s」をスキルなしで受け付ける", (skill_status) => {
+    const result = parse({ skill_ids: [], skill_status });
+    expect(result.ok && result.value).toMatchObject({ skill_ids: [], skill_status });
+  });
+
+  it("スキルを選ばなかった理由が不正・スキルと同時に送られた場合は拒否", () => {
+    expect(parse({ skill_ids: [], skill_status: "beginner" })).toEqual({ ok: false, error: "invalid_skills" });
+    expect(parse({ skill_status: "none_intent_to_learn" })).toEqual({ ok: false, error: "invalid_skills" });
+  });
+
+  it("スキルも理由も選ばない入力（skill_status: null）は拒否", () => {
+    expect(parse({ skill_ids: [], skill_status: null })).toEqual({ ok: false, error: "skills_required" });
+    expect(parse({ skill_status: null }).ok).toBe(true);
+  });
+
+  it.each(["none", "planning_to_certify", "skipped"])("資格を選ばなかった理由「%s」を資格なしで受け付ける", (certification_status) => {
+    const result = parse({ certification_ids: [], certification_status });
+    expect(result.ok && result.value).toMatchObject({ certification_ids: [], certification_status });
+  });
+
+  it("資格を選ばなかった理由が不正・資格と同時に送られた場合は拒否", () => {
+    expect(parse({ certification_ids: [], certification_status: "skip" })).toEqual({ ok: false, error: "invalid_certifications" });
+    expect(parse({ certification_status: "none" })).toEqual({ ok: false, error: "invalid_certifications" });
+  });
+
+  it("資格も理由も選ばない入力（certification_status: null）は拒否", () => {
+    expect(parse({ certification_ids: [], certification_status: null })).toEqual({ ok: false, error: "certifications_required" });
+    expect(parse({ certification_status: null }).ok).toBe(true);
   });
 
   it("未知の Role は拒否", () => {
@@ -92,18 +126,23 @@ describe("parseAssessmentSubmission", () => {
     expect(result.ok && result.value.experiences).toEqual([{ role_id: "2513.5", years: 2 }]);
   });
 
-  it.each([undefined, null, "", "skipped", 1])("職歴の回答が無い・不正なら拒否（%j）", (experience_status) => {
+  it.each([undefined, null, "", "skip", 1])("職歴の回答が無い・不正なら拒否（%j）", (experience_status) => {
     expect(parse({ experience_status })).toEqual({ ok: false, error: "experience_required" });
   });
 
-  it.each(["none", "unknown"])("職歴「%s」は職歴の行なしで受け付ける", (experience_status) => {
+  it.each(["none", "skipped"])("職歴「%s」は職歴の行なしで受け付ける", (experience_status) => {
     const result = parse({ experience_status, experiences: [] });
     expect(result.ok && result.value).toMatchObject({ experience_status, experiences: [] });
   });
 
-  it("職歴「実務経験なし」「わかりません」と職歴の行の組み合わせは拒否", () => {
+  it("職歴の旧値 unknown（デプロイ前から開いたままの画面）は skipped として受け付ける", () => {
+    const result = parse({ experience_status: "unknown", experiences: [] });
+    expect(result.ok && result.value.experience_status).toBe("skipped");
+  });
+
+  it("職歴「実務経験なし」「回答をスキップする」と職歴の行の組み合わせは拒否", () => {
     expect(parse({ experience_status: "none" })).toEqual({ ok: false, error: "invalid_experiences" });
-    expect(parse({ experience_status: "unknown" })).toEqual({ ok: false, error: "invalid_experiences" });
+    expect(parse({ experience_status: "skipped" })).toEqual({ ok: false, error: "invalid_experiences" });
   });
 
   it("職歴「実務経験がある」で職歴の行が無ければ拒否", () => {
@@ -118,13 +157,21 @@ describe("parseAssessmentSubmission", () => {
     expect(parse({ education_level_id })).toEqual({ ok: false, error: "education_required" });
   });
 
-  it("学歴「わかりません / 答えない」は統計上の学歴なし（null）として受け付ける", () => {
-    const result = parse({ education_level_id: "unknown" });
-    expect(result.ok && result.value).toMatchObject({ education_level_id: "unknown", degree_id: null });
+  it.each(["skipped", "unknown"])("学歴「回答をスキップする」（%s）は skipped・統計上の学歴なし（null）として受け付ける", (education_level_id) => {
+    const result = parse({ education_level_id });
+    expect(result.ok && result.value).toMatchObject({ education_level_id: "skipped", degree_id: null });
   });
 
-  it("学歴・職歴とも「わかりません」で、スキルなしの入力を受け付ける", () => {
-    const result = parse({ skill_ids: [], certification_ids: [], experience_status: "unknown", experiences: [], education_level_id: "unknown" });
+  it("すべて未該当・スキップの入力を受け付ける", () => {
+    const result = parse({
+      skill_ids: [],
+      skill_status: "none_intent_to_learn",
+      certification_ids: [],
+      certification_status: "planning_to_certify",
+      experience_status: "skipped",
+      experiences: [],
+      education_level_id: "skipped",
+    });
     expect(result.ok).toBe(true);
   });
 

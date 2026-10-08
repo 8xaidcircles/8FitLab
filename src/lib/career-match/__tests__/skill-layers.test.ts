@@ -7,7 +7,8 @@ import {
   normalizeHumanRequirements,
   resolveSkillLayerWeights,
 } from "../skill-layers";
-import type { Certification, GoalSkillLayers, HumanSkill, SkillStatistics, SkillStatisticsUnit } from "../types";
+import type { Certification, GoalSkillLayers, HumanSkill } from "../types";
+import { skillStatistics, unit } from "./skill-fixtures";
 
 const humanSkills: HumanSkill[] = [
   { skill_id: "testing", name: "テスト", domain: "methodology_process", description: "", tools: [{ tool_id: "jest", name: "Jest" }] },
@@ -20,35 +21,7 @@ const certifications: Certification[] = [
 ];
 const masters = { humanSkills, certifications };
 
-function techUnit(unitId: string, contribution: number): SkillStatisticsUnit {
-  return {
-    unit_id: unitId,
-    type: "skill",
-    name: unitId,
-    members: [{ skill_id: unitId, name: unitId, so_item: unitId, p_skill_given_goal: 0.5, region_p_skill_given_goal: 0.5 }],
-    source_years: [2025],
-    goal_respondents: 1000,
-    other_respondents: 10000,
-    p_skill_given_goal: 0.5,
-    p_skill_given_other: 0.3,
-    region_source_years: [2025],
-    region_goal_respondents: 50,
-    region_other_respondents: 500,
-    region_p_skill_given_goal: 0.5,
-    region_p_skill_given_other: 0.3,
-    quantity: 0.5,
-    quality: 62.5,
-    contribution,
-    p_value: 1e-10,
-    significant: true,
-    selected: true,
-  };
-}
-
-const techStats: Pick<SkillStatistics, "goal_id" | "units"> = {
-  goal_id: "test-goal",
-  units: [techUnit("aws", 0.6), techUnit("python", 0.4)],
-};
+const techStats = skillStatistics("test-goal", [unit("aws", ["aws"], 0.6), unit("python", ["python"], 0.4)]);
 const defaults = { tech: 0.5, human: 0.5 };
 const layers: GoalSkillLayers = {
   goal_id: "test-goal",
@@ -158,6 +131,30 @@ describe("layeredSkillProgress", () => {
     expect(result.tech_progress).toBeCloseTo(60, 10);
     expect(result.human_progress).toBe(50);
     expect(result.progress).toBeCloseTo(55, 10);
+  });
+
+  it("基本リスト・特有リストの両方を持つ統計：技術スキル層は (1 − β) × 基本 + β × 特有で、層の配分で合算する", () => {
+    // β = 0.2。aws：基本 0.6・特有 0.3、python：基本 0.4、rust：特有 0.1
+    const mixed = skillStatistics(
+      "test-goal",
+      [unit("aws", ["aws"], 0.6, true, 0.3), unit("python", ["python"], 0.4), unit("rust", ["rust"], 0, true, 0.1)],
+      0.2,
+    );
+    // 技術: 基本 60%・特有 75% → 0.8 × 60 + 0.2 × 75 = 63、人間: testing と cloud(aws) を満たして 50
+    const result = layeredSkillProgress({ held: new Set(["aws", "testing"]), techStats: mixed, goalLayers: layers, defaultWeights: defaults });
+    expect(result.tech_progress).toBeCloseTo(63, 10);
+    expect(result.human_progress).toBe(50);
+    expect(result.progress).toBeCloseTo(63 * 0.5 + 50 * 0.5, 10);
+
+    // 特有リストだけの rust を足すと、技術は β × 0.1 / 0.4 × 100 = 5 上がる
+    const withRust = layeredSkillProgress({
+      held: new Set(["aws", "testing", "rust"]),
+      techStats: mixed,
+      goalLayers: layers,
+      defaultWeights: defaults,
+    });
+    expect(withRust.tech_progress).toBeCloseTo(68, 10);
+    expect(withRust.progress - result.progress).toBeCloseTo(5 * 0.5, 10);
   });
 
   it("人間定義層 100% の Goal は技術スキル層の達成率を合算しない", () => {

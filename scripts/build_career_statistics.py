@@ -1,6 +1,6 @@
 """Career Statistics Master を JobHop v2 から事前計算する（要件定義書 §13〜§19, §26）。
 
-入力: data/raw/jobhop/JobHop_v2_{train,val,test}.parquet（無ければ Hugging Face から取得）
+入力: data/raw/jobhop/JobHop_v2_{train,val,test}.parquet（無ければ Hugging Face から固定リビジョンを取得し、SHA-256 を検証する）
       data/goals/goals.json
 出力: data/statistics/career-match/{goal_id}.json
 
@@ -26,6 +26,7 @@ Experience（Requirement Group ごとに算出。Experience Match は Group 達�
 実行: python scripts/build_career_statistics.py
 """
 
+import hashlib
 import json
 import math
 import urllib.request
@@ -43,7 +44,14 @@ CROSS_LANGUAGE_FIXTURE = ROOT / "data" / "fixtures" / "career-match" / "cross-la
 OUT_DIR = ROOT / "data" / "statistics" / "career-match"
 
 SPLITS = ["train", "val", "test"]
-HF_BASE = "https://huggingface.co/datasets/aida-ugent/JobHop/resolve/main"
+# データセットの更新で結果が変わらないよう、リビジョン（コミット）とファイルの SHA-256 を固定する
+HF_REVISION = "766921f12b66eb886841393ab0400321e0373cb4"
+HF_BASE = f"https://huggingface.co/datasets/aida-ugent/JobHop/resolve/{HF_REVISION}"
+JOBHOP_SHA256 = {
+    "train": "b2c0073161f4ac237d3b6b522a338f0d44a6860d2e7f4bdc613a71b8a1663a90",
+    "val": "8794f96ea7ff5525de02bc0c010f9c56b1db7ec85c0718128f8ec26c70372be0",
+    "test": "5d07a51386ec2df136ba7ceb280602bad702de6160e6b50550a280462f3e01ac",
+}
 
 SOURCE = "jobhop_v2"
 SOURCE_VERSION = "v2"
@@ -57,13 +65,31 @@ DEGREE_ORDER = ["None", "Secondary school", "Bachelor", "Master", "PhD"]
 MINIMUM_EDUCATION_SHARE = 0.5
 
 
+def sha256(path: Path) -> str:
+    digest = hashlib.sha256()
+    with path.open("rb") as f:
+        for chunk in iter(lambda: f.read(1 << 20), b""):
+            digest.update(chunk)
+    return digest.hexdigest()
+
+
 def load_jobhop() -> pd.DataFrame:
     RAW_DIR.mkdir(parents=True, exist_ok=True)
     frames = []
     for split in SPLITS:
         path = RAW_DIR / f"JobHop_v2_{split}.parquet"
         if not path.exists():
-            urllib.request.urlretrieve(f"{HF_BASE}/{path.name}", path)
+            # 途中で失敗しても壊れたファイルを残さないよう、一時ファイルに取得して検証してから置き換える
+            partial = path.with_name(path.name + ".partial")
+            try:
+                urllib.request.urlretrieve(f"{HF_BASE}/{path.name}", partial)
+                if sha256(partial) != JOBHOP_SHA256[split]:
+                    raise ValueError(f"{path.name}: SHA-256 does not match revision {HF_REVISION}")
+                partial.replace(path)
+            finally:
+                partial.unlink(missing_ok=True)
+        if sha256(path) != JOBHOP_SHA256[split]:
+            raise ValueError(f"{path.name}: SHA-256 does not match revision {HF_REVISION}. Delete the file and run again.")
         frames.append(pd.read_parquet(path))
     df = pd.concat(frames, ignore_index=True)
     return df.rename(
@@ -111,7 +137,12 @@ def dated_jobs(df: pd.DataFrame) -> pd.DataFrame:
 
 
 def experience_units(jobs: pd.DataFrame) -> pd.DataFrame:
-    """1 行 = (person_id, role_id, years)。同一人物・同一 Role の期間は重なりを除いて合算する。"""
+    """1 行 = (person_id, role_id, years)。同一人物・同一 Role の期間は重なりを除いて合算する。
+
+    期間 = 終了四半期 − 開始四半期（終了四半期を含まない）。例: Q1〜Q4 の 1 年は 3 四半期、同じ四半期の開始・終了は 0。
+    同じ Role の職歴が隣り合う（前が Q4 終了、次が翌年 Q1 開始）場合は別の区間として、それぞれの期間を足す。
+    TS 側（ユーザーが入力する年数）とは独立した仕様で、Unit の年数は round_years で丸めてから使う。
+    """
     exp = jobs.sort_values(["person_id", "role_id", "start"])
     group = exp.groupby(["person_id", "role_id"], sort=False)
     prev_max_end = group.end.cummax().groupby([exp.person_id, exp.role_id]).shift()
@@ -208,21 +239,35 @@ def occupation_tenure(jobs: pd.DataFrame, group_ids: set, codes: list) -> dict:
     }
 
 
-def education_statistics(edu, goal_ids, other_ids, n_goal, n_other):
+def person_degrees(df: pd.DataFrame) -> pd.DataFrame:
+    """1 行 = (person_id, degree_id)。学歴が分かる人だけ（各人の最初の欠損でない学歴）。"""
+    return df.groupby("person_id").degree_id.first().dropna().reset_index()
+
+
+def education_statistics(edu, goal_ids, other_ids):
+    """P(degree | Goal) と P(degree | Other)。分母は学歴が分かる人（欠損を「学歴なし」として数えない）。"""
     goal_counts = edu[edu.person_id.isin(goal_ids)].degree_id.value_counts()
     other_counts = edu[edu.person_id.isin(other_ids)].degree_id.value_counts()
+    n_goal, n_other = int(goal_counts.sum()), int(other_counts.sum())
     rows = [
-        unit_row(degree, {"degree_id": degree}, count / n_goal, other_counts.get(degree, 0) / n_other)
+        unit_row(degree, {"degree_id": degree}, count / n_goal, other_counts.get(degree, 0) / n_other if n_other else 0.0)
         for degree, count in goal_counts.items()
     ]
     return sorted(rows, key=lambda r: r["contribution"], reverse=True)
 
 
-def education_requirement(edu, goal_ids, n_goal) -> dict:
-    """Goal Population の「その学歴以上」の割合と、最低教育要件。"""
+def education_requirement(edu, goal_ids):
+    """Goal Population の「その学歴以上」の割合と、最低教育要件。学歴が分かる人がいなければ None（算出しない）。
+
+    分母は学歴が分かる人。欠損を分母に入れると割合が実際より低く出て、最低教育要件が低く判定されるため。
+    分母が学歴の分かる人なら at_or_above["None"] = 1 > MINIMUM_EDUCATION_SHARE なので、候補は必ず 1 つ以上ある。
+    """
     goal_counts = edu[edu.person_id.isin(goal_ids)].degree_id.value_counts()
+    known = int(goal_counts.sum())
+    if known == 0:
+        return None
     at_or_above = {
-        degree: round(sum(int(goal_counts.get(d, 0)) for d in DEGREE_ORDER[i:]) / n_goal, 6)
+        degree: round(sum(int(goal_counts.get(d, 0)) for d in DEGREE_ORDER[i:]) / known, 6)
         for i, degree in enumerate(DEGREE_ORDER)
     }
     minimum = [d for d in DEGREE_ORDER if at_or_above[d] > MINIMUM_EDUCATION_SHARE][-1]
@@ -287,7 +332,7 @@ def main() -> None:
     jobs = dated_jobs(df)
     all_units = experience_units(jobs)
     all_counts = cumulative_counts(all_units)
-    edu = df.drop_duplicates("person_id")[["person_id", "degree_id"]]
+    edu = person_degrees(df)
 
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     for goal in goals["goals"]:
@@ -319,12 +364,14 @@ def main() -> None:
                 group_experience(df, jobs, all_units, all_counts, all_persons, g["group_id"], group)
                 for g, group in zip(goal["requirement_groups"], groups)
             ],
-            "education": (
-                education_statistics(edu, goal_ids, other_ids, n_goal, n_other) if n_goal > 0 else []
-            ),
+            "education": [],
         }
-        if n_goal > 0:
-            result.update(education_requirement(edu, goal_ids, n_goal))
+        requirement = education_requirement(edu, goal_ids) if n_goal > 0 else None
+        if requirement is not None:
+            result["education"] = education_statistics(edu, goal_ids, other_ids)
+            result.update(requirement)
+        elif n_goal > 0:
+            print(f"  [Notice] {goal['goal_id']}: no person with a known degree. Education is not calculable.")
 
         path = OUT_DIR / f"{goal['goal_id']}.json"
         path.write_text(json.dumps(result, ensure_ascii=False, indent=1, allow_nan=False), encoding="utf-8")
@@ -339,5 +386,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
-

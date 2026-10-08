@@ -7,7 +7,7 @@ import type {
   HumanSkill,
   ResolvedSkillLayerWeights,
   SkillLayerWeights,
-  SkillStatistics,
+  TechSkillStatistics,
 } from "./types";
 
 export function normalizeHumanRequirements(definitions: readonly HumanRequirementDefinition[]): HumanRequirement[] {
@@ -76,7 +76,7 @@ export function resolveSkillLayerWeights(
 // Skill Match の計算に使う層（配分が 0 の層は除く）と、その層で達成率に効く skill_id
 // （技術スキル層は採用 unit のメンバー、人間定義層は要件の any_of）
 export function skillMatchScope(params: {
-  techStats: Pick<SkillStatistics, "goal_id" | "units"> | null;
+  techStats: TechSkillStatistics | null;
   goalLayers: GoalSkillLayers;
   defaultWeights: SkillLayerWeights;
 }): { weights: ResolvedSkillLayerWeights; skillIds: Set<string> } {
@@ -103,7 +103,7 @@ export interface LayeredSkillProgress {
 // Skill Progress = 技術スキル層の達成率 × 配分(tech) + 人間定義層の達成率 × 配分(human)
 export function layeredSkillProgress(params: {
   held: ReadonlySet<string>;
-  techStats: Pick<SkillStatistics, "goal_id" | "units"> | null;
+  techStats: TechSkillStatistics | null;
   goalLayers: GoalSkillLayers;
   defaultWeights: SkillLayerWeights;
 }): LayeredSkillProgress {
@@ -119,7 +119,8 @@ export function layeredSkillProgress(params: {
     human: humanProgress !== null,
   });
   return {
-    progress: (techProgress ?? 0) * weights.tech + (humanProgress ?? 0) * weights.human,
+    // 配分の正規化による浮動小数点の誤差で 100 を超えないようにする
+    progress: Math.min(100, (techProgress ?? 0) * weights.tech + (humanProgress ?? 0) * weights.human),
     tech_progress: techProgress,
     human_progress: humanProgress,
     weights,

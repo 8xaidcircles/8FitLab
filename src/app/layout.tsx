@@ -3,6 +3,7 @@ import { Noto_Sans_JP } from "next/font/google";
 import Link from "next/link";
 import { Logo } from "@/components/logo";
 import { ThirdPartyScripts } from "@/components/third-party-scripts";
+import { loadGoals } from "@/lib/career-match";
 import { ADSENSE_CLIENT_ID, ORGANIZATION_URL, SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
 import "./globals.css";
 
@@ -36,12 +37,14 @@ const FOOTER_LINKS = [
   { href: "/cookie-policy", label: "Cookie・外部送信" },
   { href: `${ORGANIZATION_URL}/terms-of-service`, label: "利用規約" },
   { href: "/disclaimer", label: "免責事項" },
+  { href: "/disclaimer#licenses", label: "データ出典" },
   { href: "/contact", label: "問い合わせ" },
 ];
 
 const COPYRIGHT_YEAR = 2026;
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+  const goals = await loadGoals();
   return (
     <html lang="ja" className={`${notoSansJp.variable} h-full antialiased`}>
       <body className="flex min-h-full flex-col">
@@ -66,23 +69,32 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <main className="flex-1">{children}</main>
 
         <footer className="mt-16 border-t border-line bg-white">
-          <div className="mx-auto grid max-w-5xl gap-8 px-4 py-10 text-sm text-muted md:grid-cols-[1fr_2fr]">
+          <div className="mx-auto grid max-w-5xl gap-8 px-4 py-10 text-sm text-muted md:grid-cols-[1fr_2fr] md:gap-10">
             <div className="space-y-3">
               <Logo />
               <p>Goalから逆算して、エンジニアのキャリアをつくる。</p>
             </div>
-            <div className="space-y-2 text-xs leading-relaxed">
-              <p className="font-bold text-ink">データ出典・ライセンス</p>
-              <p>
-                本サービスは JobHop（CC BY 4.0）、ESCO（CC BY 4.0）、Stack Overflow Developer Survey（ODbL）のオープンデータを利用・加工しています。
-                詳細なライセンス表記・クレジット・改変通知は
-                <Link href="/disclaimer#licenses" className="underline hover:text-indigo">
-                  データ出典・ライセンス表記
-                </Link>
-                をご確認ください。
+            <nav aria-labelledby="footer-categories">
+              <p id="footer-categories" className="text-xs font-bold tracking-widest text-sky">
+                JOB CATEGORY
+                <span className="ml-2 font-bold tracking-normal text-ink">職種別カテゴリ</span>
               </p>
-              <p>※ Goal Fitは就職・転職・採用を保証するものではありません。</p>
-            </div>
+              <ul className="mt-3 grid grid-cols-2 gap-x-4 gap-y-1 sm:grid-cols-3">
+                {goals.map((goal) => (
+                  <li key={goal.goal_id} className="min-w-0">
+                    <Link
+                      href={`/blog/category/${goal.goal_id}`}
+                      className="group flex items-start gap-1.5 py-1 text-xs leading-snug transition-colors hover:text-indigo"
+                    >
+                      <span aria-hidden className="text-sky transition-transform group-hover:translate-x-0.5">
+                        ›
+                      </span>
+                      <span className="group-hover:underline">{goal.name}</span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
           </div>
           <div className="border-t border-line">
             <div className="mx-auto flex max-w-5xl flex-col gap-3 px-4 py-5 text-xs text-muted md:flex-row md:items-center md:justify-between">

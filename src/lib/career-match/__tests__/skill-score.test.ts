@@ -6,34 +6,102 @@ import {
   goalSkillUnits,
   scoreSkill,
   selectSkillScoringModel,
+  skillListWeights,
   skillUnitGaps,
   weightedSkillProgress,
 } from "../skill-score";
-import type { SkillProgressDistribution, SkillStatistics } from "../types";
-import { unit } from "./skill-fixtures";
+import type { SkillProgressDistribution, SkillScoringVersions } from "../types";
+import { skillStatistics, unit } from "./skill-fixtures";
 
-const skillStats: Pick<SkillStatistics, "goal_id" | "units"> = {
-  goal_id: "test-goal",
-  units: [
-    unit("server-framework", ["laravel", "ruby-on-rails", "spring-boot"], 0.4),
-    unit("sql", ["sql"], 0.3),
-    unit("docker", ["docker"], 0.2),
-    unit("typescript", ["typescript"], 0.1),
-    unit("perl", ["perl"], 0.9, false),
+// 基本リストだけの Goal（特有リストの重みが 0 なので β は適用されない）
+const skillStats = skillStatistics("test-goal", [
+  unit("server-framework", ["laravel", "ruby-on-rails", "spring-boot"], 0.4),
+  unit("sql", ["sql"], 0.3),
+  unit("docker", ["docker"], 0.2),
+  unit("typescript", ["typescript"], 0.1),
+  unit("perl", ["perl"], 0.9, false),
+]);
+
+// β = 0.2。base_total = 1.0、distinctive_total = 0.4
+const mixedStats = skillStatistics(
+  "mixed-goal",
+  [
+    unit("both", ["python"], 0.6, true, 0.3),
+    unit("base-only", ["git"], 0.4),
+    unit("distinctive-only", ["rust"], 0, true, 0.1),
   ],
-};
+  0.2,
+);
 
 // 0〜99 を等間隔に並べた n 件（n = 100 なら 0, 1, ..., 99）
 function spread(n: number): number[] {
   return Array.from({ length: n }, (_, i) => (i * 99) / Math.max(1, n - 1));
 }
 
+// 現在の計算のバージョン。分布はこれと同じバージョンの結果から集計したものだけ使う
+const current: SkillScoringVersions = {
+  skill_calculation_version: "layered-2.0.0",
+  skill_statistics_version: "stack_overflow_developer_survey:2023-2024-2025:0.3.1:k=80.9",
+};
+
 function distribution(overrides: Partial<SkillProgressDistribution> = {}): SkillProgressDistribution {
-  return { goal_id: "test-goal", scores: spread(SKILL_DISTRIBUTION_MIN_SAMPLE), ...overrides };
+  return { goal_id: "test-goal", scores: spread(SKILL_DISTRIBUTION_MIN_SAMPLE), ...current, ...overrides };
 }
 
+describe("weightedSkillProgress（基本リスト・特有リスト）", () => {
+  it("(1 − β) × 基本達成率 + β × 特有達成率", () => {
+    expect(weightedSkillProgress(mixedStats, [])).toBe(0);
+    // 基本 60%、特有 75% → 0.8 × 60 + 0.2 × 75
+    expect(weightedSkillProgress(mixedStats, ["python"])).toBeCloseTo(63, 10);
+    // 基本 40%、特有 0%
+    expect(weightedSkillProgress(mixedStats, ["git"])).toBeCloseTo(32, 10);
+    // 基本 0%、特有 25%
+    expect(weightedSkillProgress(mixedStats, ["rust"])).toBeCloseTo(5, 10);
+    // 基本 60%、特有 100%
+    expect(weightedSkillProgress(mixedStats, ["python", "rust"])).toBeCloseTo(68, 10);
+    expect(weightedSkillProgress(mixedStats, ["python", "git", "rust"])).toBeCloseTo(100, 10);
+  });
+
+  it("特有リストの重みが 0 の Goal は基本達成率だけ、基本リストの重みが 0 の Goal は特有達成率だけで計算する", () => {
+    const baseOnly = skillStatistics("g", [unit("a", ["a"], 0.6), unit("b", ["b"], 0.4)], 0.2);
+    expect(skillListWeights(baseOnly).beta).toBe(0);
+    expect(weightedSkillProgress(baseOnly, ["a"])).toBeCloseTo(60, 10);
+
+    const distinctiveOnly = skillStatistics("g", [unit("a", ["a"], 0, true, 0.1), unit("b", ["b"], 0, true, 0.3)], 0.2);
+    expect(skillListWeights(distinctiveOnly).beta).toBe(1);
+    expect(weightedSkillProgress(distinctiveOnly, ["a"])).toBeCloseTo(25, 10);
+  });
+
+  it("採用 unit の重みが有限の 0 以上でない、または役割が無ければエラー（β が静かに 0 か 1 に倒れない）", () => {
+    const [first, ...rest] = mixedStats.units;
+    for (const bad of [NaN, -0.1, Infinity]) {
+      expect(() => skillListWeights({ ...mixedStats, units: [{ ...first, base_weight: bad }, ...rest] })).toThrow(/Invalid weight/);
+      expect(() => skillListWeights({ ...mixedStats, units: [{ ...first, distinctive_weight: bad }, ...rest] })).toThrow(/Invalid weight/);
+    }
+    expect(() => skillListWeights({ ...mixedStats, units: [{ ...first, roles: [] }, ...rest] })).toThrow(/no roles/);
+  });
+
+  it("テスト用の unit は、採用なのに重みが 0 の unit を作らない", () => {
+    expect(() => unit("a", ["a"], 0)).toThrow(/positive weight/);
+    expect(unit("a", ["a"], 0, false).selected).toBe(false);
+  });
+
+  it("β が 0〜1 の範囲外ならエラー", () => {
+    for (const bad of [-0.1, 1.1, NaN]) {
+      expect(() => weightedSkillProgress({ ...mixedStats, selection: { ...mixedStats.selection, distinctive_share: bad } }, [])).toThrow();
+    }
+  });
+
+  it("重みの合計は統計の skill_split と一致する", () => {
+    const { base_total, distinctive_total, beta } = skillListWeights(mixedStats);
+    expect(base_total).toBeCloseTo(mixedStats.skill_split.base_total, 10);
+    expect(distinctive_total).toBeCloseTo(mixedStats.skill_split.distinctive_total, 10);
+    expect(beta).toBe(0.2);
+  });
+});
+
 describe("weightedSkillProgress（技術スキル層）", () => {
-  it("Σ Contribution(満たした unit) / Σ Contribution(Goal Skill) × 100", () => {
+  it("基本リストだけの Goal は Σ base_weight(満たした unit) / base_total × 100", () => {
     expect(weightedSkillProgress(skillStats, [])).toBe(0);
     expect(weightedSkillProgress(skillStats, ["sql"])).toBeCloseTo(30, 10);
     expect(weightedSkillProgress(skillStats, ["sql", "docker"])).toBeCloseTo(50, 10);
@@ -58,12 +126,28 @@ describe("weightedSkillProgress（技術スキル層）", () => {
 });
 
 describe("skillUnitGaps", () => {
-  it("採用された unit を Contribution の大きい順に、充足状況と割合つきで返す", () => {
+  it("採用された unit を割合の大きい順に、充足状況と割合つきで返す", () => {
     const gaps = skillUnitGaps(skillStats, ["docker"]);
     expect(gaps.map((g) => g.unit.unit_id)).toEqual(["server-framework", "sql", "docker", "typescript"]);
     expect(gaps.map((g) => g.satisfied)).toEqual([false, false, true, false]);
     expect(gaps.reduce((sum, g) => sum + g.share, 0)).toBeCloseTo(100, 10);
     expect(goalSkillUnits(skillStats)).toHaveLength(4);
+  });
+
+  it("割合 = (1 − β) × base_weight / base_total + β × distinctive_weight / distinctive_total", () => {
+    const gaps = skillUnitGaps(mixedStats, ["rust"]);
+    expect(gaps.map((g) => g.unit.unit_id)).toEqual(["both", "base-only", "distinctive-only"]);
+    expect(gaps.map((g) => g.share)).toEqual([expect.closeTo(63, 10), expect.closeTo(32, 10), expect.closeTo(5, 10)]);
+    expect(gaps.map((g) => g.satisfied)).toEqual([false, false, true]);
+    expect(gaps.reduce((sum, g) => sum + g.share, 0)).toBeCloseTo(100, 10);
+  });
+
+  it("満たした unit の割合の合計は weightedSkillProgress と一致する", () => {
+    const held = ["git", "rust"];
+    const total = skillUnitGaps(mixedStats, held)
+      .filter((g) => g.satisfied)
+      .reduce((sum, g) => sum + g.share, 0);
+    expect(total).toBeCloseTo(weightedSkillProgress(mixedStats, held), 10);
   });
 });
 
@@ -102,33 +186,50 @@ describe("ecdfPercentile（同率は中央順位）", () => {
 
 describe("selectSkillScoringModel", () => {
   it("蓄積データが無い（コールドスタート）なら linear", () => {
-    expect(selectSkillScoringModel(null)).toEqual(LINEAR_SKILL_SCORING);
-    expect(selectSkillScoringModel(undefined)).toEqual(LINEAR_SKILL_SCORING);
+    expect(selectSkillScoringModel(null, current)).toEqual(LINEAR_SKILL_SCORING);
+    expect(selectSkillScoringModel(undefined, current)).toEqual(LINEAR_SKILL_SCORING);
   });
 
   it("ユーザー数が基準未満なら linear", () => {
-    expect(selectSkillScoringModel(distribution({ scores: spread(SKILL_DISTRIBUTION_MIN_SAMPLE - 1) }))).toEqual(
+    expect(selectSkillScoringModel(distribution({ scores: spread(SKILL_DISTRIBUTION_MIN_SAMPLE - 1) }), current)).toEqual(
       LINEAR_SKILL_SCORING,
     );
   });
 
   it("全員が同点なら linear（順位の情報が無い）", () => {
-    expect(selectSkillScoringModel(distribution({ scores: Array(SKILL_DISTRIBUTION_MIN_SAMPLE).fill(40) }))).toEqual(
+    expect(selectSkillScoringModel(distribution({ scores: Array(SKILL_DISTRIBUTION_MIN_SAMPLE).fill(40) }), current)).toEqual(
       LINEAR_SKILL_SCORING,
     );
   });
 
   it("0〜100 の範囲外・不正値を含むなら linear", () => {
     for (const bad of [NaN, -1, 101, Infinity]) {
-      expect(selectSkillScoringModel(distribution({ scores: [...spread(SKILL_DISTRIBUTION_MIN_SAMPLE), bad] }))).toEqual(
+      expect(
+        selectSkillScoringModel(distribution({ scores: [...spread(SKILL_DISTRIBUTION_MIN_SAMPLE), bad] }), current),
+      ).toEqual(LINEAR_SKILL_SCORING);
+    }
+  });
+
+  it("分布のバージョンが現在の計算と一致しなければ linear", () => {
+    for (const mismatch of [
+      { skill_calculation_version: "layered-0.9.0" },
+      { skill_statistics_version: "stack_overflow_developer_survey:2023-2024-2025:0.2.0:k=50" },
+      { skill_statistics_version: null },
+    ]) {
+      expect(selectSkillScoringModel(distribution(mismatch), current), JSON.stringify(mismatch)).toEqual(
         LINEAR_SKILL_SCORING,
       );
     }
   });
 
-  it("ユーザー数が基準以上なら ecdf に切り替わり、達成率を昇順に並べて持つ", () => {
+  it("技術スキル層を計算しない Goal（統計のバージョンが null）同士は一致として扱う", () => {
+    const humanOnly = { ...current, skill_statistics_version: null };
+    expect(selectSkillScoringModel(distribution(humanOnly), humanOnly).method).toBe("ecdf");
+  });
+
+  it("バージョンが一致し、ユーザー数が基準以上なら ecdf に切り替わり、達成率を昇順に並べて持つ", () => {
     const scores = spread(SKILL_DISTRIBUTION_MIN_SAMPLE).reverse();
-    const model = selectSkillScoringModel(distribution({ scores }));
+    const model = selectSkillScoringModel(distribution({ scores }), current);
     expect(model.method).toBe("ecdf");
     if (model.method !== "ecdf") return;
     expect(model.sample_size).toBe(SKILL_DISTRIBUTION_MIN_SAMPLE);
@@ -143,7 +244,7 @@ describe("scoreSkill", () => {
   });
 
   describe("ecdf：全ユーザーの達成率の経験分布上のパーセンタイル", () => {
-    const model = selectSkillScoringModel(distribution());
+    const model = selectSkillScoringModel(distribution(), current);
 
     it("中央の達成率は 50 付近", () => {
       expect(scoreSkill(49.5, model)).toBeCloseTo(50, 10);

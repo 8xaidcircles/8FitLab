@@ -16,6 +16,7 @@ export function BlogListing({
   posts,
   allPosts,
   categories,
+  goalCategories,
   category,
   postsHeading,
   children,
@@ -27,6 +28,7 @@ export function BlogListing({
   posts: BlogPostSummary[];
   allPosts: BlogPostSummary[];
   categories: { id: string; name: string; count: number }[];
+  goalCategories: { id: string; name: string; count: number }[];
   category?: { id: string; name: string };
   /** 記事一覧の見出し（無ければ見出しなしで一覧だけ出す） */
   postsHeading?: string;
@@ -92,7 +94,14 @@ export function BlogListing({
             )}
           </section>
         </div>
-        <BlogSidebar author={null} posts={allPosts} categories={categories} currentCategoryId={category?.id} navigationOnly />
+        <BlogSidebar
+          author={null}
+          posts={allPosts}
+          categories={categories}
+          goalCategories={goalCategories}
+          currentCategoryId={category?.id}
+          navigationOnly
+        />
       </div>
     </div>
   );

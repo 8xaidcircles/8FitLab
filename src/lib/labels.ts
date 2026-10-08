@@ -1,18 +1,23 @@
 import type {
   CertificationCategory,
+  CertificationStatus,
   Confidence,
   DegreeId,
   EvidenceMode,
   ExperienceStatus,
   HumanSkillDomain,
   SkillLayerWeightSource,
+  SkillScoringMethod,
+  SkillStatus,
+  SkillUnitRole,
+  SKIPPED_EDUCATION_LEVEL_ID,
 } from "@/lib/career-match/types";
 
 /** 職歴の回答（診断フォームの選択肢の表示順） */
 export const EXPERIENCE_STATUS_LABELS: Record<ExperienceStatus, string> = {
   entered: "実務経験がある",
   none: "実務経験なし",
-  unknown: "わかりません / 答えない",
+  skipped: "回答をスキップする",
 };
 
 /** 統計上の学歴（data/education/education.json の degree_id）の表示名 */
@@ -60,6 +65,22 @@ export const SKILL_LAYER_WEIGHT_SOURCE_LABELS: Record<SkillLayerWeightSource, st
   fallback: "片方の層が無いため、もう片方で100%",
 };
 
+/** 「Skill の内訳」で、技術スキル層の unit がどちらのリストに入っているか */
+export function skillUnitRoleLabel(roles: readonly SkillUnitRole[]): string {
+  const base = roles.includes("base");
+  const distinctive = roles.includes("distinctive");
+  if (base && distinctive) return "基本＋特有";
+  if (base) return "基本技術";
+  if (distinctive) return "特有技術";
+  throw new Error(`Skill unit has no list role: [${roles.join(", ")}]`);
+}
+
+/** Skill Match のスコアリング方式（career_match_results.skill_scoring_method） */
+export const SKILL_SCORING_METHOD_LABELS: Record<SkillScoringMethod, string> = {
+  linear: "達成率をそのまま点数に換算",
+  ecdf: "同じGoalを目指す利用者内での位置",
+};
+
 export const EVIDENCE_LABELS: Record<EvidenceMode, string> = {
   full: "職業データに基づく",
   proxy: "近い職業のデータで代用",
@@ -72,13 +93,36 @@ export const CONFIDENCE_LABELS: Record<Confidence, string> = {
   low: "低",
 };
 
+/** スキルを個別に選ばない人の選択肢（診断フォームの表示順） */
+export const SKILL_STATUS_LABELS: Record<SkillStatus, string> = {
+  none_intent_to_learn: "これから学習を開始する",
+  skipped: "回答をスキップする",
+};
+
+/** 資格を個別に選ばない人の選択肢（診断フォームの表示順） */
+export const CERTIFICATION_STATUS_LABELS: Record<CertificationStatus, string> = {
+  none: "保有している資格はない",
+  planning_to_certify: "これから学習を開始する",
+  skipped: "回答をスキップする",
+};
+
+/** 最終学歴を選ばない人の選択肢（data/education/education.json の level_id） */
+export const EDUCATION_STATUS_LABELS: Record<typeof SKIPPED_EDUCATION_LEVEL_ID, string> = {
+  skipped: "回答をスキップする",
+};
+
 export const SUBMIT_ERRORS: Record<string, string> = {
+  skills_required: "持っているスキルを選ぶか、「これから学習を開始する」「回答をスキップする」のどちらかを選んでください。",
+  certifications_required:
+    "資格を選ぶか、「保有している資格はない」「これから学習を開始する」「回答をスキップする」のいずれかを選んでください。",
+  invalid_skills: "スキルの入力内容に誤りがあります。ページを再読み込みしてもう一度お試しください。",
+  invalid_certifications: "資格の入力内容に誤りがあります。ページを再読み込みしてもう一度お試しください。",
   unknown_goal: "Goalを選んでください。",
   unknown_skill: "選択肢に無いスキルが含まれています。ページを再読み込みしてもう一度お試しください。",
   unknown_certification: "選択肢に無い資格が含まれています。ページを再読み込みしてもう一度お試しください。",
   experience_required: "職務経歴を選択してください。",
   experience_rows_required: "職種と年数を入力した職歴を1件以上追加してください。",
-  education_required: "最終学歴を選択してください。",
+  education_required: "最終学歴を選ぶか、「回答をスキップする」を選んでください。",
   save_failed: "結果の保存に失敗しました。時間をおいてもう一度お試しください。",
 };
 

@@ -22,8 +22,8 @@ import {
   loadTechSkills,
 } from "../data";
 import { heldSkillIds, layeredSkillProgress, normalizeHumanRequirements } from "../skill-layers";
-import { goalSkillUnits, weightedSkillProgress } from "../skill-score";
-import { DEGREES, UNKNOWN_EDUCATION_LEVEL_ID } from "../types";
+import { goalSkillUnits, skillListWeights, skillUnitGaps, weightedSkillProgress } from "../skill-score";
+import { DEGREES, SKIPPED_EDUCATION_LEVEL_ID } from "../types";
 
 const goals = await loadGoals();
 const roles = await loadRoles();
@@ -141,23 +141,23 @@ describe("職種・Goal の日本語表示名", () => {
 describe("Education Master", () => {
   it("学歴 ID は一意で、統計上の学歴はすべて JobHop の 5 段階に含まれ、5 段階すべてに対応がある", async () => {
     const { levels } = await loadEducation();
-    const known = levels.filter((l) => l.level_id !== UNKNOWN_EDUCATION_LEVEL_ID);
+    const known = levels.filter((l) => l.level_id !== SKIPPED_EDUCATION_LEVEL_ID);
     expect(new Set(levels.map((l) => l.level_id)).size).toBe(levels.length);
     for (const level of known) expect(DEGREES).toContain(level.degree_id);
     expect(new Set(known.map((l) => l.degree_id))).toEqual(new Set(DEGREES));
   });
 
-  it("「わかりません / 答えない」は最後の選択肢で、統計上の学歴を持たない", async () => {
+  it("「回答をスキップする」は最後の選択肢で、統計上の学歴を持たない", async () => {
     const { levels } = await loadEducation();
     expect(levels.at(-1)).toMatchObject({
-      level_id: UNKNOWN_EDUCATION_LEVEL_ID,
-      name: "わかりません / 答えない",
+      level_id: SKIPPED_EDUCATION_LEVEL_ID,
+      name: "回答をスキップする",
       degree_id: null,
       isced: null,
     });
   });
 
-  it("学歴（「わかりません」を除く）は ISCED レベル順に並ぶ", async () => {
+  it("学歴（「回答をスキップする」を除く）は ISCED レベル順に並ぶ", async () => {
     const isced = (await loadEducation()).levels.slice(0, -1).map((l) => l.isced!);
     expect(isced).toEqual([...isced].sort((a, b) => a - b));
   });
@@ -420,7 +420,7 @@ describe("Skill Statistics（技術スキル層、Stack Overflow）", () => {
     );
     expect(result.skill_layer_weights.source).not.toBe("fallback");
     if (result.skill_layer_weights.tech > 0) {
-      expect(result.skill_statistics_version).toMatch(/^stack_overflow_developer_survey:2023-2024-2025:\d+\.\d+\.\d+:k=[\d.]+$/);
+      expect(result.skill_statistics_version).toMatch(/^stack_overflow_developer_survey:2023-2024-2025:\d+\.\d+\.\d+:k=[\d.]+:groups=\d+\.\d+\.\d+:base=[\d.]+:beta=[\d.]+:dref=[\d.]+$/);
     } else {
       expect(result.skill_statistics_version).toBeNull();
     }
@@ -432,13 +432,29 @@ describe("Skill Statistics（技術スキル層、Stack Overflow）", () => {
     const units = goalSkillUnits(stats);
     expect(units.length).toBeGreaterThan(0);
     for (const unit of units) {
-      expect(unit.contribution).toBeGreaterThan(0);
+      expect(unit.base_weight + unit.distinctive_weight).toBeGreaterThan(0);
       for (const member of unit.members) expect(techIds).toContain(member.skill_id);
     }
     const all = units.flatMap((u) => u.members.map((m) => m.skill_id));
     expect(weightedSkillProgress(stats, [])).toBe(0);
     expect(weightedSkillProgress(stats, all)).toBeCloseTo(100, 10);
   });
+
+  it.each(goals.map((g) => [g.goal_id] as const))(
+    "%s: Skill の内訳の割合は合計 100 で、満たした割合の合計が技術スキル層の達成率になる",
+    async (goalId) => {
+      const stats = await requireSkillStatistics(goalId);
+      const { beta } = skillListWeights(stats);
+      expect(beta).toBeGreaterThanOrEqual(0);
+      expect(beta).toBeLessThanOrEqual(1);
+      expect(skillUnitGaps(stats, []).reduce((sum, g) => sum + g.share, 0)).toBeCloseTo(100, 8);
+      const first = goalSkillUnits(stats)[0].members[0].skill_id;
+      const gaps = skillUnitGaps(stats, [first]);
+      const satisfied = gaps.filter((g) => g.satisfied).reduce((sum, g) => sum + g.share, 0);
+      expect(satisfied).toBeGreaterThan(0);
+      expect(satisfied).toBeCloseTo(weightedSkillProgress(stats, [first]), 8);
+    },
+  );
 
   it("Backend: PHP・Laravel・Ruby on Rails はサーバーサイドのグループを満たし、どれでも同じ点", async () => {
     const stats = await requireSkillStatistics("backend-developer");

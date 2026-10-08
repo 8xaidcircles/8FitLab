@@ -14,7 +14,7 @@ import { TrackView } from "@/components/track-view";
 import { normalizeBodyBlocks } from "@/lib/blog/body-blocks";
 import { getDraftKey, getPost, listAuthors, listPosts } from "@/lib/blog/microcms";
 import { buildToc } from "@/lib/blog/toc";
-import { collectCategories, formatDate, resolveGoalId } from "@/lib/blog/utils";
+import { collectCategories, collectGoalCategories, formatDate, resolveGoalId } from "@/lib/blog/utils";
 import { loadGoals } from "@/lib/career-match";
 import { absoluteUrl, ORGANIZATION_NAME, SITE_NAME } from "@/lib/site";
 import { PreviewBanner } from "./preview-banner";
@@ -154,7 +154,7 @@ export default async function BlogPostPage({ params }: PageProps<"/blog/[slug]">
             {post.eyecatch && (
               <Image
                 src={post.eyecatch.url}
-                alt=""
+                alt={post.title}
                 width={post.eyecatch.width}
                 height={post.eyecatch.height}
                 sizes="(min-width: 1024px) 760px, 100vw"
@@ -199,7 +199,7 @@ export default async function BlogPostPage({ params }: PageProps<"/blog/[slug]">
               <ul className="mt-4 grid gap-5 sm:grid-cols-2">
                 {related.map((p) => (
                   <li key={p.id}>
-                    <PostCard post={p} />
+                    <PostCard post={p} headingLevel="h3" />
                   </li>
                 ))}
               </ul>
@@ -211,6 +211,7 @@ export default async function BlogPostPage({ params }: PageProps<"/blog/[slug]">
           author={author ?? authors[0] ?? null}
           posts={allPosts}
           categories={collectCategories(allPosts)}
+          goalCategories={collectGoalCategories(allPosts, goals)}
           currentPostId={post.id}
           currentCategoryId={post.category?.id}
         />

@@ -21,6 +21,7 @@ export function RecommendationCard({ card }: { card: Card }) {
         post={{ id: card.article_id, title: card.title, description: card.description, eyecatch: card.eyecatch, category: null }}
         label={card.type_label}
         href={card.href}
+        headingLevel="h3"
       />
     </TrackClick>
   );

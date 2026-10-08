@@ -107,7 +107,7 @@ export default async function Home() {
           <ul className="mt-6 grid gap-4 sm:grid-cols-3">
             {posts.map((post) => (
               <li key={post.id}>
-                <PostCard post={post} />
+                <PostCard post={post} headingLevel="h3" />
               </li>
             ))}
           </ul>

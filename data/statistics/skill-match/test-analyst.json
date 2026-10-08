@@ -26,8 +26,9 @@
   "attribution": "Contains information from the Stack Overflow Developer Survey (https://survey.stackoverflow.co/), which is made available under the Open Database License (ODbL).",
   "modifications": "8FitLab aggregated the survey responses by Goal and adjusted them to the Japanese market (empirical Bayes shrinkage). Method: scripts/build_skill_statistics.py"
  },
- "calculation_version": "0.3.1",
- "calculation_date": "2026-09-29",
+ "calculation_version": "0.8.0",
+ "groups_version": "1.4.0",
+ "calculation_date": "2026-10-07",
  "min_reliable_sample": 100,
  "region": {
   "country": "Japan",
@@ -38,8 +39,29 @@
   "alpha": 0.05,
   "correction": "bonferroni",
   "significance_scope": "world",
-  "cumulative_share": 0.8,
-  "contribution_scope": "region"
+  "base_min_share": 0.5,
+  "base_discount_d_ref": 0.094321,
+  "base_discount_d_ref_method": "logistic-p50",
+  "base_discount_d_ref_n_units": 141,
+  "base_discount_d_ref_n_significant": 71,
+  "distinctive_share": 0.2942,
+  "distinctive_share_goals": [
+   "frontend-developer",
+   "backend-developer",
+   "full-stack-developer",
+   "data-analyst",
+   "data-scientist",
+   "data-engineer",
+   "software-architect",
+   "mobile-app-developer",
+   "devops-sre",
+   "cloud-architect"
+  ],
+  "weight_scope": "region"
+ },
+ "skill_split": {
+  "base_total": 1.965962,
+  "distinctive_total": 0.100672
  },
  "units": [
   {
@@ -139,7 +161,12 @@
    "contribution": 0.452043,
    "p_value": 0.895,
    "significant": false,
-   "selected": false
+   "roles": [
+    "base"
+   ],
+   "base_weight": 0.160246,
+   "distinctive_weight": 0,
+   "selected": true
   },
   {
    "unit_id": "container-runtime",
@@ -182,7 +209,12 @@
    "contribution": 0.359445,
    "p_value": 0.86,
    "significant": false,
-   "selected": false
+   "roles": [
+    "base"
+   ],
+   "base_weight": 0.302282,
+   "distinctive_weight": 0,
+   "selected": true
   },
   {
    "unit_id": "python",
@@ -219,7 +251,12 @@
    "contribution": 0.359424,
    "p_value": 0.00318,
    "significant": false,
-   "selected": false
+   "roles": [
+    "base"
+   ],
+   "base_weight": 0.634182,
+   "distinctive_weight": 0,
+   "selected": true
   },
   {
    "unit_id": "shell",
@@ -262,7 +299,12 @@
    "contribution": 0.35204,
    "p_value": 0.24,
    "significant": false,
-   "selected": false
+   "roles": [
+    "base"
+   ],
+   "base_weight": 0.59602,
+   "distinctive_weight": 0,
+   "selected": true
   },
   {
    "unit_id": "javascript",
@@ -299,7 +341,12 @@
    "contribution": 0.308028,
    "p_value": 0.906,
    "significant": false,
-   "selected": false
+   "roles": [
+    "base"
+   ],
+   "base_weight": 0.007911,
+   "distinctive_weight": 0,
+   "selected": true
   },
   {
    "unit_id": "frontend-framework",
@@ -391,6 +438,9 @@
    "contribution": 0.301826,
    "p_value": 0.98,
    "significant": false,
+   "roles": [],
+   "base_weight": 0.0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -428,7 +478,12 @@
    "contribution": 0.275514,
    "p_value": 0.159,
    "significant": false,
-   "selected": false
+   "roles": [
+    "base"
+   ],
+   "base_weight": 0.265321,
+   "distinctive_weight": 0,
+   "selected": true
   },
   {
    "unit_id": "python-package-manager",
@@ -471,6 +526,9 @@
    "contribution": 0.264916,
    "p_value": 0.0719,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -549,6 +607,9 @@
    "contribution": 0.251291,
    "p_value": 1.0,
    "significant": false,
+   "roles": [],
+   "base_weight": 0.0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -586,6 +647,9 @@
    "contribution": 0.241722,
    "p_value": 1.0,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -650,6 +714,9 @@
    "contribution": 0.225396,
    "p_value": 0.502,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -707,6 +774,9 @@
    "contribution": 0.224284,
    "p_value": 1.0,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -744,6 +814,9 @@
    "contribution": 0.221026,
    "p_value": 1.0,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -781,6 +854,9 @@
    "contribution": 0.205104,
    "p_value": 0.0124,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -831,6 +907,9 @@
    "contribution": 0.185616,
    "p_value": 0.00618,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -873,6 +952,9 @@
    "contribution": 0.181733,
    "p_value": 0.426,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -910,6 +992,9 @@
    "contribution": 0.168922,
    "p_value": 0.995,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -953,6 +1038,9 @@
    "contribution": 0.167235,
    "p_value": 0.784,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -1045,6 +1133,9 @@
    "contribution": 0.157199,
    "p_value": 0.898,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -1081,6 +1172,9 @@
    "contribution": 0.145005,
    "p_value": 0.0189,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -1118,6 +1212,9 @@
    "contribution": 0.131245,
    "p_value": 0.985,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -1155,6 +1252,9 @@
    "contribution": 0.12563,
    "p_value": 0.118,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -1197,6 +1297,9 @@
    "contribution": 0.123642,
    "p_value": 0.787,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -1240,6 +1343,9 @@
    "contribution": 0.121392,
    "p_value": 0.157,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -1277,6 +1383,11 @@
    "contribution": 0.118922,
    "p_value": 1.44e-10,
    "significant": true,
+   "roles": [
+    "distinctive"
+   ],
+   "base_weight": 0,
+   "distinctive_weight": 0.100672,
    "selected": true
   },
   {
@@ -1314,6 +1425,9 @@
    "contribution": 0.115628,
    "p_value": 0.2,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -1351,6 +1465,9 @@
    "contribution": 0.112779,
    "p_value": 0.967,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -1387,6 +1504,9 @@
    "contribution": 0.111799,
    "p_value": 0.419,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -1442,6 +1562,9 @@
    "contribution": 0.106484,
    "p_value": 0.863,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -1479,6 +1602,9 @@
    "contribution": 0.096812,
    "p_value": 0.885,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -1516,6 +1642,9 @@
    "contribution": 0.092119,
    "p_value": 0.799,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -1566,6 +1695,9 @@
    "contribution": 0.091641,
    "p_value": 0.179,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -1609,6 +1741,9 @@
    "contribution": 0.090841,
    "p_value": 0.999,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -1659,6 +1794,9 @@
    "contribution": 0.08988,
    "p_value": 0.0869,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -1696,6 +1834,9 @@
    "contribution": 0.087965,
    "p_value": 0.765,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -1733,6 +1874,9 @@
    "contribution": 0.087547,
    "p_value": 0.387,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -1770,6 +1914,9 @@
    "contribution": 0.086831,
    "p_value": 0.939,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -1813,6 +1960,9 @@
    "contribution": 0.0842,
    "p_value": 0.455,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -1869,6 +2019,9 @@
    "contribution": 0.07773,
    "p_value": 0.717,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -1906,6 +2059,9 @@
    "contribution": 0.077603,
    "p_value": 0.869,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -1943,6 +2099,9 @@
    "contribution": 0.076725,
    "p_value": 0.82,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -1979,6 +2138,9 @@
    "contribution": 0.075408,
    "p_value": 0.869,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -2050,6 +2212,9 @@
    "contribution": 0.069872,
    "p_value": 0.762,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -2086,6 +2251,9 @@
    "contribution": 0.069208,
    "p_value": 0.668,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -2123,6 +2291,9 @@
    "contribution": 0.063161,
    "p_value": 0.977,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -2160,6 +2331,9 @@
    "contribution": 0.061726,
    "p_value": 0.47,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -2224,6 +2398,9 @@
    "contribution": 0.059728,
    "p_value": 0.992,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -2301,6 +2478,9 @@
    "contribution": 0.059137,
    "p_value": 1.0,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -2344,6 +2524,9 @@
    "contribution": 0.058367,
    "p_value": 0.678,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -2386,6 +2569,9 @@
    "contribution": 0.054175,
    "p_value": 0.097,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -2429,6 +2615,9 @@
    "contribution": 0.050981,
    "p_value": 1.0,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -2477,6 +2666,9 @@
    "contribution": 0.04911,
    "p_value": 0.975,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -2513,6 +2705,9 @@
    "contribution": 0.047166,
    "p_value": 0.388,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -2550,6 +2745,9 @@
    "contribution": 0.04569,
    "p_value": 0.999,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -2587,6 +2785,9 @@
    "contribution": 0.045308,
    "p_value": 0.951,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -2624,6 +2825,9 @@
    "contribution": 0.045061,
    "p_value": 0.264,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -2661,6 +2865,9 @@
    "contribution": 0.044181,
    "p_value": 0.978,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -2697,6 +2904,9 @@
    "contribution": 0.043203,
    "p_value": 0.293,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -2733,6 +2943,9 @@
    "contribution": 0.043023,
    "p_value": 0.812,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -2776,6 +2989,9 @@
    "contribution": 0.041928,
    "p_value": 0.998,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -2813,6 +3029,9 @@
    "contribution": 0.039342,
    "p_value": 0.995,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -2850,6 +3069,9 @@
    "contribution": 0.038209,
    "p_value": 0.0913,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -2885,6 +3107,9 @@
    "contribution": 0.036936,
    "p_value": 0.167,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -2963,6 +3188,9 @@
    "contribution": 0.035896,
    "p_value": 0.987,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -3000,6 +3228,9 @@
    "contribution": 0.035058,
    "p_value": 0.963,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -3036,6 +3267,9 @@
    "contribution": 0.033832,
    "p_value": 0.932,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -3073,6 +3307,49 @@
    "contribution": 0.02757,
    "p_value": 0.34,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
+   "selected": false
+  },
+  {
+   "unit_id": "kotlin",
+   "type": "skill",
+   "name": "Kotlin",
+   "category": "language",
+   "members": [
+    {
+     "skill_id": "kotlin",
+     "name": "Kotlin",
+     "so_item": "Kotlin",
+     "p_skill_given_goal": 0.068273,
+     "region_p_skill_given_goal": 0.066626
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 249,
+   "other_respondents": 27814,
+   "p_skill_given_goal": 0.068273,
+   "p_skill_given_other": 0.109621,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 2,
+   "region_other_respondents": 734,
+   "region_p_skill_given_goal": 0.066626,
+   "region_p_skill_given_other": 0.099237,
+   "quantity": 0.066626,
+   "quality": 40.1693,
+   "contribution": 0.026763,
+   "p_value": 0.981,
+   "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -3109,6 +3386,9 @@
    "contribution": 0.025553,
    "p_value": 0.0598,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -3146,6 +3426,9 @@
    "contribution": 0.02553,
    "p_value": 0.992,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -3183,56 +3466,9 @@
    "contribution": 0.025515,
    "p_value": 0.204,
    "significant": false,
-   "selected": false
-  },
-  {
-   "unit_id": "mobile-native-language",
-   "type": "group",
-   "name": "モバイルネイティブ言語",
-   "members": [
-    {
-     "skill_id": "kotlin",
-     "name": "Kotlin",
-     "so_item": "Kotlin",
-     "p_skill_given_goal": 0.068273,
-     "region_p_skill_given_goal": 0.066626
-    },
-    {
-     "skill_id": "swift",
-     "name": "Swift",
-     "so_item": "Swift",
-     "p_skill_given_goal": 0.032129,
-     "region_p_skill_given_goal": 0.031353
-    },
-    {
-     "skill_id": "objective-c",
-     "name": "Objective-C",
-     "so_item": "Objective-C",
-     "p_skill_given_goal": 0.018109,
-     "region_p_skill_given_goal": 0.017672
-    }
-   ],
-   "source_years": [
-    2025
-   ],
-   "goal_respondents": 249,
-   "other_respondents": 27814,
-   "p_skill_given_goal": 0.080321,
-   "p_skill_given_other": 0.140685,
-   "region_source_years": [
-    2023,
-    2024,
-    2025
-   ],
-   "region_goal_respondents": 2,
-   "region_other_respondents": 734,
-   "region_p_skill_given_goal": 0.078384,
-   "region_p_skill_given_other": 0.162451,
-   "quantity": 0.078384,
-   "quality": 32.5466,
-   "contribution": 0.025511,
-   "p_value": 0.997,
-   "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -3270,6 +3506,9 @@
    "contribution": 0.023661,
    "p_value": 0.98,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -3307,6 +3546,9 @@
    "contribution": 0.021272,
    "p_value": 1.0,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -3343,6 +3585,9 @@
    "contribution": 0.021027,
    "p_value": 0.611,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -3414,6 +3659,9 @@
    "contribution": 0.020483,
    "p_value": 0.372,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -3450,6 +3698,9 @@
    "contribution": 0.017237,
    "p_value": 0.869,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -3487,6 +3738,9 @@
    "contribution": 0.017063,
    "p_value": 0.829,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -3524,6 +3778,9 @@
    "contribution": 0.01672,
    "p_value": 0.919,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -3561,6 +3818,9 @@
    "contribution": 0.016645,
    "p_value": 0.998,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -3597,6 +3857,9 @@
    "contribution": 0.015484,
    "p_value": 0.895,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -3633,6 +3896,9 @@
    "contribution": 0.015425,
    "p_value": 0.897,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -3669,6 +3935,9 @@
    "contribution": 0.015205,
    "p_value": 0.148,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -3706,6 +3975,9 @@
    "contribution": 0.015124,
    "p_value": 0.641,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -3743,6 +4015,9 @@
    "contribution": 0.015079,
    "p_value": 0.822,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -3828,6 +4103,9 @@
    "contribution": 0.014864,
    "p_value": 0.989,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -3863,6 +4141,9 @@
    "contribution": 0.014697,
    "p_value": 1.29e-10,
    "significant": true,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -3898,6 +4179,9 @@
    "contribution": 0.014406,
    "p_value": 0.328,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -3934,6 +4218,9 @@
    "contribution": 0.014285,
    "p_value": 0.401,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -3971,6 +4258,9 @@
    "contribution": 0.013872,
    "p_value": 0.315,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -4007,6 +4297,9 @@
    "contribution": 0.013796,
    "p_value": 0.718,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -4044,6 +4337,9 @@
    "contribution": 0.01304,
    "p_value": 0.588,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -4081,6 +4377,9 @@
    "contribution": 0.011917,
    "p_value": 0.958,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -4117,6 +4416,9 @@
    "contribution": 0.011465,
    "p_value": 0.923,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -4152,6 +4454,9 @@
    "contribution": 0.011462,
    "p_value": 0.184,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -4189,6 +4494,9 @@
    "contribution": 0.010989,
    "p_value": 0.769,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -4226,6 +4534,9 @@
    "contribution": 0.010905,
    "p_value": 0.983,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -4263,6 +4574,9 @@
    "contribution": 0.009989,
    "p_value": 0.784,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -4299,6 +4613,9 @@
    "contribution": 0.009782,
    "p_value": 0.796,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -4336,6 +4653,9 @@
    "contribution": 0.009439,
    "p_value": 0.753,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -4372,6 +4692,9 @@
    "contribution": 0.009259,
    "p_value": 0.992,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -4409,6 +4732,9 @@
    "contribution": 0.009191,
    "p_value": 0.902,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -4444,6 +4770,9 @@
    "contribution": 0.009037,
    "p_value": 0.46,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -4481,6 +4810,49 @@
    "contribution": 0.008868,
    "p_value": 0.778,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
+   "selected": false
+  },
+  {
+   "unit_id": "swift",
+   "type": "skill",
+   "name": "Swift",
+   "category": "language",
+   "members": [
+    {
+     "skill_id": "swift",
+     "name": "Swift",
+     "so_item": "Swift",
+     "p_skill_given_goal": 0.032129,
+     "region_p_skill_given_goal": 0.031353
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 249,
+   "other_respondents": 27814,
+   "p_skill_given_goal": 0.032129,
+   "p_skill_given_other": 0.055763,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 2,
+   "region_other_respondents": 734,
+   "region_p_skill_given_goal": 0.031353,
+   "region_p_skill_given_other": 0.082846,
+   "quantity": 0.031353,
+   "quality": 27.455,
+   "contribution": 0.008608,
+   "p_value": 0.947,
+   "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -4517,6 +4889,9 @@
    "contribution": 0.008566,
    "p_value": 0.559,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -4554,6 +4929,9 @@
    "contribution": 0.007231,
    "p_value": 0.516,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -4589,6 +4967,9 @@
    "contribution": 0.0072,
    "p_value": 0.504,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -4626,6 +5007,9 @@
    "contribution": 0.00628,
    "p_value": 0.945,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -4661,6 +5045,9 @@
    "contribution": 0.006006,
    "p_value": 0.686,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -4696,6 +5083,9 @@
    "contribution": 0.005828,
    "p_value": 0.045,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -4733,6 +5123,9 @@
    "contribution": 0.005602,
    "p_value": 0.785,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -4769,6 +5162,9 @@
    "contribution": 0.005583,
    "p_value": 0.993,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -4804,6 +5200,9 @@
    "contribution": 0.005258,
    "p_value": 0.136,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -4840,6 +5239,48 @@
    "contribution": 0.0052,
    "p_value": 0.349,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
+   "selected": false
+  },
+  {
+   "unit_id": "objective-c",
+   "type": "skill",
+   "name": "Objective-C",
+   "category": "language",
+   "members": [
+    {
+     "skill_id": "objective-c",
+     "name": "Objective-C",
+     "so_item": "Objective-C",
+     "p_skill_given_goal": 0.018109,
+     "region_p_skill_given_goal": 0.017672
+    }
+   ],
+   "source_years": [
+    2024
+   ],
+   "goal_respondents": 497,
+   "other_respondents": 49683,
+   "p_skill_given_goal": 0.018109,
+   "p_skill_given_other": 0.022503,
+   "region_source_years": [
+    2023,
+    2024
+   ],
+   "region_goal_respondents": 2,
+   "region_other_respondents": 571,
+   "region_p_skill_given_goal": 0.017672,
+   "region_p_skill_given_other": 0.045744,
+   "quantity": 0.017672,
+   "quality": 27.8666,
+   "contribution": 0.004925,
+   "p_value": 0.745,
+   "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -4877,6 +5318,9 @@
    "contribution": 0.004824,
    "p_value": 0.988,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -4914,6 +5358,9 @@
    "contribution": 0.004553,
    "p_value": 0.995,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -4950,6 +5397,9 @@
    "contribution": 0.004397,
    "p_value": 0.783,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -4985,6 +5435,9 @@
    "contribution": 0.003992,
    "p_value": 0.57,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -5021,6 +5474,9 @@
    "contribution": 0.003605,
    "p_value": 0.826,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -5056,6 +5512,9 @@
    "contribution": 0.00357,
    "p_value": 0.825,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -5093,6 +5552,9 @@
    "contribution": 0.003551,
    "p_value": 0.552,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -5129,6 +5591,9 @@
    "contribution": 0.003237,
    "p_value": 0.987,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -5164,6 +5629,9 @@
    "contribution": 0.002994,
    "p_value": 0.512,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -5199,6 +5667,9 @@
    "contribution": 0.002982,
    "p_value": 0.773,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -5235,6 +5706,9 @@
    "contribution": 0.002928,
    "p_value": 0.914,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -5272,6 +5746,9 @@
    "contribution": 0.001782,
    "p_value": 0.925,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -5307,6 +5784,9 @@
    "contribution": 0.001717,
    "p_value": 0.612,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -5343,6 +5823,9 @@
    "contribution": 0.001698,
    "p_value": 0.857,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -5378,6 +5861,9 @@
    "contribution": 0.001697,
    "p_value": 0.684,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -5414,6 +5900,9 @@
    "contribution": 0.001695,
    "p_value": 0.869,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -5450,6 +5939,9 @@
    "contribution": 0.001538,
    "p_value": 0.844,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -5486,6 +5978,9 @@
    "contribution": 0.001478,
    "p_value": 0.793,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -5521,6 +6016,9 @@
    "contribution": 0.001461,
    "p_value": 0.444,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -5557,6 +6055,9 @@
    "contribution": 0.0014,
    "p_value": 0.965,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -5592,6 +6093,9 @@
    "contribution": 0.001326,
    "p_value": 0.646,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -5628,6 +6132,9 @@
    "contribution": 0.001319,
    "p_value": 0.683,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -5665,6 +6172,9 @@
    "contribution": 0.001142,
    "p_value": 0.813,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -5700,6 +6210,9 @@
    "contribution": 0.001137,
    "p_value": 0.663,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -5736,6 +6249,9 @@
    "contribution": 0.001001,
    "p_value": 0.638,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -5772,6 +6288,9 @@
    "contribution": 0.000892,
    "p_value": 0.953,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -5809,6 +6328,9 @@
    "contribution": 0.000881,
    "p_value": 0.884,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -5844,6 +6366,9 @@
    "contribution": 0.000779,
    "p_value": 0.84,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -5879,6 +6404,9 @@
    "contribution": 0.000673,
    "p_value": 0.781,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -5914,6 +6442,9 @@
    "contribution": 0.000658,
    "p_value": 0.821,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -5949,6 +6480,9 @@
    "contribution": 0.00064,
    "p_value": 0.506,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -5986,6 +6520,9 @@
    "contribution": 0.000587,
    "p_value": 0.986,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -6022,6 +6559,9 @@
    "contribution": 0.000571,
    "p_value": 0.972,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -6058,6 +6598,9 @@
    "contribution": 0.000545,
    "p_value": 0.77,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -6094,6 +6637,9 @@
    "contribution": 0.000156,
    "p_value": 0.971,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -6131,6 +6677,9 @@
    "contribution": 0.0,
    "p_value": 0.828,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -6168,6 +6717,9 @@
    "contribution": 0.0,
    "p_value": 0.996,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -6205,6 +6757,9 @@
    "contribution": 0.0,
    "p_value": 0.974,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -6242,6 +6797,9 @@
    "contribution": 0.0,
    "p_value": 0.964,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -6279,6 +6837,9 @@
    "contribution": 0.0,
    "p_value": 0.937,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -6314,6 +6875,9 @@
    "contribution": 0.0,
    "p_value": 0.909,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -6349,6 +6913,9 @@
    "contribution": 0.0,
    "p_value": 0.704,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -6384,6 +6951,9 @@
    "contribution": 0.0,
    "p_value": 0.679,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -6419,6 +6989,9 @@
    "contribution": 0.0,
    "p_value": 0.707,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -6454,6 +7027,9 @@
    "contribution": 0.0,
    "p_value": 0.652,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -6489,6 +7065,9 @@
    "contribution": 0.0,
    "p_value": 0.714,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -6524,6 +7103,9 @@
    "contribution": 0.0,
    "p_value": 0.732,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -6559,6 +7141,9 @@
    "contribution": 0.0,
    "p_value": 0.954,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -6596,6 +7181,9 @@
    "contribution": 0.0,
    "p_value": 0.973,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -6631,6 +7219,9 @@
    "contribution": 0.0,
    "p_value": 0.92,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -6666,6 +7257,9 @@
    "contribution": 0.0,
    "p_value": 0.897,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   },
   {
@@ -6701,6 +7295,9 @@
    "contribution": 0.0,
    "p_value": 0.945,
    "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
    "selected": false
   }
  ]

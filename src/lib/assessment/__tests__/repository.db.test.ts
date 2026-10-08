@@ -46,7 +46,9 @@ describe.skipIf(!hasDb)("Supabase repository（実 DB）", () => {
     const submission: AssessmentSubmission = {
       goal_id: "frontend-developer",
       skill_ids: ["html-css", "vue", "jest"],
+      skill_status: null,
       certification_ids: ["ipa-fe"],
+      certification_status: null,
       experience_status: "entered",
       experiences: [{ role_id: "2513.5", years: 1.5 }],
       education_level_id: "technical-college",
@@ -60,6 +62,8 @@ describe.skipIf(!hasDb)("Supabase repository（実 DB）", () => {
     expect(stored!.skill_ids.sort()).toEqual(["html-css", "jest", "vue"]);
     expect(stored!.legacy_skill_ids).toEqual([]);
     expect(stored!.certification_ids).toEqual(["ipa-fe"]);
+    expect(stored!.skill_status).toBeNull();
+    expect(stored!.certification_status).toBeNull();
     expect(result.skill_statistics_version).toMatch(/^stack_overflow_developer_survey:2023-2024-2025:/);
     expect(stored!.career_match.skill).toEqual({
       skill_calculation_version: result.skill_calculation_version,
@@ -68,6 +72,9 @@ describe.skipIf(!hasDb)("Supabase repository（実 DB）", () => {
       tech_skill_progress: expect.closeTo(result.tech_skill_progress!, 6),
       human_skill_progress: expect.closeTo(result.human_skill_progress!, 6),
       skill_layer_weights: result.skill_layer_weights,
+      skill_scoring_method: "linear",
+      skill_distribution_sample_size: null,
+      skill_distribution_version: null,
     });
     expect(stored!.experience_status).toBe("entered");
     expect(stored!.experiences).toEqual([{ role_id: "2513.5", years: 1.5 }]);
@@ -83,22 +90,26 @@ describe.skipIf(!hasDb)("Supabase repository（実 DB）", () => {
     expect(stored!.learning_path.map((s) => s.step_id)).not.toContain("frontend-framework");
   });
 
-  it("スキルなし・職歴「わかりません」・学歴「わかりません」でも保存でき、回答をそのまま読み出せる", async () => {
+  it("スキル・資格を選ばなかった理由と、職歴・学歴の「回答をスキップする」を保存でき、そのまま読み出せる", async () => {
     const { id } = await save({
       goal_id: "data-analyst",
       skill_ids: [],
+      skill_status: "none_intent_to_learn",
       certification_ids: [],
-      experience_status: "unknown",
+      certification_status: "planning_to_certify",
+      experience_status: "skipped",
       experiences: [],
-      education_level_id: "unknown",
+      education_level_id: "skipped",
       degree_id: null,
     });
     const stored = await getAssessment(id, anonymousUserId);
 
     expect(stored!.skill_ids).toEqual([]);
-    expect(stored!.experience_status).toBe("unknown");
+    expect(stored!.skill_status).toBe("none_intent_to_learn");
+    expect(stored!.certification_status).toBe("planning_to_certify");
+    expect(stored!.experience_status).toBe("skipped");
     expect(stored!.experiences).toEqual([]);
-    expect(stored!.education_level_id).toBe("unknown");
+    expect(stored!.education_level_id).toBe("skipped");
     expect(stored!.degree_id).toBeNull();
     expect(stored!.career_match.experience_match).toBe(0);
     expect(stored!.career_match.skill_match).toBe(0);
@@ -106,14 +117,44 @@ describe.skipIf(!hasDb)("Supabase repository（実 DB）", () => {
     expect(stored!.learning_path.length).toBeGreaterThan(0);
   });
 
+  it("「回答をスキップする」の旧値 unknown で保存された行は skipped として読み出し、未定義の理由は保存できない", async () => {
+    const { id } = await save({
+      goal_id: "data-analyst",
+      skill_ids: [],
+      skill_status: "skipped",
+      certification_ids: [],
+      certification_status: "skipped",
+      experience_status: "none",
+      experiences: [],
+      education_level_id: "skipped",
+      degree_id: null,
+    });
+    const supabase = createClient();
+    expect((await supabase.from("assessment_sessions").update({ experience_status: "unknown" }).eq("id", id)).error).toBeNull();
+    expect(
+      (await supabase.from("assessment_education").update({ education_level_id: "unknown" }).eq("assessment_id", id)).error,
+    ).toBeNull();
+
+    const stored = await getAssessment(id, anonymousUserId);
+    expect(stored!.experience_status).toBe("skipped");
+    expect(stored!.education_level_id).toBe("skipped");
+
+    for (const invalid of [{ skill_status: "none" }, { certification_status: "unknown" }, { experience_status: "skip" }]) {
+      const { error } = await supabase.from("assessment_sessions").update(invalid).eq("id", id);
+      expect(error?.message, JSON.stringify(invalid)).toMatch(/check constraint/);
+    }
+  });
+
   it("Learning Path の各行に、判定に使った Learning Path Master の version を保存する", async () => {
     const { id, missingSteps, learningPathVersion } = await save({
       goal_id: "data-analyst",
       skill_ids: [],
+      skill_status: "none_intent_to_learn",
       certification_ids: [],
+      certification_status: "none",
       experience_status: "none",
       experiences: [],
-      education_level_id: "unknown",
+      education_level_id: "skipped",
       degree_id: null,
     });
     expect(learningPathVersion).toMatch(/\S/);
@@ -130,10 +171,12 @@ describe.skipIf(!hasDb)("Supabase repository（実 DB）", () => {
     const { id } = await save({
       goal_id: "backend-developer",
       skill_ids: [],
+      skill_status: "none_intent_to_learn",
       certification_ids: [],
+      certification_status: "none",
       experience_status: "none",
       experiences: [],
-      education_level_id: "unknown",
+      education_level_id: "skipped",
       degree_id: null,
     });
     const legacyRows = ["html", "css", "shell-script", "backend-framework", "web-api"].map((skill_id) => ({
@@ -154,10 +197,12 @@ describe.skipIf(!hasDb)("Supabase repository（実 DB）", () => {
       {
         goal_id: "frontend-developer",
         skill_ids: ["html-css"],
+        skill_status: null,
         certification_ids: [],
+        certification_status: "none",
         experience_status: "none",
         experiences: [],
-        education_level_id: "unknown",
+        education_level_id: "skipped",
         degree_id: null,
       },
       {
@@ -178,17 +223,67 @@ describe.skipIf(!hasDb)("Supabase repository（実 DB）", () => {
       tech_skill_progress: 10,
       human_skill_progress: 22.5,
       skill_layer_weights: { tech: 0.8, human: 0.2, source: "default" },
+      skill_scoring_method: "linear",
+      skill_distribution_sample_size: null,
+      skill_distribution_version: null,
     });
+  });
+
+  it("スコアリング方式と分布の標本数・バージョンを保存し、そのまま読み出せる（ecdf で保存された結果を想定）", async () => {
+    const version = `${SKILL_CALCULATION_VERSION}|stack_overflow_developer_survey:2023-2024-2025:0.3.1:k=80.9`;
+    const { id } = await save(
+      {
+        goal_id: "frontend-developer",
+        skill_ids: ["html-css"],
+        skill_status: null,
+        certification_ids: [],
+        certification_status: "none",
+        experience_status: "none",
+        experiences: [],
+        education_level_id: "skipped",
+        degree_id: null,
+      },
+      {
+        skill_match: 37.5,
+        skill_scoring_method: "ecdf",
+        skill_distribution_sample_size: 120,
+        skill_distribution_version: version,
+      },
+    );
+
+    const stored = await getAssessment(id, anonymousUserId);
+    expect(stored!.career_match.skill_match).toBe(37.5);
+    expect(stored!.career_match.skill).toMatchObject({
+      skill_scoring_method: "ecdf",
+      skill_distribution_sample_size: 120,
+      skill_distribution_version: version,
+    });
+  });
+
+  it("スコアリング方式の制約：未定義の方式・linear で分布あり・ecdf で標本数 100 未満やバージョン無しは保存できない", async () => {
+    const id = createdIds[0];
+    const supabase = createClient();
+    for (const invalid of [
+      { skill_scoring_method: "normal_cdf" },
+      { skill_scoring_method: "linear", skill_distribution_sample_size: 120, skill_distribution_version: "v" },
+      { skill_scoring_method: "ecdf", skill_distribution_sample_size: 99, skill_distribution_version: "v" },
+      { skill_scoring_method: "ecdf", skill_distribution_sample_size: 120, skill_distribution_version: null },
+    ]) {
+      const { error } = await supabase.from("career_match_results").update(invalid).eq("assessment_id", id);
+      expect(error?.message, JSON.stringify(invalid)).toMatch(/check constraint/);
+    }
   });
 
   it("旧方式の結果（skill_calculation_version が NULL）は skill を null とし、保存時の Skill Match を返す", async () => {
     const { id } = await save({
       goal_id: "backend-developer",
       skill_ids: [],
+      skill_status: "none_intent_to_learn",
       certification_ids: [],
+      certification_status: "none",
       experience_status: "none",
       experiences: [],
-      education_level_id: "unknown",
+      education_level_id: "skipped",
       degree_id: null,
     });
     const supabase = createClient();

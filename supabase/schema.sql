@@ -10,9 +10,15 @@ CREATE TABLE IF NOT EXISTS public.assessment_sessions (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     anonymous_user_id UUID NOT NULL,
     goal_id TEXT NOT NULL,
-    -- 職歴の回答。entered：職種と年数を 1 件以上入力 / none：実務経験なし / unknown：わかりません・答えない。
-    -- 必須化の前に保存した行は NULL
-    experience_status TEXT CHECK (experience_status IN ('entered', 'none', 'unknown')),
+    -- 職歴の回答。entered：職種と年数を 1 件以上入力 / none：実務経験なし / skipped：回答をスキップする。
+    -- 必須化の前に保存した行は NULL。unknown は skipped の旧値（読み出し時に skipped とみなす）
+    experience_status TEXT CHECK (experience_status IN ('entered', 'none', 'skipped', 'unknown')),
+    -- スキルを 1 つも選ばなかった理由。none_intent_to_learn：まだ無いが、これから学習を開始する / skipped：回答をスキップする。
+    -- スキルを選んだ行と、この列より前に保存した行は NULL
+    skill_status TEXT CHECK (skill_status IN ('none_intent_to_learn', 'skipped')),
+    -- 資格を 1 つも選ばなかった理由。none：保有している資格はない / planning_to_certify：これから学習を開始する /
+    -- skipped：回答をスキップする。資格を選んだ行と、この列より前に保存した行は NULL
+    certification_status TEXT CHECK (certification_status IN ('none', 'planning_to_certify', 'skipped')),
     calculation_version TEXT NOT NULL,
     data_source_version TEXT NOT NULL,
     taxonomy_version TEXT NOT NULL,
@@ -44,7 +50,7 @@ CREATE TABLE IF NOT EXISTS public.assessment_education (
     -- ユーザーが選んだ学歴（data/education/education.json の level_id。例：technical-college）
     education_level_id TEXT NOT NULL,
     -- 統計上の学歴（JobHop 5 段階）。Education Match はこの値で計算する（例：高専 → Secondary school）。
-    -- 「わかりません / 答えない」（education_level_id = 'unknown'）は NULL
+    -- 「回答をスキップする」（education_level_id = 'skipped'。旧値は 'unknown'）は NULL
     degree_id TEXT,
     -- 専攻分野。入力をやめたため新しい行は NULL（以前に保存した行のために列を残している）
     field_id TEXT,
@@ -58,6 +64,8 @@ CREATE TABLE IF NOT EXISTS public.career_match_results (
     skill_match NUMERIC,
     -- 算出不可（skill_only）の場合は NULL。0 点としては保存しない
     experience_match NUMERIC,
+    -- Experience の計算方式（NULL は旧方式。relevance-1.0.0 = 前職歴を関連度 × 在職年数パーセンタイルで評価）
+    experience_calculation_version TEXT,
     education_match NUMERIC,
     evidence_mode TEXT NOT NULL CHECK (evidence_mode IN ('full', 'proxy', 'skill_only')),
     confidence TEXT NOT NULL CHECK (confidence IN ('moderate', 'moderate_low', 'low')),
@@ -76,6 +84,10 @@ CREATE TABLE IF NOT EXISTS public.career_match_results (
     skill_weight_tech NUMERIC,
     skill_weight_human NUMERIC,
     skill_weight_source TEXT,
+    -- Skill Match のスコアリング方式（linear / ecdf）と、ecdf に使った分布の標本数・バージョン（linear は NULL）
+    skill_scoring_method TEXT NOT NULL DEFAULT 'linear',
+    skill_distribution_sample_size INTEGER,
+    skill_distribution_version TEXT,
     created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
     CONSTRAINT career_match_results_skill_weights_check CHECK (
         (skill_weight_tech IS NULL AND skill_weight_human IS NULL AND skill_weight_source IS NULL)
@@ -89,6 +101,20 @@ CREATE TABLE IF NOT EXISTS public.career_match_results (
     -- 旧方式（skill_calculation_version が NULL）の行は配分も NULL、2 層方式の行は配分を必ず持つ
     CONSTRAINT career_match_results_skill_version_weights_check CHECK (
         (skill_calculation_version IS NULL) = (skill_weight_source IS NULL)
+    ),
+    CONSTRAINT career_match_results_skill_scoring_method_check CHECK (
+        skill_scoring_method IN ('linear', 'ecdf')
+    ),
+    -- linear なら分布の 2 列は NULL、ecdf なら標本数 100 以上・バージョンあり
+    CONSTRAINT career_match_results_skill_scoring_consistent CHECK (
+        (
+            skill_scoring_method = 'linear'
+            AND skill_distribution_sample_size IS NULL AND skill_distribution_version IS NULL
+        )
+        OR (
+            skill_scoring_method = 'ecdf'
+            AND skill_distribution_sample_size >= 100 AND skill_distribution_version IS NOT NULL
+        )
     )
 );
 

@@ -10,16 +10,24 @@ import {
   goalMatch,
   quality,
   resolveUserSkills,
+  roleRelevance,
   roundYears,
   skillStatisticsVersion,
-  userExperienceKeys,
   usesEducationRequirement,
+  ECDF_SKILL_MATCH_ENABLED,
+  EXPERIENCE_CALCULATION_VERSION,
   SKILL_CALCULATION_VERSION,
   type KnownIds,
   type SkillContext,
 } from "../calculate";
 import { learningPath } from "../skill-gap";
-import type { CareerStatistics, LearningPathMaster, RequirementGroupStatistics, UserInput } from "../types";
+import type {
+  CareerStatistics,
+  LearningPathMaster,
+  RequirementGroupStatistics,
+  SkillProgressDistribution,
+  UserInput,
+} from "../types";
 import { skillStatistics, unit } from "./skill-fixtures";
 
 function row(pGoal: number, pOther: number) {
@@ -53,8 +61,10 @@ const skill: SkillContext = {
   ],
 };
 
-// Experience（Role × 年以上、Other に無い Unit なので c = Pg）:
-//   A≥0.5 (c=0.2), A≥1.0 (c=0.15), A≥1.5 (c=0.1), A≥2.0 (c=0.05), B≥0.5 (c=0.1)、reference = 0.4
+// Experience（Group Population 500 人。Role の関連度 = 最短の Unit の Quality を経験者数で 50 へ縮めて / 100）:
+//   A：経験者 20 人（0.04 × 500）、Quality 75 → (50 + 25 × 20 / (20 + 5)) / 100 = 0.7
+//   B：経験者 45 人（0.09 × 500）、Quality 100 → (50 + 50 × 45 / (45 + 5)) / 100 = 0.95
+//   年数の伸び方は在職年数のパーセンタイル：0.5 年 = 12.5、1 年 = 50、2 年 = 75、3 年 = 87.5、それ以上 = 100
 //   Group の職業は occupations（Group 前職歴の Unit には含まれない）
 function group(groupId: string, occupations: string[]): RequirementGroupStatistics {
   return {
@@ -64,13 +74,10 @@ function group(groupId: string, occupations: string[]): RequirementGroupStatisti
     pre_goal_experience_persons: 400,
     experience_reference: 0.4,
     experience: [
-      { unit_id: "A__0.5", role_id: "A", years: 0.5, ...row(0.2, 0) },
-      { unit_id: "A__1.0", role_id: "A", years: 1.0, ...row(0.15, 0) },
-      { unit_id: "A__1.5", role_id: "A", years: 1.5, ...row(0.1, 0) },
-      { unit_id: "A__2.0", role_id: "A", years: 2.0, ...row(0.05, 0) },
-      { unit_id: "B__0.5", role_id: "B", years: 0.5, ...row(0.1, 0) },
+      { unit_id: "A__0.5", role_id: "A", years: 0.5, ...row(0.04, 0.04 / 3) },
+      { unit_id: "A__1.0", role_id: "A", years: 1.0, ...row(0.03, 0.001) },
+      { unit_id: "B__0.5", role_id: "B", years: 0.5, ...row(0.09, 0) },
     ],
-    // パーセンタイル：0.5 年 = 12.5、1 年 = 50、2 年 = 75、3 年 = 87.5
     occupation_tenure: { sample_size: 4, distribution: [{ years: 0.5, persons: 1 }, { years: 1, persons: 2 }, { years: 3, persons: 1 }] },
   };
 }
@@ -168,6 +175,7 @@ describe("calculateCareerMatch の Skill（技術スキル層 × 人間定義層
     expect(result.skill_progress).toBeCloseTo(50 * 0.8 + 100 * 0.2, 10);
     expect(result.skill_layer_weights).toEqual({ tech: 0.8, human: 0.2, source: "goal" });
     expect(result.skill_calculation_version).toBe(SKILL_CALCULATION_VERSION);
+    expect(result.experience_calculation_version).toBe(EXPERIENCE_CALCULATION_VERSION);
   });
 
   it("資格が証明するスキル・使っているツールも保有しているとみなす", () => {
@@ -186,7 +194,23 @@ describe("calculateCareerMatch の Skill（技術スキル層 × 人間定義層
 
   it("技術スキル層に使った Skill Statistics の由来を結果に残す", () => {
     expect(skillMatch({}).skill_statistics_version).toBe(skillStatisticsVersion(skill.techStats!));
-    expect(skillStatisticsVersion(skill.techStats!)).toMatch(/^.+:\d{4}(-\d{4})*:.+:k=[\d.]+$/);
+    expect(skillStatisticsVersion(skill.techStats!)).toMatch(
+      /^.+:\d{4}(-\d{4})*:.+:k=[\d.]+:groups=[\d.]+:base=[\d.]+:beta=[\d.]+:dref=[\d.]+$/,
+    );
+  });
+
+  it("β・d*・グループ定義・基本リストの線引きのどれかが変われば、Skill Statistics の由来も変わる（ecdf の分布を混ぜない）", () => {
+    const stats = skill.techStats!;
+    const base = skillStatisticsVersion(stats);
+    const variants = [
+      { ...stats, groups_version: "9.9.9" },
+      { ...stats, selection: { ...stats.selection, distinctive_share: stats.selection.distinctive_share + 0.01 } },
+      { ...stats, selection: { ...stats.selection, base_min_share: 0.6 } },
+      { ...stats, selection: { ...stats.selection, base_discount_d_ref: stats.selection.base_discount_d_ref + 0.001 } },
+      { ...stats, region: { ...stats.region, prior_strength: stats.region.prior_strength + 1 } },
+      { ...stats, calculation_version: "9.9.9" },
+    ];
+    for (const variant of variants) expect(skillStatisticsVersion(variant)).not.toBe(base);
   });
 
   it("技術層の配分が 0 の Goal は、技術層を計算しても Skill Statistics の由来を残さない", () => {
@@ -260,53 +284,77 @@ describe("calculateCareerMatch の Skill Scoring", () => {
     expect(result.skill_progress).toBeCloseTo(50, 10);
     expect(result.skill_match).toBeCloseTo(50, 10);
     expect(result.skill_scoring_method).toBe("linear");
+    expect(result.skill_distribution_sample_size).toBeNull();
+    expect(result.skill_distribution_version).toBeNull();
   });
 
-  it("蓄積データの分布があれば ECDF で変換し、Goal Match にも反映する", () => {
-    // 400 人が 0 点、100 人が 50 点、100 人が 100 点 → 50 点は (400 + 0.5 × 100) / 600
-    const scores = [...Array(400).fill(0), ...Array(100).fill(50), ...Array(100).fill(100)];
-    const result = calculateCareerMatch(input({ skill_ids: skillIds }), stats(), skill, known, { goal_id: "test-goal", scores });
-    expect(result.skill_progress).toBeCloseTo(50, 10);
-    expect(result.skill_scoring_method).toBe("ecdf");
-    expect(result.skill_match).toBeCloseTo(75, 10);
-    expect(result.goal_match).toBeCloseTo((result.skill_match + 0 + 0) / 3);
+  it("ECDF は無効（ECDF_SKILL_MATCH_ENABLED = false）で、100 人以上・偏った分布を渡しても linear で計算する", () => {
+    expect(ECDF_SKILL_MATCH_ENABLED).toBe(false);
+    // 半数が 100 点の分布。ECDF なら全部持っている人でも 75 点になる
+    const scores = [...Array(100).fill(0), ...Array(100).fill(100)];
+    const distribution: SkillProgressDistribution = {
+      goal_id: "test-goal",
+      scores,
+      skill_calculation_version: SKILL_CALCULATION_VERSION,
+      skill_statistics_version: skillStatisticsVersion(skill.techStats!),
+    };
+    for (const skill_ids of [skillIds, ["html", "python", "sql", "docker"]]) {
+      const result = calculateCareerMatch(input({ skill_ids }), stats(), skill, known, distribution);
+      expect(result.skill_match).toBe(result.skill_progress);
+      expect(result.skill_scoring_method).toBe("linear");
+      expect(result.skill_distribution_sample_size).toBeNull();
+      expect(result.skill_distribution_version).toBeNull();
+    }
   });
 
   it("別 Goal の分布はエラー", () => {
-    const distribution = { goal_id: "other", scores: [0, 100] };
+    const distribution: SkillProgressDistribution = {
+      goal_id: "other",
+      scores: [0, 100],
+      skill_calculation_version: SKILL_CALCULATION_VERSION,
+      skill_statistics_version: null,
+    };
     expect(() => calculateCareerMatch(input(), stats(), skill, known, distribution)).toThrow();
   });
 });
 
-describe("userExperienceKeys", () => {
-  it("Y 年の経験は 0.5〜Y 年のすべての Unit（年以上）に該当する", () => {
-    expect([...userExperienceKeys([{ role_id: "A", years: 1.5 }])]).toEqual(["A__0.5", "A__1.0", "A__1.5"]);
+describe("roleRelevance", () => {
+  const g = group("g", ["G"]);
+
+  it("最短の Unit の Quality / 100 を、経験者が少ないほど 0.5 へ縮める", () => {
+    expect(roleRelevance(g, "A")).toBeCloseTo(0.7, 10);
+    expect(roleRelevance(g, "B")).toBeCloseTo(0.95, 10);
+    // 経験者 5 人なら Quality の 50 からの差を半分にする：(50 + 50 / 2) / 100
+    const few = { ...g, experience: [{ unit_id: "A__0.5", role_id: "A", years: 0.5, ...row(0.01, 0) }] };
+    expect(roleRelevance(few, "A")).toBeCloseTo(0.75, 10);
   });
 
-  it("同一 Role の入力は年数を合算してから丸める", () => {
-    expect([...userExperienceKeys([{ role_id: "A", years: 0.6 }, { role_id: "A", years: 0.5 }])]).toEqual(["A__0.5", "A__1.0"]);
-  });
-
-  it("0 年以下・不正値は除外する", () => {
-    expect(userExperienceKeys([{ role_id: "A", years: 0 }, { role_id: "B", years: -1 }, { role_id: "C", years: NaN }]).size).toBe(0);
+  it("Goal 以外の人に多い経歴（Quality < 50）も 0 にはしない。統計に無い Role は 0", () => {
+    // Quality 33.3、経験者 20 人 → (50 − 16.67 × 0.8) / 100
+    const unrelated = { ...g, experience: [{ unit_id: "A__0.5", role_id: "A", years: 0.5, ...row(0.04, 0.08) }] };
+    expect(roleRelevance(unrelated, "A")).toBeCloseTo(0.36667, 4);
+    expect(roleRelevance(g, "C")).toBe(0);
   });
 });
 
 describe("experienceMatch", () => {
   const match = (experiences: { role_id: string; years: number }[]) => experienceMatch(stats(), experiences).value;
 
-  it("Σ Contribution(該当 Unit) / reference × 100", () => {
-    expect(match([{ role_id: "A", years: 0.5 }])).toBeCloseTo(50); // 0.2 / 0.4
-    expect(match([{ role_id: "A", years: 1.2 }])).toBeCloseTo(87.5); // (0.2 + 0.15) / 0.4
+  it("前職歴 = Role の関連度 × その年数での Group の職業の在職年数パーセンタイル（人数の多さは掛けない）", () => {
+    expect(match([{ role_id: "A", years: 0.5 }])).toBeCloseTo(8.75, 10); // 0.7 × 12.5
+    expect(match([{ role_id: "A", years: 1.2 }])).toBeCloseTo(35, 10); // 1 年に丸めて 0.7 × 50
+    expect(match([{ role_id: "B", years: 3 }])).toBeCloseTo(83.125, 10); // 0.95 × 87.5
   });
 
-  it("同じ Role なら経験年数が長いほど下がらない", () => {
-    const values = [0.5, 1, 1.5, 2, 5, 10].map((years) => match([{ role_id: "A", years }])!);
+  it("同じ Role なら経験年数が長いほど下がらず、同じ年数の Group の職業の経験を超えない", () => {
+    const yearsList = [0.5, 1, 1.5, 2, 5, 10];
+    const values = yearsList.map((years) => match([{ role_id: "B", years }])!);
     for (let i = 1; i < values.length; i++) expect(values[i]).toBeGreaterThanOrEqual(values[i - 1]);
+    yearsList.forEach((years, i) => expect(values[i]).toBeLessThanOrEqual(match([{ role_id: "G", years }])!));
   });
 
-  it("reference を超えたら 100 で頭打ち", () => {
-    expect(match([{ role_id: "A", years: 2 }, { role_id: "B", years: 1 }])).toBe(100); // 0.6 / 0.4
+  it("複数の前職は足さず、最も高い Role で評価する", () => {
+    expect(match([{ role_id: "A", years: 2 }, { role_id: "B", years: 1 }])).toBeCloseTo(52.5, 10); // max(0.7 × 75, 0.95 × 50)
   });
 
   it("Goal 職業そのものの経験は即 100 ではなく、在職年数のパーセンタイル", () => {
@@ -316,15 +364,15 @@ describe("experienceMatch", () => {
   });
 
   it("Goal 職業の経験と前職歴があれば、高いほう", () => {
-    // 在職 1 年 = 50 < 前職歴 A 2 年 + B 1 年 = min(100, 0.6 / 0.4 × 100)
-    expect(match([{ role_id: "G", years: 1 }, { role_id: "A", years: 2 }, { role_id: "B", years: 1 }])).toBe(100);
-    // 在職 3 年 = 87.5 > 前職歴 A 0.5 年 = 50
+    // 在職 1 年 = 50 < 前職歴 B 3 年 = 0.95 × 87.5
+    expect(match([{ role_id: "G", years: 1 }, { role_id: "B", years: 3 }])).toBeCloseTo(83.125, 10);
+    // 在職 3 年 = 87.5 > 前職歴 A 0.5 年 = 8.75
     expect(match([{ role_id: "G", years: 3 }, { role_id: "A", years: 0.5 }])).toBe(87.5);
   });
 
   describe("複合 Goal（Group の AND、Group 内は OR）= Group 達成率の平均", () => {
-    // F = {F1 または F2}、K = {K1}。K の前職統計では A は寄与せず B≥0.5 のみ（c=0.2、reference=0.4）
-    const k = { ...group("k", ["K1"]), experience: [{ unit_id: "B__0.5", role_id: "B", years: 0.5, ...row(0.2, 0) }] };
+    // F = {F1 または F2}、K = {K1}。K の前職統計に A は無く、B（関連度 0.95）だけ
+    const k = { ...group("k", ["K1"]), experience: [{ unit_id: "B__0.5", role_id: "B", years: 0.5, ...row(0.09, 0) }] };
     const composite = stats({ goal_occupations: ["F1", "F2", "K1"], requirement_groups: [group("f", ["F1", "F2"]), k] });
 
     it("Group 内はどれか 1 つで満たし、全 Group を満たせば coverage = 1（達成率は在職年数）", () => {
@@ -338,27 +386,29 @@ describe("experienceMatch", () => {
     });
 
     it("満たしていない Group は、その Group の前職統計で達成率を出す", () => {
-      // F = 在職 3 年 = 87.5、K = 0.2 / 0.4 = 50 → (87.5 + 50) / 2
-      expect(experienceMatch(composite, [{ role_id: "F1", years: 3 }, { role_id: "B", years: 0.5 }]).value).toBeCloseTo(68.75);
-      // A は F の前職統計には寄与するが K には寄与しない → (max(在職 87.5, 前職歴 100) + 0) / 2
-      expect(experienceMatch(composite, [{ role_id: "F1", years: 3 }, { role_id: "A", years: 2 }]).value).toBe(50);
+      // F = 在職 3 年 = 87.5、K = 0.95 × 12.5 = 11.875 → (87.5 + 11.875) / 2
+      expect(experienceMatch(composite, [{ role_id: "F1", years: 3 }, { role_id: "B", years: 0.5 }]).value).toBeCloseTo(49.6875, 10);
+      // A は F の前職統計にはあるが K には無い → (max(在職 87.5, 前職歴 0.7 × 75) + 0) / 2
+      expect(experienceMatch(composite, [{ role_id: "F1", years: 3 }, { role_id: "A", years: 2 }]).value).toBe(43.75);
     });
 
     it("Group を満たさなければ各 Group の前職統計の平均", () => {
-      // F = 0.2 / 0.4 × 100 = 50、K = 0 → 25
-      expect(experienceMatch(composite, [{ role_id: "A", years: 0.5 }])).toEqual({ value: 25, coverage: 0 });
+      // F = 0.7 × 12.5 = 8.75、K = 0 → 4.375
+      const result = experienceMatch(composite, [{ role_id: "A", years: 0.5 }]);
+      expect(result.value).toBeCloseTo(4.375, 10);
+      expect(result.coverage).toBe(0);
     });
 
     it("経験していない Group の達成率は、統計上どれだけ近くても 50 まで", () => {
-      // F = min(50, 0.5 / 0.4 × 100) = 50、K = min(50, 0.2 / 0.4 × 100) = 50
-      const both = [{ role_id: "A", years: 2 }, { role_id: "B", years: 1 }];
+      // F = min(50, 0.95 × 100) = 50、K = min(50, 0.95 × 100) = 50
+      const both = [{ role_id: "A", years: 50 }, { role_id: "B", years: 50 }];
       expect(experienceMatch(composite, both).value).toBe(COMPOSITE_UNMET_GROUP_CAP);
-      // F の職業の経験があれば F は cap を受けない：(max(在職 50, 前職歴 min(100, 125)) + min(50, 50)) / 2
-      expect(experienceMatch(composite, [...both, { role_id: "F1", years: 1 }]).value).toBe(75);
+      // F の職業の経験があれば F は cap を受けない：(max(在職 50, 前職歴 95) + min(50, 95)) / 2
+      expect(experienceMatch(composite, [...both, { role_id: "F1", years: 1 }]).value).toBeCloseTo(72.5, 10);
     });
 
     it("単一 Group の Goal には上限をかけない", () => {
-      expect(experienceMatch(stats(), [{ role_id: "A", years: 2 }, { role_id: "B", years: 1 }]).value).toBe(100);
+      expect(experienceMatch(stats(), [{ role_id: "A", years: 50 }, { role_id: "B", years: 50 }]).value).toBeCloseTo(95, 10);
     });
 
     it("どれかの Group の統計が無ければ算出不可（null）", () => {
@@ -477,10 +527,10 @@ describe("calculateCareerMatch", () => {
       known,
     );
     expect(result.skill_match).toBe(50);
-    expect(result.experience_match).toBeCloseTo(87.5); // (0.2 + 0.15) / 0.4
+    expect(result.experience_match).toBeCloseTo(35); // 関連度 0.7 × 在職 1 年のパーセンタイル 50
     expect(result.experience_goal_coverage).toBe(0);
     expect(result.education_match).toBeCloseTo(100); // 0.6 / 0.6
-    expect(result.goal_match).toBeCloseTo((50 + 87.5 + 100) / 3);
+    expect(result.goal_match).toBeCloseTo((50 + 35 + 100) / 3);
     expect(result.evidence_mode).toBe("full");
     expect(result.confidence).toBe("moderate");
     expect(result.small_sample).toBe(false);
@@ -488,14 +538,14 @@ describe("calculateCareerMatch", () => {
     expect(result.taxonomy_version).toBe("esco:1.1.2");
   });
 
-  it("複数 Role の経験を合算する", () => {
+  it("複数 Role の経験は、最も関連の高い Role で評価する", () => {
     const result = calculateCareerMatch(
       input({ experiences: [{ role_id: "A", years: 0.5 }, { role_id: "B", years: 0.5 }] }),
       stats(),
       skill,
       known,
     );
-    expect(result.experience_match).toBeCloseTo(75); // (0.2 + 0.1) / 0.4
+    expect(result.experience_match).toBeCloseTo(11.875); // max(0.7, 0.95) × 12.5
   });
 
   it("Goal Sample Size = 0 なら skill_only（Experience / Education は null）", () => {

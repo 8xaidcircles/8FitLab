@@ -1,0 +1,4464 @@
+{
+  "フロントエンドエンジニア": {
+    "learning": {
+      "schools": [
+        {
+          "id": "tech-mentor",
+          "name": "Tech Mentor",
+          "course": "Webエンジニアコース",
+          "url": "https://tech-mentor.dev/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "akros",
+          "name": "Akros",
+          "url": "https://akros-ac.jp/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        }
+      ],
+      "services": [
+        {
+          "id": "levtech-career",
+          "name": "レバテックキャリア",
+          "url": "https://career.levtech.jp/",
+          "novice_support": true,
+          "freelance_available": false,
+          "job_category_matched": true
+        },
+        {
+          "id": "green",
+          "name": "Green",
+          "url": "https://www.green-japan.com/",
+          "novice_support": true,
+          "freelance_available": true,
+          "job_category_matched": true
+        }
+      ]
+    },
+    "ready": {
+      "services": [
+        {
+          "id": "levtech-career",
+          "name": "レバテックキャリア",
+          "url": "https://career.levtech.jp/",
+          "novice_support": true,
+          "freelance_available": false,
+          "job_category_matched": true
+        },
+        {
+          "id": "paiza-career",
+          "name": "paiza転職",
+          "url": "https://paiza.jp/career",
+          "novice_support": false,
+          "freelance_available": false,
+          "job_category_matched": true
+        },
+        {
+          "id": "green",
+          "name": "Green",
+          "url": "https://www.green-japan.com/",
+          "novice_support": true,
+          "freelance_available": true,
+          "job_category_matched": true
+        }
+      ],
+      "schools": [
+        {
+          "id": "tech-mentor",
+          "name": "Tech Mentor",
+          "course": "Webエンジニアコース",
+          "url": "https://tech-mentor.dev/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "akros",
+          "name": "Akros",
+          "url": "https://akros-ac.jp/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        }
+      ]
+    },
+    "experienced": {
+      "services": [
+        {
+          "id": "levtech-career",
+          "name": "レバテックキャリア",
+          "url": "https://career.levtech.jp/",
+          "novice_support": true,
+          "freelance_available": false,
+          "job_category_matched": true
+        },
+        {
+          "id": "paiza-career",
+          "name": "paiza転職",
+          "url": "https://paiza.jp/career",
+          "novice_support": false,
+          "freelance_available": false,
+          "job_category_matched": true
+        }
+      ],
+      "schools": [
+        {
+          "id": "tech-mentor",
+          "name": "Tech Mentor",
+          "course": "Webエンジニアコース",
+          "url": "https://tech-mentor.dev/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "akros",
+          "name": "Akros",
+          "url": "https://akros-ac.jp/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        }
+      ],
+      "freelance": [
+        {
+          "id": "green",
+          "name": "Green",
+          "url": "https://www.green-japan.com/",
+          "novice_support": true,
+          "freelance_available": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "webist",
+          "name": "Webist",
+          "url": "https://webist-cri.com/",
+          "novice_support": true,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "job-draft",
+          "name": "転職ドラフト",
+          "url": "https://job-draft.jp/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "forkwell",
+          "name": "Forkwell Jobs",
+          "url": "https://jobs.forkwell.com/",
+          "novice_support": true,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "lapras",
+          "name": "LAPRAS",
+          "url": "https://lapras.com/",
+          "novice_support": true,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "offers",
+          "name": "Offers",
+          "url": "https://offers.jp/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "levtech-freelance",
+          "name": "レバテックフリーランス",
+          "url": "https://freelance.levtech.jp/",
+          "novice_support": false,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "foster-freelance",
+          "name": "フォスターフリーランス",
+          "url": "https://freelance.fosternet.jp/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "xnetwork",
+          "name": "クロスネットワーク",
+          "url": "https://www.xnetwork.jp/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "crowdworks-tech",
+          "name": "クラウドワークス テック（旧 クラウドテック）",
+          "url": "https://tech.crowdworks.jp/",
+          "novice_support": false,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "midworks",
+          "name": "Midworks",
+          "url": "https://mid-works.com/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "pe-bank",
+          "name": "PE-BANK",
+          "url": "https://pe-bank.jp/",
+          "novice_support": false,
+          "freelance_available": true,
+          "job_category_matched": false
+        }
+      ]
+    }
+  },
+  "バックエンドエンジニア": {
+    "learning": {
+      "schools": [
+        {
+          "id": "zero-school",
+          "name": "0円スクール（ゼロスク）",
+          "url": "https://zero-school.com/new/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "techgeek",
+          "name": "テックギーク",
+          "url": "https://techgeek-school.com/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "potepan-camp",
+          "name": "ポテパンキャンプ",
+          "url": "https://camp.potepan.com/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "runteq",
+          "name": "RUNTEQ",
+          "url": "https://runteq.jp/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "raisetech",
+          "name": "RaiseTech",
+          "url": "https://raise-tech.net/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        }
+      ],
+      "services": [
+        {
+          "id": "levtech-career",
+          "name": "レバテックキャリア",
+          "url": "https://career.levtech.jp/",
+          "novice_support": true,
+          "freelance_available": false,
+          "job_category_matched": true
+        },
+        {
+          "id": "mynavi-it-agent",
+          "name": "マイナビ転職 IT AGENT",
+          "url": "https://mynavi-agent.jp/it/",
+          "novice_support": true,
+          "freelance_available": null,
+          "job_category_matched": true
+        }
+      ]
+    },
+    "ready": {
+      "services": [
+        {
+          "id": "levtech-career",
+          "name": "レバテックキャリア",
+          "url": "https://career.levtech.jp/",
+          "novice_support": true,
+          "freelance_available": false,
+          "job_category_matched": true
+        },
+        {
+          "id": "mynavi-it-agent",
+          "name": "マイナビ転職 IT AGENT",
+          "url": "https://mynavi-agent.jp/it/",
+          "novice_support": true,
+          "freelance_available": null,
+          "job_category_matched": true
+        },
+        {
+          "id": "tech-go",
+          "name": "テックゴー",
+          "url": "https://tech-go.jp/",
+          "novice_support": null,
+          "freelance_available": null,
+          "job_category_matched": true
+        }
+      ],
+      "schools": [
+        {
+          "id": "zero-school",
+          "name": "0円スクール（ゼロスク）",
+          "url": "https://zero-school.com/new/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "techgeek",
+          "name": "テックギーク",
+          "url": "https://techgeek-school.com/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "potepan-camp",
+          "name": "ポテパンキャンプ",
+          "url": "https://camp.potepan.com/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "runteq",
+          "name": "RUNTEQ",
+          "url": "https://runteq.jp/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "raisetech",
+          "name": "RaiseTech",
+          "url": "https://raise-tech.net/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "wonderful-code",
+          "name": "ワンダフルコード",
+          "url": "https://wonderful-wife.net/study/",
+          "beginner_friendly": null,
+          "job_category_matched": true
+        }
+      ]
+    },
+    "experienced": {
+      "services": [
+        {
+          "id": "levtech-career",
+          "name": "レバテックキャリア",
+          "url": "https://career.levtech.jp/",
+          "novice_support": true,
+          "freelance_available": false,
+          "job_category_matched": true
+        },
+        {
+          "id": "mynavi-it-agent",
+          "name": "マイナビ転職 IT AGENT",
+          "url": "https://mynavi-agent.jp/it/",
+          "novice_support": true,
+          "freelance_available": null,
+          "job_category_matched": true
+        },
+        {
+          "id": "tech-go",
+          "name": "テックゴー",
+          "url": "https://tech-go.jp/",
+          "novice_support": null,
+          "freelance_available": null,
+          "job_category_matched": true
+        }
+      ],
+      "schools": [
+        {
+          "id": "zero-school",
+          "name": "0円スクール（ゼロスク）",
+          "url": "https://zero-school.com/new/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "techgeek",
+          "name": "テックギーク",
+          "url": "https://techgeek-school.com/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "potepan-camp",
+          "name": "ポテパンキャンプ",
+          "url": "https://camp.potepan.com/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "runteq",
+          "name": "RUNTEQ",
+          "url": "https://runteq.jp/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "raisetech",
+          "name": "RaiseTech",
+          "url": "https://raise-tech.net/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "wonderful-code",
+          "name": "ワンダフルコード",
+          "url": "https://wonderful-wife.net/study/",
+          "beginner_friendly": null,
+          "job_category_matched": true
+        }
+      ],
+      "freelance": [
+        {
+          "id": "green",
+          "name": "Green",
+          "url": "https://www.green-japan.com/",
+          "novice_support": true,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "webist",
+          "name": "Webist",
+          "url": "https://webist-cri.com/",
+          "novice_support": true,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "job-draft",
+          "name": "転職ドラフト",
+          "url": "https://job-draft.jp/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "forkwell",
+          "name": "Forkwell Jobs",
+          "url": "https://jobs.forkwell.com/",
+          "novice_support": true,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "lapras",
+          "name": "LAPRAS",
+          "url": "https://lapras.com/",
+          "novice_support": true,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "offers",
+          "name": "Offers",
+          "url": "https://offers.jp/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "levtech-freelance",
+          "name": "レバテックフリーランス",
+          "url": "https://freelance.levtech.jp/",
+          "novice_support": false,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "foster-freelance",
+          "name": "フォスターフリーランス",
+          "url": "https://freelance.fosternet.jp/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "xnetwork",
+          "name": "クロスネットワーク",
+          "url": "https://www.xnetwork.jp/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "crowdworks-tech",
+          "name": "クラウドワークス テック（旧 クラウドテック）",
+          "url": "https://tech.crowdworks.jp/",
+          "novice_support": false,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "midworks",
+          "name": "Midworks",
+          "url": "https://mid-works.com/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "pe-bank",
+          "name": "PE-BANK",
+          "url": "https://pe-bank.jp/",
+          "novice_support": false,
+          "freelance_available": true,
+          "job_category_matched": false
+        }
+      ]
+    }
+  },
+  "フルスタックエンジニア": {
+    "learning": {
+      "schools": [
+        {
+          "id": "runteq",
+          "name": "RUNTEQ",
+          "url": "https://runteq.jp/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "terracan-programming",
+          "name": "テラキャン プログラミング（旧 DMM WEBCAMP）",
+          "url": "https://web-camp.io/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        }
+      ],
+      "services": [
+        {
+          "id": "levtech-career",
+          "name": "レバテックキャリア",
+          "url": "https://career.levtech.jp/",
+          "novice_support": true,
+          "freelance_available": false,
+          "job_category_matched": true
+        },
+        {
+          "id": "green",
+          "name": "Green",
+          "url": "https://www.green-japan.com/",
+          "novice_support": true,
+          "freelance_available": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "workport",
+          "name": "ワークポート",
+          "url": "https://www.workport.co.jp/",
+          "novice_support": true,
+          "freelance_available": null,
+          "job_category_matched": true
+        }
+      ]
+    },
+    "ready": {
+      "services": [
+        {
+          "id": "levtech-career",
+          "name": "レバテックキャリア",
+          "url": "https://career.levtech.jp/",
+          "novice_support": true,
+          "freelance_available": false,
+          "job_category_matched": true
+        },
+        {
+          "id": "green",
+          "name": "Green",
+          "url": "https://www.green-japan.com/",
+          "novice_support": true,
+          "freelance_available": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "workport",
+          "name": "ワークポート",
+          "url": "https://www.workport.co.jp/",
+          "novice_support": true,
+          "freelance_available": null,
+          "job_category_matched": true
+        }
+      ],
+      "schools": [
+        {
+          "id": "runteq",
+          "name": "RUNTEQ",
+          "url": "https://runteq.jp/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "terracan-programming",
+          "name": "テラキャン プログラミング（旧 DMM WEBCAMP）",
+          "url": "https://web-camp.io/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        }
+      ]
+    },
+    "experienced": {
+      "services": [
+        {
+          "id": "levtech-career",
+          "name": "レバテックキャリア",
+          "url": "https://career.levtech.jp/",
+          "novice_support": true,
+          "freelance_available": false,
+          "job_category_matched": true
+        },
+        {
+          "id": "workport",
+          "name": "ワークポート",
+          "url": "https://www.workport.co.jp/",
+          "novice_support": true,
+          "freelance_available": null,
+          "job_category_matched": true
+        }
+      ],
+      "schools": [
+        {
+          "id": "runteq",
+          "name": "RUNTEQ",
+          "url": "https://runteq.jp/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "terracan-programming",
+          "name": "テラキャン プログラミング（旧 DMM WEBCAMP）",
+          "url": "https://web-camp.io/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        }
+      ],
+      "freelance": [
+        {
+          "id": "green",
+          "name": "Green",
+          "url": "https://www.green-japan.com/",
+          "novice_support": true,
+          "freelance_available": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "webist",
+          "name": "Webist",
+          "url": "https://webist-cri.com/",
+          "novice_support": true,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "job-draft",
+          "name": "転職ドラフト",
+          "url": "https://job-draft.jp/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "forkwell",
+          "name": "Forkwell Jobs",
+          "url": "https://jobs.forkwell.com/",
+          "novice_support": true,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "lapras",
+          "name": "LAPRAS",
+          "url": "https://lapras.com/",
+          "novice_support": true,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "offers",
+          "name": "Offers",
+          "url": "https://offers.jp/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "levtech-freelance",
+          "name": "レバテックフリーランス",
+          "url": "https://freelance.levtech.jp/",
+          "novice_support": false,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "foster-freelance",
+          "name": "フォスターフリーランス",
+          "url": "https://freelance.fosternet.jp/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "xnetwork",
+          "name": "クロスネットワーク",
+          "url": "https://www.xnetwork.jp/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "crowdworks-tech",
+          "name": "クラウドワークス テック（旧 クラウドテック）",
+          "url": "https://tech.crowdworks.jp/",
+          "novice_support": false,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "midworks",
+          "name": "Midworks",
+          "url": "https://mid-works.com/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "pe-bank",
+          "name": "PE-BANK",
+          "url": "https://pe-bank.jp/",
+          "novice_support": false,
+          "freelance_available": true,
+          "job_category_matched": false
+        }
+      ]
+    }
+  },
+  "データアナリスト": {
+    "learning": {
+      "schools": [
+        {
+          "id": "datamix-data-scientist",
+          "name": "データミックス",
+          "course": "データサイエンティスト育成講座",
+          "url": "https://datamix.co.jp/school/data-scientist/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "codecamp",
+          "name": "CodeCamp",
+          "url": "https://codecamp.jp/courses/engineer",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "ai-academy-bootcamp",
+          "name": "AI Academy Bootcamp",
+          "course": "AI人材コース",
+          "url": "https://aiacademy.jp/bootcamp/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "internet-academy",
+          "name": "インターネット・アカデミー",
+          "url": "https://www.internetacademy.jp/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "winschool",
+          "name": "Winスクール",
+          "url": "https://www.winschool.jp/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        }
+      ],
+      "services": [
+        {
+          "id": "levtech-career",
+          "name": "レバテックキャリア",
+          "url": "https://career.levtech.jp/",
+          "novice_support": true,
+          "freelance_available": false,
+          "job_category_matched": true
+        },
+        {
+          "id": "mynavi-it-agent",
+          "name": "マイナビ転職 IT AGENT",
+          "url": "https://mynavi-agent.jp/it/",
+          "novice_support": true,
+          "freelance_available": null,
+          "job_category_matched": true
+        },
+        {
+          "id": "geekly",
+          "name": "Geekly",
+          "url": "https://www.geekly.co.jp/",
+          "novice_support": true,
+          "freelance_available": null,
+          "job_category_matched": true
+        },
+        {
+          "id": "type-it-agent",
+          "name": "type転職エージェント IT",
+          "url": "https://type.career-agent.jp/service/it.html",
+          "novice_support": true,
+          "freelance_available": false,
+          "job_category_matched": true
+        },
+        {
+          "id": "webist",
+          "name": "Webist",
+          "url": "https://webist-cri.com/",
+          "novice_support": true,
+          "freelance_available": true,
+          "job_category_matched": true
+        }
+      ]
+    },
+    "ready": {
+      "services": [
+        {
+          "id": "levtech-career",
+          "name": "レバテックキャリア",
+          "url": "https://career.levtech.jp/",
+          "novice_support": true,
+          "freelance_available": false,
+          "job_category_matched": true
+        },
+        {
+          "id": "paiza-career",
+          "name": "paiza転職",
+          "url": "https://paiza.jp/career",
+          "novice_support": false,
+          "freelance_available": false,
+          "job_category_matched": true
+        },
+        {
+          "id": "mynavi-it-agent",
+          "name": "マイナビ転職 IT AGENT",
+          "url": "https://mynavi-agent.jp/it/",
+          "novice_support": true,
+          "freelance_available": null,
+          "job_category_matched": true
+        },
+        {
+          "id": "geekly",
+          "name": "Geekly",
+          "url": "https://www.geekly.co.jp/",
+          "novice_support": true,
+          "freelance_available": null,
+          "job_category_matched": true
+        },
+        {
+          "id": "type-it-agent",
+          "name": "type転職エージェント IT",
+          "url": "https://type.career-agent.jp/service/it.html",
+          "novice_support": true,
+          "freelance_available": false,
+          "job_category_matched": true
+        },
+        {
+          "id": "webist",
+          "name": "Webist",
+          "url": "https://webist-cri.com/",
+          "novice_support": true,
+          "freelance_available": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "kikkake-agent",
+          "name": "キッカケエージェント",
+          "url": "https://kikkakeagent.co.jp/",
+          "novice_support": false,
+          "freelance_available": null,
+          "job_category_matched": true
+        },
+        {
+          "id": "job-draft",
+          "name": "転職ドラフト",
+          "url": "https://job-draft.jp/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": true
+        }
+      ],
+      "schools": [
+        {
+          "id": "street-academy",
+          "name": "ストアカ",
+          "url": "https://www.street-academy.com/",
+          "beginner_friendly": null,
+          "job_category_matched": true
+        },
+        {
+          "id": "datamix-data-scientist",
+          "name": "データミックス",
+          "course": "データサイエンティスト育成講座",
+          "url": "https://datamix.co.jp/school/data-scientist/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "codecamp",
+          "name": "CodeCamp",
+          "url": "https://codecamp.jp/courses/engineer",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "ai-academy-bootcamp",
+          "name": "AI Academy Bootcamp",
+          "course": "AI人材コース",
+          "url": "https://aiacademy.jp/bootcamp/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "internet-academy",
+          "name": "インターネット・アカデミー",
+          "url": "https://www.internetacademy.jp/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "winschool",
+          "name": "Winスクール",
+          "url": "https://www.winschool.jp/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        }
+      ]
+    },
+    "experienced": {
+      "services": [
+        {
+          "id": "levtech-career",
+          "name": "レバテックキャリア",
+          "url": "https://career.levtech.jp/",
+          "novice_support": true,
+          "freelance_available": false,
+          "job_category_matched": true
+        },
+        {
+          "id": "paiza-career",
+          "name": "paiza転職",
+          "url": "https://paiza.jp/career",
+          "novice_support": false,
+          "freelance_available": false,
+          "job_category_matched": true
+        },
+        {
+          "id": "mynavi-it-agent",
+          "name": "マイナビ転職 IT AGENT",
+          "url": "https://mynavi-agent.jp/it/",
+          "novice_support": true,
+          "freelance_available": null,
+          "job_category_matched": true
+        },
+        {
+          "id": "geekly",
+          "name": "Geekly",
+          "url": "https://www.geekly.co.jp/",
+          "novice_support": true,
+          "freelance_available": null,
+          "job_category_matched": true
+        },
+        {
+          "id": "type-it-agent",
+          "name": "type転職エージェント IT",
+          "url": "https://type.career-agent.jp/service/it.html",
+          "novice_support": true,
+          "freelance_available": false,
+          "job_category_matched": true
+        },
+        {
+          "id": "kikkake-agent",
+          "name": "キッカケエージェント",
+          "url": "https://kikkakeagent.co.jp/",
+          "novice_support": false,
+          "freelance_available": null,
+          "job_category_matched": true
+        }
+      ],
+      "schools": [
+        {
+          "id": "street-academy",
+          "name": "ストアカ",
+          "url": "https://www.street-academy.com/",
+          "beginner_friendly": null,
+          "job_category_matched": true
+        },
+        {
+          "id": "datamix-data-scientist",
+          "name": "データミックス",
+          "course": "データサイエンティスト育成講座",
+          "url": "https://datamix.co.jp/school/data-scientist/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "codecamp",
+          "name": "CodeCamp",
+          "url": "https://codecamp.jp/courses/engineer",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "ai-academy-bootcamp",
+          "name": "AI Academy Bootcamp",
+          "course": "AI人材コース",
+          "url": "https://aiacademy.jp/bootcamp/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "internet-academy",
+          "name": "インターネット・アカデミー",
+          "url": "https://www.internetacademy.jp/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "winschool",
+          "name": "Winスクール",
+          "url": "https://www.winschool.jp/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        }
+      ],
+      "freelance": [
+        {
+          "id": "webist",
+          "name": "Webist",
+          "url": "https://webist-cri.com/",
+          "novice_support": true,
+          "freelance_available": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "job-draft",
+          "name": "転職ドラフト",
+          "url": "https://job-draft.jp/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "green",
+          "name": "Green",
+          "url": "https://www.green-japan.com/",
+          "novice_support": true,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "forkwell",
+          "name": "Forkwell Jobs",
+          "url": "https://jobs.forkwell.com/",
+          "novice_support": true,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "lapras",
+          "name": "LAPRAS",
+          "url": "https://lapras.com/",
+          "novice_support": true,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "offers",
+          "name": "Offers",
+          "url": "https://offers.jp/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "levtech-freelance",
+          "name": "レバテックフリーランス",
+          "url": "https://freelance.levtech.jp/",
+          "novice_support": false,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "foster-freelance",
+          "name": "フォスターフリーランス",
+          "url": "https://freelance.fosternet.jp/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "xnetwork",
+          "name": "クロスネットワーク",
+          "url": "https://www.xnetwork.jp/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "crowdworks-tech",
+          "name": "クラウドワークス テック（旧 クラウドテック）",
+          "url": "https://tech.crowdworks.jp/",
+          "novice_support": false,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "midworks",
+          "name": "Midworks",
+          "url": "https://mid-works.com/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "pe-bank",
+          "name": "PE-BANK",
+          "url": "https://pe-bank.jp/",
+          "novice_support": false,
+          "freelance_available": true,
+          "job_category_matched": false
+        }
+      ]
+    }
+  },
+  "データサイエンティスト": {
+    "learning": {
+      "schools": [
+        {
+          "id": "terracan-programming",
+          "name": "テラキャン プログラミング（旧 DMM WEBCAMP）",
+          "url": "https://web-camp.io/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "codecamp",
+          "name": "CodeCamp",
+          "url": "https://codecamp.jp/courses/engineer",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "data-learning-school",
+          "name": "データラーニングスクール",
+          "url": "https://school.data-learning.com/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "data-science-bootcamp",
+          "name": "データサイエンスブートキャンプ",
+          "url": "https://l.datasciencebootcamp.net/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "staaca",
+          "name": "スタアカ",
+          "url": "https://toukei-lab.com/achademy/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "samurai-engineer",
+          "name": "SAMURAI ENGINEER",
+          "url": "https://www.sejuku.net/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "tech-is",
+          "name": "TECH I.S.",
+          "url": "https://techis.jp/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "ai-jobcolle",
+          "name": "AIジョブカレ",
+          "url": "https://www.aijobcolle.com/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "mitratech",
+          "name": "MITRAtech",
+          "url": "https://mitra-tech.jp/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "ai-connect",
+          "name": "AI CONNECT",
+          "url": "https://ai-c.net/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "dotpro",
+          "name": ".Pro",
+          "url": "https://dotpro.net/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "raretech",
+          "name": "RareTECH",
+          "url": "https://raretech.site/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        }
+      ],
+      "services": [
+        {
+          "id": "levtech-career",
+          "name": "レバテックキャリア",
+          "url": "https://career.levtech.jp/",
+          "novice_support": true,
+          "freelance_available": false,
+          "job_category_matched": true
+        },
+        {
+          "id": "mynavi-it-agent",
+          "name": "マイナビ転職 IT AGENT",
+          "url": "https://mynavi-agent.jp/it/",
+          "novice_support": true,
+          "freelance_available": null,
+          "job_category_matched": true
+        },
+        {
+          "id": "geekly",
+          "name": "Geekly",
+          "url": "https://www.geekly.co.jp/",
+          "novice_support": true,
+          "freelance_available": null,
+          "job_category_matched": true
+        },
+        {
+          "id": "type-it-agent",
+          "name": "type転職エージェント IT",
+          "url": "https://type.career-agent.jp/service/it.html",
+          "novice_support": true,
+          "freelance_available": false,
+          "job_category_matched": true
+        },
+        {
+          "id": "symbiorise",
+          "name": "Symbiorise",
+          "url": "https://symbiorise.com/",
+          "novice_support": true,
+          "freelance_available": null,
+          "job_category_matched": true
+        },
+        {
+          "id": "unison-career",
+          "name": "ユニゾンキャリア",
+          "url": "https://unison-career.jp/",
+          "novice_support": true,
+          "freelance_available": null,
+          "job_category_matched": true
+        },
+        {
+          "id": "forkwell",
+          "name": "Forkwell Jobs",
+          "url": "https://jobs.forkwell.com/",
+          "novice_support": true,
+          "freelance_available": true,
+          "job_category_matched": true
+        }
+      ]
+    },
+    "ready": {
+      "services": [
+        {
+          "id": "levtech-career",
+          "name": "レバテックキャリア",
+          "url": "https://career.levtech.jp/",
+          "novice_support": true,
+          "freelance_available": false,
+          "job_category_matched": true
+        },
+        {
+          "id": "mynavi-it-agent",
+          "name": "マイナビ転職 IT AGENT",
+          "url": "https://mynavi-agent.jp/it/",
+          "novice_support": true,
+          "freelance_available": null,
+          "job_category_matched": true
+        },
+        {
+          "id": "tech-go",
+          "name": "テックゴー",
+          "url": "https://tech-go.jp/",
+          "novice_support": null,
+          "freelance_available": null,
+          "job_category_matched": true
+        },
+        {
+          "id": "geekly",
+          "name": "Geekly",
+          "url": "https://www.geekly.co.jp/",
+          "novice_support": true,
+          "freelance_available": null,
+          "job_category_matched": true
+        },
+        {
+          "id": "type-it-agent",
+          "name": "type転職エージェント IT",
+          "url": "https://type.career-agent.jp/service/it.html",
+          "novice_support": true,
+          "freelance_available": false,
+          "job_category_matched": true
+        },
+        {
+          "id": "symbiorise",
+          "name": "Symbiorise",
+          "url": "https://symbiorise.com/",
+          "novice_support": true,
+          "freelance_available": null,
+          "job_category_matched": true
+        },
+        {
+          "id": "unison-career",
+          "name": "ユニゾンキャリア",
+          "url": "https://unison-career.jp/",
+          "novice_support": true,
+          "freelance_available": null,
+          "job_category_matched": true
+        },
+        {
+          "id": "techclips-agent",
+          "name": "TechClipsエージェント",
+          "url": "https://agent.tech-clips.com/",
+          "novice_support": null,
+          "freelance_available": null,
+          "job_category_matched": true
+        },
+        {
+          "id": "findy",
+          "name": "Findy",
+          "url": "https://findy-code.io/",
+          "novice_support": null,
+          "freelance_available": false,
+          "job_category_matched": true
+        },
+        {
+          "id": "direct-type",
+          "name": "Direct type",
+          "url": "https://directtype.jp/",
+          "novice_support": null,
+          "freelance_available": null,
+          "job_category_matched": true
+        },
+        {
+          "id": "forkwell",
+          "name": "Forkwell Jobs",
+          "url": "https://jobs.forkwell.com/",
+          "novice_support": true,
+          "freelance_available": true,
+          "job_category_matched": true
+        }
+      ],
+      "schools": [
+        {
+          "id": "terracan-programming",
+          "name": "テラキャン プログラミング（旧 DMM WEBCAMP）",
+          "url": "https://web-camp.io/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "codecamp",
+          "name": "CodeCamp",
+          "url": "https://codecamp.jp/courses/engineer",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "data-learning-school",
+          "name": "データラーニングスクール",
+          "url": "https://school.data-learning.com/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "data-science-bootcamp",
+          "name": "データサイエンスブートキャンプ",
+          "url": "https://l.datasciencebootcamp.net/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "staaca",
+          "name": "スタアカ",
+          "url": "https://toukei-lab.com/achademy/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "samurai-engineer",
+          "name": "SAMURAI ENGINEER",
+          "url": "https://www.sejuku.net/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "tech-is",
+          "name": "TECH I.S.",
+          "url": "https://techis.jp/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "ai-jobcolle",
+          "name": "AIジョブカレ",
+          "url": "https://www.aijobcolle.com/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "mitratech",
+          "name": "MITRAtech",
+          "url": "https://mitra-tech.jp/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "ai-connect",
+          "name": "AI CONNECT",
+          "url": "https://ai-c.net/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "dotpro",
+          "name": ".Pro",
+          "url": "https://dotpro.net/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "raretech",
+          "name": "RareTECH",
+          "url": "https://raretech.site/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        }
+      ]
+    },
+    "experienced": {
+      "services": [
+        {
+          "id": "levtech-career",
+          "name": "レバテックキャリア",
+          "url": "https://career.levtech.jp/",
+          "novice_support": true,
+          "freelance_available": false,
+          "job_category_matched": true
+        },
+        {
+          "id": "mynavi-it-agent",
+          "name": "マイナビ転職 IT AGENT",
+          "url": "https://mynavi-agent.jp/it/",
+          "novice_support": true,
+          "freelance_available": null,
+          "job_category_matched": true
+        },
+        {
+          "id": "tech-go",
+          "name": "テックゴー",
+          "url": "https://tech-go.jp/",
+          "novice_support": null,
+          "freelance_available": null,
+          "job_category_matched": true
+        },
+        {
+          "id": "geekly",
+          "name": "Geekly",
+          "url": "https://www.geekly.co.jp/",
+          "novice_support": true,
+          "freelance_available": null,
+          "job_category_matched": true
+        },
+        {
+          "id": "type-it-agent",
+          "name": "type転職エージェント IT",
+          "url": "https://type.career-agent.jp/service/it.html",
+          "novice_support": true,
+          "freelance_available": false,
+          "job_category_matched": true
+        },
+        {
+          "id": "symbiorise",
+          "name": "Symbiorise",
+          "url": "https://symbiorise.com/",
+          "novice_support": true,
+          "freelance_available": null,
+          "job_category_matched": true
+        },
+        {
+          "id": "unison-career",
+          "name": "ユニゾンキャリア",
+          "url": "https://unison-career.jp/",
+          "novice_support": true,
+          "freelance_available": null,
+          "job_category_matched": true
+        },
+        {
+          "id": "techclips-agent",
+          "name": "TechClipsエージェント",
+          "url": "https://agent.tech-clips.com/",
+          "novice_support": null,
+          "freelance_available": null,
+          "job_category_matched": true
+        },
+        {
+          "id": "findy",
+          "name": "Findy",
+          "url": "https://findy-code.io/",
+          "novice_support": null,
+          "freelance_available": false,
+          "job_category_matched": true
+        },
+        {
+          "id": "direct-type",
+          "name": "Direct type",
+          "url": "https://directtype.jp/",
+          "novice_support": null,
+          "freelance_available": null,
+          "job_category_matched": true
+        }
+      ],
+      "schools": [
+        {
+          "id": "terracan-programming",
+          "name": "テラキャン プログラミング（旧 DMM WEBCAMP）",
+          "url": "https://web-camp.io/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "codecamp",
+          "name": "CodeCamp",
+          "url": "https://codecamp.jp/courses/engineer",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "data-learning-school",
+          "name": "データラーニングスクール",
+          "url": "https://school.data-learning.com/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "data-science-bootcamp",
+          "name": "データサイエンスブートキャンプ",
+          "url": "https://l.datasciencebootcamp.net/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "staaca",
+          "name": "スタアカ",
+          "url": "https://toukei-lab.com/achademy/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "samurai-engineer",
+          "name": "SAMURAI ENGINEER",
+          "url": "https://www.sejuku.net/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "tech-is",
+          "name": "TECH I.S.",
+          "url": "https://techis.jp/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "ai-jobcolle",
+          "name": "AIジョブカレ",
+          "url": "https://www.aijobcolle.com/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "mitratech",
+          "name": "MITRAtech",
+          "url": "https://mitra-tech.jp/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "ai-connect",
+          "name": "AI CONNECT",
+          "url": "https://ai-c.net/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "dotpro",
+          "name": ".Pro",
+          "url": "https://dotpro.net/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "raretech",
+          "name": "RareTECH",
+          "url": "https://raretech.site/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        }
+      ],
+      "freelance": [
+        {
+          "id": "forkwell",
+          "name": "Forkwell Jobs",
+          "url": "https://jobs.forkwell.com/",
+          "novice_support": true,
+          "freelance_available": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "green",
+          "name": "Green",
+          "url": "https://www.green-japan.com/",
+          "novice_support": true,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "webist",
+          "name": "Webist",
+          "url": "https://webist-cri.com/",
+          "novice_support": true,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "job-draft",
+          "name": "転職ドラフト",
+          "url": "https://job-draft.jp/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "lapras",
+          "name": "LAPRAS",
+          "url": "https://lapras.com/",
+          "novice_support": true,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "offers",
+          "name": "Offers",
+          "url": "https://offers.jp/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "levtech-freelance",
+          "name": "レバテックフリーランス",
+          "url": "https://freelance.levtech.jp/",
+          "novice_support": false,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "foster-freelance",
+          "name": "フォスターフリーランス",
+          "url": "https://freelance.fosternet.jp/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "xnetwork",
+          "name": "クロスネットワーク",
+          "url": "https://www.xnetwork.jp/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "crowdworks-tech",
+          "name": "クラウドワークス テック（旧 クラウドテック）",
+          "url": "https://tech.crowdworks.jp/",
+          "novice_support": false,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "midworks",
+          "name": "Midworks",
+          "url": "https://mid-works.com/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "pe-bank",
+          "name": "PE-BANK",
+          "url": "https://pe-bank.jp/",
+          "novice_support": false,
+          "freelance_available": true,
+          "job_category_matched": false
+        }
+      ]
+    }
+  },
+  "データエンジニア": {
+    "learning": {
+      "schools": [
+        {
+          "id": "data-learning-school",
+          "name": "データラーニングスクール",
+          "url": "https://school.data-learning.com/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "datamix-data-engineer",
+          "name": "データミックス",
+          "course": "データエンジニア育成講座",
+          "url": "https://datamix.co.jp/school/expert/dataengineer/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "aws-training",
+          "name": "AWS 公式トレーニング",
+          "url": "https://aws.amazon.com/jp/training/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "google-skills",
+          "name": "Google Skills（旧 Google Cloud Skills Boost）",
+          "url": "https://www.skills.google/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "snowflake-university",
+          "name": "Snowflake University",
+          "url": "https://learn.snowflake.com/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        }
+      ],
+      "services": [
+        {
+          "id": "levtech-career",
+          "name": "レバテックキャリア",
+          "url": "https://career.levtech.jp/",
+          "novice_support": true,
+          "freelance_available": false,
+          "job_category_matched": true
+        },
+        {
+          "id": "mynavi-it-agent",
+          "name": "マイナビ転職 IT AGENT",
+          "url": "https://mynavi-agent.jp/it/",
+          "novice_support": true,
+          "freelance_available": null,
+          "job_category_matched": true
+        },
+        {
+          "id": "symbiorise",
+          "name": "Symbiorise",
+          "url": "https://symbiorise.com/",
+          "novice_support": true,
+          "freelance_available": null,
+          "job_category_matched": true
+        },
+        {
+          "id": "lapras",
+          "name": "LAPRAS",
+          "url": "https://lapras.com/",
+          "novice_support": true,
+          "freelance_available": true,
+          "job_category_matched": true
+        }
+      ]
+    },
+    "ready": {
+      "services": [
+        {
+          "id": "levtech-career",
+          "name": "レバテックキャリア",
+          "url": "https://career.levtech.jp/",
+          "novice_support": true,
+          "freelance_available": false,
+          "job_category_matched": true
+        },
+        {
+          "id": "mynavi-it-agent",
+          "name": "マイナビ転職 IT AGENT",
+          "url": "https://mynavi-agent.jp/it/",
+          "novice_support": true,
+          "freelance_available": null,
+          "job_category_matched": true
+        },
+        {
+          "id": "symbiorise",
+          "name": "Symbiorise",
+          "url": "https://symbiorise.com/",
+          "novice_support": true,
+          "freelance_available": null,
+          "job_category_matched": true
+        },
+        {
+          "id": "findy",
+          "name": "Findy",
+          "url": "https://findy-code.io/",
+          "novice_support": null,
+          "freelance_available": false,
+          "job_category_matched": true
+        },
+        {
+          "id": "lapras",
+          "name": "LAPRAS",
+          "url": "https://lapras.com/",
+          "novice_support": true,
+          "freelance_available": true,
+          "job_category_matched": true
+        }
+      ],
+      "schools": [
+        {
+          "id": "data-learning-school",
+          "name": "データラーニングスクール",
+          "url": "https://school.data-learning.com/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "datamix-data-engineer",
+          "name": "データミックス",
+          "course": "データエンジニア育成講座",
+          "url": "https://datamix.co.jp/school/expert/dataengineer/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "aws-training",
+          "name": "AWS 公式トレーニング",
+          "url": "https://aws.amazon.com/jp/training/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "google-skills",
+          "name": "Google Skills（旧 Google Cloud Skills Boost）",
+          "url": "https://www.skills.google/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "snowflake-university",
+          "name": "Snowflake University",
+          "url": "https://learn.snowflake.com/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        }
+      ]
+    },
+    "experienced": {
+      "services": [
+        {
+          "id": "levtech-career",
+          "name": "レバテックキャリア",
+          "url": "https://career.levtech.jp/",
+          "novice_support": true,
+          "freelance_available": false,
+          "job_category_matched": true
+        },
+        {
+          "id": "mynavi-it-agent",
+          "name": "マイナビ転職 IT AGENT",
+          "url": "https://mynavi-agent.jp/it/",
+          "novice_support": true,
+          "freelance_available": null,
+          "job_category_matched": true
+        },
+        {
+          "id": "symbiorise",
+          "name": "Symbiorise",
+          "url": "https://symbiorise.com/",
+          "novice_support": true,
+          "freelance_available": null,
+          "job_category_matched": true
+        },
+        {
+          "id": "findy",
+          "name": "Findy",
+          "url": "https://findy-code.io/",
+          "novice_support": null,
+          "freelance_available": false,
+          "job_category_matched": true
+        }
+      ],
+      "schools": [
+        {
+          "id": "data-learning-school",
+          "name": "データラーニングスクール",
+          "url": "https://school.data-learning.com/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "datamix-data-engineer",
+          "name": "データミックス",
+          "course": "データエンジニア育成講座",
+          "url": "https://datamix.co.jp/school/expert/dataengineer/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "aws-training",
+          "name": "AWS 公式トレーニング",
+          "url": "https://aws.amazon.com/jp/training/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "google-skills",
+          "name": "Google Skills（旧 Google Cloud Skills Boost）",
+          "url": "https://www.skills.google/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "snowflake-university",
+          "name": "Snowflake University",
+          "url": "https://learn.snowflake.com/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        }
+      ],
+      "freelance": [
+        {
+          "id": "lapras",
+          "name": "LAPRAS",
+          "url": "https://lapras.com/",
+          "novice_support": true,
+          "freelance_available": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "green",
+          "name": "Green",
+          "url": "https://www.green-japan.com/",
+          "novice_support": true,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "webist",
+          "name": "Webist",
+          "url": "https://webist-cri.com/",
+          "novice_support": true,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "job-draft",
+          "name": "転職ドラフト",
+          "url": "https://job-draft.jp/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "forkwell",
+          "name": "Forkwell Jobs",
+          "url": "https://jobs.forkwell.com/",
+          "novice_support": true,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "offers",
+          "name": "Offers",
+          "url": "https://offers.jp/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "levtech-freelance",
+          "name": "レバテックフリーランス",
+          "url": "https://freelance.levtech.jp/",
+          "novice_support": false,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "foster-freelance",
+          "name": "フォスターフリーランス",
+          "url": "https://freelance.fosternet.jp/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "xnetwork",
+          "name": "クロスネットワーク",
+          "url": "https://www.xnetwork.jp/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "crowdworks-tech",
+          "name": "クラウドワークス テック（旧 クラウドテック）",
+          "url": "https://tech.crowdworks.jp/",
+          "novice_support": false,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "midworks",
+          "name": "Midworks",
+          "url": "https://mid-works.com/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "pe-bank",
+          "name": "PE-BANK",
+          "url": "https://pe-bank.jp/",
+          "novice_support": false,
+          "freelance_available": true,
+          "job_category_matched": false
+        }
+      ]
+    }
+  },
+  "ITプロジェクトマネージャー": {
+    "learning": {
+      "schools": [
+        {
+          "id": "i-think",
+          "name": "アイシンク",
+          "course": "PMP 試験対策講座",
+          "url": "https://www.i-think.co.jp/open-seminar/acquisition-online/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "trainocate",
+          "name": "トレノケート",
+          "url": "https://www.trainocate.co.jp/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "i-learning",
+          "name": "アイ・ラーニング",
+          "url": "https://www.i-learning.jp/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "edifist",
+          "name": "エディフィストラーニング",
+          "url": "https://www.edifist.co.jp/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        }
+      ],
+      "services": [
+        {
+          "id": "levtech-career",
+          "name": "レバテックキャリア",
+          "url": "https://career.levtech.jp/",
+          "novice_support": true,
+          "freelance_available": false,
+          "job_category_matched": true
+        },
+        {
+          "id": "geekly",
+          "name": "Geekly",
+          "url": "https://www.geekly.co.jp/",
+          "novice_support": true,
+          "freelance_available": null,
+          "job_category_matched": true
+        },
+        {
+          "id": "recruit-agent",
+          "name": "リクルートエージェント",
+          "url": "https://www.r-agent.com/",
+          "novice_support": true,
+          "freelance_available": false,
+          "job_category_matched": true
+        }
+      ]
+    },
+    "ready": {
+      "services": [
+        {
+          "id": "levtech-career",
+          "name": "レバテックキャリア",
+          "url": "https://career.levtech.jp/",
+          "novice_support": true,
+          "freelance_available": false,
+          "job_category_matched": true
+        },
+        {
+          "id": "geekly",
+          "name": "Geekly",
+          "url": "https://www.geekly.co.jp/",
+          "novice_support": true,
+          "freelance_available": null,
+          "job_category_matched": true
+        },
+        {
+          "id": "recruit-agent",
+          "name": "リクルートエージェント",
+          "url": "https://www.r-agent.com/",
+          "novice_support": true,
+          "freelance_available": false,
+          "job_category_matched": true
+        }
+      ],
+      "schools": [
+        {
+          "id": "i-think",
+          "name": "アイシンク",
+          "course": "PMP 試験対策講座",
+          "url": "https://www.i-think.co.jp/open-seminar/acquisition-online/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "trainocate",
+          "name": "トレノケート",
+          "url": "https://www.trainocate.co.jp/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "i-learning",
+          "name": "アイ・ラーニング",
+          "url": "https://www.i-learning.jp/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "edifist",
+          "name": "エディフィストラーニング",
+          "url": "https://www.edifist.co.jp/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        }
+      ]
+    },
+    "experienced": {
+      "services": [
+        {
+          "id": "levtech-career",
+          "name": "レバテックキャリア",
+          "url": "https://career.levtech.jp/",
+          "novice_support": true,
+          "freelance_available": false,
+          "job_category_matched": true
+        },
+        {
+          "id": "geekly",
+          "name": "Geekly",
+          "url": "https://www.geekly.co.jp/",
+          "novice_support": true,
+          "freelance_available": null,
+          "job_category_matched": true
+        },
+        {
+          "id": "recruit-agent",
+          "name": "リクルートエージェント",
+          "url": "https://www.r-agent.com/",
+          "novice_support": true,
+          "freelance_available": false,
+          "job_category_matched": true
+        }
+      ],
+      "schools": [
+        {
+          "id": "i-think",
+          "name": "アイシンク",
+          "course": "PMP 試験対策講座",
+          "url": "https://www.i-think.co.jp/open-seminar/acquisition-online/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "trainocate",
+          "name": "トレノケート",
+          "url": "https://www.trainocate.co.jp/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "i-learning",
+          "name": "アイ・ラーニング",
+          "url": "https://www.i-learning.jp/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "edifist",
+          "name": "エディフィストラーニング",
+          "url": "https://www.edifist.co.jp/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        }
+      ],
+      "freelance": [
+        {
+          "id": "green",
+          "name": "Green",
+          "url": "https://www.green-japan.com/",
+          "novice_support": true,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "webist",
+          "name": "Webist",
+          "url": "https://webist-cri.com/",
+          "novice_support": true,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "job-draft",
+          "name": "転職ドラフト",
+          "url": "https://job-draft.jp/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "forkwell",
+          "name": "Forkwell Jobs",
+          "url": "https://jobs.forkwell.com/",
+          "novice_support": true,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "lapras",
+          "name": "LAPRAS",
+          "url": "https://lapras.com/",
+          "novice_support": true,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "offers",
+          "name": "Offers",
+          "url": "https://offers.jp/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "levtech-freelance",
+          "name": "レバテックフリーランス",
+          "url": "https://freelance.levtech.jp/",
+          "novice_support": false,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "foster-freelance",
+          "name": "フォスターフリーランス",
+          "url": "https://freelance.fosternet.jp/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "xnetwork",
+          "name": "クロスネットワーク",
+          "url": "https://www.xnetwork.jp/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "crowdworks-tech",
+          "name": "クラウドワークス テック（旧 クラウドテック）",
+          "url": "https://tech.crowdworks.jp/",
+          "novice_support": false,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "midworks",
+          "name": "Midworks",
+          "url": "https://mid-works.com/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "pe-bank",
+          "name": "PE-BANK",
+          "url": "https://pe-bank.jp/",
+          "novice_support": false,
+          "freelance_available": true,
+          "job_category_matched": false
+        }
+      ]
+    }
+  },
+  "プロダクトマネージャー": {
+    "learning": {
+      "schools": [
+        {
+          "id": "schoo-pm",
+          "name": "Schoo",
+          "url": "https://schoo.jp/class/2931",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        }
+      ],
+      "services": [
+        {
+          "id": "mynavi-it-agent",
+          "name": "マイナビ転職 IT AGENT",
+          "url": "https://mynavi-agent.jp/it/",
+          "novice_support": true,
+          "freelance_available": null,
+          "job_category_matched": true
+        },
+        {
+          "id": "geekly",
+          "name": "Geekly",
+          "url": "https://www.geekly.co.jp/",
+          "novice_support": true,
+          "freelance_available": null,
+          "job_category_matched": true
+        },
+        {
+          "id": "myvision",
+          "name": "MyVision",
+          "url": "https://my-vision.co.jp/",
+          "novice_support": true,
+          "freelance_available": null,
+          "job_category_matched": true
+        }
+      ]
+    },
+    "ready": {
+      "services": [
+        {
+          "id": "mynavi-it-agent",
+          "name": "マイナビ転職 IT AGENT",
+          "url": "https://mynavi-agent.jp/it/",
+          "novice_support": true,
+          "freelance_available": null,
+          "job_category_matched": true
+        },
+        {
+          "id": "tech-go",
+          "name": "テックゴー",
+          "url": "https://tech-go.jp/",
+          "novice_support": null,
+          "freelance_available": null,
+          "job_category_matched": true
+        },
+        {
+          "id": "geekly",
+          "name": "Geekly",
+          "url": "https://www.geekly.co.jp/",
+          "novice_support": true,
+          "freelance_available": null,
+          "job_category_matched": true
+        },
+        {
+          "id": "kikkake-agent",
+          "name": "キッカケエージェント",
+          "url": "https://kikkakeagent.co.jp/",
+          "novice_support": false,
+          "freelance_available": null,
+          "job_category_matched": true
+        },
+        {
+          "id": "findy",
+          "name": "Findy",
+          "url": "https://findy-code.io/",
+          "novice_support": null,
+          "freelance_available": false,
+          "job_category_matched": true
+        },
+        {
+          "id": "offers",
+          "name": "Offers",
+          "url": "https://offers.jp/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "myvision",
+          "name": "MyVision",
+          "url": "https://my-vision.co.jp/",
+          "novice_support": true,
+          "freelance_available": null,
+          "job_category_matched": true
+        }
+      ],
+      "schools": [
+        {
+          "id": "product-institute-japan",
+          "name": "Product Institute Japan",
+          "url": "https://www.productinstitute-japan.com/",
+          "beginner_friendly": null,
+          "job_category_matched": true
+        },
+        {
+          "id": "schoo-pm",
+          "name": "Schoo",
+          "url": "https://schoo.jp/class/2931",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        }
+      ]
+    },
+    "experienced": {
+      "services": [
+        {
+          "id": "mynavi-it-agent",
+          "name": "マイナビ転職 IT AGENT",
+          "url": "https://mynavi-agent.jp/it/",
+          "novice_support": true,
+          "freelance_available": null,
+          "job_category_matched": true
+        },
+        {
+          "id": "tech-go",
+          "name": "テックゴー",
+          "url": "https://tech-go.jp/",
+          "novice_support": null,
+          "freelance_available": null,
+          "job_category_matched": true
+        },
+        {
+          "id": "geekly",
+          "name": "Geekly",
+          "url": "https://www.geekly.co.jp/",
+          "novice_support": true,
+          "freelance_available": null,
+          "job_category_matched": true
+        },
+        {
+          "id": "kikkake-agent",
+          "name": "キッカケエージェント",
+          "url": "https://kikkakeagent.co.jp/",
+          "novice_support": false,
+          "freelance_available": null,
+          "job_category_matched": true
+        },
+        {
+          "id": "findy",
+          "name": "Findy",
+          "url": "https://findy-code.io/",
+          "novice_support": null,
+          "freelance_available": false,
+          "job_category_matched": true
+        },
+        {
+          "id": "myvision",
+          "name": "MyVision",
+          "url": "https://my-vision.co.jp/",
+          "novice_support": true,
+          "freelance_available": null,
+          "job_category_matched": true
+        }
+      ],
+      "schools": [
+        {
+          "id": "product-institute-japan",
+          "name": "Product Institute Japan",
+          "url": "https://www.productinstitute-japan.com/",
+          "beginner_friendly": null,
+          "job_category_matched": true
+        },
+        {
+          "id": "schoo-pm",
+          "name": "Schoo",
+          "url": "https://schoo.jp/class/2931",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        }
+      ],
+      "freelance": [
+        {
+          "id": "offers",
+          "name": "Offers",
+          "url": "https://offers.jp/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "green",
+          "name": "Green",
+          "url": "https://www.green-japan.com/",
+          "novice_support": true,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "webist",
+          "name": "Webist",
+          "url": "https://webist-cri.com/",
+          "novice_support": true,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "job-draft",
+          "name": "転職ドラフト",
+          "url": "https://job-draft.jp/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "forkwell",
+          "name": "Forkwell Jobs",
+          "url": "https://jobs.forkwell.com/",
+          "novice_support": true,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "lapras",
+          "name": "LAPRAS",
+          "url": "https://lapras.com/",
+          "novice_support": true,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "levtech-freelance",
+          "name": "レバテックフリーランス",
+          "url": "https://freelance.levtech.jp/",
+          "novice_support": false,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "foster-freelance",
+          "name": "フォスターフリーランス",
+          "url": "https://freelance.fosternet.jp/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "xnetwork",
+          "name": "クロスネットワーク",
+          "url": "https://www.xnetwork.jp/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "crowdworks-tech",
+          "name": "クラウドワークス テック（旧 クラウドテック）",
+          "url": "https://tech.crowdworks.jp/",
+          "novice_support": false,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "midworks",
+          "name": "Midworks",
+          "url": "https://mid-works.com/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "pe-bank",
+          "name": "PE-BANK",
+          "url": "https://pe-bank.jp/",
+          "novice_support": false,
+          "freelance_available": true,
+          "job_category_matched": false
+        }
+      ]
+    }
+  },
+  "ソフトウェアアーキテクト": {
+    "learning": {
+      "schools": [
+        {
+          "id": "edifist",
+          "name": "エディフィストラーニング",
+          "url": "https://www.edifist.co.jp/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "ctc-education",
+          "name": "CTC教育サービス",
+          "url": "https://www.school.ctc-g.co.jp/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "hitachi-academy",
+          "name": "日立アカデミー",
+          "url": "https://www.hitachi-ac.co.jp/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        }
+      ],
+      "services": [
+        {
+          "id": "levtech-career",
+          "name": "レバテックキャリア",
+          "url": "https://career.levtech.jp/",
+          "novice_support": true,
+          "freelance_available": false,
+          "job_category_matched": true
+        }
+      ]
+    },
+    "ready": {
+      "services": [
+        {
+          "id": "levtech-career",
+          "name": "レバテックキャリア",
+          "url": "https://career.levtech.jp/",
+          "novice_support": true,
+          "freelance_available": false,
+          "job_category_matched": true
+        },
+        {
+          "id": "tech-go",
+          "name": "テックゴー",
+          "url": "https://tech-go.jp/",
+          "novice_support": null,
+          "freelance_available": null,
+          "job_category_matched": true
+        },
+        {
+          "id": "bizreach",
+          "name": "ビズリーチ",
+          "url": "https://www.bizreach.jp/",
+          "novice_support": null,
+          "freelance_available": null,
+          "job_category_matched": true
+        }
+      ],
+      "schools": [
+        {
+          "id": "edifist",
+          "name": "エディフィストラーニング",
+          "url": "https://www.edifist.co.jp/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "casareal",
+          "name": "カサレアル",
+          "course": "クラウドネイティブ道場",
+          "url": "https://learning.casareal.co.jp/search/cloudnative-dojo",
+          "beginner_friendly": false,
+          "job_category_matched": true
+        },
+        {
+          "id": "ctc-education",
+          "name": "CTC教育サービス",
+          "url": "https://www.school.ctc-g.co.jp/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "nttdata-intellilink",
+          "name": "NTTデータ先端技術",
+          "url": "https://academy.intellilink.co.jp/",
+          "beginner_friendly": false,
+          "job_category_matched": true
+        },
+        {
+          "id": "hitachi-academy",
+          "name": "日立アカデミー",
+          "url": "https://www.hitachi-ac.co.jp/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        }
+      ]
+    },
+    "experienced": {
+      "services": [
+        {
+          "id": "levtech-career",
+          "name": "レバテックキャリア",
+          "url": "https://career.levtech.jp/",
+          "novice_support": true,
+          "freelance_available": false,
+          "job_category_matched": true
+        },
+        {
+          "id": "tech-go",
+          "name": "テックゴー",
+          "url": "https://tech-go.jp/",
+          "novice_support": null,
+          "freelance_available": null,
+          "job_category_matched": true
+        },
+        {
+          "id": "bizreach",
+          "name": "ビズリーチ",
+          "url": "https://www.bizreach.jp/",
+          "novice_support": null,
+          "freelance_available": null,
+          "job_category_matched": true
+        }
+      ],
+      "schools": [
+        {
+          "id": "edifist",
+          "name": "エディフィストラーニング",
+          "url": "https://www.edifist.co.jp/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "casareal",
+          "name": "カサレアル",
+          "course": "クラウドネイティブ道場",
+          "url": "https://learning.casareal.co.jp/search/cloudnative-dojo",
+          "beginner_friendly": false,
+          "job_category_matched": true
+        },
+        {
+          "id": "ctc-education",
+          "name": "CTC教育サービス",
+          "url": "https://www.school.ctc-g.co.jp/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "nttdata-intellilink",
+          "name": "NTTデータ先端技術",
+          "url": "https://academy.intellilink.co.jp/",
+          "beginner_friendly": false,
+          "job_category_matched": true
+        },
+        {
+          "id": "hitachi-academy",
+          "name": "日立アカデミー",
+          "url": "https://www.hitachi-ac.co.jp/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        }
+      ],
+      "freelance": [
+        {
+          "id": "green",
+          "name": "Green",
+          "url": "https://www.green-japan.com/",
+          "novice_support": true,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "webist",
+          "name": "Webist",
+          "url": "https://webist-cri.com/",
+          "novice_support": true,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "job-draft",
+          "name": "転職ドラフト",
+          "url": "https://job-draft.jp/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "forkwell",
+          "name": "Forkwell Jobs",
+          "url": "https://jobs.forkwell.com/",
+          "novice_support": true,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "lapras",
+          "name": "LAPRAS",
+          "url": "https://lapras.com/",
+          "novice_support": true,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "offers",
+          "name": "Offers",
+          "url": "https://offers.jp/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "levtech-freelance",
+          "name": "レバテックフリーランス",
+          "url": "https://freelance.levtech.jp/",
+          "novice_support": false,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "foster-freelance",
+          "name": "フォスターフリーランス",
+          "url": "https://freelance.fosternet.jp/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "xnetwork",
+          "name": "クロスネットワーク",
+          "url": "https://www.xnetwork.jp/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "crowdworks-tech",
+          "name": "クラウドワークス テック（旧 クラウドテック）",
+          "url": "https://tech.crowdworks.jp/",
+          "novice_support": false,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "midworks",
+          "name": "Midworks",
+          "url": "https://mid-works.com/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "pe-bank",
+          "name": "PE-BANK",
+          "url": "https://pe-bank.jp/",
+          "novice_support": false,
+          "freelance_available": true,
+          "job_category_matched": false
+        }
+      ]
+    }
+  },
+  "モバイルアプリエンジニア": {
+    "learning": {
+      "schools": [
+        {
+          "id": "winschool",
+          "name": "Winスクール",
+          "url": "https://www.winschool.jp/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "ios-academia",
+          "name": "iOSアカデミア",
+          "url": "https://ios-academia.com/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        }
+      ],
+      "services": [
+        {
+          "id": "levtech-career",
+          "name": "レバテックキャリア",
+          "url": "https://career.levtech.jp/",
+          "novice_support": true,
+          "freelance_available": false,
+          "job_category_matched": true
+        },
+        {
+          "id": "green",
+          "name": "Green",
+          "url": "https://www.green-japan.com/",
+          "novice_support": true,
+          "freelance_available": true,
+          "job_category_matched": true
+        }
+      ]
+    },
+    "ready": {
+      "services": [
+        {
+          "id": "levtech-career",
+          "name": "レバテックキャリア",
+          "url": "https://career.levtech.jp/",
+          "novice_support": true,
+          "freelance_available": false,
+          "job_category_matched": true
+        },
+        {
+          "id": "green",
+          "name": "Green",
+          "url": "https://www.green-japan.com/",
+          "novice_support": true,
+          "freelance_available": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "offers",
+          "name": "Offers",
+          "url": "https://offers.jp/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": true
+        }
+      ],
+      "schools": [
+        {
+          "id": "winschool",
+          "name": "Winスクール",
+          "url": "https://www.winschool.jp/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "ios-academia",
+          "name": "iOSアカデミア",
+          "url": "https://ios-academia.com/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        }
+      ]
+    },
+    "experienced": {
+      "services": [
+        {
+          "id": "levtech-career",
+          "name": "レバテックキャリア",
+          "url": "https://career.levtech.jp/",
+          "novice_support": true,
+          "freelance_available": false,
+          "job_category_matched": true
+        }
+      ],
+      "schools": [
+        {
+          "id": "winschool",
+          "name": "Winスクール",
+          "url": "https://www.winschool.jp/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "ios-academia",
+          "name": "iOSアカデミア",
+          "url": "https://ios-academia.com/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        }
+      ],
+      "freelance": [
+        {
+          "id": "green",
+          "name": "Green",
+          "url": "https://www.green-japan.com/",
+          "novice_support": true,
+          "freelance_available": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "offers",
+          "name": "Offers",
+          "url": "https://offers.jp/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "webist",
+          "name": "Webist",
+          "url": "https://webist-cri.com/",
+          "novice_support": true,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "job-draft",
+          "name": "転職ドラフト",
+          "url": "https://job-draft.jp/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "forkwell",
+          "name": "Forkwell Jobs",
+          "url": "https://jobs.forkwell.com/",
+          "novice_support": true,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "lapras",
+          "name": "LAPRAS",
+          "url": "https://lapras.com/",
+          "novice_support": true,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "levtech-freelance",
+          "name": "レバテックフリーランス",
+          "url": "https://freelance.levtech.jp/",
+          "novice_support": false,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "foster-freelance",
+          "name": "フォスターフリーランス",
+          "url": "https://freelance.fosternet.jp/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "xnetwork",
+          "name": "クロスネットワーク",
+          "url": "https://www.xnetwork.jp/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "crowdworks-tech",
+          "name": "クラウドワークス テック（旧 クラウドテック）",
+          "url": "https://tech.crowdworks.jp/",
+          "novice_support": false,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "midworks",
+          "name": "Midworks",
+          "url": "https://mid-works.com/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "pe-bank",
+          "name": "PE-BANK",
+          "url": "https://pe-bank.jp/",
+          "novice_support": false,
+          "freelance_available": true,
+          "job_category_matched": false
+        }
+      ]
+    }
+  },
+  "ネットワークエンジニア": {
+    "learning": {
+      "schools": [
+        {
+          "id": "raretech",
+          "name": "RareTECH",
+          "url": "https://raretech.site/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "sasayell",
+          "name": "ササエル",
+          "url": "https://www.sasa-yell.tech/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "uzuz-college-ccna",
+          "name": "ウズウズカレッジ",
+          "course": "CCNA コース（有料）",
+          "url": "https://uzuz-college.jp/ccna/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "uzuz-college-it",
+          "name": "ウズカレIT",
+          "url": "https://uzuz-college.jp/it-shushoku/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        }
+      ],
+      "services": [
+        {
+          "id": "levtech-career",
+          "name": "レバテックキャリア",
+          "url": "https://career.levtech.jp/",
+          "novice_support": true,
+          "freelance_available": false,
+          "job_category_matched": true
+        },
+        {
+          "id": "mynavi-it-agent",
+          "name": "マイナビ転職 IT AGENT",
+          "url": "https://mynavi-agent.jp/it/",
+          "novice_support": true,
+          "freelance_available": null,
+          "job_category_matched": true
+        },
+        {
+          "id": "recruit-agent",
+          "name": "リクルートエージェント",
+          "url": "https://www.r-agent.com/",
+          "novice_support": true,
+          "freelance_available": false,
+          "job_category_matched": true
+        }
+      ]
+    },
+    "ready": {
+      "services": [
+        {
+          "id": "levtech-career",
+          "name": "レバテックキャリア",
+          "url": "https://career.levtech.jp/",
+          "novice_support": true,
+          "freelance_available": false,
+          "job_category_matched": true
+        },
+        {
+          "id": "mynavi-it-agent",
+          "name": "マイナビ転職 IT AGENT",
+          "url": "https://mynavi-agent.jp/it/",
+          "novice_support": true,
+          "freelance_available": null,
+          "job_category_matched": true
+        },
+        {
+          "id": "recruit-agent",
+          "name": "リクルートエージェント",
+          "url": "https://www.r-agent.com/",
+          "novice_support": true,
+          "freelance_available": false,
+          "job_category_matched": true
+        },
+        {
+          "id": "levtech-freelance",
+          "name": "レバテックフリーランス",
+          "url": "https://freelance.levtech.jp/",
+          "novice_support": false,
+          "freelance_available": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "foster-freelance",
+          "name": "フォスターフリーランス",
+          "url": "https://freelance.fosternet.jp/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "xnetwork",
+          "name": "クロスネットワーク",
+          "url": "https://www.xnetwork.jp/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": true
+        }
+      ],
+      "schools": [
+        {
+          "id": "raretech",
+          "name": "RareTECH",
+          "url": "https://raretech.site/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "sasayell",
+          "name": "ササエル",
+          "url": "https://www.sasa-yell.tech/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "uzuz-college-ccna",
+          "name": "ウズウズカレッジ",
+          "course": "CCNA コース（有料）",
+          "url": "https://uzuz-college.jp/ccna/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "uzuz-college-it",
+          "name": "ウズカレIT",
+          "url": "https://uzuz-college.jp/it-shushoku/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        }
+      ]
+    },
+    "experienced": {
+      "services": [
+        {
+          "id": "levtech-career",
+          "name": "レバテックキャリア",
+          "url": "https://career.levtech.jp/",
+          "novice_support": true,
+          "freelance_available": false,
+          "job_category_matched": true
+        },
+        {
+          "id": "mynavi-it-agent",
+          "name": "マイナビ転職 IT AGENT",
+          "url": "https://mynavi-agent.jp/it/",
+          "novice_support": true,
+          "freelance_available": null,
+          "job_category_matched": true
+        },
+        {
+          "id": "recruit-agent",
+          "name": "リクルートエージェント",
+          "url": "https://www.r-agent.com/",
+          "novice_support": true,
+          "freelance_available": false,
+          "job_category_matched": true
+        }
+      ],
+      "schools": [
+        {
+          "id": "raretech",
+          "name": "RareTECH",
+          "url": "https://raretech.site/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "sasayell",
+          "name": "ササエル",
+          "url": "https://www.sasa-yell.tech/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "uzuz-college-ccna",
+          "name": "ウズウズカレッジ",
+          "course": "CCNA コース（有料）",
+          "url": "https://uzuz-college.jp/ccna/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "uzuz-college-it",
+          "name": "ウズカレIT",
+          "url": "https://uzuz-college.jp/it-shushoku/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        }
+      ],
+      "freelance": [
+        {
+          "id": "levtech-freelance",
+          "name": "レバテックフリーランス",
+          "url": "https://freelance.levtech.jp/",
+          "novice_support": false,
+          "freelance_available": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "foster-freelance",
+          "name": "フォスターフリーランス",
+          "url": "https://freelance.fosternet.jp/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "xnetwork",
+          "name": "クロスネットワーク",
+          "url": "https://www.xnetwork.jp/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "green",
+          "name": "Green",
+          "url": "https://www.green-japan.com/",
+          "novice_support": true,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "webist",
+          "name": "Webist",
+          "url": "https://webist-cri.com/",
+          "novice_support": true,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "job-draft",
+          "name": "転職ドラフト",
+          "url": "https://job-draft.jp/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "forkwell",
+          "name": "Forkwell Jobs",
+          "url": "https://jobs.forkwell.com/",
+          "novice_support": true,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "lapras",
+          "name": "LAPRAS",
+          "url": "https://lapras.com/",
+          "novice_support": true,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "offers",
+          "name": "Offers",
+          "url": "https://offers.jp/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "crowdworks-tech",
+          "name": "クラウドワークス テック（旧 クラウドテック）",
+          "url": "https://tech.crowdworks.jp/",
+          "novice_support": false,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "midworks",
+          "name": "Midworks",
+          "url": "https://mid-works.com/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "pe-bank",
+          "name": "PE-BANK",
+          "url": "https://pe-bank.jp/",
+          "novice_support": false,
+          "freelance_available": true,
+          "job_category_matched": false
+        }
+      ]
+    }
+  },
+  "テストエンジニア / QA": {
+    "learning": {
+      "schools": [
+        {
+          "id": "internet-academy",
+          "name": "インターネット・アカデミー",
+          "url": "https://www.internetacademy.jp/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "edifist",
+          "name": "エディフィストラーニング",
+          "url": "https://www.edifist.co.jp/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "hitachi-academy",
+          "name": "日立アカデミー",
+          "url": "https://www.hitachi-ac.co.jp/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        }
+      ],
+      "services": [
+        {
+          "id": "levtech-career",
+          "name": "レバテックキャリア",
+          "url": "https://career.levtech.jp/",
+          "novice_support": true,
+          "freelance_available": false,
+          "job_category_matched": true
+        }
+      ]
+    },
+    "ready": {
+      "services": [
+        {
+          "id": "levtech-career",
+          "name": "レバテックキャリア",
+          "url": "https://career.levtech.jp/",
+          "novice_support": true,
+          "freelance_available": false,
+          "job_category_matched": true
+        },
+        {
+          "id": "tech-go",
+          "name": "テックゴー",
+          "url": "https://tech-go.jp/",
+          "novice_support": null,
+          "freelance_available": null,
+          "job_category_matched": true
+        },
+        {
+          "id": "levtech-direct",
+          "name": "レバテックダイレクト",
+          "url": "https://levtech-direct.jp/",
+          "novice_support": null,
+          "freelance_available": false,
+          "job_category_matched": true
+        }
+      ],
+      "schools": [
+        {
+          "id": "internet-academy",
+          "name": "インターネット・アカデミー",
+          "url": "https://www.internetacademy.jp/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "edifist",
+          "name": "エディフィストラーニング",
+          "url": "https://www.edifist.co.jp/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "hitachi-academy",
+          "name": "日立アカデミー",
+          "url": "https://www.hitachi-ac.co.jp/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "jstqb",
+          "name": "JSTQB 認定講座",
+          "url": "https://www.jstqb.jp/",
+          "beginner_friendly": null,
+          "job_category_matched": true
+        }
+      ]
+    },
+    "experienced": {
+      "services": [
+        {
+          "id": "levtech-career",
+          "name": "レバテックキャリア",
+          "url": "https://career.levtech.jp/",
+          "novice_support": true,
+          "freelance_available": false,
+          "job_category_matched": true
+        },
+        {
+          "id": "tech-go",
+          "name": "テックゴー",
+          "url": "https://tech-go.jp/",
+          "novice_support": null,
+          "freelance_available": null,
+          "job_category_matched": true
+        },
+        {
+          "id": "levtech-direct",
+          "name": "レバテックダイレクト",
+          "url": "https://levtech-direct.jp/",
+          "novice_support": null,
+          "freelance_available": false,
+          "job_category_matched": true
+        }
+      ],
+      "schools": [
+        {
+          "id": "internet-academy",
+          "name": "インターネット・アカデミー",
+          "url": "https://www.internetacademy.jp/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "edifist",
+          "name": "エディフィストラーニング",
+          "url": "https://www.edifist.co.jp/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "hitachi-academy",
+          "name": "日立アカデミー",
+          "url": "https://www.hitachi-ac.co.jp/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "jstqb",
+          "name": "JSTQB 認定講座",
+          "url": "https://www.jstqb.jp/",
+          "beginner_friendly": null,
+          "job_category_matched": true
+        }
+      ],
+      "freelance": [
+        {
+          "id": "green",
+          "name": "Green",
+          "url": "https://www.green-japan.com/",
+          "novice_support": true,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "webist",
+          "name": "Webist",
+          "url": "https://webist-cri.com/",
+          "novice_support": true,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "job-draft",
+          "name": "転職ドラフト",
+          "url": "https://job-draft.jp/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "forkwell",
+          "name": "Forkwell Jobs",
+          "url": "https://jobs.forkwell.com/",
+          "novice_support": true,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "lapras",
+          "name": "LAPRAS",
+          "url": "https://lapras.com/",
+          "novice_support": true,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "offers",
+          "name": "Offers",
+          "url": "https://offers.jp/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "levtech-freelance",
+          "name": "レバテックフリーランス",
+          "url": "https://freelance.levtech.jp/",
+          "novice_support": false,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "foster-freelance",
+          "name": "フォスターフリーランス",
+          "url": "https://freelance.fosternet.jp/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "xnetwork",
+          "name": "クロスネットワーク",
+          "url": "https://www.xnetwork.jp/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "crowdworks-tech",
+          "name": "クラウドワークス テック（旧 クラウドテック）",
+          "url": "https://tech.crowdworks.jp/",
+          "novice_support": false,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "midworks",
+          "name": "Midworks",
+          "url": "https://mid-works.com/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "pe-bank",
+          "name": "PE-BANK",
+          "url": "https://pe-bank.jp/",
+          "novice_support": false,
+          "freelance_available": true,
+          "job_category_matched": false
+        }
+      ]
+    }
+  },
+  "DevOps / SREエンジニア": {
+    "learning": {
+      "schools": [
+        {
+          "id": "raisetech",
+          "name": "RaiseTech",
+          "url": "https://raise-tech.net/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "internet-academy",
+          "name": "インターネット・アカデミー",
+          "url": "https://www.internetacademy.jp/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "samurai-engineer",
+          "name": "SAMURAI ENGINEER",
+          "url": "https://www.sejuku.net/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "aws-training",
+          "name": "AWS 公式トレーニング",
+          "url": "https://aws.amazon.com/jp/training/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "ctc-education",
+          "name": "CTC教育サービス",
+          "url": "https://www.school.ctc-g.co.jp/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "udemy-devops",
+          "name": "Udemy",
+          "course": "いまからはじめる DevOps 入門講座",
+          "url": "https://www.udemy.com/course/getting-started-devops/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "kodekloud",
+          "name": "KodeKloud",
+          "course": "DevOps / Site Reliability Engineer Learning Path",
+          "url": "https://kodekloud.com/learning-path/devops",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        }
+      ],
+      "services": [
+        {
+          "id": "levtech-career",
+          "name": "レバテックキャリア",
+          "url": "https://career.levtech.jp/",
+          "novice_support": true,
+          "freelance_available": false,
+          "job_category_matched": true
+        },
+        {
+          "id": "forkwell",
+          "name": "Forkwell Jobs",
+          "url": "https://jobs.forkwell.com/",
+          "novice_support": true,
+          "freelance_available": true,
+          "job_category_matched": true
+        }
+      ]
+    },
+    "ready": {
+      "services": [
+        {
+          "id": "levtech-career",
+          "name": "レバテックキャリア",
+          "url": "https://career.levtech.jp/",
+          "novice_support": true,
+          "freelance_available": false,
+          "job_category_matched": true
+        },
+        {
+          "id": "tech-go",
+          "name": "テックゴー",
+          "url": "https://tech-go.jp/",
+          "novice_support": null,
+          "freelance_available": null,
+          "job_category_matched": true
+        },
+        {
+          "id": "findy",
+          "name": "Findy",
+          "url": "https://findy-code.io/",
+          "novice_support": null,
+          "freelance_available": false,
+          "job_category_matched": true
+        },
+        {
+          "id": "forkwell",
+          "name": "Forkwell Jobs",
+          "url": "https://jobs.forkwell.com/",
+          "novice_support": true,
+          "freelance_available": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "levtech-freelance",
+          "name": "レバテックフリーランス",
+          "url": "https://freelance.levtech.jp/",
+          "novice_support": false,
+          "freelance_available": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "crowdworks-tech",
+          "name": "クラウドワークス テック（旧 クラウドテック）",
+          "url": "https://tech.crowdworks.jp/",
+          "novice_support": false,
+          "freelance_available": true,
+          "job_category_matched": true
+        }
+      ],
+      "schools": [
+        {
+          "id": "raisetech",
+          "name": "RaiseTech",
+          "url": "https://raise-tech.net/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "internet-academy",
+          "name": "インターネット・アカデミー",
+          "url": "https://www.internetacademy.jp/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "samurai-engineer",
+          "name": "SAMURAI ENGINEER",
+          "url": "https://www.sejuku.net/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "aws-training",
+          "name": "AWS 公式トレーニング",
+          "url": "https://aws.amazon.com/jp/training/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "casareal",
+          "name": "カサレアル",
+          "course": "クラウドネイティブ道場",
+          "url": "https://learning.casareal.co.jp/search/cloudnative-dojo",
+          "beginner_friendly": false,
+          "job_category_matched": true
+        },
+        {
+          "id": "ctc-education",
+          "name": "CTC教育サービス",
+          "url": "https://www.school.ctc-g.co.jp/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "topout",
+          "name": "トップアウト",
+          "course": "DevOps 研修",
+          "url": "https://www.topout.co.jp/devops/",
+          "beginner_friendly": null,
+          "job_category_matched": true
+        },
+        {
+          "id": "udemy-devops",
+          "name": "Udemy",
+          "course": "いまからはじめる DevOps 入門講座",
+          "url": "https://www.udemy.com/course/getting-started-devops/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "kodekloud",
+          "name": "KodeKloud",
+          "course": "DevOps / Site Reliability Engineer Learning Path",
+          "url": "https://kodekloud.com/learning-path/devops",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "microsoft-learn-devops",
+          "name": "Microsoft Learn",
+          "course": "AZ-400 DevOps ラーニングパス",
+          "url": "https://learn.microsoft.com/ja-jp/training/paths/az-400-work-git-for-enterprise-devops/",
+          "beginner_friendly": false,
+          "job_category_matched": true
+        },
+        {
+          "id": "google-sre-coursera",
+          "name": "Google Cloud SRE コース（Coursera）",
+          "course": "Site Reliability Engineering: Measuring and Managing Reliability",
+          "url": "https://cloud.google.com/sre?hl=ja",
+          "beginner_friendly": false,
+          "job_category_matched": true
+        }
+      ]
+    },
+    "experienced": {
+      "services": [
+        {
+          "id": "levtech-career",
+          "name": "レバテックキャリア",
+          "url": "https://career.levtech.jp/",
+          "novice_support": true,
+          "freelance_available": false,
+          "job_category_matched": true
+        },
+        {
+          "id": "tech-go",
+          "name": "テックゴー",
+          "url": "https://tech-go.jp/",
+          "novice_support": null,
+          "freelance_available": null,
+          "job_category_matched": true
+        },
+        {
+          "id": "findy",
+          "name": "Findy",
+          "url": "https://findy-code.io/",
+          "novice_support": null,
+          "freelance_available": false,
+          "job_category_matched": true
+        }
+      ],
+      "schools": [
+        {
+          "id": "raisetech",
+          "name": "RaiseTech",
+          "url": "https://raise-tech.net/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "internet-academy",
+          "name": "インターネット・アカデミー",
+          "url": "https://www.internetacademy.jp/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "samurai-engineer",
+          "name": "SAMURAI ENGINEER",
+          "url": "https://www.sejuku.net/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "aws-training",
+          "name": "AWS 公式トレーニング",
+          "url": "https://aws.amazon.com/jp/training/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "casareal",
+          "name": "カサレアル",
+          "course": "クラウドネイティブ道場",
+          "url": "https://learning.casareal.co.jp/search/cloudnative-dojo",
+          "beginner_friendly": false,
+          "job_category_matched": true
+        },
+        {
+          "id": "ctc-education",
+          "name": "CTC教育サービス",
+          "url": "https://www.school.ctc-g.co.jp/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "topout",
+          "name": "トップアウト",
+          "course": "DevOps 研修",
+          "url": "https://www.topout.co.jp/devops/",
+          "beginner_friendly": null,
+          "job_category_matched": true
+        },
+        {
+          "id": "udemy-devops",
+          "name": "Udemy",
+          "course": "いまからはじめる DevOps 入門講座",
+          "url": "https://www.udemy.com/course/getting-started-devops/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "kodekloud",
+          "name": "KodeKloud",
+          "course": "DevOps / Site Reliability Engineer Learning Path",
+          "url": "https://kodekloud.com/learning-path/devops",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "microsoft-learn-devops",
+          "name": "Microsoft Learn",
+          "course": "AZ-400 DevOps ラーニングパス",
+          "url": "https://learn.microsoft.com/ja-jp/training/paths/az-400-work-git-for-enterprise-devops/",
+          "beginner_friendly": false,
+          "job_category_matched": true
+        },
+        {
+          "id": "google-sre-coursera",
+          "name": "Google Cloud SRE コース（Coursera）",
+          "course": "Site Reliability Engineering: Measuring and Managing Reliability",
+          "url": "https://cloud.google.com/sre?hl=ja",
+          "beginner_friendly": false,
+          "job_category_matched": true
+        }
+      ],
+      "freelance": [
+        {
+          "id": "forkwell",
+          "name": "Forkwell Jobs",
+          "url": "https://jobs.forkwell.com/",
+          "novice_support": true,
+          "freelance_available": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "levtech-freelance",
+          "name": "レバテックフリーランス",
+          "url": "https://freelance.levtech.jp/",
+          "novice_support": false,
+          "freelance_available": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "crowdworks-tech",
+          "name": "クラウドワークス テック（旧 クラウドテック）",
+          "url": "https://tech.crowdworks.jp/",
+          "novice_support": false,
+          "freelance_available": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "green",
+          "name": "Green",
+          "url": "https://www.green-japan.com/",
+          "novice_support": true,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "webist",
+          "name": "Webist",
+          "url": "https://webist-cri.com/",
+          "novice_support": true,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "job-draft",
+          "name": "転職ドラフト",
+          "url": "https://job-draft.jp/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "lapras",
+          "name": "LAPRAS",
+          "url": "https://lapras.com/",
+          "novice_support": true,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "offers",
+          "name": "Offers",
+          "url": "https://offers.jp/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "foster-freelance",
+          "name": "フォスターフリーランス",
+          "url": "https://freelance.fosternet.jp/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "xnetwork",
+          "name": "クロスネットワーク",
+          "url": "https://www.xnetwork.jp/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "midworks",
+          "name": "Midworks",
+          "url": "https://mid-works.com/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "pe-bank",
+          "name": "PE-BANK",
+          "url": "https://pe-bank.jp/",
+          "novice_support": false,
+          "freelance_available": true,
+          "job_category_matched": false
+        }
+      ]
+    }
+  },
+  "クラウドアーキテクト": {
+    "learning": {
+      "schools": [
+        {
+          "id": "raisetech",
+          "name": "RaiseTech",
+          "url": "https://raise-tech.net/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "winschool",
+          "name": "Winスクール",
+          "url": "https://www.winschool.jp/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "samurai-engineer",
+          "name": "SAMURAI ENGINEER",
+          "url": "https://www.sejuku.net/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "aws-training",
+          "name": "AWS 公式トレーニング",
+          "url": "https://aws.amazon.com/jp/training/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "cloudtech-academy",
+          "name": "CloudTech Academy",
+          "url": "https://kws-cloud-tech.com/cloudtech-academy-2/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "network-academy",
+          "name": "ネットワークアカデミー",
+          "course": "AWS 認定 Solutions Architect - Associate 合格保証コース",
+          "url": "https://www.networkacademy.jp/aws-couse",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        }
+      ],
+      "services": [
+        {
+          "id": "levtech-career",
+          "name": "レバテックキャリア",
+          "url": "https://career.levtech.jp/",
+          "novice_support": true,
+          "freelance_available": false,
+          "job_category_matched": true
+        },
+        {
+          "id": "type-it-agent",
+          "name": "type転職エージェント IT",
+          "url": "https://type.career-agent.jp/service/it.html",
+          "novice_support": true,
+          "freelance_available": false,
+          "job_category_matched": true
+        },
+        {
+          "id": "pasona-career",
+          "name": "パソナキャリア",
+          "url": "https://www.pasonacareer.jp/",
+          "novice_support": true,
+          "freelance_available": null,
+          "job_category_matched": true
+        },
+        {
+          "id": "solution-partner",
+          "name": "ソリューションパートナー",
+          "url": "https://sol-partner.co.jp/",
+          "novice_support": true,
+          "freelance_available": false,
+          "job_category_matched": true
+        }
+      ]
+    },
+    "ready": {
+      "services": [
+        {
+          "id": "levtech-career",
+          "name": "レバテックキャリア",
+          "url": "https://career.levtech.jp/",
+          "novice_support": true,
+          "freelance_available": false,
+          "job_category_matched": true
+        },
+        {
+          "id": "type-it-agent",
+          "name": "type転職エージェント IT",
+          "url": "https://type.career-agent.jp/service/it.html",
+          "novice_support": true,
+          "freelance_available": false,
+          "job_category_matched": true
+        },
+        {
+          "id": "levtech-freelance",
+          "name": "レバテックフリーランス",
+          "url": "https://freelance.levtech.jp/",
+          "novice_support": false,
+          "freelance_available": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "foster-freelance",
+          "name": "フォスターフリーランス",
+          "url": "https://freelance.fosternet.jp/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "xnetwork",
+          "name": "クロスネットワーク",
+          "url": "https://www.xnetwork.jp/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "crowdworks-tech",
+          "name": "クラウドワークス テック（旧 クラウドテック）",
+          "url": "https://tech.crowdworks.jp/",
+          "novice_support": false,
+          "freelance_available": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "midworks",
+          "name": "Midworks",
+          "url": "https://mid-works.com/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "pe-bank",
+          "name": "PE-BANK",
+          "url": "https://pe-bank.jp/",
+          "novice_support": false,
+          "freelance_available": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "pasona-career",
+          "name": "パソナキャリア",
+          "url": "https://www.pasonacareer.jp/",
+          "novice_support": true,
+          "freelance_available": null,
+          "job_category_matched": true
+        },
+        {
+          "id": "solution-partner",
+          "name": "ソリューションパートナー",
+          "url": "https://sol-partner.co.jp/",
+          "novice_support": true,
+          "freelance_available": false,
+          "job_category_matched": true
+        }
+      ],
+      "schools": [
+        {
+          "id": "raisetech",
+          "name": "RaiseTech",
+          "url": "https://raise-tech.net/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "winschool",
+          "name": "Winスクール",
+          "url": "https://www.winschool.jp/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "samurai-engineer",
+          "name": "SAMURAI ENGINEER",
+          "url": "https://www.sejuku.net/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "aws-training",
+          "name": "AWS 公式トレーニング",
+          "url": "https://aws.amazon.com/jp/training/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "cloudtech-academy",
+          "name": "CloudTech Academy",
+          "url": "https://kws-cloud-tech.com/cloudtech-academy-2/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "network-academy",
+          "name": "ネットワークアカデミー",
+          "course": "AWS 認定 Solutions Architect - Associate 合格保証コース",
+          "url": "https://www.networkacademy.jp/aws-couse",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        }
+      ]
+    },
+    "experienced": {
+      "services": [
+        {
+          "id": "levtech-career",
+          "name": "レバテックキャリア",
+          "url": "https://career.levtech.jp/",
+          "novice_support": true,
+          "freelance_available": false,
+          "job_category_matched": true
+        },
+        {
+          "id": "type-it-agent",
+          "name": "type転職エージェント IT",
+          "url": "https://type.career-agent.jp/service/it.html",
+          "novice_support": true,
+          "freelance_available": false,
+          "job_category_matched": true
+        },
+        {
+          "id": "pasona-career",
+          "name": "パソナキャリア",
+          "url": "https://www.pasonacareer.jp/",
+          "novice_support": true,
+          "freelance_available": null,
+          "job_category_matched": true
+        },
+        {
+          "id": "solution-partner",
+          "name": "ソリューションパートナー",
+          "url": "https://sol-partner.co.jp/",
+          "novice_support": true,
+          "freelance_available": false,
+          "job_category_matched": true
+        }
+      ],
+      "schools": [
+        {
+          "id": "raisetech",
+          "name": "RaiseTech",
+          "url": "https://raise-tech.net/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "winschool",
+          "name": "Winスクール",
+          "url": "https://www.winschool.jp/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "samurai-engineer",
+          "name": "SAMURAI ENGINEER",
+          "url": "https://www.sejuku.net/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "aws-training",
+          "name": "AWS 公式トレーニング",
+          "url": "https://aws.amazon.com/jp/training/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "cloudtech-academy",
+          "name": "CloudTech Academy",
+          "url": "https://kws-cloud-tech.com/cloudtech-academy-2/",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "network-academy",
+          "name": "ネットワークアカデミー",
+          "course": "AWS 認定 Solutions Architect - Associate 合格保証コース",
+          "url": "https://www.networkacademy.jp/aws-couse",
+          "beginner_friendly": true,
+          "job_category_matched": true
+        }
+      ],
+      "freelance": [
+        {
+          "id": "levtech-freelance",
+          "name": "レバテックフリーランス",
+          "url": "https://freelance.levtech.jp/",
+          "novice_support": false,
+          "freelance_available": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "foster-freelance",
+          "name": "フォスターフリーランス",
+          "url": "https://freelance.fosternet.jp/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "xnetwork",
+          "name": "クロスネットワーク",
+          "url": "https://www.xnetwork.jp/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "crowdworks-tech",
+          "name": "クラウドワークス テック（旧 クラウドテック）",
+          "url": "https://tech.crowdworks.jp/",
+          "novice_support": false,
+          "freelance_available": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "midworks",
+          "name": "Midworks",
+          "url": "https://mid-works.com/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "pe-bank",
+          "name": "PE-BANK",
+          "url": "https://pe-bank.jp/",
+          "novice_support": false,
+          "freelance_available": true,
+          "job_category_matched": true
+        },
+        {
+          "id": "green",
+          "name": "Green",
+          "url": "https://www.green-japan.com/",
+          "novice_support": true,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "webist",
+          "name": "Webist",
+          "url": "https://webist-cri.com/",
+          "novice_support": true,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "job-draft",
+          "name": "転職ドラフト",
+          "url": "https://job-draft.jp/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "forkwell",
+          "name": "Forkwell Jobs",
+          "url": "https://jobs.forkwell.com/",
+          "novice_support": true,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "lapras",
+          "name": "LAPRAS",
+          "url": "https://lapras.com/",
+          "novice_support": true,
+          "freelance_available": true,
+          "job_category_matched": false
+        },
+        {
+          "id": "offers",
+          "name": "Offers",
+          "url": "https://offers.jp/",
+          "novice_support": null,
+          "freelance_available": true,
+          "job_category_matched": false
+        }
+      ]
+    }
+  }
+}

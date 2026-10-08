@@ -43,6 +43,25 @@ export function collectCategories(posts: { category?: { id: string; name: string
   return [...counts.values()].sort((a, b) => b.count - a.count || a.name.localeCompare(b.name, "ja"));
 }
 
+type GoalCategoryPost = { category?: { id: string } | null; goal?: string[] | null };
+
+/** 職種カテゴリ（goal_id）の記事か。goal フィールドでその Goal を選んだ記事と、カテゴリ ID が goal_id と同じ記事 */
+export function isInGoalCategory(post: GoalCategoryPost, goal: { goal_id: string; name: string }): boolean {
+  return post.category?.id === goal.goal_id || (post.goal ?? []).some((v) => v === goal.goal_id || v === goal.name);
+}
+
+/** 職種カテゴリ（Goal の並び順。記事が無い職種も含める） */
+export function collectGoalCategories(
+  posts: GoalCategoryPost[],
+  goals: { goal_id: string; name: string }[],
+): { id: string; name: string; count: number }[] {
+  return goals.map((goal) => ({
+    id: goal.goal_id,
+    name: goal.name,
+    count: posts.filter((post) => isInGoalCategory(post, goal)).length,
+  }));
+}
+
 /** <script type="application/ld+json"> に埋め込んでも </script> で閉じられないようにする */
 export function serializeJsonLd(data: unknown): string {
   return JSON.stringify(data).replace(/</g, "\\u003c");

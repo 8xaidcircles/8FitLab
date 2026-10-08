@@ -1,10 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { ServiceCard, ServiceTable } from "@/components/service-compare";
+import { JobCategoryPickTable, ServiceCard, ServiceTable } from "@/components/service-compare";
+import { JOB_SERVICE_PICKS, SCHOOL_PICKS, type JobCategoryPick } from "@/lib/blog/job-category-picks";
 import { listPosts, listServices } from "@/lib/blog/microcms";
 import { groupByPurpose, normalizeServices, type ComparedService } from "@/lib/blog/services";
-import { collectCategories } from "@/lib/blog/utils";
+import { collectCategories, collectGoalCategories } from "@/lib/blog/utils";
+import { loadGoals } from "@/lib/career-match";
 import { BlogListing } from "./blog-listing";
 
 const TITLE = "プログラミングスクール・転職サービス比較";
@@ -26,21 +28,23 @@ function SectionHeading({ id, kicker, children }: { id: string; kicker: string; 
   );
 }
 
-function Preparing() {
-  return <p className="mt-5 rounded-2xl border border-dashed border-line bg-white p-8 text-center text-sm text-muted">掲載サービスは準備中です。</p>;
-}
-
 function ServiceSection({
   id,
   kicker,
   title,
   lead,
+  type,
+  picks,
+  goalNames,
   services,
 }: {
   id: string;
   kicker: string;
   title: string;
   lead: string;
+  type: ComparedService["type"];
+  picks: JobCategoryPick[];
+  goalNames: Map<string, string>;
   services: ComparedService[];
 }) {
   return (
@@ -49,9 +53,10 @@ function ServiceSection({
         {title}
       </SectionHeading>
       <p className="mt-3 text-sm leading-relaxed text-muted">{lead}</p>
-      {services.length > 0 ? (
+      <JobCategoryPickTable picks={picks} type={type} goalNames={goalNames} />
+      {services.length > 0 && (
         <>
-          <div className="mt-6 space-y-6">
+          <div className="mt-10 space-y-6">
             {services.map((service, i) => (
               <ServiceCard key={service.id} service={service} rank={i + 1} />
             ))}
@@ -61,23 +66,21 @@ function ServiceSection({
             <ServiceTable services={services} />
           </div>
         </>
-      ) : (
-        <Preparing />
       )}
     </section>
   );
 }
 
 export default async function BlogIndex() {
-  const [posts, rawServices] = await Promise.all([listPosts(), listServices()]);
+  const [posts, rawServices, goals] = await Promise.all([listPosts(), listServices(), loadGoals()]);
   const services = normalizeServices(rawServices);
   const purposes = groupByPurpose([...services.school, ...services.job_service]);
+  const goalNames = new Map(goals.map((goal) => [goal.goal_id, goal.name]));
   // 狭い画面で 2 行になるときは、\u200b（ゼロ幅スペース）の位置でだけ改行する（break-keep と組み合わせる）
   const jumpLinks = [
     { href: "#schools", label: "スクールを\u200b比較" },
     { href: "#job-services", label: "転職サービスを\u200b比較" },
     ...(purposes.length > 0 ? [{ href: "#purposes", label: "目的から\u200b探す" }] : []),
-    { href: "#articles", label: "記事一覧" },
   ];
 
   return (
@@ -85,10 +88,11 @@ export default async function BlogIndex() {
       path="/blog"
       kicker="COMPARE"
       title={TITLE}
-      description="未経験からエンジニアを目指す人、エンジニアとして次のキャリアを考えている人向けに、スクールと転職サービスを同じ項目で並べました。迷ったら、先に Goal Fit で目指す職種との距離を確かめるのがおすすめです。"
+      description="未経験からエンジニアを目指す人、エンジニアとして次のキャリアを考えている人向けに、スクールと転職サービスを同じ項目で並べました。迷ったら、先に Goal Fit で目指す職種との距離を確かめてみてください。"
       posts={posts}
       allPosts={posts}
       categories={collectCategories(posts)}
+      goalCategories={collectGoalCategories(posts, goals)}
       postsHeading="記事一覧"
     >
       <nav aria-label="ページ内の目次" className="mt-6 rounded-2xl border border-line bg-white p-4 sm:p-5">
@@ -98,7 +102,7 @@ export default async function BlogIndex() {
             <li key={link.href} className="w-[calc((100%-1rem)/3)] sm:w-[calc((100%-1.5rem)/3)]">
               <a
                 href={link.href}
-                className="btn-reflection flex h-full min-h-11 items-center justify-center gap-1 rounded-full bg-ink px-2 py-2 text-center text-[11px] leading-tight font-bold break-keep text-white shadow-[0_3px_0_#0b0d33] transition hover:translate-y-0.5 hover:shadow-[0_1px_0_#0b0d33] sm:px-3 sm:text-xs md:text-sm"
+                className="btn-reflection flex h-full min-h-11 items-center justify-center gap-1 rounded-full bg-linear-to-r from-[#9dd6fb] to-sky px-2 py-2 text-center text-[11px] leading-tight font-bold break-keep text-white shadow-[0_3px_0_#1d7fc4] transition hover:translate-y-0.5 hover:shadow-[0_1px_0_#1d7fc4] sm:px-3 sm:text-xs md:text-sm"
               >
                 {link.label}
                 <span aria-hidden>›</span>
@@ -149,7 +153,10 @@ export default async function BlogIndex() {
         id="schools"
         kicker="SCHOOL"
         title="プログラミングスクール比較"
-        lead="料金・期間・学習形式・転職サポートを並べています。給付金の対象かどうかや、目指す職種に合ったカリキュラムかも確認しましょう。"
+        lead="職種ごとに、その職種の学習ロードマップに沿って学べるスクール・コースを 1 つずつ並べています。"
+        type="school"
+        picks={SCHOOL_PICKS}
+        goalNames={goalNames}
         services={services.school}
       />
 
@@ -157,7 +164,10 @@ export default async function BlogIndex() {
         id="job-services"
         kicker="JOB SERVICE"
         title="転職サービス比較"
-        lead="対象者・料金・サポート内容を並べています。複数のサービスに登録して、紹介される求人やアドバイザーとの相性を比べるのが一般的です。"
+        lead="職種ごとに、その職種の求人や転職支援を扱う就職・転職サービスを 1 つずつ並べています。複数のサービスに登録して、紹介される求人やアドバイザーとの相性を比べるのが一般的です。"
+        type="job_service"
+        picks={JOB_SERVICE_PICKS}
+        goalNames={goalNames}
         services={services.job_service}
       />
 

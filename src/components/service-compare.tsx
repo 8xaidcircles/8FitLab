@@ -1,6 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
+import type { ReactNode } from "react";
 import { TrackClick } from "@/components/track-click";
+import type { JobCategoryPick } from "@/lib/blog/job-category-picks";
 import type { ComparedService } from "@/lib/blog/services";
 
 type Placement = "card" | "table";
@@ -139,6 +141,165 @@ export function ServiceCard({ service, rank }: { service: ComparedService; rank:
         // eslint-disable-next-line @next/next/no-img-element
         <img src={service.trackingPixelUrl} width={1} height={1} alt="" className="absolute h-px w-px opacity-0" />
       )}
+    </article>
+  );
+}
+
+function PickLink({
+  pick,
+  type,
+  placement = "job_category_table",
+  className,
+  children,
+}: {
+  pick: JobCategoryPick;
+  type: ComparedService["type"];
+  placement?: "job_category_table" | "learning_path";
+  className: string;
+  children: ReactNode;
+}) {
+  return (
+    <TrackClick
+      event="service_clicked"
+      data={{ service_id: pick.name, type, placement, goal_id: pick.goalId, sponsored: pick.sponsored }}
+    >
+      <a href={pick.officialUrl} target="_blank" rel={pick.sponsored ? "sponsored nofollow noopener" : "noopener"} className={className}>
+        {children}
+      </a>
+    </TrackClick>
+  );
+}
+
+export interface RoadmapStepLabel {
+  step_id: string;
+  learning_order: number;
+  name: string;
+}
+
+/** コースが学習ロードマップの何ステップを扱うかのメーター */
+function RoadmapCoverage({ covered, total }: { covered: number; total: number }) {
+  return (
+    <div className="flex items-center gap-2">
+      <span className="shrink-0 text-[11px] font-bold text-indigo sm:text-xs">
+        学習ロードマップ {covered}/{total} ステップに対応
+      </span>
+      <span className="h-1.5 w-full max-w-28 overflow-hidden rounded-full bg-indigo-soft" aria-hidden>
+        <span className="bg-brand-gradient block h-full rounded-full" style={{ width: `${(covered / total) * 100}%` }} />
+      </span>
+    </div>
+  );
+}
+
+function coveredSteps(pick: JobCategoryPick, steps: RoadmapStepLabel[] | undefined): RoadmapStepLabel[] {
+  if (!steps || !pick.coveredStepIds) return [];
+  const ids = new Set(pick.coveredStepIds);
+  return steps.filter((step) => ids.has(step.step_id));
+}
+
+/** 職種ごとに 1 つずつ選んだスクール・転職サービスの一覧。職種に合う理由を並べる */
+export function JobCategoryPickTable({
+  picks,
+  type,
+  goalNames,
+}: {
+  picks: JobCategoryPick[];
+  type: ComparedService["type"];
+  goalNames: Map<string, string>;
+}) {
+  const serviceLabel = type === "school" ? "職種に対応するスクール・コース" : "職種に対応する就職・転職サービス";
+  return (
+    <div className="mt-6">
+      <div className="overflow-hidden rounded-2xl border border-line bg-white">
+        <div className="bg-brand-gradient h-1" />
+        <div className="hidden grid-cols-[minmax(0,2fr)_minmax(0,5fr)] bg-ink text-xs font-bold tracking-wide text-white sm:grid sm:text-sm">
+          <p className="px-5 py-3">職種</p>
+          <p className="border-l border-white/15 px-5 py-3">{serviceLabel}</p>
+        </div>
+        <ul>
+          {picks.map((pick) => {
+            return (
+              <li
+                key={pick.goalId}
+                className="grid border-t border-line transition-colors first:border-t-0 even:bg-mist hover:bg-sky-soft sm:grid-cols-[minmax(0,2fr)_minmax(0,5fr)] sm:first:border-t"
+              >
+                <div className="px-4 pt-4 sm:px-5 sm:py-4">
+                  <Link
+                    href={`/blog/category/${pick.goalId}`}
+                    className="inline-block border-l-4 border-sky pl-2 text-xs leading-snug font-bold text-ink hover:text-indigo hover:underline sm:text-sm"
+                  >
+                    {goalNames.get(pick.goalId) ?? pick.goalId}
+                  </Link>
+                </div>
+                <div className="space-y-1.5 px-4 pt-2 pb-4 sm:border-l sm:border-line sm:px-5 sm:py-4">
+                  <p>
+                    <PickLink
+                      pick={pick}
+                      type={type}
+                      className="group inline-flex items-center gap-1.5 text-sm font-bold text-indigo hover:text-sky sm:text-base"
+                    >
+                      <span className="underline decoration-sky/50 underline-offset-4 group-hover:decoration-sky">{pick.name}</span>
+                      <span aria-hidden className="text-sky transition-transform group-hover:translate-x-0.5">
+                        ›
+                      </span>
+                    </PickLink>
+                    {pick.course && <span className="ml-2 text-xs text-muted">{pick.course}</span>}
+                  </p>
+                  <p className="text-xs leading-relaxed text-ink sm:text-sm">{pick.fit}</p>
+                </div>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+      {picks.some((pick) => pick.sponsored) && <p className="mt-2 text-right text-xs text-muted">※ 一部に広告リンクを含みます</p>}
+    </div>
+  );
+}
+
+/** Learning Path ページ用：1 職種分のスクール・転職サービスのカード */
+export function JobCategoryPickCard({
+  pick,
+  type,
+  steps,
+}: {
+  pick: JobCategoryPick;
+  type: ComparedService["type"];
+  steps?: RoadmapStepLabel[];
+}) {
+  const covered = coveredSteps(pick, steps);
+  return (
+    <article className="overflow-hidden rounded-2xl border border-line bg-white">
+      <div className="bg-brand-gradient h-1" />
+      <div className="space-y-3 p-5">
+        <p className="text-xs font-bold text-sky">{type === "school" ? "SCHOOL" : "JOB SERVICE"}</p>
+        <div>
+          <h3 className="text-lg font-extrabold text-ink">{pick.name}</h3>
+          {pick.course && <p className="text-sm text-muted">{pick.course}</p>}
+        </div>
+        <p className="text-sm leading-relaxed">{pick.fit}</p>
+        {steps && covered.length > 0 && (
+          <div className="rounded-xl bg-mist p-3">
+            <RoadmapCoverage covered={covered.length} total={steps.length} />
+            <ul className="mt-2 flex flex-wrap gap-1.5">
+              {covered.map((step) => (
+                <li key={step.step_id} className="rounded-full border border-line bg-white px-2.5 py-0.5 text-xs">
+                  <span className="mr-1 font-bold text-indigo">{step.learning_order}</span>
+                  {step.name}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+        <PickLink
+          pick={pick}
+          type={type}
+          placement="learning_path"
+          className="inline-flex items-center gap-2 rounded-full bg-indigo px-5 py-2.5 text-sm font-bold text-white transition hover:bg-ink"
+        >
+          公式サイトを見る <span aria-hidden>→</span>
+        </PickLink>
+        {pick.sponsored && <p className="text-xs text-muted">※ 広告リンクを含みます</p>}
+      </div>
     </article>
   );
 }

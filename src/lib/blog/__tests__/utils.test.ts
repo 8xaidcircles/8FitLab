@@ -1,6 +1,15 @@
 import { createHmac } from "node:crypto";
 import { describe, expect, it } from "vitest";
-import { formatDate, isValidSlug, resolveGoalId, safeEqual, serializeJsonLd, verifyWebhookSignature } from "../utils";
+import {
+  collectGoalCategories,
+  formatDate,
+  isInGoalCategory,
+  isValidSlug,
+  resolveGoalId,
+  safeEqual,
+  serializeJsonLd,
+  verifyWebhookSignature,
+} from "../utils";
 
 describe("isValidSlug", () => {
   it("英数字・ハイフン・アンダースコアのみ受け付ける", () => {
@@ -54,6 +63,32 @@ describe("resolveGoalId", () => {
     expect(resolveGoalId(["存在しない"], goals)).toBeNull();
     expect(resolveGoalId([], goals)).toBeNull();
     expect(resolveGoalId(null, goals)).toBeNull();
+  });
+});
+
+describe("職種カテゴリ", () => {
+  const goals = [
+    { goal_id: "frontend-developer", name: "フロントエンドエンジニア" },
+    { goal_id: "data-engineer", name: "データエンジニア" },
+  ];
+  const posts = [
+    { goal: ["フロントエンドエンジニア"] },
+    { goal: ["frontend-developer", "データエンジニア"] },
+    { category: { id: "data-engineer" } },
+    { category: { id: "career" }, goal: null },
+  ];
+
+  it("goal フィールド（日本語名・goal_id）か、カテゴリ ID が goal_id と同じ記事を職種カテゴリに入れる", () => {
+    expect(posts.map((post) => isInGoalCategory(post, goals[0]))).toEqual([true, true, false, false]);
+    expect(posts.map((post) => isInGoalCategory(post, goals[1]))).toEqual([false, true, true, false]);
+  });
+
+  it("Goal の並び順で、記事の無い職種も含めて記事数を数える", () => {
+    expect(collectGoalCategories(posts, goals)).toEqual([
+      { id: "frontend-developer", name: "フロントエンドエンジニア", count: 2 },
+      { id: "data-engineer", name: "データエンジニア", count: 2 },
+    ]);
+    expect(collectGoalCategories([], goals).map((c) => c.count)).toEqual([0, 0]);
   });
 });
 
