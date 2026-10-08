@@ -1,0 +1,6 @@
+# 統計生成スクリプト（scripts/*.py）と pytest（scripts/tests）の依存。pip install -r scripts/requirements.txt
+numpy==2.4.4
+pandas==3.0.2
+pyarrow==25.0.1
+scipy==1.17.1
+pytest==8.4.2
