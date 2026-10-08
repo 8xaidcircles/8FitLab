@@ -22,16 +22,39 @@
   - 日本補正: 日本の回答者は Goal ごとに数十〜数百人と少ないため、日本の利用率を世界の利用率へ縮小推定する
     （経験ベイズ、Beta-Binomial）。p_JP = (u_JP + k × p_世界) / (n_JP + k)。
     k は全 Goal × 技術の「日本と世界の差のばらつき」からモーメント法で推定し、人は決めない。
-    日本の回答は人数が少ないため、選択肢が存在した全年を常に合算する
+    日本の回答は人数が少ないため、選択肢が存在した全年を常に合算する。
+    事前分布の平均（世界の率）は上記の「最新年（足りなければ合算）」の値なので、世界と日本で対象年がずれることがある。
+    年による選択肢・回答傾向の差は k の推定（日本と世界の差のばらつき）に含まれる。仕様として許容する
   - Quantity = p_JP(unit | Goal)、Quality = p_JP(unit | Goal) / (p_JP(unit | Goal) + p_JP(unit | Other)) × 100、
     Contribution = Quantity × Quality / 100（Experience と同じ）
   - 開発環境（エディタ・IDE）は dev_env_allowlist にあるものだけ残す
   - グループのメンバーは日本補正後の P(技術 | Goal) の大きい順に並べる（表示順。採用には使わない）
 
-Goal Skill の採用（selected）:
-  1. 世界の P(unit | Goal) > P(unit | Other) が有意（片側 2 標本比率の z 検定、Goal 内の unit 数で Bonferroni 補正、
-     α = 0.05）。「その職種を特徴づける技術か」は標本の大きい世界全体で判定する
-  2. 1 を満たす unit を日本補正後の Contribution の大きい順に並べ、累積 Contribution が合計の 80% に達するまで
+Goal Skill の採用（selected = 基本リスト or 特有リスト。1 つの unit が両方に入ってよい）:
+  pg = 日本補正後の P(unit | Goal)、po = 日本補正後の P(unit | Other)、d = max(0, (pg − po) / (pg + po))
+  - 技術スキル辞書（tech-skills.json）を許可リストとして扱い、辞書に無い技術はどちらのリストにも入れない
+    （除外した技術は標準出力に出す。統計が辞書の外に出ないようにする）
+  - 基本リスト（roles に "base"）: pg ≥ BASE_MIN_SHARE（その職種の過半数が使う）。
+    基本の重み base_weight = pg × min(1, d / d*)。他職種と同じくらい使われる技術（d が小さい）ほど割り引き、d = 0 なら入れない。
+    d* = 「有意（下記の特有リストの第 1 段階）と判定される確率が 50% になる d」。14 Goal すべての基本リストの候補
+    （辞書にあり pg ≥ BASE_MIN_SHARE）の (d, significant) に significant ~ d のロジスティック回帰を当てはめ、d* = −b0 / b1。
+    人は d* を決めない。推定できない（候補が少ない・片方のクラスしか無い・完全分離・収束しない・b1 ≤ 0・d* が正の有限値でない）
+    ときは止める。推定は d と significant だけを使い base_weight を使わないため循環しない
+  - 特有リスト（roles に "distinctive"）: 世界の P(unit | Goal) > P(unit | Other) が有意（片側 2 標本比率の z 検定、
+    Goal 内の unit 数で Bonferroni 補正、α = 0.05。標本の大きい世界全体で判定する）かつ d > 0。
+    特有の重み distinctive_weight = pg × d
+  - Goal ごとに base_total = Σ base_weight、distinctive_total = Σ distinctive_weight（skill_split）
+  - 2 つのリストの重みの割合 β（selection.distinctive_share）= Σ distinctive_total / Σ (base_total + distinctive_total)。
+    技術スキル層の配分が 0 より大きい Goal（data/skills/goal-skill-layers.json）だけを合算し、全 Goal に同じ値を書く
+  - 有意性の判定と警告は丸める前の p 値を使い、JSON の p_value だけ有効数字 3 桁に丸める
+  - 重みは小数 6 桁に丸め、丸めた重みが 0 より大きいときだけそのリストの role を付ける（role があるのに重み 0 の unit を作らない）
+  - Quantity / Quality / Contribution は参考値として残す（採点には使わない。採点コード（src/lib/career-match/skill-score.ts）は
+    base_weight・distinctive_weight と β で技術スキル層の達成率を計算する）
+
+バージョン:
+  - 0.6.0: 基本リスト・特有リストを導入（採点コードはまだ contribution を使っていた）
+  - 0.7.0: 採点コードが base_weight・distinctive_weight・β を使う前提のスキーマ。p 値の丸めと重み 0 の role を修正
+  - 0.8.0: 基本リストの重みを pg × min(1, d / d*) に変更し、d* をデータから推定する（selection.base_discount_d_ref）
 
 実行: python scripts/build_skill_statistics.py
 """
@@ -51,9 +74,10 @@ RAW_DIR = ROOT / "data" / "raw" / "stackoverflow"
 MAPPING_PATH = ROOT / "data" / "skills" / "so-devtype-mapping.json"
 DICTIONARY_PATH = ROOT / "data" / "skills" / "tech-skills.json"
 GROUPS_PATH = ROOT / "data" / "skills" / "tech-skill-groups.json"
+LAYERS_PATH = ROOT / "data" / "skills" / "goal-skill-layers.json"
 OUT_DIR = ROOT / "data" / "statistics" / "skill-match"
 
-CALCULATION_VERSION = "0.4.0"
+CALCULATION_VERSION = "0.8.0"
 # 出力は Stack Overflow Developer Survey（ODbL）の派生データベースのため、同じ ODbL で提供する（ODbL 4.4）
 DERIVED_DATABASE_LICENSE = {
     "name": "Open Database License (ODbL) v1.0",
@@ -68,10 +92,19 @@ DERIVED_DATABASE_LICENSE = {
 REGION_COUNTRY = "Japan"
 MIN_RELIABLE_SAMPLE = 100
 ALPHA = 0.05
-CUMULATIVE_SHARE = 0.8
+# 基本リストの線引き（人が決める値）: 日本補正後の P(unit | Goal) がこの値以上なら「その職種の過半数が使う技術」
+BASE_MIN_SHARE = 0.5
+# 警告を出す範囲（JSON には入れない）: p 値がしきい値のこの倍率の範囲、pg が基本の線引きのこの範囲
+P_VALUE_WARNING_RATIO = (0.1, 10)
+BASE_WARNING_RANGE = (0.45, 0.55)
 # 日本補正の τ = 1 / (k + 1) の範囲。下限 0.001 は k ≈ 999（推定が不安定なときに k が発散しないための安全網）
 TAU_MIN = 0.001
 TAU_MAX = 1.0
+# d* の推定に使う基本リストの候補の下限件数（これ未満では回帰が不安定なため止める）
+D_REF_MIN_UNITS = 30
+# d* の推定の診断（標準出力のみ。JSON には入れない）: ブートストラップの回数と乱数の種（再生成のたびに同じ値を出す）
+D_REF_BOOTSTRAP = 500
+D_REF_BOOTSTRAP_SEED = 0
 SCOPES = ("world", "region")
 
 # 年ごとの技術スキルの設問（HaveWorkedWith 列） → カテゴリ
@@ -118,20 +151,197 @@ def one_sided_p_value(u_goal: int, n_goal: int, u_other: int, n_other: int) -> f
     return float(norm.sf((u_goal / n_goal - u_other / n_other) / se))
 
 
-def select_units(rows: list) -> None:
-    """有意に Goal 側で多い unit のうち、累積 Contribution が CUMULATIVE_SHARE に達するまでを selected にする。"""
-    threshold = ALPHA / len(rows) if rows else ALPHA
-    significant = [r for r in rows if r["p_value"] < threshold]
-    total = sum(r["contribution"] for r in significant)
-    cumulative = 0.0
+def significance_threshold(rows: list) -> float:
+    return ALPHA / len(rows) if rows else ALPHA
+
+
+def distinctiveness(pg: float, po: float) -> float:
+    """d = max(0, (pg − po) / (pg + po))。Goal 側で多いほど 1 に近づき、Other と同じか少なければ 0。"""
+    return max(0.0, (pg - po) / (pg + po)) if pg + po > 0 else 0.0
+
+
+def mark_significance(rows: list) -> None:
+    """第 1 段階: 1 つの Goal の行に significant を付ける（丸める前の p 値 _p と、Goal 内の行数で補正したしきい値）。
+
+    技術スキル辞書に無い技術も有意性のしきい値の行数に含める（第 1 段階の判定は辞書と無関係）。
+    """
+    threshold = significance_threshold(rows)
     for r in rows:
-        r["significant"] = r["p_value"] < threshold
-        r["selected"] = False
-    for r in significant:
-        if cumulative >= total * CUMULATIVE_SHARE:
-            break
-        r["selected"] = True
-        cumulative += r["contribution"]
+        r["significant"] = r["_p"] < threshold
+
+
+def is_base_candidate(r: dict) -> bool:
+    return r["in_dictionary"] and r["_pg"] >= BASE_MIN_SHARE
+
+
+def assign_roles(rows: list, d_ref: float) -> None:
+    """基本リスト（過半数が使う）と特有リスト（有意に Goal 側で多い）の役割と重みを付け、どちらかに入れば selected にする。
+
+    rows の pg・po・p 値は丸める前の値（_pg・_po・_p）を使う。
+    技術スキル辞書に無い技術はどちらのリストにも入れない（入力画面で選べない技術を分母に入れないため）。
+    基本の重みは pg × min(1, d / d_ref)（d_ref は estimate_base_discount_d_ref で全 Goal から推定した d*）。
+    重みは丸めた値が 0 より大きいときだけ role を付ける。
+    """
+    if not (math.isfinite(d_ref) and d_ref > 0):
+        raise ValueError(f"d_ref must be a positive finite number: {d_ref}")
+    mark_significance(rows)
+    for r in rows:
+        pg, po = r["_pg"], r["_po"]
+        d = distinctiveness(pg, po)
+        base_weight = round(pg * min(1.0, d / d_ref), 6) if is_base_candidate(r) else 0
+        distinctive_weight = round(pg * d, 6) if r["in_dictionary"] and r["significant"] and d > 0 else 0
+        r["roles"] = [role for role, weight in (("base", base_weight), ("distinctive", distinctive_weight)) if weight > 0]
+        r["base_weight"] = base_weight
+        r["distinctive_weight"] = distinctive_weight
+        r["selected"] = bool(r["roles"])
+
+
+def fit_logistic(d: np.ndarray, y: np.ndarray, max_iter: int = 100, tol: float = 1e-10) -> tuple:
+    """significant ~ d のロジスティック回帰（IRLS / ニュートン法）。(b0, b1) を返し、収束しなければ None。"""
+    x = np.column_stack([np.ones_like(d), d])
+    beta = np.zeros(2)
+    for _ in range(max_iter):
+        p = 1 / (1 + np.exp(-(x @ beta)))
+        w = p * (1 - p)
+        hessian = x.T @ (x * w[:, None])
+        if not np.all(np.isfinite(hessian)) or np.linalg.cond(hessian) > 1e12:
+            return None
+        step = np.linalg.solve(hessian, x.T @ (y - p))
+        beta = beta + step
+        if not np.all(np.isfinite(beta)):
+            return None
+        if np.max(np.abs(step)) < tol:
+            return float(beta[0]), float(beta[1])
+    return None
+
+
+def logistic_p50(points: list) -> float:
+    """(d, significant) の組から d* = −b0 / b1 を推定する。推定できなければ ValueError（理由つき）。"""
+    if len(points) < D_REF_MIN_UNITS:
+        raise ValueError(f"基本リストの候補が {len(points)} 件で、下限 {D_REF_MIN_UNITS} 件に足りません")
+    d = np.array([p[0] for p in points], dtype=float)
+    y = np.array([1.0 if p[1] else 0.0 for p in points])
+    n_significant = int(y.sum())
+    if n_significant == 0 or n_significant == len(y):
+        raise ValueError(f"有意な候補 {n_significant} 件・有意でない候補 {len(y) - n_significant} 件で、片方が 0 件です")
+    # 完全分離（有意でない候補の d がすべて有意な候補の d より小さい、またはその逆）では係数が発散する
+    if d[y == 0].max() < d[y == 1].min() or d[y == 1].max() < d[y == 0].min():
+        raise ValueError("有意な候補と有意でない候補が d で完全に分かれていて、係数が発散します")
+    fitted = fit_logistic(d, y)
+    if fitted is None:
+        raise ValueError("ロジスティック回帰が収束しません")
+    b0, b1 = fitted
+    if b1 <= 0:
+        raise ValueError(f"b1 = {b1:.4g} ≤ 0（d が大きいほど有意になりにくい）で、意味が逆です")
+    d_ref = -b0 / b1
+    if not (math.isfinite(d_ref) and d_ref > 0):
+        raise ValueError(f"d* = {d_ref:.4g} が正の有限値ではありません")
+    return d_ref
+
+
+def base_candidates(goal_rows: dict) -> list:
+    """全 Goal の基本リストの候補の (d, significant, goal_id)。d = 0 の候補も含める。"""
+    return [
+        (distinctiveness(r["_pg"], r["_po"]), r["significant"], goal_id)
+        for goal_id, rows in goal_rows.items()
+        for r in rows
+        if is_base_candidate(r)
+    ]
+
+
+def estimate_base_discount_d_ref(candidates: list) -> float:
+    """基本リストの重みの割り引きの基準 d*（有意と判定される確率が 50% になる d）。推定できなければ止める。"""
+    try:
+        return logistic_p50([(d, significant) for d, significant, _ in candidates])
+    except ValueError as error:
+        raise SystemExit(f"d*（base_discount_d_ref）を推定できません: {error}") from error
+
+
+def d_ref_diagnostics(candidates: list) -> dict:
+    """d* の推定の診断（標準出力用）: ブートストラップ 90% 区間、1 Goal 除外の範囲、補助指標。"""
+    points = [(d, significant) for d, significant, _ in candidates]
+    rng = np.random.default_rng(D_REF_BOOTSTRAP_SEED)
+    boot, failed = [], 0
+    for _ in range(D_REF_BOOTSTRAP):
+        sample = [points[i] for i in rng.integers(0, len(points), len(points))]
+        try:
+            boot.append(logistic_p50(sample))
+        except ValueError:
+            failed += 1
+    leave_one_out = {}
+    for goal_id in sorted({g for _, _, g in candidates}):
+        try:
+            leave_one_out[goal_id] = logistic_p50([(d, s) for d, s, g in candidates if g != goal_id])
+        except ValueError:
+            leave_one_out[goal_id] = None
+    d = np.array([p[0] for p in points])
+    y = np.array([p[1] for p in points])
+    # 有意かどうかを最もよく分ける d（d 以上を有意と予測したときの正解率が最大になる境目。同率なら小さいほう）
+    cuts = np.unique(d)
+    accuracy = [np.mean((d >= c) == y) for c in cuts]
+    return {
+        "bootstrap_90": (float(np.percentile(boot, 5)), float(np.percentile(boot, 95))) if boot else None,
+        "bootstrap_failed": failed,
+        "leave_one_out": leave_one_out,
+        "best_split_d": float(cuts[int(np.argmax(accuracy))]),
+        "nonsignificant_d_p90": float(np.percentile(d[~y], 90)),
+        "candidate_d_median": float(np.median(d)),
+    }
+
+
+def print_d_ref_diagnostics(d_ref: float, candidates: list) -> None:
+    diag = d_ref_diagnostics(candidates)
+    n_significant = sum(1 for _, s, _ in candidates if s)
+    print(f"\nbase_discount_d_ref (d*) = {d_ref:.4f}  units = {len(candidates)} (significant {n_significant}, not {len(candidates) - n_significant})")
+    if diag["bootstrap_90"]:
+        low, high = diag["bootstrap_90"]
+        print(f"  bootstrap 90%: {low:.4f} - {high:.4f}  ({D_REF_BOOTSTRAP} resamples, seed {D_REF_BOOTSTRAP_SEED}, failed {diag['bootstrap_failed']})")
+    loo = {g: v for g, v in diag["leave_one_out"].items() if v is not None}
+    if loo:
+        most = max(loo, key=lambda g: abs(loo[g] - d_ref))
+        print(f"  leave-one-goal-out: {min(loo.values()):.4f} - {max(loo.values()):.4f}  (most influential: {most} -> {loo[most]:.4f})")
+    failed_goals = [g for g, v in diag["leave_one_out"].items() if v is None]
+    if failed_goals:
+        print(f"  leave-one-goal-out failed: {', '.join(failed_goals)}")
+    print(
+        f"  best split d = {diag['best_split_d']:.4f}  non-significant d p90 = {diag['nonsignificant_d_p90']:.4f}"
+        f"  candidate d median = {diag['candidate_d_median']:.4f}"
+    )
+
+
+def skill_split(rows: list) -> dict:
+    return {
+        "base_total": round(sum(r["base_weight"] for r in rows), 6),
+        "distinctive_total": round(sum(r["distinctive_weight"] for r in rows), 6),
+    }
+
+
+def tech_layer_goals() -> list:
+    """技術スキル層の配分が 0 より大きい Goal（goal.layer_weights?.tech ?? default_layer_weights.tech）。"""
+    layers = json.loads(LAYERS_PATH.read_text(encoding="utf-8"))
+    default_tech = layers["default_layer_weights"]["tech"]
+    return [g["goal_id"] for g in layers["goals"] if (g.get("layer_weights") or {}).get("tech", default_tech) > 0]
+
+
+def distinctive_share(splits: dict, goal_ids: list) -> float:
+    """β = Σ distinctive_total / Σ (base_total + distinctive_total)（goal_ids の Goal だけを合算）。"""
+    distinctive = sum(splits[g]["distinctive_total"] for g in goal_ids if g in splits)
+    total = sum(splits[g]["base_total"] + splits[g]["distinctive_total"] for g in goal_ids if g in splits)
+    if total <= 0:
+        raise SystemExit("distinctive_share を計算できません（技術スキル層を使う Goal の重みの合計が 0）")
+    return distinctive / total
+
+
+def warn_borderline(goal_id: str, rows: list) -> None:
+    """判定の境目に近い unit を標準出力に出す（JSON には入れない）。"""
+    threshold = significance_threshold(rows)
+    low, high = P_VALUE_WARNING_RATIO
+    near_p = [r for r in rows if threshold * low <= r["_p"] <= threshold * high]
+    near_base = [r for r in rows if BASE_WARNING_RANGE[0] <= r["_pg"] <= BASE_WARNING_RANGE[1]]
+    for r in near_p:
+        print(f"  [Warning] {goal_id}: {r['unit_id']} の p 値 {r['_p']:.3g} がしきい値 {threshold:.3g} の {low}〜{high} 倍")
+    for r in near_base:
+        print(f"  [Warning] {goal_id}: {r['unit_id']} の pg {r['_pg']:.3f} が基本の線引き {BASE_MIN_SHARE} の近く")
 
 
 def estimate_prior_strength(pairs: list) -> float:
@@ -168,6 +378,9 @@ def estimate_prior_strength(pairs: list) -> float:
 
 
 def shrink(u: int, n: int, prior_mean: float, k: float) -> float:
+    # k = 0（τ が上限に張り付き縮小なし）かつ日本の回答者 0 人では日本の情報が無いため、世界の率を使う
+    if n + k <= 0:
+        return prior_mean
     return (u + k * prior_mean) / (n + k)
 
 
@@ -193,13 +406,25 @@ def load_year(year: int, excluded: set, aliases: dict) -> tuple:
     return df.set_index("ResponseId").DevType, long
 
 
-def load_groups(dictionary_by_id: dict) -> list:
+def load_groups(dictionary_by_id: dict, dev_env_allowlist: set) -> list:
+    """グループ定義を読み、メンバーの検査をして so_items（グループの利用者を数える選択肢）を付ける。
+
+    グループの利用者は so_items 全体で数え、メンバー一覧は dev_env_allowlist を通った選択肢だけを載せる。
+    両者が食い違うと「統計上は満たすのに入力画面で選べない」メンバーができるため、
+    開発環境（category = dev_env）のメンバーの選択肢はすべて許可リストにあることを求める。
+    """
     groups = json.loads(GROUPS_PATH.read_text(encoding="utf-8"))["groups"]
     seen = {}
     for group in groups:
         for skill_id in group["members"]:
             if skill_id not in dictionary_by_id:
                 raise SystemExit(f"{group['group_id']}: メンバー {skill_id} が {DICTIONARY_PATH.name} にありません")
+            entry = dictionary_by_id[skill_id]
+            outside = [item for item in entry["so_items"] if entry.get("category") == "dev_env" and item not in dev_env_allowlist]
+            if outside:
+                raise SystemExit(
+                    f"{group['group_id']}: メンバー {skill_id} の開発環境 {', '.join(outside)} が dev_env_allowlist にありません"
+                )
             # 同じ技術を複数のグループに入れてよいのは、どちらも goals があり、goals が重ならない場合だけ
             for other in seen.get(skill_id, []):
                 if "goals" not in group or "goals" not in other or set(group["goals"]) & set(other["goals"]):
@@ -217,7 +442,7 @@ def main() -> None:
     dictionary_skills = json.loads(DICTIONARY_PATH.read_text(encoding="utf-8"))["skills"]
     dictionary = {so_item: skill for skill in dictionary_skills for so_item in skill["so_items"]}
     dictionary_by_id = {skill["skill_id"]: skill for skill in dictionary_skills}
-    groups = load_groups(dictionary_by_id)
+    groups = load_groups(dictionary_by_id, dev_env_allowlist)
 
     devtype, answers = {}, {}
     for year in mapping["years"]:
@@ -332,8 +557,8 @@ def main() -> None:
             "region_p_skill_given_goal": round(jp_goal, 6),
         }
 
-    # 2 周目: 日本補正後の Quantity / Quality / Contribution と採用
-    OUT_DIR.mkdir(parents=True, exist_ok=True)
+    # 2 周目: 日本補正後の Quantity / Quality / Contribution と、基本・特有リストの役割（全 Goal の行を作ってから β を求める）
+    goal_rows = {}
     for goal in mapping["goals"]:
         items = goal_items[goal["goal_id"]]
         rows = []
@@ -341,6 +566,7 @@ def main() -> None:
             n_goal, n_other, u_goal, u_other = stats["world"]
             p_goal, p_other, jp_goal, jp_other = rates(stats)
             quality = jp_goal / (jp_goal + jp_other) * 100 if jp_goal + jp_other > 0 else 0
+            p_value = one_sided_p_value(u_goal, n_goal, u_other, n_other)
             group = stats.get("group")
             if group:
                 members = sorted(
@@ -375,16 +601,47 @@ def main() -> None:
                 "quantity": round(jp_goal, 6),
                 "quality": round(quality, 4),
                 "contribution": round(jp_goal * quality / 100, 6),
-                "p_value": float(f"{one_sided_p_value(u_goal, n_goal, u_other, n_other):.3g}"),
+                "p_value": float(f"{p_value:.3g}"),
+                "_p": p_value,
+                "_pg": jp_goal,
+                "_po": jp_other,
             })
         rows.sort(key=lambda r: r["contribution"], reverse=True)
-        select_units(rows)
-        missing = [r["members"][0]["so_item"] for r in rows if r["selected"] and not r["in_dictionary"]]
-        if missing:
-            raise SystemExit(f"{goal['goal_id']}: 採用された技術が {DICTIONARY_PATH.name} にありません: {missing}")
-        for r in rows:
-            del r["in_dictionary"]
+        mark_significance(rows)
+        goal_rows[goal["goal_id"]] = rows
 
+    # 基本リストの重みの割り引きの基準 d* を、全 Goal の基本リストの候補から推定する（β と同じく全 Goal の集計後）
+    candidates = base_candidates(goal_rows)
+    # JSON に書く値（小数 6 桁）で重みを計算し、統計ファイルだけから base_weight を再現できるようにする
+    d_ref = round(estimate_base_discount_d_ref(candidates), 6)
+    print_d_ref_diagnostics(d_ref, candidates)
+    n_candidates_significant = sum(1 for _, significant, _ in candidates if significant)
+
+    for goal_id, rows in goal_rows.items():
+        assign_roles(rows, d_ref)
+        excluded_units = [
+            r["members"][0]["so_item"]
+            for r in rows
+            if not r["in_dictionary"] and (r["_pg"] >= BASE_MIN_SHARE or (r["significant"] and distinctiveness(r["_pg"], r["_po"]) > 0))
+        ]
+        if excluded_units:
+            print(f"  [Excluded] {goal_id}: {DICTIONARY_PATH.name} に無いため採用しない: {', '.join(excluded_units)}")
+        discounted_out = [r["unit_id"] for r in rows if is_base_candidate(r) and r["base_weight"] == 0]
+        if discounted_out:
+            print(f"  [Discounted-out] {goal_id}: pg >= {BASE_MIN_SHARE} だが他職種との差が無く基本リストに入れない: {', '.join(discounted_out)}")
+        warn_borderline(goal_id, rows)
+        for r in rows:
+            del r["in_dictionary"], r["_p"], r["_pg"], r["_po"]
+
+    splits = {goal_id: skill_split(rows) for goal_id, rows in goal_rows.items()}
+    share_goals = [g for g in tech_layer_goals() if g in splits]
+    beta = distinctive_share(splits, share_goals)
+    groups_version = json.loads(GROUPS_PATH.read_text(encoding="utf-8"))["version"]
+    print(f"\ndistinctive_share (beta) = {beta:.4f}  goals = {', '.join(share_goals)}")
+
+    OUT_DIR.mkdir(parents=True, exist_ok=True)
+    for goal in mapping["goals"]:
+        rows = goal_rows[goal["goal_id"]]
         result = {
             "goal_id": goal["goal_id"],
             "mapping_status": goal["mapping_status"],
@@ -393,6 +650,7 @@ def main() -> None:
             "source_years": mapping["years"],
             "license": DERIVED_DATABASE_LICENSE,
             "calculation_version": CALCULATION_VERSION,
+            "groups_version": groups_version,
             "calculation_date": date.today().isoformat(),
             "min_reliable_sample": MIN_RELIABLE_SAMPLE,
             "region": {
@@ -404,21 +662,31 @@ def main() -> None:
                 "alpha": ALPHA,
                 "correction": "bonferroni",
                 "significance_scope": "world",
-                "cumulative_share": CUMULATIVE_SHARE,
-                "contribution_scope": "region",
+                "base_min_share": BASE_MIN_SHARE,
+                "base_discount_d_ref": d_ref,
+                "base_discount_d_ref_method": "logistic-p50",
+                "base_discount_d_ref_n_units": len(candidates),
+                "base_discount_d_ref_n_significant": n_candidates_significant,
+                "distinctive_share": round(beta, 4),
+                "distinctive_share_goals": share_goals,
+                "weight_scope": "region",
             },
+            "skill_split": splits[goal["goal_id"]],
             "units": rows,
         }
         path = OUT_DIR / f"{goal['goal_id']}.json"
         path.write_text(json.dumps(result, ensure_ascii=False, indent=1, allow_nan=False), encoding="utf-8")
         significant = sum(r["significant"] for r in rows)
         selected = [
-            f"[{r['name']}: {' / '.join(m['name'] for m in r['members'][:4])}]" if r["type"] == "group" else r["name"]
+            (f"[{r['name']}: {' / '.join(m['name'] for m in r['members'][:4])}]" if r["type"] == "group" else r["name"])
+            + f" {'+'.join(r['roles'])} b={r['base_weight']:.3f} s={r['distinctive_weight']:.3f}"
             for r in rows
             if r["selected"]
         ]
+        split = splits[goal["goal_id"]]
         print(
-            f"\n{goal['goal_id']:<22} units={len(rows):>4} significant={significant:>3} selected={len(selected):>3}\n  "
+            f"\n{goal['goal_id']:<22} units={len(rows):>4} significant={significant:>3} selected={len(selected):>3}"
+            f" base_total={split['base_total']:.3f} distinctive_total={split['distinctive_total']:.3f}\n  "
             + "\n  ".join(selected)
         )
 

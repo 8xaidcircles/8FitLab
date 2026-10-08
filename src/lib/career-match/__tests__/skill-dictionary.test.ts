@@ -2,7 +2,8 @@ import { readdir, readFile } from "node:fs/promises";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 import { CERTIFICATION_CATEGORIES } from "@/lib/labels";
-import { normalizeHumanRequirements } from "../skill-layers";
+import { loadSkillContext } from "../data";
+import { layeredSkillProgress, normalizeHumanRequirements } from "../skill-layers";
 import type { Certification, HumanSkill, SkillLayersMaster } from "../types";
 
 const DATA_DIR = path.join(process.cwd(), "data");
@@ -22,6 +23,12 @@ type StatisticsUnit = {
   unit_id: string;
   type: "group" | "skill";
   selected: boolean;
+  significant: boolean;
+  roles: ("base" | "distinctive")[];
+  base_weight: number;
+  distinctive_weight: number;
+  region_p_skill_given_goal: number;
+  region_p_skill_given_other: number;
   members: { skill_id: string; so_item: string }[];
 };
 
@@ -68,6 +75,85 @@ describe("技術スキル辞書", () => {
   });
 });
 
+const groupsVersion: string = (await readJson("skills/tech-skill-groups.json")).version;
+
+describe("Skill Statistics の基本リスト・特有リスト", () => {
+  const sum = (values: number[]) => values.reduce((a, b) => a + b, 0);
+  // JSON の確率は小数 6 桁に丸めてあり、丸める前の値で判定した向きを復元できない幅
+  const EPS = 1e-6;
+  const nearBoundary = (a: number, b: number) => Math.abs(a - b) <= EPS;
+
+  it("全ファイルが同じグループ定義の版・β・対象 Goal を持つ", () => {
+    for (const goal of statistics) {
+      expect(goal.groups_version, goal.goal_id).toBe(groupsVersion);
+      expect(goal.selection.distinctive_share, goal.goal_id).toBe(statistics[0].selection.distinctive_share);
+      expect(goal.selection.distinctive_share_goals, goal.goal_id).toEqual(statistics[0].selection.distinctive_share_goals);
+      expect(goal.selection.cumulative_share, goal.goal_id).toBeUndefined();
+      expect(goal.selection.base_discount_d_ref, goal.goal_id).toBe(statistics[0].selection.base_discount_d_ref);
+      expect(goal.selection.base_discount_d_ref_method, goal.goal_id).toBe("logistic-p50");
+    }
+  });
+
+  it("d* は正の値で、推定に使った件数は全 Goal の基本リストの候補（辞書にあり pg ≥ base_min_share）の数と有意な数に一致する", () => {
+    const { base_discount_d_ref: dRef, base_discount_d_ref_n_units: n, base_discount_d_ref_n_significant: nSignificant } =
+      statistics[0].selection;
+    expect(dRef).toBeGreaterThan(0);
+    const inDictionary = statistics.flatMap((goal) =>
+      (goal.units as StatisticsUnit[])
+        .filter((u) => u.members.every((m) => techIds.has(m.skill_id)))
+        .map((u) => ({ u, min: goal.selection.base_min_share })),
+    );
+    const clear = inDictionary.filter(({ u, min }) => !nearBoundary(u.region_p_skill_given_goal, min) && u.region_p_skill_given_goal > min);
+    const boundary = inDictionary.filter(({ u, min }) => nearBoundary(u.region_p_skill_given_goal, min));
+    expect(n).toBeGreaterThanOrEqual(clear.length);
+    expect(n).toBeLessThanOrEqual(clear.length + boundary.length);
+    const clearSignificant = clear.filter(({ u }) => u.significant).length;
+    expect(nSignificant).toBeGreaterThanOrEqual(clearSignificant);
+    expect(nSignificant).toBeLessThanOrEqual(clearSignificant + boundary.filter(({ u }) => u.significant).length);
+  });
+
+  it("β の対象は技術スキル層の配分が 0 より大きい Goal で、β はその Goal の重みの合計から求めた値", () => {
+    const techGoals = skillLayers.goals
+      .filter((g) => (g.layer_weights?.tech ?? skillLayers.default_layer_weights.tech) > 0)
+      .map((g) => g.goal_id);
+    const { distinctive_share: beta, distinctive_share_goals: goalIds } = statistics[0].selection;
+    expect([...goalIds].sort()).toEqual([...techGoals].sort());
+    const splits = statistics.filter((s) => goalIds.includes(s.goal_id)).map((s) => s.skill_split);
+    const distinctive = sum(splits.map((s) => s.distinctive_total));
+    const total = sum(splits.map((s) => s.base_total + s.distinctive_total));
+    expect(beta).toBeCloseTo(distinctive / total, 4);
+  });
+
+  it.each(statistics.map((s) => [s.goal_id, s] as const))("%s：役割・重み・合計が定義どおり", (_id, goal) => {
+    const min = goal.selection.base_min_share;
+    const dRef = goal.selection.base_discount_d_ref;
+    const units = goal.units as StatisticsUnit[];
+    for (const u of units) {
+      const pg = u.region_p_skill_given_goal;
+      const po = u.region_p_skill_given_other;
+      const inDictionary = u.members.every((m) => techIds.has(m.skill_id));
+      const d = pg + po > 0 ? Math.max(0, (pg - po) / (pg + po)) : 0;
+      // 生成時は丸める前の pg・po で判定するため、丸めた値が境界に近い unit は判定の向きを検証しない
+      const candidate = !inDictionary ? false : nearBoundary(pg, min) ? null : pg > min;
+      const goalSide = !nearBoundary(pg, po) ? pg > po : null;
+      expect(u.roles.includes("base"), u.unit_id).toBe(u.base_weight > 0);
+      expect(u.roles.includes("distinctive"), u.unit_id).toBe(u.distinctive_weight > 0);
+      expect(u.selected, u.unit_id).toBe(u.roles.length > 0);
+      // 基本リスト：候補（辞書にあり pg ≥ base_min_share）のうち、重み pg × min(1, d / d*) が 0 より大きいもの
+      if (candidate === false) expect(u.base_weight, u.unit_id).toBe(0);
+      if (candidate === true && goalSide === false) expect(u.roles.includes("base"), u.unit_id).toBe(false);
+      // pg・po は小数 6 桁に丸めた値のため、d / d* で誤差が広がる分だけ許容幅を広げる
+      if (candidate === true) expect(u.base_weight, u.unit_id).toBeCloseTo(pg * Math.min(1, d / dRef), 4);
+      if (goalSide !== null) {
+        expect(u.roles.includes("distinctive"), u.unit_id).toBe(inDictionary && u.significant && goalSide);
+      }
+      expect(u.distinctive_weight, u.unit_id).toBeCloseTo(u.roles.includes("distinctive") ? pg * d : 0, 5);
+    }
+    expect(goal.skill_split.base_total).toBeCloseTo(sum(units.map((u) => u.base_weight)), 5);
+    expect(goal.skill_split.distinctive_total).toBeCloseTo(sum(units.map((u) => u.distinctive_weight)), 5);
+  });
+});
+
 describe("代わりのきく技術のグループ", () => {
   it("グループ ID が一意で、メンバーは辞書にあり、1 つの Goal の中では 1 つの技術は 1 グループだけに入る", () => {
     expect(new Set(groups.map((g) => g.group_id)).size).toBe(groups.length);
@@ -90,6 +176,64 @@ describe("代わりのきく技術のグループ", () => {
       }
     }
   });
+
+  it.each([
+    { groupId: "data-engineering-python", goalIds: ["data-engineer"], members: ["python", "pandas", "numpy", "scikit-learn", "jupyter"] },
+    { groupId: "infrastructure-language", goalIds: ["cloud-architect", "devops-sre"], members: ["python", "go"] },
+    { groupId: "javascript-language", goalIds: ["frontend-developer", "full-stack-developer"], members: ["javascript", "typescript"] },
+  ])("$groupId は $goalIds で 1 項目になり、メンバーが個別の項目として残らない", ({ groupId, goalIds, members }) => {
+    for (const goalId of goalIds) {
+      const goal = statistics.find((s) => s.goal_id === goalId)!;
+      const units = (goal.units as StatisticsUnit[]).filter((u) => u.selected);
+      const group = units.find((u) => u.unit_id === groupId);
+      expect(group, goalId).toBeDefined();
+      expect(group!.members.map((m) => m.skill_id), goalId).toEqual(expect.arrayContaining(members));
+      for (const id of members) {
+        expect(units.some((u) => u.type === "skill" && u.unit_id === id), `${goalId}: ${id}`).toBe(false);
+      }
+    }
+  });
+
+  it("Kotlin はサーバーサイドの言語のグループに入り、そのグループはバックエンド・フルスタック・アーキテクトに適用される", () => {
+    const server = groups.find((g) => g.group_id === "server-language")!;
+    expect(server.members).toContain("kotlin");
+    expect([...server.goals!].sort()).toEqual(["backend-developer", "full-stack-developer", "software-architect"]);
+    expect(groups.some((g) => g.group_id === "server-language-architect")).toBe(false);
+  });
+
+  it.each(["backend-developer", "full-stack-developer", "software-architect"])(
+    "%s：Kotlin を含むサーバーサイドの言語のグループが統計で採用されている",
+    (goalId) => {
+      const stats = statistics.find((s) => s.goal_id === goalId)!;
+      const server = (stats.units as StatisticsUnit[]).find((u) => u.unit_id === "server-language");
+      expect(server?.selected).toBe(true);
+      expect(server!.members.map((m) => m.skill_id)).toContain("kotlin");
+    },
+  );
+
+  it("ソフトウェアアーキテクトのサーバーサイドの言語は、過半数が使う技術として基本リストに入る", () => {
+    const stats = statistics.find((s) => s.goal_id === "software-architect")!;
+    const server = (stats.units as StatisticsUnit[]).find((u) => u.unit_id === "server-language")!;
+    expect(server.roles).toContain("base");
+  });
+
+  it("モバイルネイティブ言語のグループはモバイルだけに適用され、モバイルの統計で採用されている", () => {
+    const mobile = groups.find((g) => g.group_id === "mobile-native-language")!;
+    expect(mobile.goals).toEqual(["mobile-app-developer"]);
+    const stats = statistics.find((s) => s.goal_id === "mobile-app-developer")!;
+    expect((stats.units as StatisticsUnit[]).find((u) => u.unit_id === "mobile-native-language")?.selected).toBe(true);
+  });
+
+  it.each(["backend-developer", "full-stack-developer", "software-architect"])(
+    "%s：Kotlin のみと Java のみの Skill Progress が等しい（どちらもサーバーサイドの言語を満たす）",
+    async (goalId) => {
+      const skill = await loadSkillContext(goalId);
+      const progress = (skillId: string) =>
+        layeredSkillProgress({ ...skill, held: new Set([skillId]) }).progress;
+      expect(progress("java")).toBeGreaterThan(0);
+      expect(progress("kotlin")).toBeCloseTo(progress("java"), 10);
+    },
+  );
 
   it("グループは 2 つ以上のメンバーを持ち、対象 Goal は実在する", () => {
     const goalIds = new Set(statistics.map((s) => s.goal_id));

@@ -194,7 +194,23 @@ describe("calculateCareerMatch の Skill（技術スキル層 × 人間定義層
 
   it("技術スキル層に使った Skill Statistics の由来を結果に残す", () => {
     expect(skillMatch({}).skill_statistics_version).toBe(skillStatisticsVersion(skill.techStats!));
-    expect(skillStatisticsVersion(skill.techStats!)).toMatch(/^.+:\d{4}(-\d{4})*:.+:k=[\d.]+$/);
+    expect(skillStatisticsVersion(skill.techStats!)).toMatch(
+      /^.+:\d{4}(-\d{4})*:.+:k=[\d.]+:groups=[\d.]+:base=[\d.]+:beta=[\d.]+:dref=[\d.]+$/,
+    );
+  });
+
+  it("β・d*・グループ定義・基本リストの線引きのどれかが変われば、Skill Statistics の由来も変わる（ecdf の分布を混ぜない）", () => {
+    const stats = skill.techStats!;
+    const base = skillStatisticsVersion(stats);
+    const variants = [
+      { ...stats, groups_version: "9.9.9" },
+      { ...stats, selection: { ...stats.selection, distinctive_share: stats.selection.distinctive_share + 0.01 } },
+      { ...stats, selection: { ...stats.selection, base_min_share: 0.6 } },
+      { ...stats, selection: { ...stats.selection, base_discount_d_ref: stats.selection.base_discount_d_ref + 0.001 } },
+      { ...stats, region: { ...stats.region, prior_strength: stats.region.prior_strength + 1 } },
+      { ...stats, calculation_version: "9.9.9" },
+    ];
+    for (const variant of variants) expect(skillStatisticsVersion(variant)).not.toBe(base);
   });
 
   it("技術層の配分が 0 の Goal は、技術層を計算しても Skill Statistics の由来を残さない", () => {
