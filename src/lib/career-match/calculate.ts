@@ -82,9 +82,9 @@ export function resolveUserSkills(
   };
 }
 
-// 例：stack_overflow_developer_survey:2023-2024-2025:0.8.0:k=80.9:groups=1.4.0:base=0.5:beta=0.2942:dref=0.094321
+// 例：stack_overflow_developer_survey:2023-2024-2025:0.8.0:k=80.9:groups=1.5.0:base=0.5:beta=0.3052:dref=0.090462
 // k・β・d*（基本リストの割り引きの基準）は再生成のたびにデータから求め直すため、グループ定義と基本リストの線引きは人が変えるため含める
-// （どれかが変われば達成率の意味が変わり、ecdf の分布を混ぜられない）
+// （どれかが変われば達成率の意味が変わり、保存済みの結果の点数と現在の内訳が一致しなくなる）
 export function skillStatisticsVersion(
   stats: Pick<SkillStatistics, "source" | "source_years" | "calculation_version" | "region" | "groups_version" | "selection">,
 ): string {

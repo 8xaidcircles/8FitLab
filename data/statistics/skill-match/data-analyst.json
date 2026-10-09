@@ -27,8 +27,8 @@
   "modifications": "8FitLab aggregated the survey responses by Goal and adjusted them to the Japanese market (empirical Bayes shrinkage). Method: scripts/build_skill_statistics.py"
  },
  "calculation_version": "0.8.0",
- "groups_version": "1.4.0",
- "calculation_date": "2026-10-07",
+ "groups_version": "1.5.0",
+ "calculation_date": "2026-10-09",
  "min_reliable_sample": 100,
  "region": {
   "country": "Japan",
@@ -40,11 +40,11 @@
   "correction": "bonferroni",
   "significance_scope": "world",
   "base_min_share": 0.5,
-  "base_discount_d_ref": 0.094321,
+  "base_discount_d_ref": 0.090462,
   "base_discount_d_ref_method": "logistic-p50",
-  "base_discount_d_ref_n_units": 141,
-  "base_discount_d_ref_n_significant": 71,
-  "distinctive_share": 0.2942,
+  "base_discount_d_ref_n_units": 148,
+  "base_discount_d_ref_n_significant": 80,
+  "distinctive_share": 0.3052,
   "distinctive_share_goals": [
    "frontend-developer",
    "backend-developer",
@@ -60,10 +60,58 @@
   "weight_scope": "region"
  },
  "skill_split": {
-  "base_total": 1.693799,
-  "distinctive_total": 0.905422
+  "base_total": 2.891738,
+  "distinctive_total": 1.792906
  },
  "units": [
+  {
+   "unit_id": "dataframe-library",
+   "type": "group",
+   "name": "データフレームのライブラリ（pandas または tidyverse）",
+   "members": [
+    {
+     "skill_id": "pandas",
+     "name": "pandas",
+     "so_item": "Pandas",
+     "p_skill_given_goal": 0.626781,
+     "region_p_skill_given_goal": 0.623722
+    },
+    {
+     "skill_id": "tidyverse",
+     "name": "tidyverse",
+     "so_item": "Tidyverse",
+     "p_skill_given_goal": 0.182336,
+     "region_p_skill_given_goal": 0.19
+    }
+   ],
+   "source_years": [
+    2024
+   ],
+   "goal_respondents": 351,
+   "other_respondents": 33473,
+   "p_skill_given_goal": 0.717949,
+   "p_skill_given_other": 0.234338,
+   "region_source_years": [
+    2023,
+    2024
+   ],
+   "region_goal_respondents": 2,
+   "region_other_respondents": 351,
+   "region_p_skill_given_goal": 0.712691,
+   "region_p_skill_given_other": 0.254591,
+   "quantity": 0.712691,
+   "quality": 73.6797,
+   "contribution": 0.525109,
+   "p_value": 2.41e-99,
+   "significant": true,
+   "roles": [
+    "base",
+    "distinctive"
+   ],
+   "base_weight": 0.712691,
+   "distinctive_weight": 0.337526,
+   "selected": true
+  },
   {
    "unit_id": "analysis-language",
    "type": "group",
@@ -77,82 +125,40 @@
      "region_p_skill_given_goal": 0.749204
     },
     {
-     "skill_id": "pandas",
-     "name": "pandas",
-     "so_item": "Pandas",
-     "p_skill_given_goal": 0.626781,
-     "region_p_skill_given_goal": 0.623722
-    },
-    {
-     "skill_id": "numpy",
-     "name": "NumPy",
-     "so_item": "NumPy",
-     "p_skill_given_goal": 0.501425,
-     "region_p_skill_given_goal": 0.50139
-    },
-    {
-     "skill_id": "jupyter",
-     "name": "Jupyter",
-     "so_item": "Jupyter Notebook/JupyterLab",
-     "p_skill_given_goal": 0.449704,
-     "region_p_skill_given_goal": 0.450918
-    },
-    {
-     "skill_id": "scikit-learn",
-     "name": "scikit-learn",
-     "so_item": "Scikit-Learn",
-     "p_skill_given_goal": 0.324786,
-     "region_p_skill_given_goal": 0.329013
-    },
-    {
      "skill_id": "r",
      "name": "R",
      "so_item": "R",
      "p_skill_given_goal": 0.27897,
      "region_p_skill_given_goal": 0.284302
-    },
-    {
-     "skill_id": "tidyverse",
-     "name": "tidyverse",
-     "so_item": "Tidyverse",
-     "p_skill_given_goal": 0.182336,
-     "region_p_skill_given_goal": 0.19
-    },
-    {
-     "skill_id": "rstudio",
-     "name": "RStudio",
-     "so_item": "RStudio",
-     "p_skill_given_goal": 0.174569,
-     "region_p_skill_given_goal": 0.18242
     }
    ],
    "source_years": [
     2025
    ],
-   "goal_respondents": 239,
-   "other_respondents": 28146,
-   "p_skill_given_goal": 0.828452,
-   "p_skill_given_other": 0.570951,
+   "goal_respondents": 233,
+   "other_respondents": 27830,
+   "p_skill_given_goal": 0.819742,
+   "p_skill_given_other": 0.569889,
    "region_source_years": [
     2023,
     2024,
     2025
    ],
    "region_goal_respondents": 2,
-   "region_other_respondents": 736,
-   "region_p_skill_given_goal": 0.832591,
-   "region_p_skill_given_other": 0.565785,
-   "quantity": 0.832591,
-   "quality": 59.5398,
-   "contribution": 0.495723,
-   "p_value": 5.54e-16,
+   "region_other_respondents": 734,
+   "region_p_skill_given_goal": 0.812029,
+   "region_p_skill_given_other": 0.554797,
+   "quantity": 0.812029,
+   "quality": 59.4098,
+   "contribution": 0.482425,
+   "p_value": 8.21e-15,
    "significant": true,
    "roles": [
     "base",
     "distinctive"
    ],
-   "base_weight": 0.832591,
-   "distinctive_weight": 0.158855,
+   "base_weight": 0.812029,
+   "distinctive_weight": 0.152821,
    "selected": true
   },
   {
@@ -298,7 +304,7 @@
    "roles": [
     "base"
    ],
-   "base_weight": 0.103627,
+   "base_weight": 0.108047,
    "distinctive_weight": 0,
    "selected": true
   },
@@ -382,6 +388,96 @@
    "base_weight": 0.0,
    "distinctive_weight": 0,
    "selected": false
+  },
+  {
+   "unit_id": "data-science-ide",
+   "type": "group",
+   "name": "分析用の開発環境（Jupyter または RStudio）",
+   "members": [
+    {
+     "skill_id": "jupyter",
+     "name": "Jupyter",
+     "so_item": "Jupyter Notebook/JupyterLab",
+     "p_skill_given_goal": 0.449704,
+     "region_p_skill_given_goal": 0.450918
+    },
+    {
+     "skill_id": "rstudio",
+     "name": "RStudio",
+     "so_item": "RStudio",
+     "p_skill_given_goal": 0.174569,
+     "region_p_skill_given_goal": 0.18242
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 169,
+   "other_respondents": 23165,
+   "p_skill_given_goal": 0.449704,
+   "p_skill_given_other": 0.131276,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 2,
+   "region_other_respondents": 682,
+   "region_p_skill_given_goal": 0.46298,
+   "region_p_skill_given_other": 0.133203,
+   "quantity": 0.46298,
+   "quality": 77.6574,
+   "contribution": 0.359539,
+   "p_value": 3.95e-34,
+   "significant": true,
+   "roles": [
+    "distinctive"
+   ],
+   "base_weight": 0,
+   "distinctive_weight": 0.256097,
+   "selected": true
+  },
+  {
+   "unit_id": "numpy",
+   "type": "skill",
+   "name": "NumPy",
+   "category": "library",
+   "members": [
+    {
+     "skill_id": "numpy",
+     "name": "NumPy",
+     "so_item": "NumPy",
+     "p_skill_given_goal": 0.501425,
+     "region_p_skill_given_goal": 0.50139
+    }
+   ],
+   "source_years": [
+    2024
+   ],
+   "goal_respondents": 351,
+   "other_respondents": 33473,
+   "p_skill_given_goal": 0.501425,
+   "p_skill_given_other": 0.226063,
+   "region_source_years": [
+    2023,
+    2024
+   ],
+   "region_goal_respondents": 2,
+   "region_other_respondents": 351,
+   "region_p_skill_given_goal": 0.50139,
+   "region_p_skill_given_other": 0.276195,
+   "quantity": 0.50139,
+   "quality": 64.4804,
+   "contribution": 0.323299,
+   "p_value": 1.29e-34,
+   "significant": true,
+   "roles": [
+    "base",
+    "distinctive"
+   ],
+   "base_weight": 0.50139,
+   "distinctive_weight": 0.145207,
+   "selected": true
   },
   {
    "unit_id": "data-warehouse",
@@ -498,6 +594,47 @@
    "base_weight": 0.0,
    "distinctive_weight": 0,
    "selected": false
+  },
+  {
+   "unit_id": "scikit-learn",
+   "type": "skill",
+   "name": "scikit-learn",
+   "category": "library",
+   "members": [
+    {
+     "skill_id": "scikit-learn",
+     "name": "scikit-learn",
+     "so_item": "Scikit-Learn",
+     "p_skill_given_goal": 0.324786,
+     "region_p_skill_given_goal": 0.329013
+    }
+   ],
+   "source_years": [
+    2024
+   ],
+   "goal_respondents": 351,
+   "other_respondents": 33473,
+   "p_skill_given_goal": 0.324786,
+   "p_skill_given_other": 0.113883,
+   "region_source_years": [
+    2023,
+    2024
+   ],
+   "region_goal_respondents": 2,
+   "region_other_respondents": 351,
+   "region_p_skill_given_goal": 0.329013,
+   "region_p_skill_given_other": 0.118576,
+   "quantity": 0.329013,
+   "quality": 73.5078,
+   "contribution": 0.241851,
+   "p_value": 6.43e-35,
+   "significant": true,
+   "roles": [
+    "distinctive"
+   ],
+   "base_weight": 0,
+   "distinctive_weight": 0.154688,
+   "selected": true
   },
   {
    "unit_id": "shell",
@@ -667,6 +804,59 @@
    "quality": 47.4198,
    "contribution": 0.203905,
    "p_value": 0.911,
+   "significant": false,
+   "roles": [],
+   "base_weight": 0,
+   "distinctive_weight": 0,
+   "selected": false
+  },
+  {
+   "unit_id": "python-web-framework",
+   "type": "group",
+   "name": "Python の Web フレームワーク",
+   "members": [
+    {
+     "skill_id": "flask",
+     "name": "Flask",
+     "so_item": "Flask",
+     "p_skill_given_goal": 0.23,
+     "region_p_skill_given_goal": 0.23
+    },
+    {
+     "skill_id": "django",
+     "name": "Django",
+     "so_item": "Django",
+     "p_skill_given_goal": 0.21,
+     "region_p_skill_given_goal": 0.21
+    },
+    {
+     "skill_id": "fastapi",
+     "name": "FastAPI",
+     "so_item": "FastAPI",
+     "p_skill_given_goal": 0.11,
+     "region_p_skill_given_goal": 0.11
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 100,
+   "other_respondents": 20800,
+   "p_skill_given_goal": 0.35,
+   "p_skill_given_other": 0.28351,
+   "region_source_years": [
+    2023,
+    2024,
+    2025
+   ],
+   "region_goal_respondents": 0,
+   "region_other_respondents": 553,
+   "region_p_skill_given_goal": 0.35,
+   "region_p_skill_given_other": 0.27439,
+   "quantity": 0.35,
+   "quality": 56.0547,
+   "contribution": 0.196191,
+   "p_value": 0.0706,
    "significant": false,
    "roles": [],
    "base_weight": 0,
@@ -977,46 +1167,6 @@
    "selected": true
   },
   {
-   "unit_id": "flask",
-   "type": "skill",
-   "name": "Flask",
-   "category": "framework",
-   "members": [
-    {
-     "skill_id": "flask",
-     "name": "Flask",
-     "so_item": "Flask",
-     "p_skill_given_goal": 0.23,
-     "region_p_skill_given_goal": 0.23
-    }
-   ],
-   "source_years": [
-    2025
-   ],
-   "goal_respondents": 100,
-   "other_respondents": 20800,
-   "p_skill_given_goal": 0.23,
-   "p_skill_given_other": 0.140144,
-   "region_source_years": [
-    2023,
-    2024,
-    2025
-   ],
-   "region_goal_respondents": 0,
-   "region_other_respondents": 553,
-   "region_p_skill_given_goal": 0.23,
-   "region_p_skill_given_other": 0.126736,
-   "quantity": 0.23,
-   "quality": 64.4735,
-   "contribution": 0.148289,
-   "p_value": 0.00495,
-   "significant": false,
-   "roles": [],
-   "base_weight": 0,
-   "distinctive_weight": 0,
-   "selected": false
-  },
-  {
    "unit_id": "cms",
    "type": "group",
    "name": "CMS",
@@ -1063,46 +1213,6 @@
    "quality": 60.0281,
    "contribution": 0.138065,
    "p_value": 0.0121,
-   "significant": false,
-   "roles": [],
-   "base_weight": 0,
-   "distinctive_weight": 0,
-   "selected": false
-  },
-  {
-   "unit_id": "django",
-   "type": "skill",
-   "name": "Django",
-   "category": "framework",
-   "members": [
-    {
-     "skill_id": "django",
-     "name": "Django",
-     "so_item": "Django",
-     "p_skill_given_goal": 0.21,
-     "region_p_skill_given_goal": 0.21
-    }
-   ],
-   "source_years": [
-    2025
-   ],
-   "goal_respondents": 100,
-   "other_respondents": 20800,
-   "p_skill_given_goal": 0.21,
-   "p_skill_given_other": 0.125192,
-   "region_source_years": [
-    2023,
-    2024,
-    2025
-   ],
-   "region_goal_respondents": 0,
-   "region_other_respondents": 553,
-   "region_p_skill_given_goal": 0.21,
-   "region_p_skill_given_other": 0.126405,
-   "quantity": 0.21,
-   "quality": 62.4248,
-   "contribution": 0.131092,
-   "p_value": 0.00534,
    "significant": false,
    "roles": [],
    "base_weight": 0,
@@ -1972,46 +2082,6 @@
    "quality": 36.2358,
    "contribution": 0.054454,
    "p_value": 1.0,
-   "significant": false,
-   "roles": [],
-   "base_weight": 0,
-   "distinctive_weight": 0,
-   "selected": false
-  },
-  {
-   "unit_id": "fastapi",
-   "type": "skill",
-   "name": "FastAPI",
-   "category": "framework",
-   "members": [
-    {
-     "skill_id": "fastapi",
-     "name": "FastAPI",
-     "so_item": "FastAPI",
-     "p_skill_given_goal": 0.11,
-     "region_p_skill_given_goal": 0.11
-    }
-   ],
-   "source_years": [
-    2025
-   ],
-   "goal_respondents": 100,
-   "other_respondents": 20800,
-   "p_skill_given_goal": 0.11,
-   "p_skill_given_other": 0.15351,
-   "region_source_years": [
-    2023,
-    2024,
-    2025
-   ],
-   "region_goal_respondents": 0,
-   "region_other_respondents": 553,
-   "region_p_skill_given_goal": 0.11,
-   "region_p_skill_given_other": 0.134751,
-   "quantity": 0.11,
-   "quality": 44.9436,
-   "contribution": 0.049438,
-   "p_value": 0.886,
    "significant": false,
    "roles": [],
    "base_weight": 0,

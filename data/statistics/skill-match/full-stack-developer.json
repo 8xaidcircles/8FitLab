@@ -27,8 +27,8 @@
   "modifications": "8FitLab aggregated the survey responses by Goal and adjusted them to the Japanese market (empirical Bayes shrinkage). Method: scripts/build_skill_statistics.py"
  },
  "calculation_version": "0.8.0",
- "groups_version": "1.4.0",
- "calculation_date": "2026-10-07",
+ "groups_version": "1.5.0",
+ "calculation_date": "2026-10-09",
  "min_reliable_sample": 100,
  "region": {
   "country": "Japan",
@@ -40,11 +40,11 @@
   "correction": "bonferroni",
   "significance_scope": "world",
   "base_min_share": 0.5,
-  "base_discount_d_ref": 0.094321,
+  "base_discount_d_ref": 0.090462,
   "base_discount_d_ref_method": "logistic-p50",
-  "base_discount_d_ref_n_units": 141,
-  "base_discount_d_ref_n_significant": 71,
-  "distinctive_share": 0.2942,
+  "base_discount_d_ref_n_units": 148,
+  "base_discount_d_ref_n_significant": 80,
+  "distinctive_share": 0.3052,
   "distinctive_share_goals": [
    "frontend-developer",
    "backend-developer",
@@ -60,7 +60,7 @@
   "weight_scope": "region"
  },
  "skill_split": {
-  "base_total": 5.849003,
+  "base_total": 5.897558,
   "distinctive_total": 1.625737
  },
  "units": [
@@ -228,7 +228,7 @@
     "base",
     "distinctive"
    ],
-   "base_weight": 0.218569,
+   "base_weight": 0.227893,
    "distinctive_weight": 0.020616,
    "selected": true
   },
@@ -537,7 +537,7 @@
     "base",
     "distinctive"
    ],
-   "base_weight": 0.315432,
+   "base_weight": 0.328888,
    "distinctive_weight": 0.029752,
    "selected": true
   },
@@ -848,7 +848,7 @@
    "roles": [
     "base"
    ],
-   "base_weight": 0.604227,
+   "base_weight": 0.630002,
    "distinctive_weight": 0,
    "selected": true
   },
@@ -2395,10 +2395,9 @@
    "selected": false
   },
   {
-   "unit_id": "pandas",
-   "type": "skill",
-   "name": "pandas",
-   "category": "library",
+   "unit_id": "dataframe-library",
+   "type": "group",
+   "name": "データフレームのライブラリ（pandas または tidyverse）",
    "members": [
     {
      "skill_id": "pandas",
@@ -2406,6 +2405,13 @@
      "so_item": "Pandas",
      "p_skill_given_goal": 0.158003,
      "region_p_skill_given_goal": 0.185864
+    },
+    {
+     "skill_id": "tidyverse",
+     "name": "tidyverse",
+     "so_item": "Tidyverse",
+     "p_skill_given_goal": 0.005502,
+     "region_p_skill_given_goal": 0.007302
     }
    ],
    "source_years": [
@@ -2413,19 +2419,19 @@
    ],
    "goal_respondents": 12177,
    "other_respondents": 21647,
-   "p_skill_given_goal": 0.158003,
-   "p_skill_given_other": 0.273202,
+   "p_skill_given_goal": 0.159974,
+   "p_skill_given_other": 0.284012,
    "region_source_years": [
     2023,
     2024
    ],
    "region_goal_respondents": 117,
    "region_other_respondents": 236,
-   "region_p_skill_given_goal": 0.185864,
-   "region_p_skill_given_other": 0.278012,
-   "quantity": 0.185864,
-   "quality": 40.0676,
-   "contribution": 0.074471,
+   "region_p_skill_given_goal": 0.191722,
+   "region_p_skill_given_other": 0.283927,
+   "quantity": 0.191722,
+   "quality": 40.3075,
+   "contribution": 0.077278,
    "p_value": 1.0,
    "significant": false,
    "roles": [],
@@ -2652,10 +2658,9 @@
    "selected": false
   },
   {
-   "unit_id": "jupyter",
-   "type": "skill",
-   "name": "Jupyter",
-   "category": "dev_env",
+   "unit_id": "data-science-ide",
+   "type": "group",
+   "name": "分析用の開発環境（Jupyter または RStudio）",
    "members": [
     {
      "skill_id": "jupyter",
@@ -2663,6 +2668,13 @@
      "so_item": "Jupyter Notebook/JupyterLab",
      "p_skill_given_goal": 0.074943,
      "region_p_skill_given_goal": 0.115376
+    },
+    {
+     "skill_id": "rstudio",
+     "name": "RStudio",
+     "so_item": "RStudio",
+     "p_skill_given_goal": 0.012233,
+     "region_p_skill_given_goal": 0.015118
     }
    ],
    "source_years": [
@@ -2679,11 +2691,11 @@
    ],
    "region_goal_respondents": 223,
    "region_other_respondents": 461,
-   "region_p_skill_given_goal": 0.115376,
-   "region_p_skill_given_other": 0.131408,
-   "quantity": 0.115376,
-   "quality": 46.7519,
-   "contribution": 0.053941,
+   "region_p_skill_given_goal": 0.118667,
+   "region_p_skill_given_other": 0.140635,
+   "quantity": 0.118667,
+   "quality": 45.764,
+   "contribution": 0.054307,
    "p_value": 1.0,
    "significant": false,
    "roles": [],
@@ -4666,45 +4678,6 @@
    "selected": false
   },
   {
-   "unit_id": "rstudio",
-   "type": "skill",
-   "name": "RStudio",
-   "category": "dev_env",
-   "members": [
-    {
-     "skill_id": "rstudio",
-     "name": "RStudio",
-     "so_item": "RStudio",
-     "p_skill_given_goal": 0.012233,
-     "region_p_skill_given_goal": 0.015118
-    }
-   ],
-   "source_years": [
-    2024
-   ],
-   "goal_respondents": 17494,
-   "other_respondents": 31764,
-   "p_skill_given_goal": 0.012233,
-   "p_skill_given_other": 0.034158,
-   "region_source_years": [
-    2023,
-    2024
-   ],
-   "region_goal_respondents": 183,
-   "region_other_respondents": 381,
-   "region_p_skill_given_goal": 0.015118,
-   "region_p_skill_given_other": 0.023302,
-   "quantity": 0.015118,
-   "quality": 39.3488,
-   "contribution": 0.005949,
-   "p_value": 1.0,
-   "significant": false,
-   "roles": [],
-   "base_weight": 0,
-   "distinctive_weight": 0,
-   "selected": false
-  },
-  {
    "unit_id": "google-test",
    "type": "skill",
    "name": "Google Test",
@@ -5208,45 +5181,6 @@
    "quantity": 0.004571,
    "quality": 40.5959,
    "contribution": 0.001856,
-   "p_value": 1.0,
-   "significant": false,
-   "roles": [],
-   "base_weight": 0,
-   "distinctive_weight": 0,
-   "selected": false
-  },
-  {
-   "unit_id": "tidyverse",
-   "type": "skill",
-   "name": "tidyverse",
-   "category": "library",
-   "members": [
-    {
-     "skill_id": "tidyverse",
-     "name": "tidyverse",
-     "so_item": "Tidyverse",
-     "p_skill_given_goal": 0.005502,
-     "region_p_skill_given_goal": 0.007302
-    }
-   ],
-   "source_years": [
-    2024
-   ],
-   "goal_respondents": 12177,
-   "other_respondents": 21647,
-   "p_skill_given_goal": 0.005502,
-   "p_skill_given_other": 0.026747,
-   "region_source_years": [
-    2023,
-    2024
-   ],
-   "region_goal_respondents": 117,
-   "region_other_respondents": 236,
-   "region_p_skill_given_goal": 0.007302,
-   "region_p_skill_given_other": 0.022606,
-   "quantity": 0.007302,
-   "quality": 24.4156,
-   "contribution": 0.001783,
    "p_value": 1.0,
    "significant": false,
    "roles": [],

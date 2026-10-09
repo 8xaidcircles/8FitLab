@@ -23,8 +23,8 @@
   "modifications": "8FitLab aggregated the survey responses by Goal and adjusted them to the Japanese market (empirical Bayes shrinkage). Method: scripts/build_skill_statistics.py"
  },
  "calculation_version": "0.8.0",
- "groups_version": "1.4.0",
- "calculation_date": "2026-10-07",
+ "groups_version": "1.5.0",
+ "calculation_date": "2026-10-09",
  "min_reliable_sample": 100,
  "region": {
   "country": "Japan",
@@ -36,11 +36,11 @@
   "correction": "bonferroni",
   "significance_scope": "world",
   "base_min_share": 0.5,
-  "base_discount_d_ref": 0.094321,
+  "base_discount_d_ref": 0.090462,
   "base_discount_d_ref_method": "logistic-p50",
-  "base_discount_d_ref_n_units": 141,
-  "base_discount_d_ref_n_significant": 71,
-  "distinctive_share": 0.2942,
+  "base_discount_d_ref_n_units": 148,
+  "base_discount_d_ref_n_significant": 80,
+  "distinctive_share": 0.3052,
   "distinctive_share_goals": [
    "frontend-developer",
    "backend-developer",
@@ -56,8 +56,8 @@
   "weight_scope": "region"
  },
  "skill_split": {
-  "base_total": 3.594905,
-  "distinctive_total": 0.863341
+  "base_total": 3.680063,
+  "distinctive_total": 0.848403
  },
  "units": [
   {
@@ -145,7 +145,7 @@
     "base",
     "distinctive"
    ],
-   "base_weight": 0.208218,
+   "base_weight": 0.2171,
    "distinctive_weight": 0.019639,
    "selected": true
   },
@@ -261,7 +261,7 @@
    "roles": [
     "base"
    ],
-   "base_weight": 0.050534,
+   "base_weight": 0.052689,
    "distinctive_weight": 0,
    "selected": true
   },
@@ -392,7 +392,7 @@
     "base",
     "distinctive"
    ],
-   "base_weight": 0.495251,
+   "base_weight": 0.516378,
    "distinctive_weight": 0.046713,
    "selected": true
   },
@@ -439,7 +439,7 @@
     "base",
     "distinctive"
    ],
-   "base_weight": 0.415568,
+   "base_weight": 0.433295,
    "distinctive_weight": 0.039197,
    "selected": true
   },
@@ -507,7 +507,7 @@
     "base",
     "distinctive"
    ],
-   "base_weight": 0.280534,
+   "base_weight": 0.292501,
    "distinctive_weight": 0.02646,
    "selected": true
   },
@@ -581,8 +581,55 @@
    "roles": [
     "base"
    ],
-   "base_weight": 0.433915,
+   "base_weight": 0.452425,
    "distinctive_weight": 0,
+   "selected": true
+  },
+  {
+   "unit_id": "javascript-language",
+   "type": "group",
+   "name": "JavaScript / TypeScript",
+   "members": [
+    {
+     "skill_id": "javascript",
+     "name": "JavaScript",
+     "so_item": "JavaScript",
+     "p_skill_given_goal": 0.699505,
+     "region_p_skill_given_goal": 0.677557
+    },
+    {
+     "skill_id": "typescript",
+     "name": "TypeScript",
+     "so_item": "TypeScript",
+     "p_skill_given_goal": 0.498515,
+     "region_p_skill_given_goal": 0.498678
+    }
+   ],
+   "source_years": [
+    2025
+   ],
+   "goal_respondents": 2020,
+   "other_respondents": 26043,
+   "p_skill_given_goal": 0.759901,
+   "p_skill_given_other": 0.718389,
+   "region_source_years": [
+    2025
+   ],
+   "region_goal_respondents": 10,
+   "region_other_respondents": 153,
+   "region_p_skill_given_goal": 0.731309,
+   "region_p_skill_given_other": 0.693107,
+   "quantity": 0.731309,
+   "quality": 51.341,
+   "contribution": 0.375461,
+   "p_value": 3.05e-05,
+   "significant": true,
+   "roles": [
+    "base",
+    "distinctive"
+   ],
+   "base_weight": 0.216815,
+   "distinctive_weight": 0.019613,
    "selected": true
   },
   {
@@ -669,48 +716,8 @@
     "base",
     "distinctive"
    ],
-   "base_weight": 0.609135,
+   "base_weight": 0.63512,
    "distinctive_weight": 0.057454,
-   "selected": true
-  },
-  {
-   "unit_id": "javascript",
-   "type": "skill",
-   "name": "JavaScript",
-   "category": "language",
-   "members": [
-    {
-     "skill_id": "javascript",
-     "name": "JavaScript",
-     "so_item": "JavaScript",
-     "p_skill_given_goal": 0.699505,
-     "region_p_skill_given_goal": 0.677557
-    }
-   ],
-   "source_years": [
-    2025
-   ],
-   "goal_respondents": 2020,
-   "other_respondents": 26043,
-   "p_skill_given_goal": 0.699505,
-   "p_skill_given_other": 0.667319,
-   "region_source_years": [
-    2025
-   ],
-   "region_goal_respondents": 10,
-   "region_other_respondents": 153,
-   "region_p_skill_given_goal": 0.677557,
-   "region_p_skill_given_other": 0.63269,
-   "quantity": 0.677557,
-   "quality": 51.7122,
-   "contribution": 0.35038,
-   "p_value": 0.00152,
-   "significant": false,
-   "roles": [
-    "base"
-   ],
-   "base_weight": 0.245989,
-   "distinctive_weight": 0,
    "selected": true
   },
   {
@@ -769,7 +776,7 @@
    "roles": [
     "base"
    ],
-   "base_weight": 0.025113,
+   "base_weight": 0.026184,
    "distinctive_weight": 0,
    "selected": true
   },
@@ -809,48 +816,8 @@
    "roles": [
     "base"
    ],
-   "base_weight": 0.161943,
+   "base_weight": 0.168851,
    "distinctive_weight": 0,
-   "selected": true
-  },
-  {
-   "unit_id": "typescript",
-   "type": "skill",
-   "name": "TypeScript",
-   "category": "language",
-   "members": [
-    {
-     "skill_id": "typescript",
-     "name": "TypeScript",
-     "so_item": "TypeScript",
-     "p_skill_given_goal": 0.498515,
-     "region_p_skill_given_goal": 0.498678
-    }
-   ],
-   "source_years": [
-    2025
-   ],
-   "goal_respondents": 2020,
-   "other_respondents": 26043,
-   "p_skill_given_goal": 0.498515,
-   "p_skill_given_other": 0.451484,
-   "region_source_years": [
-    2025
-   ],
-   "region_goal_respondents": 10,
-   "region_other_respondents": 153,
-   "region_p_skill_given_goal": 0.498678,
-   "region_p_skill_given_other": 0.434053,
-   "quantity": 0.498678,
-   "quality": 53.4643,
-   "contribution": 0.266615,
-   "p_value": 2.16e-05,
-   "significant": true,
-   "roles": [
-    "distinctive"
-   ],
-   "base_weight": 0,
-   "distinctive_weight": 0.034551,
    "selected": true
   },
   {
@@ -1887,10 +1854,9 @@
    "selected": false
   },
   {
-   "unit_id": "jupyter",
-   "type": "skill",
-   "name": "Jupyter",
-   "category": "dev_env",
+   "unit_id": "data-science-ide",
+   "type": "group",
+   "name": "分析用の開発環境（Jupyter または RStudio）",
    "members": [
     {
      "skill_id": "jupyter",

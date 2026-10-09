@@ -27,8 +27,8 @@
   "modifications": "8FitLab aggregated the survey responses by Goal and adjusted them to the Japanese market (empirical Bayes shrinkage). Method: scripts/build_skill_statistics.py"
  },
  "calculation_version": "0.8.0",
- "groups_version": "1.4.0",
- "calculation_date": "2026-10-07",
+ "groups_version": "1.5.0",
+ "calculation_date": "2026-10-09",
  "min_reliable_sample": 100,
  "region": {
   "country": "Japan",
@@ -40,11 +40,11 @@
   "correction": "bonferroni",
   "significance_scope": "world",
   "base_min_share": 0.5,
-  "base_discount_d_ref": 0.094321,
+  "base_discount_d_ref": 0.090462,
   "base_discount_d_ref_method": "logistic-p50",
-  "base_discount_d_ref_n_units": 141,
-  "base_discount_d_ref_n_significant": 71,
-  "distinctive_share": 0.2942,
+  "base_discount_d_ref_n_units": 148,
+  "base_discount_d_ref_n_significant": 80,
+  "distinctive_share": 0.3052,
   "distinctive_share_goals": [
    "frontend-developer",
    "backend-developer",
@@ -60,7 +60,7 @@
   "weight_scope": "region"
  },
  "skill_split": {
-  "base_total": 2.954206,
+  "base_total": 3.0055,
   "distinctive_total": 0.910011
  },
  "units": [
@@ -179,7 +179,7 @@
     "base",
     "distinctive"
    ],
-   "base_weight": 0.301291,
+   "base_weight": 0.314144,
    "distinctive_weight": 0.028418,
    "selected": true
   },
@@ -284,7 +284,7 @@
     "base",
     "distinctive"
    ],
-   "base_weight": 0.330085,
+   "base_weight": 0.344166,
    "distinctive_weight": 0.031134,
    "selected": true
   },
@@ -368,7 +368,7 @@
     "base",
     "distinctive"
    ],
-   "base_weight": 0.229257,
+   "base_weight": 0.239037,
    "distinctive_weight": 0.021624,
    "selected": true
   },
@@ -550,7 +550,7 @@
     "base",
     "distinctive"
    ],
-   "base_weight": 0.786089,
+   "base_weight": 0.800669,
    "distinctive_weight": 0.074145,
    "selected": true
   },
@@ -2131,10 +2131,9 @@
    "selected": false
   },
   {
-   "unit_id": "pandas",
-   "type": "skill",
-   "name": "pandas",
-   "category": "library",
+   "unit_id": "dataframe-library",
+   "type": "group",
+   "name": "データフレームのライブラリ（pandas または tidyverse）",
    "members": [
     {
      "skill_id": "pandas",
@@ -2142,6 +2141,13 @@
      "so_item": "Pandas",
      "p_skill_given_goal": 0.183489,
      "region_p_skill_given_goal": 0.161709
+    },
+    {
+     "skill_id": "tidyverse",
+     "name": "tidyverse",
+     "so_item": "Tidyverse",
+     "p_skill_given_goal": 0.00296,
+     "region_p_skill_given_goal": 0.001857
     }
    ],
    "source_years": [
@@ -2149,19 +2155,19 @@
    ],
    "goal_respondents": 6420,
    "other_respondents": 27404,
-   "p_skill_given_goal": 0.183489,
-   "p_skill_given_other": 0.24303,
+   "p_skill_given_goal": 0.185202,
+   "p_skill_given_other": 0.252043,
    "region_source_years": [
     2023,
     2024
    ],
    "region_goal_respondents": 48,
    "region_other_respondents": 305,
-   "region_p_skill_given_goal": 0.161709,
-   "region_p_skill_given_other": 0.268622,
-   "quantity": 0.161709,
-   "quality": 37.5778,
-   "contribution": 0.060767,
+   "region_p_skill_given_goal": 0.162784,
+   "region_p_skill_given_other": 0.275694,
+   "quantity": 0.162784,
+   "quality": 37.1248,
+   "contribution": 0.060433,
    "p_value": 1.0,
    "significant": false,
    "roles": [],
@@ -3152,10 +3158,9 @@
    "selected": false
   },
   {
-   "unit_id": "jupyter",
-   "type": "skill",
-   "name": "Jupyter",
-   "category": "dev_env",
+   "unit_id": "data-science-ide",
+   "type": "group",
+   "name": "分析用の開発環境（Jupyter または RStudio）",
    "members": [
     {
      "skill_id": "jupyter",
@@ -3163,6 +3168,13 @@
      "so_item": "Jupyter Notebook/JupyterLab",
      "p_skill_given_goal": 0.101802,
      "region_p_skill_given_goal": 0.064096
+    },
+    {
+     "skill_id": "rstudio",
+     "name": "RStudio",
+     "so_item": "RStudio",
+     "p_skill_given_goal": 0.010128,
+     "region_p_skill_given_goal": 0.004658
     }
    ],
    "source_years": [
@@ -3180,10 +3192,10 @@
    "region_goal_respondents": 110,
    "region_other_respondents": 574,
    "region_p_skill_given_goal": 0.064096,
-   "region_p_skill_given_other": 0.144036,
+   "region_p_skill_given_other": 0.153197,
    "quantity": 0.064096,
-   "quality": 30.7957,
-   "contribution": 0.019739,
+   "quality": 29.4973,
+   "contribution": 0.018906,
    "p_value": 1.0,
    "significant": false,
    "roles": [],
@@ -5347,45 +5359,6 @@
    "selected": false
   },
   {
-   "unit_id": "rstudio",
-   "type": "skill",
-   "name": "RStudio",
-   "category": "dev_env",
-   "members": [
-    {
-     "skill_id": "rstudio",
-     "name": "RStudio",
-     "so_item": "RStudio",
-     "p_skill_given_goal": 0.010128,
-     "region_p_skill_given_goal": 0.004658
-    }
-   ],
-   "source_years": [
-    2024
-   ],
-   "goal_respondents": 9479,
-   "other_respondents": 39779,
-   "p_skill_given_goal": 0.010128,
-   "p_skill_given_other": 0.030242,
-   "region_source_years": [
-    2023,
-    2024
-   ],
-   "region_goal_respondents": 95,
-   "region_other_respondents": 469,
-   "region_p_skill_given_goal": 0.004658,
-   "region_p_skill_given_other": 0.024453,
-   "quantity": 0.004658,
-   "quality": 16.0007,
-   "contribution": 0.000745,
-   "p_value": 1.0,
-   "significant": false,
-   "roles": [],
-   "base_weight": 0,
-   "distinctive_weight": 0,
-   "selected": false
-  },
-  {
    "unit_id": "cobol",
    "type": "skill",
    "name": "COBOL",
@@ -5843,45 +5816,6 @@
    "quantity": 0.000416,
    "quality": 37.619,
    "contribution": 0.000156,
-   "p_value": 1.0,
-   "significant": false,
-   "roles": [],
-   "base_weight": 0,
-   "distinctive_weight": 0,
-   "selected": false
-  },
-  {
-   "unit_id": "tidyverse",
-   "type": "skill",
-   "name": "tidyverse",
-   "category": "library",
-   "members": [
-    {
-     "skill_id": "tidyverse",
-     "name": "tidyverse",
-     "so_item": "Tidyverse",
-     "p_skill_given_goal": 0.00296,
-     "region_p_skill_given_goal": 0.001857
-    }
-   ],
-   "source_years": [
-    2024
-   ],
-   "goal_respondents": 6420,
-   "other_respondents": 27404,
-   "p_skill_given_goal": 0.00296,
-   "p_skill_given_other": 0.02288,
-   "region_source_years": [
-    2023,
-    2024
-   ],
-   "region_goal_respondents": 48,
-   "region_other_respondents": 305,
-   "region_p_skill_given_goal": 0.001857,
-   "region_p_skill_given_other": 0.020345,
-   "quantity": 0.001857,
-   "quality": 8.3661,
-   "contribution": 0.000155,
    "p_value": 1.0,
    "significant": false,
    "roles": [],
