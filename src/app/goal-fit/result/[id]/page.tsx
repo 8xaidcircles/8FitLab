@@ -28,7 +28,7 @@ import {
   skillUnitGaps,
 } from "@/lib/career-match";
 import { SKIPPED_EDUCATION_LEVEL_ID } from "@/lib/career-match/types";
-import { EXPERIENCE_STATUS_LABELS, formatPercent, skillUnitRoleLabel } from "@/lib/labels";
+import { EXPERIENCE_STATUS_LABELS, formatPercent, SKILL_STATUS_LABELS, skillUnitRoleLabel } from "@/lib/labels";
 import { determineUserStage } from "@/lib/learning-path/determine-stage";
 
 export const metadata: Metadata = {
@@ -161,11 +161,16 @@ export default async function ResultPage({ params }: PageProps<"/goal-fit/result
     : "";
   // 現在は linear 固定。ecdf で保存された結果を読んだ場合は、点数が達成率ではなく利用者内での位置であることを示す
   const rankedSkill = stored?.skill_scoring_method === "ecdf";
-  const skillSource = !stored
+  const skillBreakdown = !stored
     ? "旧方式（8FitLabの学習ステップの達成率）で計算した結果です"
     : rankedSkill
       ? `同じGoalを目指す ${stored.skill_distribution_sample_size} 人の中での位置。達成率 ${formatPercent(stored.skill_progress)}%（${layerBreakdown}）`
       : layerBreakdown;
+  const skillAnswer =
+    assessment.skill_ids.length === 0 && assessment.skill_status
+      ? SKILL_STATUS_LABELS[assessment.skill_status]
+      : null;
+  const skillSource = skillAnswer ? `${skillAnswer}。${skillBreakdown}` : skillBreakdown;
   const skillDescription = `目標ポジションで求められる技術やスキルの保有状況です。${
     rankedSkill
       ? "達成率が上がると位置も上がります。満点にならない場合があります。"

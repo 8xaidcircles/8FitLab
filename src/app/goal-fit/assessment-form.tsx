@@ -591,7 +591,7 @@ export function AssessmentForm({
       <Section
         step={2}
         title="持っているスキル"
-        hint="実務・学習を問わず、基本的な使い方がわかるものを選んでください。まだ無い場合は、下のどちらかを選んでください。"
+        hint="実務・学習を問わず、基本的な使い方がわかるものを選んでください。まだ無い場合は、下のどれかを選んでください。"
         required
         error={fieldErrors.skills}
       >
