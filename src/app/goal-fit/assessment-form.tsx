@@ -830,9 +830,13 @@ export function AssessmentForm({
       <div className="sticky bottom-4 rounded-2xl border border-line bg-white/95 p-4 shadow-lg backdrop-blur">
         {error && <p className="mb-3 text-sm text-coral">{error}</p>}
         {Object.values(fieldErrors).some(Boolean) && (
-          <p className="mb-3 text-sm text-coral">
-            {[fieldErrors.skills, fieldErrors.certifications, fieldErrors.experience, fieldErrors.education].filter(Boolean).join(" ")}
-          </p>
+          <ul className="mb-3 list-disc space-y-1 pl-5 text-sm text-coral">
+            {[fieldErrors.skills, fieldErrors.certifications, fieldErrors.experience, fieldErrors.education]
+              .filter((message): message is string => Boolean(message))
+              .map((message) => (
+                <li key={message}>{message}</li>
+              ))}
+          </ul>
         )}
         {incompleteExperience && <p className="mb-3 text-xs text-flame">職種と年数の両方が入力された職歴だけが計算に使われます。</p>}
         <button
