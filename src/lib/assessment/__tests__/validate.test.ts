@@ -77,7 +77,7 @@ describe("parseAssessmentSubmission", () => {
     expect(result.ok && result.value.skill_status).toBeNull();
   });
 
-  it.each(["none_intent_to_learn", "skipped"])("スキルを選ばなかった理由「%s」をスキルなしで受け付ける", (skill_status) => {
+  it.each(["none", "none_intent_to_learn", "skipped"])("スキルを選ばなかった理由「%s」をスキルなしで受け付ける", (skill_status) => {
     const result = parse({ skill_ids: [], skill_status });
     expect(result.ok && result.value).toMatchObject({ skill_ids: [], skill_status });
   });

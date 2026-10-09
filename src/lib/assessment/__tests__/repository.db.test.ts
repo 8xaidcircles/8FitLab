@@ -139,7 +139,7 @@ describe.skipIf(!hasDb)("Supabase repository（実 DB）", () => {
     expect(stored!.experience_status).toBe("skipped");
     expect(stored!.education_level_id).toBe("skipped");
 
-    for (const invalid of [{ skill_status: "none" }, { certification_status: "unknown" }, { experience_status: "skip" }]) {
+    for (const invalid of [{ skill_status: "unknown" }, { certification_status: "unknown" }, { experience_status: "skip" }]) {
       const { error } = await supabase.from("assessment_sessions").update(invalid).eq("id", id);
       expect(error?.message, JSON.stringify(invalid)).toMatch(/check constraint/);
     }
