@@ -26,26 +26,27 @@ const step = (steps: SkillGapStepScored[], stepId: string) => {
 };
 
 describe("skillGap の分類（実データ）", () => {
-  it("データアナリスト・Python のみ：データ分析言語は習得済み、データフレーム操作は分析言語で評価済み（得点 0）", async () => {
-    const { gap, skill } = await goalContext("data-analyst");
+  it("データアナリスト・Python のみ：データ分析言語は習得済み、データフレーム操作は別の項目として上がり、pandas と tidyverse の得点増は同じ", async () => {
+    const { gap } = await goalContext("data-analyst");
     const { steps } = gap(["python"]);
-    const analysis = skill.techStats!.units.find((u) => u.unit_id === "analysis-language")!;
     expect(step(steps, "data-language").effect).toBe("satisfied");
-    expect(step(steps, "dataframe")).toMatchObject({ effect: "credited", gain: 0 });
-    expect(step(steps, "dataframe").credited_by).toContain(analysis.name);
+    const dataframe = step(steps, "dataframe");
+    expect(dataframe.effect).toBe("raises");
+    const gainOf = (id: string) => dataframe.option_gains.find((o) => o.skill_id === id)!.gain;
+    expect(gainOf("pandas")).toBeGreaterThan(0);
+    expect(gainOf("tidyverse")).toBeCloseTo(gainOf("pandas"), 10);
   });
 
-  it("データアナリスト・スキルなし：データ分析言語とデータフレーム操作は、どちらも分析言語のシェアだけ上がり、合計できない", async () => {
+  it("データアナリスト・スキルなし：データ分析言語とデータフレーム操作は別の項目のシェアで上がり、重ならない", async () => {
     const { gap, skill } = await goalContext("data-analyst");
     const { steps } = gap([]);
-    const share = skillUnitGaps(skill.techStats!, []).find((g) => g.unit.unit_id === "analysis-language")!.share;
-    const expected = share * skillMatchScope(skill).weights.tech;
-    for (const id of ["data-language", "dataframe"]) {
-      expect(step(steps, id).effect, id).toBe("raises");
-      expect(step(steps, id).gain, id).toBeCloseTo(expected, 6);
-    }
-    expect(step(steps, "data-language").overlaps_with).toContain("dataframe");
-    expect(step(steps, "dataframe").overlaps_with).toContain("data-language");
+    const shares = skillUnitGaps(skill.techStats!, []);
+    const shareOf = (unitId: string) => shares.find((g) => g.unit.unit_id === unitId)!.share;
+    const tech = skillMatchScope(skill).weights.tech;
+    expect(step(steps, "data-language").gain).toBeCloseTo(shareOf("analysis-language") * tech, 6);
+    expect(step(steps, "dataframe").gain).toBeCloseTo(Math.max(shareOf("dataframe-library"), shareOf("numpy")) * tech, 6);
+    expect(step(steps, "data-language").overlaps_with).not.toContain("dataframe");
+    expect(step(steps, "dataframe").overlaps_with).not.toContain("data-language");
   });
 
   it("フロントエンド：JavaScript のみなら TypeScript は評価済み、TypeScript のみなら JavaScript は評価済み", async () => {

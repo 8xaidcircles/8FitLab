@@ -164,23 +164,50 @@ describe("代わりのきく技術のグループ", () => {
     }
   });
 
-  it("データ分析の言語は、Python と R のどちらか（各言語のライブラリ・開発環境を含む）で満たす 1 項目になる", () => {
-    for (const goalId of ["data-analyst", "data-scientist"]) {
-      const goal = statistics.find((s) => s.goal_id === goalId)!;
-      const units = (goal.units as StatisticsUnit[]).filter((u) => u.selected);
-      const language = units.find((u) => u.unit_id === "analysis-language");
-      expect(language, goalId).toBeDefined();
-      expect(language!.members.map((m) => m.skill_id), goalId).toEqual(expect.arrayContaining(["python", "r"]));
-      for (const id of ["python", "r", "pandas", "numpy", "scikit-learn", "jupyter", "tidyverse", "rstudio"]) {
-        expect(units.some((u) => u.type === "skill" && u.unit_id === id), `${goalId}: ${id}`).toBe(false);
+  it("メンバーは調査の同じ設問（辞書の同じ category）の選択肢に限る（例外は Node.js・Deno・Spring Framework）", () => {
+    const CATEGORY_EXCEPTIONS: Record<string, string[]> = {
+      "server-language": ["nodejs", "deno"],
+      "server-framework": ["spring-framework"],
+    };
+    const categoryOf = new Map(techSkills.map((s) => [s.skill_id, s.category]));
+    for (const group of groups) {
+      const exceptions = CATEGORY_EXCEPTIONS[group.group_id] ?? [];
+      const categories = new Set(group.members.filter((id) => !exceptions.includes(id)).map((id) => categoryOf.get(id)));
+      expect(categories.size, group.group_id).toBe(1);
+    }
+  });
+
+  it("言語とその言語のライブラリ・開発環境は同じグループに入らない", () => {
+    const groupOf = (id: string, goalId: string) =>
+      groups.find((g) => (!g.goals || g.goals.includes(goalId)) && g.members.includes(id))?.group_id;
+    for (const goalId of ["data-analyst", "data-scientist", "data-engineer"]) {
+      for (const [language, companion] of [
+        ["python", "pandas"],
+        ["python", "jupyter"],
+        ["r", "tidyverse"],
+        ["r", "rstudio"],
+      ]) {
+        const g = groupOf(language, goalId);
+        if (g) expect(groupOf(companion, goalId), `${goalId}: ${language} / ${companion}`).not.toBe(g);
       }
     }
   });
 
   it.each([
-    { groupId: "data-engineering-python", goalIds: ["data-engineer"], members: ["python", "pandas", "numpy", "scikit-learn", "jupyter"] },
+    { groupId: "analysis-language", goalIds: ["data-analyst", "data-scientist"], members: ["python", "r"] },
+    { groupId: "dataframe-library", goalIds: ["data-analyst", "data-scientist"], members: ["pandas", "tidyverse"] },
+    { groupId: "data-science-ide", goalIds: ["data-analyst", "data-scientist"], members: ["jupyter", "rstudio"] },
     { groupId: "infrastructure-language", goalIds: ["cloud-architect", "devops-sre"], members: ["python", "go"] },
-    { groupId: "javascript-language", goalIds: ["frontend-developer", "full-stack-developer"], members: ["javascript", "typescript"] },
+    {
+      groupId: "javascript-language",
+      goalIds: ["frontend-developer", "full-stack-developer", "software-architect"],
+      members: ["javascript", "typescript"],
+    },
+    {
+      groupId: "python-web-framework",
+      goalIds: ["data-scientist", "data-engineer", "devops-sre", "cloud-architect", "network-engineer"],
+      members: ["fastapi", "flask", "django"],
+    },
   ])("$groupId は $goalIds で 1 項目になり、メンバーが個別の項目として残らない", ({ groupId, goalIds, members }) => {
     for (const goalId of goalIds) {
       const goal = statistics.find((s) => s.goal_id === goalId)!;
@@ -234,6 +261,47 @@ describe("代わりのきく技術のグループ", () => {
       expect(progress("kotlin")).toBeCloseTo(progress("java"), 10);
     },
   );
+
+  it.each([
+    { goalId: "data-scientist", members: ["fastapi", "flask", "django"] },
+    { goalId: "data-engineer", members: ["fastapi", "flask", "django"] },
+    { goalId: "devops-sre", members: ["fastapi", "flask", "django"] },
+    { goalId: "data-analyst", members: ["python", "r"] },
+    { goalId: "data-analyst", members: ["pandas", "tidyverse"] },
+    { goalId: "data-scientist", members: ["jupyter", "rstudio"] },
+    { goalId: "software-architect", members: ["javascript", "typescript"] },
+  ])("$goalId：$members はどれか 1 つでも全部でも Skill Progress が同じ（重ねて加点しない）", async ({ goalId, members }) => {
+    const skill = await loadSkillContext(goalId);
+    const progress = (skillIds: string[]) => layeredSkillProgress({ ...skill, held: new Set(skillIds) }).progress;
+    const all = progress(members);
+    expect(all).toBeGreaterThan(0);
+    for (const id of members) expect(progress([id]), id).toBeCloseTo(all, 10);
+  });
+
+  it("言語をまたぐサーバーサイドのグループはサーバーサイドの言語と同じ Goal に限り、それ以外の Goal には言語ごとのグループを適用する", () => {
+    const allGoals = statistics.map((s) => s.goal_id as string).sort();
+    const goalsOf = (id: string) => [...groups.find((g) => g.group_id === id)!.goals!].sort();
+    expect(goalsOf("server-framework")).toEqual(goalsOf("server-language"));
+    const complement = (a: string[]) => allGoals.filter((g) => !a.includes(g));
+    expect(goalsOf("python-web-framework")).toEqual(complement(goalsOf("server-framework")));
+  });
+
+  it.each(["data-analyst", "data-scientist"])(
+    "%s：R・tidyverse・RStudio と Python・pandas・Jupyter の Skill Progress が等しく、言語だけよりライブラリを足したほうが高い",
+    async (goalId) => {
+      const skill = await loadSkillContext(goalId);
+      const progress = (skillIds: string[]) => layeredSkillProgress({ ...skill, held: new Set(skillIds) }).progress;
+      expect(progress(["r", "tidyverse", "rstudio", "sql"])).toBeCloseTo(progress(["python", "pandas", "jupyter", "sql"]), 10);
+      expect(progress(["python", "pandas"])).toBeGreaterThan(progress(["python"]));
+    },
+  );
+
+  it.each(["data-scientist", "data-engineer"])("%s：Express・Spring Boot だけでは Skill に効かない", async (goalId) => {
+    const skill = await loadSkillContext(goalId);
+    for (const id of ["express", "spring-boot"]) {
+      expect(layeredSkillProgress({ ...skill, held: new Set([id]) }).progress, id).toBe(0);
+    }
+  });
 
   it("グループは 2 つ以上のメンバーを持ち、対象 Goal は実在する", () => {
     const goalIds = new Set(statistics.map((s) => s.goal_id));
