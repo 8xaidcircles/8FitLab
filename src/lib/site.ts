@@ -43,7 +43,7 @@ export const STACK_OVERFLOW_SURVEY = {
   licenseUrl: "https://opendatacommons.org/licenses/odbl/1-0/",
   contentsLicense: "Database Contents License (DbCL) v1.0",
   contentsLicenseUrl: "https://opendatacommons.org/licenses/dbcl/1-0/",
-  derivedDatabaseUrl: "https://github.com/8xaidcircles/8career/tree/main/data/statistics/skill-match",
+  derivedDatabaseUrl: "https://github.com/8xaidcircles/8FitLab/tree/main/data/statistics/skill-match",
 } as const;
 
 // インラインのタグに埋め込むため、形式が正しい ID だけを使う（それ以外は未設定と同じ扱い）
