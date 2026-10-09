@@ -122,7 +122,7 @@ export const SUBMIT_ERRORS: Record<string, string> = {
   unknown_goal: "Goalを選んでください。",
   unknown_skill: "選択肢に無いスキルが含まれています。ページを再読み込みしてもう一度お試しください。",
   unknown_certification: "選択肢に無い資格が含まれています。ページを再読み込みしてもう一度お試しください。",
-  experience_required: "職務経歴を選択してください。",
+  experience_required: "職務経歴は、「実務経験がある」「実務経験なし」「回答をスキップする」のいずれかを選んでください。",
   experience_rows_required: "職種と年数を入力した職歴を1件以上追加してください。",
   education_required: "最終学歴を選ぶか、「回答をスキップする」を選んでください。",
   save_failed: "結果の保存に失敗しました。時間をおいてもう一度お試しください。",
