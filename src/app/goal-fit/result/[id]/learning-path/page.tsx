@@ -18,6 +18,7 @@ import {
 import { SHOW_STEP_MATERIALS, STAGE_LABELS } from "@/lib/learning-path/constants";
 import { determineUserStage, isLanguageStep } from "@/lib/learning-path/determine-stage";
 import { stepMaterialCards } from "@/lib/learning-path/materials";
+import { stepUdemyCourses } from "@/lib/learning-path/udemy";
 import { LearningPathSection, StageServicesSection } from "./learning-path-section";
 import type { RoadmapStep } from "./skill-card";
 
@@ -64,11 +65,18 @@ export default async function LearningPathPage({ params }: PageProps<"/goal-fit/
     satisfied: step.satisfied,
     options: step.any_of.map((skillId) => ({ skill_id: skillId, name: skillName(skillId), owned: held.has(skillId) })),
     materials: materials.get(step.step_id) ?? [],
+    courses: stepUdemyCourses(step, skillName),
   });
   const languageSteps = steps.filter(isLanguageStep).map(toView);
   const otherSteps = steps.filter((step) => !isLanguageStep(step)).map(toView);
 
-  const roadmap = <LearningPathSection languageSteps={languageSteps} otherSteps={otherSteps} />;
+  const roadmap = (
+    <LearningPathSection
+      languageSteps={languageSteps}
+      otherSteps={otherSteps}
+      tracking={{ goalId: goal.goal_id, stage }}
+    />
+  );
   const services = <StageServicesSection stage={stage} goalId={goal.goal_id} goalName={goal.name} />;
 
   return (

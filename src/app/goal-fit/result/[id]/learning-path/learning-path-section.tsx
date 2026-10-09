@@ -1,15 +1,17 @@
 import { SERVICE_GROUP_ORDER, SHOW_STEP_MATERIALS } from "@/lib/learning-path/constants";
 import type { UserStage } from "@/lib/learning-path/types";
 import { ServiceCardGroup } from "./service-card-group";
-import { SkillCard, type RoadmapStep } from "./skill-card";
+import { SkillCard, type RoadmapStep, type RoadmapTracking } from "./skill-card";
 
 /** 学習ロードマップ。言語の Step は全ステージで「基礎」として先に出し、未習得を強調する */
 export function LearningPathSection({
   languageSteps,
   otherSteps,
+  tracking,
 }: {
   languageSteps: RoadmapStep[];
   otherSteps: RoadmapStep[];
+  tracking: RoadmapTracking;
 }) {
   const missingCount = [...languageSteps, ...otherSteps].filter((s) => !s.satisfied).length;
 
@@ -39,7 +41,7 @@ export function LearningPathSection({
           </div>
           <ol className="mt-3 space-y-2">
             {languageSteps.map((step) => (
-              <SkillCard key={step.step_id} step={step} emphasizeMissing />
+              <SkillCard key={step.step_id} step={step} tracking={tracking} emphasizeMissing />
             ))}
           </ol>
         </div>
@@ -50,7 +52,7 @@ export function LearningPathSection({
           {languageSteps.length > 0 && <h3 className="font-bold">その他のスキル</h3>}
           <ol className="mt-3 space-y-2">
             {otherSteps.map((step) => (
-              <SkillCard key={step.step_id} step={step} />
+              <SkillCard key={step.step_id} step={step} tracking={tracking} />
             ))}
           </ol>
         </div>
