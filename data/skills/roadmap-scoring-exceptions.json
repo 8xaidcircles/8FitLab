@@ -6,7 +6,7 @@
       "goal_id": "data-engineer",
       "step_id": "data-engineering-language",
       "unscored_options": ["java", "go"],
-      "reason": "要判断：データエンジニアの言語の採用 unit はデータ処理の Python（python・pandas・numpy・scikit-learn・jupyter）と Scala（特有リスト）で、Java・Go は基本リスト（過半数が使う）にも特有リスト（他職種より有意に多い）にも入らない"
+      "reason": "データに従い評価しない（2026-10-08 にオーナーが判断）。データエンジニアの言語の採用 unit はデータ処理の Python（python・pandas・numpy・scikit-learn・jupyter）と Scala（特有リスト）で、Java・Go は基本リスト（過半数が使う）にも特有リスト（他職種より有意に多い）にも入らない。重みは人が決めない原則のため、スコアに効かせない。学習ロードマップでは代わりの言語として選択肢に残す"
     }
   ]
 }

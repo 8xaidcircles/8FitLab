@@ -1,20 +1,13 @@
 {
-  "version": "1.4.0",
-  "description": "代わりのきく技術のグループ。採用は「その職種の過半数が使う（基本リスト）」か「他職種より多く使う（特有リスト）」で決まり、有意差だけで落ちることはないため、職種ごとにメンバーを変える必要はない（1.4.0 で Software Architect 専用のサーバーサイドの言語のグループを廃止）。グループ内のどれか 1 つを使えればそのグループを満たす（Experience の要件グループと同じ OR）。1 つの Goal の中では、1 つの技術は最大 1 グループにしか入らない。1 つの技術を別の Goal で別のグループに入れるときは、goals を重ならないように付ける（goals の無いグループは全 Goal に適用されるため、他のグループと技術を共有できない）。goals がある場合はその Goal でだけグループとして扱い、それ以外の Goal ではメンバーを個別の技術として扱う",
+  "version": "1.5.0",
+  "description": "代わりのきく技術のグループ。グループにするのは、同じ役割の中で互いに代わりがきく技術（どれか 1 つを選んで使うもの）だけで、メンバーは調査の同じ設問（tech-skills.json の同じ category）の選択肢に限る（例外：サーバーサイドの言語の Node.js・Deno、サーバーサイドのフレームワークの Spring Framework。辞書の分類が違うだけで役割は同じ）。言語とその言語のライブラリ・開発環境のように組み合わせて使う技術はグループにせず、別々の項目として加点する。各項目の重み（100 点の中の配分）は統計で決まり、人は決めない。グループ内のどれか 1 つを使えればそのグループを満たす（Experience の要件グループと同じ OR）。goals があるグループはその Goal でだけグループとして扱い、それ以外の Goal ではメンバーを個別の技術として扱う。言語をまたぐグループは、メンバーがその Goal の中で同じ役割を担う場合だけ goals で適用する（どの Goal に適用するかは人が決める。要件定義書 §11.1）。同じ技術を Goal ごとに別のグループに入れてよいが、1 つの Goal の中では 1 つの技術は最大 1 グループにしか入らない（goals の無いグループは全 Goal に適用されるため、他のグループと技術を共有できない）",
   "groups": [
     {
       "group_id": "analysis-language",
       "name": "データ分析の言語（Python または R）",
-      "description": "Python と R はどちらか 1 つで分析できるため 1 項目にまとめる。各言語の分析ライブラリ・開発環境（Python は pandas・NumPy・scikit-learn・Jupyter、R は tidyverse・RStudio）も同じ項目に含め、言語を使えばまとめて満たす",
+      "description": "Python と R はどちらか 1 つで分析できるため 1 項目にまとめる。ライブラリ・開発環境は別の項目（dataframe-library・data-science-ide・NumPy など）",
       "goals": ["data-analyst", "data-scientist"],
-      "members": ["python", "pandas", "numpy", "scikit-learn", "jupyter", "r", "tidyverse", "rstudio"]
-    },
-    {
-      "group_id": "data-engineering-python",
-      "name": "データ処理の Python（pandas・NumPy・scikit-learn・Jupyter を含む）",
-      "description": "データエンジニアの Python はデータ処理のために使い、pandas・NumPy・scikit-learn・Jupyter は Python を使う人がまとめて使うため 1 項目にまとめる（別々に数えると Python を使う人の多さを何重にも数える）",
-      "goals": ["data-engineer"],
-      "members": ["python", "pandas", "numpy", "scikit-learn", "jupyter"]
+      "members": ["python", "r"]
     },
     {
       "group_id": "infrastructure-language",
@@ -27,24 +20,47 @@
       "group_id": "javascript-language",
       "name": "JavaScript / TypeScript",
       "description": "TypeScript は JavaScript に型を足した言語で、どちらか一方で同じ画面を作れるため 1 項目にまとめる",
-      "goals": ["frontend-developer", "full-stack-developer"],
+      "goals": ["frontend-developer", "full-stack-developer", "software-architect"],
       "members": ["javascript", "typescript"]
     },
     {
       "group_id": "server-language",
       "name": "サーバーサイドの言語・ランタイム",
+      "description": "メンバーは言語（category: language）。例外：nodejs・deno は辞書では category: framework（調査の別の設問）だが、サーバーサイドの実行環境として言語と同じ役割のためここに入れる",
       "goals": ["backend-developer", "full-stack-developer", "software-architect"],
       "members": ["java", "kotlin", "php", "ruby", "go", "python", "csharp", "rust", "scala", "elixir", "nodejs", "deno"]
     },
     {
       "group_id": "server-framework",
       "name": "サーバーサイドのフレームワーク",
-      "goals": ["backend-developer", "full-stack-developer", "software-architect", "data-engineer"],
+      "description": "メンバーはフレームワーク（category: framework）。例外：spring-framework は辞書では category: library（調査の別の設問）だが、Spring Boot と同じくサーバーサイドのフレームワークの役割のためここに入れる。FastAPI・Flask・Django もここに含むため、この 3 Goal では Python のフレームワークもこのグループで評価する（python-web-framework は残りの Goal に適用）",
+      "goals": ["backend-developer", "full-stack-developer", "software-architect"],
       "members": [
         "spring-boot", "spring-framework", "laravel", "ruby-on-rails", "django", "fastapi", "flask",
         "express", "fastify", "nestjs", "aspnet-core", "aspnet", "symfony", "codeigniter", "yii",
         "phoenix", "play-framework", "quarkus", "micronaut", "ktor", "axum"
       ]
+    },
+    {
+      "group_id": "python-web-framework",
+      "name": "Python の Web フレームワーク",
+      "description": "FastAPI・Flask・Django は Python の中で互いに代わりがきくため 1 項目にまとめる。言語をまたぐサーバーサイドのフレームワーク（server-framework）を適用しない全 Goal に適用する",
+      "goals": [
+        "frontend-developer", "data-analyst", "data-scientist", "data-engineer", "it-project-manager", "product-manager",
+        "mobile-app-developer", "network-engineer", "test-analyst", "devops-sre", "cloud-architect"
+      ],
+      "members": ["fastapi", "flask", "django"]
+    },
+    {
+      "group_id": "dataframe-library",
+      "name": "データフレームのライブラリ（pandas または tidyverse）",
+      "description": "pandas（Python）と tidyverse（R）はどちらか 1 つで表形式のデータを扱えるため 1 項目にまとめる",
+      "members": ["pandas", "tidyverse"]
+    },
+    {
+      "group_id": "data-science-ide",
+      "name": "分析用の開発環境（Jupyter または RStudio）",
+      "members": ["jupyter", "rstudio"]
     },
     {
       "group_id": "frontend-framework",
