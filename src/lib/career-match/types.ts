@@ -290,9 +290,9 @@ export const LEGACY_SKIPPED_VALUE = "unknown";
 
 /**
  * 持っているスキルを 1 つも選ばなかった理由。スキルを選んだ場合は null
- * none_intent_to_learn：まだ無いが、これから学習を開始する（スクールのターゲット層）/ skipped：回答をスキップする
+ * none：保有しているスキルはない / none_intent_to_learn：まだ無いが、これから学習を開始する（スクールのターゲット層）/ skipped：回答をスキップする
  */
-export const SKILL_STATUSES = ["none_intent_to_learn", "skipped"] as const;
+export const SKILL_STATUSES = ["none", "none_intent_to_learn", "skipped"] as const;
 export type SkillStatus = (typeof SKILL_STATUSES)[number];
 
 /**

@@ -95,6 +95,7 @@ export const CONFIDENCE_LABELS: Record<Confidence, string> = {
 
 /** スキルを個別に選ばない人の選択肢（診断フォームの表示順） */
 export const SKILL_STATUS_LABELS: Record<SkillStatus, string> = {
+  none: "保有しているスキルはない",
   none_intent_to_learn: "これから学習を開始する",
   skipped: "回答をスキップする",
 };
@@ -112,7 +113,8 @@ export const EDUCATION_STATUS_LABELS: Record<typeof SKIPPED_EDUCATION_LEVEL_ID, 
 };
 
 export const SUBMIT_ERRORS: Record<string, string> = {
-  skills_required: "持っているスキルを選ぶか、「これから学習を開始する」「回答をスキップする」のどちらかを選んでください。",
+  skills_required:
+    "持っているスキルを選ぶか、「保有しているスキルはない」「これから学習を開始する」「回答をスキップする」のいずれかを選んでください。",
   certifications_required:
     "資格を選ぶか、「保有している資格はない」「これから学習を開始する」「回答をスキップする」のいずれかを選んでください。",
   invalid_skills: "スキルの入力内容に誤りがあります。ページを再読み込みしてもう一度お試しください。",

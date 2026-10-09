@@ -13,9 +13,9 @@ CREATE TABLE IF NOT EXISTS public.assessment_sessions (
     -- 職歴の回答。entered：職種と年数を 1 件以上入力 / none：実務経験なし / skipped：回答をスキップする。
     -- 必須化の前に保存した行は NULL。unknown は skipped の旧値（読み出し時に skipped とみなす）
     experience_status TEXT CHECK (experience_status IN ('entered', 'none', 'skipped', 'unknown')),
-    -- スキルを 1 つも選ばなかった理由。none_intent_to_learn：まだ無いが、これから学習を開始する / skipped：回答をスキップする。
-    -- スキルを選んだ行と、この列より前に保存した行は NULL
-    skill_status TEXT CHECK (skill_status IN ('none_intent_to_learn', 'skipped')),
+    -- スキルを 1 つも選ばなかった理由。none：保有しているスキルはない / none_intent_to_learn：まだ無いが、これから学習を開始する /
+    -- skipped：回答をスキップする。スキルを選んだ行と、この列より前に保存した行は NULL
+    skill_status TEXT CHECK (skill_status IN ('none', 'none_intent_to_learn', 'skipped')),
     -- 資格を 1 つも選ばなかった理由。none：保有している資格はない / planning_to_certify：これから学習を開始する /
     -- skipped：回答をスキップする。資格を選んだ行と、この列より前に保存した行は NULL
     certification_status TEXT CHECK (certification_status IN ('none', 'planning_to_certify', 'skipped')),
