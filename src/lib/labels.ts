@@ -122,11 +122,19 @@ export const SUBMIT_ERRORS: Record<string, string> = {
   unknown_goal: "Goalを選んでください。",
   unknown_skill: "選択肢に無いスキルが含まれています。ページを再読み込みしてもう一度お試しください。",
   unknown_certification: "選択肢に無い資格が含まれています。ページを再読み込みしてもう一度お試しください。",
-  experience_required: "職務経歴は、「実務経験がある」「実務経験なし」「回答をスキップする」のいずれかを選んでください。",
+  experience_required: "職務経歴は「実務経験がある」「実務経験なし」「回答をスキップする」のいずれかを選んでください。",
   experience_rows_required: "職種と年数を入力した職歴を1件以上追加してください。",
   education_required: "最終学歴を選ぶか、「回答をスキップする」を選んでください。",
   save_failed: "結果の保存に失敗しました。時間をおいてもう一度お試しください。",
 };
+
+/** 計算ボタン直上の未入力まとめ。各欄の赤文字は SUBMIT_ERRORS の説明文のまま */
+export const MISSING_INPUT_SUMMARIES = {
+  skills_required: "スキルが未入力です。",
+  certifications_required: "資格が未入力です。",
+  experience_required: "職務経歴が未入力です。",
+  education_required: "最終学歴が未入力です。",
+} as const;
 
 export function formatPercent(value: number): string {
   return `${Math.round(value)}`;

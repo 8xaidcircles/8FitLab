@@ -15,6 +15,7 @@ import {
   CERTIFICATION_STATUS_LABELS,
   EDUCATION_STATUS_LABELS,
   EXPERIENCE_STATUS_LABELS,
+  MISSING_INPUT_SUMMARIES,
   SKILL_STATUS_LABELS,
   SUBMIT_ERRORS,
 } from "@/lib/labels";
@@ -831,7 +832,14 @@ export function AssessmentForm({
         {error && <p className="mb-3 text-sm text-coral">{error}</p>}
         {Object.values(fieldErrors).some(Boolean) && (
           <ul className="mb-3 list-disc space-y-1 pl-5 text-sm text-coral">
-            {[fieldErrors.skills, fieldErrors.certifications, fieldErrors.experience, fieldErrors.education]
+            {[
+              fieldErrors.skills && MISSING_INPUT_SUMMARIES.skills_required,
+              fieldErrors.certifications && MISSING_INPUT_SUMMARIES.certifications_required,
+              fieldErrors.experience === SUBMIT_ERRORS.experience_required
+                ? MISSING_INPUT_SUMMARIES.experience_required
+                : fieldErrors.experience,
+              fieldErrors.education && MISSING_INPUT_SUMMARIES.education_required,
+            ]
               .filter((message): message is string => Boolean(message))
               .map((message) => (
                 <li key={message}>{message}</li>
