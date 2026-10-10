@@ -97,15 +97,17 @@ export default async function BlogIndex() {
     >
       <nav aria-label="ページ内の目次" className="mt-6 rounded-2xl border border-line bg-white p-4 sm:p-5">
         <p className="text-sm font-extrabold">探し方</p>
-        <ul className="mt-3 flex flex-wrap justify-center gap-2 pb-1 sm:gap-3">
+        <ul className={`mt-3 grid gap-2 sm:gap-3 ${jumpLinks.length > 2 ? "grid-cols-2 sm:grid-cols-3" : "grid-cols-2"}`}>
           {jumpLinks.map((link) => (
-            <li key={link.href} className="w-[calc((100%-1rem)/3)] sm:w-[calc((100%-1.5rem)/3)]">
+            <li key={link.href} className="min-w-0">
               <a
                 href={link.href}
-                className="btn-reflection flex h-full min-h-11 items-center justify-center gap-1 rounded-full bg-linear-to-r from-[#9dd6fb] to-sky px-2 py-2 text-center text-[11px] leading-tight font-bold break-keep text-white shadow-[0_3px_0_#1d7fc4] transition hover:translate-y-0.5 hover:shadow-[0_1px_0_#1d7fc4] sm:px-3 sm:text-xs md:text-sm"
+                className="btn-reflection flex min-h-11 w-full items-center justify-center rounded-full bg-linear-to-r from-[#9dd6fb] to-sky px-2.5 py-2.5 text-center text-[11px] leading-snug font-bold break-keep text-white shadow-[0_3px_0_#1d7fc4] transition hover:translate-y-0.5 hover:shadow-[0_1px_0_#1d7fc4] sm:px-4 sm:text-xs md:text-sm"
               >
-                {link.label}
-                <span aria-hidden>›</span>
+                <span>
+                  {link.label}
+                  <span aria-hidden>{"\u2060›"}</span>
+                </span>
               </a>
             </li>
           ))}
