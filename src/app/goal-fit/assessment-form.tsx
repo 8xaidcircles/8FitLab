@@ -567,7 +567,7 @@ export function AssessmentForm({
       }}
     >
       <Section step={1} title="目指すGoal">
-        <div className="grid gap-2 sm:grid-cols-2">
+        <div className="grid grid-cols-2 gap-2">
           {goals.map((goal) => {
             const selected = goal.goal_id === goalId;
             return (
