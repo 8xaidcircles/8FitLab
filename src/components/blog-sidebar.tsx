@@ -80,7 +80,7 @@ export function BlogSidebar({
               <wbr />
               スクール・転職サービスを提案
             </p>
-            <span className="mt-5 rounded-full bg-flame px-7 py-2.5 text-sm font-bold shadow-lg shadow-flame/30 transition group-hover:brightness-95">
+            <span className="mt-5 -translate-y-3 rounded-full bg-flame px-7 py-2.5 text-sm font-bold shadow-lg shadow-flame/30 transition group-hover:brightness-95">
               今すぐ無料診断
             </span>
           </Link>
