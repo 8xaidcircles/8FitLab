@@ -7,8 +7,6 @@ import { getAnonymousUserId, isUuid } from "@/lib/anonymous-user";
 import { getAssessment } from "@/lib/assessment/repository";
 import {
   evaluateSteps,
-  goalSkillUnits,
-  humanRequirementStatus,
   loadEducation,
   loadGoals,
   loadKnownIds,
@@ -16,19 +14,10 @@ import {
   loadRoleGroups,
   loadRoles,
   loadSkillContext,
-  loadSkillNames,
-  noEffectSteps,
-  normalizeHumanRequirements,
-  raisingSteps,
   resolveUserSkills,
-  SKILL_CALCULATION_VERSION,
-  skillGap,
-  skillMatchScope,
-  skillStatisticsVersion,
-  skillUnitGaps,
 } from "@/lib/career-match";
 import { SKIPPED_EDUCATION_LEVEL_ID } from "@/lib/career-match/types";
-import { EXPERIENCE_STATUS_LABELS, formatPercent, SKILL_STATUS_LABELS, skillUnitRoleLabel } from "@/lib/labels";
+import { EXPERIENCE_STATUS_LABELS, formatPercent, SKILL_STATUS_LABELS } from "@/lib/labels";
 import { determineUserStage } from "@/lib/learning-path/determine-stage";
 
 export const metadata: Metadata = {
@@ -86,10 +75,9 @@ export default async function ResultPage({ params }: PageProps<"/goal-fit/result
   const assessment = await getAssessment(id, anonymousUserId);
   if (!assessment) notFound();
 
-  const [goals, path, skillNames, known, skillContext, roles, roleGroups, education] = await Promise.all([
+  const [goals, path, known, skillContext, roles, roleGroups, education] = await Promise.all([
     loadGoals(),
     loadLearningPath(assessment.goal_id),
-    loadSkillNames(),
     loadKnownIds(),
     loadSkillContext(assessment.goal_id),
     loadRoles(),
@@ -98,7 +86,6 @@ export default async function ResultPage({ params }: PageProps<"/goal-fit/result
   ]);
   const goal = goals.find((g) => g.goal_id === assessment.goal_id)!;
   const match = assessment.career_match;
-  const skillName = (id: string) => skillNames.get(id) ?? id;
   const jaRoleNames = new Map(roleGroups.flatMap((g) => g.roles.map((r) => [r.role_id, r.name])));
   const roleName = (roleId: string) => jaRoleNames.get(roleId) ?? roles.find((r) => r.role_id === roleId)?.label ?? roleId;
 
@@ -107,48 +94,15 @@ export default async function ResultPage({ params }: PageProps<"/goal-fit/result
     skillContext,
     known,
   );
-  // 現在の定義で Skill Progress を計算する統計・定義（配分の表示と Skill Gap の得点増に使う）
-  const scoring = {
-    techStats: skillContext.techStats,
-    goalLayers: skillContext.goalLayers,
-    defaultWeights: skillContext.defaultWeights,
-  };
-  const scope = skillMatchScope(scoring);
-  const gap = skillGap(path, held, scoring);
-  const missingCount = gap.steps.filter((s) => !s.satisfied).length;
-  const raising = raisingSteps(gap);
-  const noEffect = noEffectSteps(gap);
-  const hasOverlap = raising.some((s) => s.overlaps_with.length > 0);
-  const formatGain = (gain: number) => (gain < 1 ? "+1未満" : `+${Math.round(gain)}点`);
-
   // 学習ロードマップのページへの案内文を、ステージ（実務経験・未習得の Step の有無）で切り替える
   const stage = determineUserStage(goal, assessment.experiences, evaluateSteps(path, held));
 
   const certificationNames = skillContext.certifications
     .filter((c) => assessment.certification_ids.includes(c.cert_id))
     .map((c) => c.name);
-  const techGaps =
-    skillContext.techStats && goalSkillUnits(skillContext.techStats).length > 0
-      ? skillUnitGaps(skillContext.techStats, held)
-      : [];
-  const humanRequirements = humanRequirementStatus(
-    normalizeHumanRequirements(skillContext.goalLayers.human_requirements),
-    held,
-  );
-  // 「Skill の内訳」は保存した入力を現在の定義で判定する。スコアと配分は保存時の値（再計算しない）
-  const currentWeights = scope.weights;
-  const showTech = currentWeights.tech > 0;
-  const showHuman = currentWeights.human > 0;
   const percent = (w: number) => `${Math.round(w * 100)}%`;
 
   const stored = match.skill;
-  // 保存後に計算方式か統計が更新された結果では、保存した点数と現在の定義で求めた内訳の割合が一致しない
-  const techBreakdownOutdated =
-    showTech &&
-    stored !== null &&
-    skillContext.techStats !== null &&
-    (stored.skill_calculation_version !== SKILL_CALCULATION_VERSION ||
-      stored.skill_statistics_version !== skillStatisticsVersion(skillContext.techStats));
   const layerBreakdown = stored
     ? [
         stored.skill_layer_weights.tech > 0 &&
@@ -214,7 +168,6 @@ export default async function ResultPage({ params }: PageProps<"/goal-fit/result
   return (
     <div className="mx-auto max-w-4xl px-4 py-10">
       <TrackView event="page_viewed" data={{ path: "/goal-fit/result", goal_id: goal.goal_id }} />
-      <TrackView event="skill_gap_viewed" data={{ assessment_id: id, goal_id: goal.goal_id, missing: missingCount, raising: raising.length }} />
 
       <p className="text-sm font-bold text-sky">Goal Fit</p>
       <h1 className="mt-1 text-2xl font-extrabold md:text-3xl">{goal.name}との一致度</h1>
@@ -264,133 +217,7 @@ export default async function ResultPage({ params }: PageProps<"/goal-fit/result
       </section>
 
       <section className="mt-10">
-        <h2 className="text-xl font-extrabold">Skill の内訳</h2>
-        <p className="mt-1 text-sm text-muted">
-          現在のスキル状況です。未習得の項目をマスターすると、スキルマッチ度がアップします。
-        </p>
-        <div className={`mt-5 grid gap-4 ${showTech && showHuman ? "md:grid-cols-2" : ""}`}>
-          {showTech && (
-            <div className="rounded-2xl border border-line bg-white p-5">
-              <h3 className="font-bold">技術（配分 {percent(currentWeights.tech)}）</h3>
-              <p className="mt-1 text-xs text-muted">右の数字は、満たすと技術の達成率が上がる割合です。</p>
-              {techBreakdownOutdated && (
-                <p className="mt-2 rounded-lg bg-sky-soft px-3 py-2 text-xs leading-relaxed text-ink">
-                  計算方式の更新前の結果です。内訳は現在の方式で表示しているため、上のスコアと一致しないことがあります。もう一度診断すると一致します。
-                </p>
-              )}
-              <ul className="mt-3 space-y-2 text-sm">
-                {techGaps.map(({ unit, satisfied, share }) => (
-                  <li key={unit.unit_id} className="flex items-start gap-2">
-                    <span className={satisfied ? "text-cyan" : "text-flame"} aria-hidden="true">
-                      {satisfied ? "✓" : "・"}
-                    </span>
-                    <span className="flex-1">
-                      <span className={satisfied ? "font-bold" : ""}>{unit.name}</span>
-                      <span className="ml-2 rounded-full border border-line px-2 py-0.5 text-xs whitespace-nowrap text-muted">
-                        {skillUnitRoleLabel(unit.roles)}
-                      </span>
-                      {unit.type === "group" && (
-                        <span className="block text-xs text-muted">
-                          {unit.members
-                            .slice(0, 5)
-                            .map((m) => m.name)
-                            .join(" / ")}
-                          {unit.members.length > 5 && " ほか"}（どれか1つ）
-                        </span>
-                      )}
-                    </span>
-                    <span className="text-xs text-muted">{share.toFixed(1)}%</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-          {showHuman && (
-            <div className="rounded-2xl border border-line bg-white p-5">
-              <h3 className="font-bold">手法・知識（配分 {percent(currentWeights.human)}）</h3>
-              <p className="mt-1 text-xs text-muted">8FitLab が定義した要件です。各項目を同じ重さで数えています。</p>
-              <ul className="mt-3 space-y-2 text-sm">
-                {humanRequirements.map((r) => (
-                  <li key={r.requirement_id} className="flex items-start gap-2">
-                    <span className={r.satisfied ? "text-cyan" : "text-flame"} aria-hidden="true">
-                      {r.satisfied ? "✓" : "・"}
-                    </span>
-                    <span className="flex-1">
-                      <span className={r.satisfied ? "font-bold" : ""}>{r.name ?? skillName(r.any_of[0])}</span>
-                      {r.any_of.length > 1 && (
-                        <span className="block text-xs text-muted">
-                          {r.any_of.map(skillName).join(" / ")}（どれか1つ）
-                        </span>
-                      )}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-        </div>
-      </section>
-
-      <section className="mt-10">
-        <h2 className="text-xl font-extrabold">Skill Gap と Learning Path</h2>
-        <p className="mt-1 text-sm text-muted">
-          {missingCount === 0
-            ? "すべてのステップを習得済みです。"
-            : `未習得のステップは ${missingCount} 件です（うちスキルマッチ度が上がるのは ${raising.length} 件）。`}
-        </p>
-
-        {raising.length > 0 && (
-          <div className="mt-5 rounded-2xl border border-line bg-white p-5">
-            <h3 className="font-bold">習得するとスキルマッチ度が上がる項目</h3>
-            <p className="mt-1 text-xs text-muted">右の数字は、その項目だけを習得した場合に上がるスキルマッチ度です。</p>
-            <ul className="mt-3 space-y-2 text-sm">
-              {raising.map((step) => (
-                <li key={step.step_id} className="flex items-start gap-2">
-                  <span className="text-flame" aria-hidden="true">
-                    ・
-                  </span>
-                  <span className="flex-1">
-                    <span>{step.name}</span>
-                    {step.any_of.length > 1 && (
-                      <span className="block text-xs text-muted">{step.any_of.map(skillName).join(" / ")}（どれか1つ）</span>
-                    )}
-                  </span>
-                  <span className="text-xs font-bold text-indigo">{formatGain(step.gain)}</span>
-                </li>
-              ))}
-            </ul>
-            {hasOverlap && (
-              <p className="mt-3 text-xs leading-relaxed text-muted">
-                ※同じ種類の技術を含む項目は、どれか1つを習得すれば評価されます。得点は合計できません。
-              </p>
-            )}
-          </div>
-        )}
-
-        {noEffect.length > 0 && (
-          <div className="mt-4 rounded-2xl border border-line bg-white p-5">
-            <h3 className="font-bold">スコアには影響しませんが、学ぶ順番に必要な項目</h3>
-            <ul className="mt-3 space-y-2 text-sm">
-              {noEffect.map((step) => (
-                <li key={step.step_id} className="flex items-start gap-2">
-                  <span className="text-muted" aria-hidden="true">
-                    ・
-                  </span>
-                  <span className="flex-1">
-                    <span>{step.name}</span>
-                    <span className="block text-xs text-muted">
-                      {step.effect === "credited"
-                        ? `『${step.credited_by.join("』『")}』は習得済みの技術で評価されています`
-                        : "基礎項目のため、スコアの対象外です"}
-                    </span>
-                  </span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
-
-        <div className="mt-6 text-center">
+        <div className="text-center">
           <Link
             href={`/goal-fit/result/${id}/learning-path`}
             className="group inline-block w-full max-w-lg rounded-2xl p-[3px] shadow-lg transition hover:-translate-y-0.5 hover:shadow-xl"
