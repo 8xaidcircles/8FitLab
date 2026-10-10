@@ -220,31 +220,31 @@ export function JobCategoryPickTable({
             return (
               <li
                 key={pick.goalId}
-                className="grid border-t border-line transition-colors first:border-t-0 even:bg-mist hover:bg-sky-soft sm:grid-cols-[minmax(0,2fr)_minmax(0,5fr)] sm:first:border-t"
+                className="grid grid-cols-[6.75rem_minmax(0,1fr)] items-center border-t border-line transition-colors first:border-t-0 even:bg-mist hover:bg-sky-soft sm:grid-cols-[minmax(8rem,2fr)_minmax(0,5fr)] sm:first:border-t"
               >
-                <div className="px-4 pt-4 sm:px-5 sm:py-4">
+                <div className="min-w-0 px-1.5 py-2 sm:px-4 sm:py-3 lg:px-5 lg:py-4">
                   <Link
                     href={`/blog/category/${pick.goalId}`}
-                    className="inline-block border-l-4 border-sky pl-2 text-xs leading-snug font-bold text-ink hover:text-indigo hover:underline sm:text-sm"
+                    className="inline-block border-l-2 border-sky pl-1.5 text-[11px] leading-tight font-bold break-words text-ink hover:text-indigo hover:underline sm:border-l-4 sm:pl-2 sm:text-xs sm:leading-snug lg:text-sm"
                   >
                     {goalNames.get(pick.goalId) ?? pick.goalId}
                   </Link>
                 </div>
-                <div className="space-y-1.5 px-4 pt-2 pb-4 sm:border-l sm:border-line sm:px-5 sm:py-4">
-                  <p>
+                <div className="min-w-0 space-y-0.5 border-l border-line px-2 py-2 sm:space-y-1 sm:px-4 sm:py-3 lg:space-y-1.5 lg:px-5 lg:py-4">
+                  <p className="leading-tight">
                     <PickLink
                       pick={pick}
                       type={type}
-                      className="group inline-flex items-center gap-1.5 text-sm font-bold text-indigo hover:text-sky sm:text-base"
+                      className="group inline-flex max-w-full items-baseline gap-0.5 text-[11px] font-bold text-indigo hover:text-sky sm:gap-1 sm:text-xs lg:text-base"
                     >
-                      <span className="underline decoration-sky/50 underline-offset-4 group-hover:decoration-sky">{pick.name}</span>
-                      <span aria-hidden className="text-sky transition-transform group-hover:translate-x-0.5">
+                      <span className="min-w-0 break-words underline decoration-sky/50 underline-offset-2 group-hover:decoration-sky">{pick.name}</span>
+                      <span aria-hidden className="shrink-0 text-sky transition-transform group-hover:translate-x-0.5">
                         ›
                       </span>
                     </PickLink>
-                    {pick.course && <span className="ml-2 text-xs text-muted">{pick.course}</span>}
+                    {pick.course && <span className="mt-0.5 block text-[10px] leading-tight break-words text-muted sm:text-[11px] lg:text-xs">{pick.course}</span>}
                   </p>
-                  <p className="text-xs leading-relaxed text-ink sm:text-sm">{pick.fit}</p>
+                  <p className="text-[10px] leading-snug break-words text-ink sm:text-[11px] lg:text-sm">{pick.fit}</p>
                 </div>
               </li>
             );
