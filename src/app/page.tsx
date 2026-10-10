@@ -81,7 +81,7 @@ export default async function Home() {
       <section className="mx-auto max-w-5xl px-4">
         <h2 className="text-xl font-extrabold">Goalを選んで始める</h2>
         <p className="mt-2 text-sm text-muted">選んだGoalでGoal Fitの入力画面が開きます。</p>
-        <ul className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        <ul className="mt-6 grid gap-3 lg:grid-cols-3">
           {goals.map((goal) => (
             <li key={goal.goal_id}>
               <Link
