@@ -20,8 +20,28 @@ export const metadata: Metadata = {
     template: `%s | ${SITE_NAME}`,
   },
   description: SITE_DESCRIPTION,
-  openGraph: { siteName: SITE_NAME, locale: "ja_JP", type: "website" },
-  twitter: { card: "summary_large_image" },
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+    ],
+    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
+  },
+  openGraph: {
+    siteName: SITE_NAME,
+    locale: "ja_JP",
+    type: "website",
+    images: [
+      {
+        url: "/og-image-1200x630.png",
+        width: 1200,
+        height: 630,
+        alt: `${SITE_NAME} | Goalから逆算して、エンジニアのキャリアをつくる`,
+      },
+    ],
+  },
+  twitter: { card: "summary_large_image", images: ["/og-image-1200x630.png"] },
   // AdSense のサイト所有権の確認用
   ...(ADSENSE_CLIENT_ID && { other: { "google-adsense-account": ADSENSE_CLIENT_ID } }),
 };
