@@ -67,7 +67,7 @@ export function BlogSidebar({
             className="group relative mx-auto flex aspect-square w-full max-w-80 flex-col items-center justify-center overflow-hidden rounded-xl bg-ink px-4 py-6 text-center break-keep text-white transition hover:brightness-110"
           >
             <div className="bg-brand-gradient absolute inset-x-0 top-0 h-1.5" />
-            <p className="text-xs font-bold tracking-wider text-sky">{"\\ 無料でロードマップ診断 /"}</p>
+            <p className="mt-4 text-xs font-bold tracking-wider text-sky">{"\\ 無料でロードマップ診断 /"}</p>
             <p className="mt-3 text-lg leading-snug font-extrabold">
               目標職種への
               <br />
