@@ -8,6 +8,7 @@ import { BlogCtaButton } from "@/components/blog-cta-button";
 import { BlogSidebar } from "@/components/blog-sidebar";
 import { BlogToc } from "@/components/blog-toc";
 import { JsonLd } from "@/components/json-ld";
+import { organizationId } from "@/components/StructuredData";
 import { PostCard } from "@/components/post-card";
 import { ShareLinks } from "@/components/share-links";
 import { TrackView } from "@/components/track-view";
@@ -16,7 +17,7 @@ import { getDraftKey, getPost, listAuthors, listPosts } from "@/lib/blog/microcm
 import { buildToc } from "@/lib/blog/toc";
 import { collectCategories, collectGoalCategories, formatDate, resolveGoalId } from "@/lib/blog/utils";
 import { loadGoals } from "@/lib/career-match";
-import { absoluteUrl, ORGANIZATION_NAME, SITE_NAME } from "@/lib/site";
+import { absoluteUrl, SITE_NAME } from "@/lib/site";
 import { PreviewBanner } from "./preview-banner";
 
 const RELATED_COUNT = 4;
@@ -87,8 +88,8 @@ export default async function BlogPostPage({ params }: PageProps<"/blog/[slug]">
           mainEntityOfPage: url,
           author: author
             ? { "@type": "Person", name: author.name, ...(author.role && { jobTitle: author.role }) }
-            : { "@type": "Organization", name: ORGANIZATION_NAME },
-          publisher: { "@type": "Organization", name: ORGANIZATION_NAME },
+            : { "@id": organizationId },
+          publisher: { "@id": organizationId },
         }}
       />
       <JsonLd

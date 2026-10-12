@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { JsonLd } from "@/components/json-ld";
+import { organizationId } from "@/components/StructuredData";
 import { PostCard } from "@/components/post-card";
 import { TrackView } from "@/components/track-view";
 import { listPosts } from "@/lib/blog/microcms";
 import { loadGoals } from "@/lib/career-match";
-import { absoluteUrl, ORGANIZATION_NAME, SITE_DESCRIPTION, SITE_NAME } from "@/lib/site";
+import { absoluteUrl, SITE_DESCRIPTION, SITE_NAME } from "@/lib/site";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/" },
@@ -34,7 +35,7 @@ export default async function Home() {
           operatingSystem: "Web",
           inLanguage: "ja",
           offers: { "@type": "Offer", price: "0", priceCurrency: "JPY" },
-          publisher: { "@type": "Organization", name: ORGANIZATION_NAME },
+          publisher: { "@id": organizationId },
         }}
       />
 

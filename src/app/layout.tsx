@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Noto_Sans_JP } from "next/font/google";
 import Link from "next/link";
 import { Logo } from "@/components/logo";
+import { StructuredData } from "@/components/StructuredData";
 import { ThirdPartyScripts } from "@/components/third-party-scripts";
 import { loadGoals } from "@/lib/career-match";
 import { ADSENSE_CLIENT_ID, ORGANIZATION_URL, SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
@@ -68,16 +69,17 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="ja" className={`${notoSansJp.variable} h-full antialiased`}>
       <body className="flex min-h-full flex-col">
+        <StructuredData />
         <div className="bg-brand-gradient h-1" />
         <header className="border-b border-line bg-white/90 backdrop-blur">
-          <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-4">
+          <div className="mx-auto flex min-h-16 max-w-5xl items-center justify-between gap-3 px-4 py-2">
             <Logo />
-            <nav className="flex items-center gap-1 text-sm font-medium">
+            <nav className="flex shrink-0 items-center gap-1 text-sm font-medium">
               {NAV.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="rounded-full px-3 py-2 text-muted transition-colors hover:bg-sky-soft hover:text-indigo"
+                  className="rounded-full px-2 py-2 text-xs text-muted transition-colors hover:bg-sky-soft hover:text-indigo min-[360px]:px-3 min-[360px]:text-sm"
                 >
                   {item.label}
                 </Link>
@@ -90,10 +92,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
 
         <footer className="mt-16 border-t border-line bg-white">
           <div className="mx-auto grid max-w-5xl gap-8 px-4 py-10 text-sm text-muted md:grid-cols-[1fr_2fr] md:gap-10">
-            <div className="space-y-3">
-              <Logo />
-              <p>Goalから逆算して、エンジニアのキャリアをつくる。</p>
-            </div>
+            <Logo />
             <nav aria-labelledby="footer-categories">
               <p id="footer-categories" className="text-xs font-bold tracking-widest text-sky">
                 JOB CATEGORY
