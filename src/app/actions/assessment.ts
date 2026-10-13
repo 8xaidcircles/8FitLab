@@ -1,6 +1,6 @@
 "use server";
 
-import { getOrCreateAnonymousUserId } from "@/lib/anonymous-user";
+import { resolveAnonymousUserId } from "@/lib/anonymous-user";
 import { saveAssessment } from "@/lib/assessment/repository";
 import { educationIds, parseAssessmentSubmission } from "@/lib/assessment/validate";
 import {
@@ -18,7 +18,7 @@ import { recordEvent } from "@/lib/events";
 
 export type SubmitAssessmentResult = { ok: true; assessmentId: string } | { ok: false; error: string };
 
-export async function submitAssessment(raw: unknown): Promise<SubmitAssessmentResult> {
+export async function submitAssessment(raw: unknown, rawAnonymousUserId?: unknown): Promise<SubmitAssessmentResult> {
   const [goals, known, education] = await Promise.all([loadGoals(), loadKnownIds(), loadEducation()]);
   const parsed = parseAssessmentSubmission(raw, {
     goalIds: new Set(goals.map((goal) => goal.goal_id)),
@@ -38,7 +38,7 @@ export async function submitAssessment(raw: unknown): Promise<SubmitAssessmentRe
   const result = calculateCareerMatch(submission, stats, skillContext, known);
   const missingSteps = learningPath(path, resolveUserSkills(submission, skillContext, known).held);
 
-  const anonymousUserId = await getOrCreateAnonymousUserId();
+  const anonymousUserId = resolveAnonymousUserId(rawAnonymousUserId);
   let assessmentId: string;
   try {
     assessmentId = await saveAssessment({

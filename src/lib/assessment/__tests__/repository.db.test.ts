@@ -55,7 +55,7 @@ describe.skipIf(!hasDb)("Supabase repository（実 DB）", () => {
       degree_id: "Secondary school",
     };
     const { id, result, missingSteps } = await save(submission);
-    const stored = await getAssessment(id, anonymousUserId);
+    const stored = await getAssessment(id);
 
     expect(stored).not.toBeNull();
     expect(stored!.goal_id).toBe("frontend-developer");
@@ -102,7 +102,7 @@ describe.skipIf(!hasDb)("Supabase repository（実 DB）", () => {
       education_level_id: "skipped",
       degree_id: null,
     });
-    const stored = await getAssessment(id, anonymousUserId);
+    const stored = await getAssessment(id);
 
     expect(stored!.skill_ids).toEqual([]);
     expect(stored!.skill_status).toBe("none_intent_to_learn");
@@ -135,7 +135,7 @@ describe.skipIf(!hasDb)("Supabase repository（実 DB）", () => {
       (await supabase.from("assessment_education").update({ education_level_id: "unknown" }).eq("assessment_id", id)).error,
     ).toBeNull();
 
-    const stored = await getAssessment(id, anonymousUserId);
+    const stored = await getAssessment(id);
     expect(stored!.experience_status).toBe("skipped");
     expect(stored!.education_level_id).toBe("skipped");
 
@@ -186,7 +186,7 @@ describe.skipIf(!hasDb)("Supabase repository（実 DB）", () => {
     const { error } = await createClient().from("assessment_skills").insert(legacyRows);
     expect(error).toBeNull();
 
-    const stored = await getAssessment(id, anonymousUserId);
+    const stored = await getAssessment(id);
     expect(stored!.skill_ids.sort()).toEqual(["bash-shell", "html-css", "web-api"]);
     expect(stored!.legacy_skill_ids).toEqual(["backend-framework"]);
   });
@@ -214,7 +214,7 @@ describe.skipIf(!hasDb)("Supabase repository（実 DB）", () => {
         skill_statistics_version: "stack_overflow_developer_survey:2023-2024-2025:0.2.0:k=50",
       },
     );
-    const stored = await getAssessment(id, anonymousUserId);
+    const stored = await getAssessment(id);
     expect(stored!.career_match.skill_match).toBe(12.5);
     expect(stored!.career_match.skill).toEqual({
       skill_calculation_version: SKILL_CALCULATION_VERSION,
@@ -251,7 +251,7 @@ describe.skipIf(!hasDb)("Supabase repository（実 DB）", () => {
       },
     );
 
-    const stored = await getAssessment(id, anonymousUserId);
+    const stored = await getAssessment(id);
     expect(stored!.career_match.skill_match).toBe(37.5);
     expect(stored!.career_match.skill).toMatchObject({
       skill_scoring_method: "ecdf",
@@ -304,7 +304,7 @@ describe.skipIf(!hasDb)("Supabase repository（実 DB）", () => {
     expect(error).toBeNull();
     await supabase.from("assessment_skills").insert([{ assessment_id: id, skill_id: "shell-script" }]);
 
-    const stored = await getAssessment(id, anonymousUserId);
+    const stored = await getAssessment(id);
     expect(stored!.career_match.skill_match).toBe(40);
     expect(stored!.career_match.skill).toBeNull();
     expect(stored!.skill_ids).toEqual(["bash-shell"]);
@@ -324,18 +324,16 @@ describe.skipIf(!hasDb)("Supabase repository（実 DB）", () => {
     }
   });
 
-  it("別の anonymous_user_id からは読めず、削除もできない", async () => {
+  it("別の anonymous_user_id からは削除できない", async () => {
     const id = createdIds[0];
-    const stranger = crypto.randomUUID();
-    expect(await getAssessment(id, stranger)).toBeNull();
-    await deleteAssessment(id, stranger);
-    expect(await getAssessment(id, anonymousUserId)).not.toBeNull();
+    await deleteAssessment(id, crypto.randomUUID());
+    expect(await getAssessment(id)).not.toBeNull();
   });
 
   it("削除すると関連テーブルの行も消える", async () => {
     const id = createdIds[0];
     await deleteAssessment(id, anonymousUserId);
-    expect(await getAssessment(id, anonymousUserId)).toBeNull();
+    expect(await getAssessment(id)).toBeNull();
 
     const supabase = createClient();
     for (const table of [

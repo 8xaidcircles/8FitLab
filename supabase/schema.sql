@@ -1,7 +1,8 @@
 -- 8FitLab スキーマ（MVP 要件定義書 v1.0 §44 / §45）
 -- Supabase ダッシュボード > SQL Editor に貼り付けて実行する
 --
--- 認証なし。anonymous_user_id は Cookie のランダム UUID で、個人情報は保存しない。
+-- 認証なし。anonymous_user_id はブラウザ単位（localStorage）のランダム UUID で、個人情報は保存しない。
+-- Assessment の閲覧は推測できない Assessment ID（結果 URL）だけで行う。
 -- DB 操作はすべてサーバー側（secret key）から行うため、全テーブルで RLS を有効にし、
 -- ポリシーは作らない（= anon / authenticated からは読み書き不可）。
 -- Assessment は上書きせず、入力のたびに新しい行を作る。

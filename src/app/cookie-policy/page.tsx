@@ -79,7 +79,7 @@ export default function CookiePolicyPage() {
       <h1 className="text-2xl font-extrabold md:text-3xl">Cookie・外部送信について</h1>
       <div className="mt-3 space-y-2 text-sm leading-relaxed text-muted">
         <p>
-          {SITE_NAME}では、サービスの提供・改善、アクセス解析、広告の配信およびアフィリエイト成果の計測のためにCookieを利用し、一部の情報を外部の事業者へ送信しています。
+          {SITE_NAME}自身はCookieを発行しませんが、アクセス解析、広告の配信およびアフィリエイト成果の計測のために外部サービスがCookieを利用し、一部の情報を外部の事業者へ送信しています。
         </p>
         <p>
           個人情報の取扱いについては、「
@@ -93,26 +93,27 @@ export default function CookiePolicyPage() {
       <div className="mt-8 space-y-8">
         <Section title="Cookieとは">
           <p>Cookieは、Webサイトがブラウザに保存する小さなデータです。</p>
-          <p>
-            {SITE_NAME}自身が発行するanonymous_user_idには、氏名、性別、メールアドレス、電話番号など、利用者を直接識別するための個人情報は含まれません。
-          </p>
+          <p>{SITE_NAME}自身は、Cookieを発行しません。</p>
           <p>
             なお、Google Analytics、Google AdSense、アフィリエイトサービス等の第三者サービスが利用するCookie等については、それぞれのサービス事業者が定める方法で情報が取り扱われます。
           </p>
         </Section>
 
-        <Section title="本サイトが発行するCookie">
+        <Section title="本サイトがブラウザに保存する情報">
           <div className="rounded-2xl border border-line bg-white p-6">
-            <h3 className="font-extrabold">anonymous_user_id</h3>
+            <h3 className="font-extrabold">anonymous_user_id（ローカルストレージ）</h3>
             <div className="mt-2 space-y-2">
-              <p>Goal Fitの診断結果を、診断を実行した匿名利用者と関連付けるためのランダムな識別子です。</p>
-              <p>Cookieの有効期間は400日です。</p>
-              <p>このCookieを削除すると、Cookieを利用して確認する仕組み上、過去のGoal Fitの診断結果を表示できなくなります。</p>
+              <p>同じブラウザでのページ閲覧・操作・診断を関連付けて利用状況を分析するための、ランダムな識別子です。</p>
+              <p>氏名、性別、メールアドレス、電話番号など、利用者を直接識別するための個人情報は含まれません。</p>
+              <p>利用者がブラウザのサイトデータを削除するまで保持されます。</p>
             </div>
           </div>
+          <p>
+            Goal Fitの診断結果は、この識別子を使わず、診断結果ページのURLによって表示します。URLを知っている人は誰でも診断結果を閲覧できますので、URLを共有する際はご注意ください。
+          </p>
         </Section>
 
-        <Section title="Cookieに関連付けて保存される情報">
+        <Section title="匿名識別子に関連付けて保存される情報">
           <p>
             Goal Fitの診断で入力された以下の情報や診断結果、ならびに本サイト上で発生したページ閲覧・操作等の記録は、匿名識別子に関連付けて本サイトのデータベースに保存され、サービスの提供・改善等に利用されます。
           </p>
@@ -248,8 +249,8 @@ export default function CookiePolicyPage() {
 
         <Section title="Cookieを無効にするには">
           <p>利用者は、ブラウザの設定によりCookieを無効にしたり、保存されたCookieを削除したりすることができます。</p>
-          <p>ただし、本サイトのCookieを無効にした場合、Goal Fitの診断結果を表示できなくなります。</p>
-          <p>また、匿名利用者とAssessmentとの関連付け等、本サイトの一部機能が正常に利用できない場合があります。</p>
+          <p>{SITE_NAME}自身はCookieを利用しないため、Cookieを無効にした場合でも、Goal Fitの診断および診断結果の表示を利用できます。</p>
+          <p>本サイトがローカルストレージに保存する匿名識別子は、ブラウザの設定からサイトデータを削除することで消去できます。</p>
         </Section>
 
         <Section title="お問い合わせ">

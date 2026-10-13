@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { TrackView } from "@/components/track-view";
-import { getAnonymousUserId, isUuid } from "@/lib/anonymous-user";
+import { isUuid } from "@/lib/anonymous-user";
 import { getAssessment } from "@/lib/assessment/repository";
 import { listRecommendationArticles } from "@/lib/blog/microcms";
 import {
@@ -22,6 +22,9 @@ import { stepUdemyCourses } from "@/lib/learning-path/udemy";
 import { LearningPathSection, StageServicesSection } from "./learning-path-section";
 import type { RoadmapStep } from "./skill-card";
 
+// 再計算の結果を、キャッシュで古いまま返さないため。以前は cookies() が動的にしていた
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "学習ロードマップ",
   robots: { index: false },
@@ -29,10 +32,9 @@ export const metadata: Metadata = {
 
 export default async function LearningPathPage({ params }: PageProps<"/goal-fit/result/[id]/learning-path">) {
   const { id } = await params;
-  const anonymousUserId = await getAnonymousUserId();
-  if (!isUuid(id) || !anonymousUserId) notFound();
+  if (!isUuid(id)) notFound();
 
-  const assessment = await getAssessment(id, anonymousUserId);
+  const assessment = await getAssessment(id);
   if (!assessment) notFound();
 
   const [goals, path, skillNames, known, skillContext, rawArticles] = await Promise.all([

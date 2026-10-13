@@ -28,6 +28,18 @@ const nextConfig: NextConfig = {
       { source: "/editorial-policy", destination: "/disclaimer#editorial-policy", permanent: true },
     ];
   },
+  async headers() {
+    return [
+      // 結果ページの URL は閲覧の鍵のため、外部サイトへの遷移時にパスを渡さず、検索エンジンにも登録させない
+      {
+        source: "/goal-fit/result/:path*",
+        headers: [
+          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+          { key: "X-Robots-Tag", value: "noindex, nofollow" },
+        ],
+      },
+    ];
+  },
   images: {
     remotePatterns: [{ protocol: "https", hostname: "images.microcms-assets.io" }],
   },

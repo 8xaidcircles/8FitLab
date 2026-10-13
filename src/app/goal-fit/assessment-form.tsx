@@ -19,7 +19,7 @@ import {
   SKILL_STATUS_LABELS,
   SUBMIT_ERRORS,
 } from "@/lib/labels";
-import { track } from "@/lib/track";
+import { getAnonymousUserId, track } from "@/lib/track";
 
 interface Option {
   id: string;
@@ -550,7 +550,7 @@ export function AssessmentForm({
         experience_status: experienceStatus,
         experiences: experienceStatus === "entered" ? validExperiences : [],
         education_level_id: levelId,
-      });
+      }, getAnonymousUserId());
       if (result.ok) {
         router.push(`/goal-fit/result/${result.assessmentId}`);
       } else {

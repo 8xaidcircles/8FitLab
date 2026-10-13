@@ -178,15 +178,14 @@ export async function saveAssessment({
   return assessmentId;
 }
 
-// 他人の Assessment を読めないよう、必ず anonymous_user_id と組で取得する
-export async function getAssessment(assessmentId: string, anonymousUserId: string): Promise<StoredAssessment | null> {
+// 推測できないランダムな UUID の assessmentId を知っていること自体を閲覧の鍵とする（結果 URL を知る人は誰でも読める）
+export async function getAssessment(assessmentId: string): Promise<StoredAssessment | null> {
   const supabase = createClient();
 
   const { data: session, error } = await supabase
     .from("assessment_sessions")
     .select("id, goal_id, created_at, experience_status, skill_status, certification_status")
     .eq("id", assessmentId)
-    .eq("anonymous_user_id", anonymousUserId)
     .maybeSingle();
   if (error) fail("load assessment session", error);
   if (!session) return null;

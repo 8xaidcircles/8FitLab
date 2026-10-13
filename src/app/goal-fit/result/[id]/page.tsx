@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ScoreBar, ScoreRing } from "@/components/score-ring";
 import { TrackView } from "@/components/track-view";
-import { getAnonymousUserId, isUuid } from "@/lib/anonymous-user";
+import { isUuid } from "@/lib/anonymous-user";
 import { getAssessment } from "@/lib/assessment/repository";
 import {
   evaluateSteps,
@@ -19,6 +19,9 @@ import {
 import { SKIPPED_EDUCATION_LEVEL_ID } from "@/lib/career-match/types";
 import { EXPERIENCE_STATUS_LABELS, formatPercent, SKILL_STATUS_LABELS } from "@/lib/labels";
 import { determineUserStage } from "@/lib/learning-path/determine-stage";
+
+// 再計算の結果を、キャッシュで古いまま返さないため。以前は cookies() が動的にしていた
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Goal Fitの診断結果",
@@ -69,10 +72,9 @@ function CategoryCard({
 
 export default async function ResultPage({ params }: PageProps<"/goal-fit/result/[id]">) {
   const { id } = await params;
-  const anonymousUserId = await getAnonymousUserId();
-  if (!isUuid(id) || !anonymousUserId) notFound();
+  if (!isUuid(id)) notFound();
 
-  const assessment = await getAssessment(id, anonymousUserId);
+  const assessment = await getAssessment(id);
   if (!assessment) notFound();
 
   const [goals, path, known, skillContext, roles, roleGroups, education] = await Promise.all([
@@ -190,6 +192,9 @@ export default async function ResultPage({ params }: PageProps<"/goal-fit/result
         Goal Fit の計算結果は、キャリア判断の参考値であり、
         <br className="hidden sm:inline" />
         実際の就職・転職・採用の結果を保証するものではありません。
+      </p>
+      <p className="mt-1 text-center text-xs leading-relaxed text-muted">
+        この結果ページの URL を知っている人は、誰でも結果を見られます。共有するときはご注意ください。
       </p>
 
       <section className="mt-4 grid gap-4 md:grid-cols-3">

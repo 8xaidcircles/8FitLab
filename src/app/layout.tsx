@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Noto_Sans_JP } from "next/font/google";
 import Link from "next/link";
+import { AnalyticsPageView } from "@/components/analytics-page-view";
 import { Logo } from "@/components/logo";
 import { StructuredData } from "@/components/StructuredData";
 import { ThirdPartyScripts } from "@/components/third-party-scripts";
@@ -135,6 +136,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
           </div>
         </footer>
         <ThirdPartyScripts />
+        <AnalyticsPageView />
       </body>
     </html>
   );
