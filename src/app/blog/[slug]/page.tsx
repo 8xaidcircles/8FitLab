@@ -12,15 +12,16 @@ import { organizationId } from "@/components/StructuredData";
 import { PostCard } from "@/components/post-card";
 import { ShareLinks } from "@/components/share-links";
 import { TrackView } from "@/components/track-view";
-import { normalizeBodyBlocks } from "@/lib/blog/body-blocks";
-import { getDraftKey, getPost, listAuthors, listPosts } from "@/lib/blog/microcms";
+import { getPost, listAuthors, listPosts } from "@/lib/blog/content";
 import { buildToc } from "@/lib/blog/toc";
 import { collectCategories, collectGoalCategories, formatDate, resolveGoalId } from "@/lib/blog/utils";
 import { loadGoals } from "@/lib/career-match";
 import { absoluteUrl, SITE_NAME } from "@/lib/site";
-import { PreviewBanner } from "./preview-banner";
 
 const RELATED_COUNT = 4;
+
+// 記事はすべてビルド時に作る。content/blog/posts に無いスラッグは 404
+export const dynamicParams = false;
 
 export async function generateStaticParams() {
   return (await listPosts()).map((post) => ({ slug: post.id }));
@@ -35,13 +36,14 @@ export async function generateMetadata({ params }: PageProps<"/blog/[slug]">): P
     description: post.description,
     alternates: { canonical: path },
     authors: post.author ? [{ name: post.author.name }] : undefined,
+    ...(post.draft && { robots: { index: false, follow: false } }),
     openGraph: {
       type: "article",
       url: path,
       title: post.title,
       description: post.description,
       publishedTime: post.publishedAt,
-      modifiedTime: post.revisedAt ?? post.updatedAt,
+      modifiedTime: post.updatedAt,
       images: post.eyecatch ? [{ url: post.eyecatch.url, width: post.eyecatch.width, height: post.eyecatch.height }] : undefined,
     },
   };
@@ -49,8 +51,7 @@ export async function generateMetadata({ params }: PageProps<"/blog/[slug]">): P
 
 export default async function BlogPostPage({ params }: PageProps<"/blog/[slug]">) {
   const { slug } = await params;
-  const draftKey = await getDraftKey();
-  const post = await getPost(slug, draftKey);
+  const post = await getPost(slug);
   if (!post) notFound();
 
   const [goals, allPosts, authors] = await Promise.all([loadGoals(), listPosts(), listAuthors()]);
@@ -63,14 +64,13 @@ export default async function BlogPostPage({ params }: PageProps<"/blog/[slug]">
     ...others.filter((p) => !post.category || p.category?.id !== post.category.id),
   ].slice(0, RELATED_COUNT);
   const published = formatDate(post.publishedAt);
-  const revised = formatDate(post.revisedAt);
+  const revised = formatDate(post.updatedAt);
   const url = absoluteUrl(`/blog/${post.id}`);
 
-  const content = post.content ? buildToc(post.content, "toc-content") : null;
-  const blocks = normalizeBodyBlocks(post.body).map((block, i) =>
+  const blocks = post.blocks.map((block, i) =>
     block.kind === "rich_text" ? { ...block, ...buildToc(block.html, `toc-${i + 1}`) } : block,
   );
-  const tocItems = [...(content?.items ?? []), ...blocks.flatMap((block) => (block.kind === "rich_text" ? block.items : []))];
+  const tocItems = blocks.flatMap((block) => (block.kind === "rich_text" ? block.items : []));
   const ctaIndexes = blocks.map((_, i) => blocks.slice(0, i).filter((b) => b.kind === "cta_button").length);
 
   return (
@@ -84,7 +84,7 @@ export default async function BlogPostPage({ params }: PageProps<"/blog/[slug]">
           description: post.description,
           image: post.eyecatch ? [post.eyecatch.url] : undefined,
           datePublished: post.publishedAt,
-          dateModified: post.revisedAt ?? post.updatedAt,
+          dateModified: post.updatedAt,
           mainEntityOfPage: url,
           author: author
             ? { "@type": "Person", name: author.name, ...(author.role && { jobTitle: author.role }) }
@@ -107,10 +107,10 @@ export default async function BlogPostPage({ params }: PageProps<"/blog/[slug]">
         }}
       />
 
-      {draftKey && (
-        <div className="mb-6">
-          <PreviewBanner slug={post.id} />
-        </div>
+      {post.draft && (
+        <p role="status" className="mb-6 rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm font-bold text-amber-900">
+          下書きです（draft: true）。本番サイトには表示されません。
+        </p>
       )}
 
       <nav aria-label="パンくずリスト" className="text-xs text-muted">
@@ -141,7 +141,7 @@ export default async function BlogPostPage({ params }: PageProps<"/blog/[slug]">
                 </Link>
               )}
               {published && <time dateTime={post.publishedAt}>公開 {published}</time>}
-              {revised && revised !== published && <time dateTime={post.revisedAt}>更新 {revised}</time>}
+              {revised && revised !== published && <time dateTime={post.updatedAt}>更新 {revised}</time>}
             </p>
             <h1 className="mt-2 text-2xl leading-snug font-extrabold md:text-3xl">{post.title}</h1>
             {post.description && <p className="mt-3 text-sm leading-relaxed text-muted">{post.description}</p>}
@@ -169,7 +169,6 @@ export default async function BlogPostPage({ params }: PageProps<"/blog/[slug]">
             </div>
 
             <div className="mt-8 space-y-8">
-              {content && <div className="blog-content" dangerouslySetInnerHTML={{ __html: content.html }} />}
               {blocks.map((block, i) =>
                 block.kind === "rich_text" ? (
                   <div key={i} className="blog-content" dangerouslySetInnerHTML={{ __html: block.html }} />

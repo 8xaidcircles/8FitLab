@@ -1,15 +1,5 @@
-import { createHmac } from "node:crypto";
 import { describe, expect, it } from "vitest";
-import {
-  collectGoalCategories,
-  formatDate,
-  isInGoalCategory,
-  isValidSlug,
-  resolveGoalId,
-  safeEqual,
-  serializeJsonLd,
-  verifyWebhookSignature,
-} from "../utils";
+import { collectGoalCategories, formatDate, isInGoalCategory, isValidSlug, resolveGoalId, serializeJsonLd } from "../utils";
 
 describe("isValidSlug", () => {
   it("英数字・ハイフン・アンダースコアのみ受け付ける", () => {
@@ -20,31 +10,6 @@ describe("isValidSlug", () => {
     expect(isValidSlug("")).toBe(false);
     expect(isValidSlug("a".repeat(101))).toBe(false);
     expect(isValidSlug(null)).toBe(false);
-  });
-});
-
-describe("safeEqual", () => {
-  it("長さが違っても例外にならず false を返す", () => {
-    expect(safeEqual("secret", "secret")).toBe(true);
-    expect(safeEqual("secret", "secreT")).toBe(false);
-    expect(safeEqual("secret", "secret-longer")).toBe(false);
-  });
-});
-
-describe("verifyWebhookSignature", () => {
-  const body = JSON.stringify({ service: "8fitlab", api: "blogs", id: "abc", type: "edit" });
-  const secret = "webhook-secret";
-  const signature = createHmac("sha256", secret).update(body).digest("hex");
-
-  it("本文の HMAC-SHA256 と一致する署名だけ通す", () => {
-    expect(verifyWebhookSignature(body, signature, secret)).toBe(true);
-    expect(verifyWebhookSignature(`${body} `, signature, secret)).toBe(false);
-    expect(verifyWebhookSignature(body, signature, "other-secret")).toBe(false);
-  });
-
-  it("署名やシークレットが無ければ拒否する", () => {
-    expect(verifyWebhookSignature(body, null, secret)).toBe(false);
-    expect(verifyWebhookSignature(body, signature, "")).toBe(false);
   });
 });
 

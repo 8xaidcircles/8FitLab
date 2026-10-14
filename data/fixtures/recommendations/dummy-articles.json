@@ -1,5 +1,5 @@
 {
-  "_comment": "表示確認用のダミー（手書き）。RECOMMENDATION_FIXTURE=1 かつ production 以外のときだけ読む。記事は microCMS に存在しないため、カードのリンク先 /blog/{id} は 404 になる",
+  "_comment": "表示確認用のダミー（手書き）。RECOMMENDATION_FIXTURE=1 かつ production 以外のときだけ読む。記事は content/blog/posts に存在しないため、カードのリンク先 /blog/{id} は 404 になる",
   "contents": [
     {
       "id": "dummy-html-basics",

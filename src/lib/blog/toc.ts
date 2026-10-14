@@ -15,7 +15,7 @@ function plainText(html: string): string {
 
 /**
  * 本文の h2・h3 から目次を作る。id の無い見出しには id を付けた HTML を返す
- * （microCMS のリッチエディタは見出しに id を付けるが、付いていない本文でも目次から移動できるようにする）
+ * （Markdown から変換した見出しには id が無いため、目次から移動できるように付ける）
  * 複数の本文ブロックで id が重複しないよう、prefix をブロックごとに変える
  */
 export function buildToc(html: string, prefix = "toc"): { html: string; items: TocItem[] } {

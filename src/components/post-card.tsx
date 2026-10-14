@@ -10,7 +10,7 @@ export function PostCard({
   compact = false,
   headingLevel = "h2",
 }: {
-  post: Pick<BlogPostSummary, "id" | "title" | "description" | "eyecatch" | "category" | "publishedAt">;
+  post: Pick<BlogPostSummary, "id" | "title" | "description" | "eyecatch" | "category"> & { publishedAt?: string };
   /** カテゴリ名の代わりに出すラベル（おすすめの種別など）。カテゴリページへのリンクにはしない */
   label?: string;
   href?: string;

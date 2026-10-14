@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { listPosts } from "@/lib/blog/microcms";
+import { listPosts } from "@/lib/blog/content";
 import { collectCategories, collectGoalCategories, isInGoalCategory } from "@/lib/blog/utils";
 import { loadGoals } from "@/lib/career-match";
 import { BlogListing } from "../../blog-listing";
@@ -10,13 +10,15 @@ async function loadCategories() {
   return { posts, goals, categories: collectCategories(posts), goalCategories: collectGoalCategories(posts, goals) };
 }
 
+export const dynamicParams = false;
+
 export async function generateStaticParams() {
   const { categories, goalCategories } = await loadCategories();
   const ids = new Set([...goalCategories, ...categories].map((category) => category.id));
   return [...ids].map((categoryId) => ({ categoryId }));
 }
 
-// 職種カテゴリ（goal_id）を microCMS のカテゴリより優先する
+// 職種カテゴリ（goal_id）を categories.yml のカテゴリより優先する
 async function findCategory(categoryId: string) {
   const { posts, goals, categories, goalCategories } = await loadCategories();
   const goal = goals.find((g) => g.goal_id === categoryId);

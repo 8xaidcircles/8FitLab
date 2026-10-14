@@ -4,7 +4,7 @@ import { groupByPurpose, normalizeServices, type RawService } from "../services"
 const base: RawService = {
   id: "school-a",
   name: "スクールA",
-  service_type: ["school"],
+  service_type: "school",
   official_url: "https://example.com/a",
 };
 
@@ -13,7 +13,7 @@ describe("normalizeServices", () => {
     const result = normalizeServices([
       base,
       { ...base, id: "no-name", name: " " },
-      { ...base, id: "no-type", service_type: ["other"] },
+      { ...base, id: "no-type", service_type: "other" },
       { ...base, id: "http", official_url: "http://example.com" },
       { ...base, id: "js", official_url: "javascript:alert(1)" },
     ]);
@@ -26,7 +26,7 @@ describe("normalizeServices", () => {
       { ...base, id: "b", name: "B", order: 2 },
       { ...base, id: "a", name: "A", order: 1 },
       { ...base, id: "none", name: "C" },
-      { ...base, id: "job", name: "転職X", service_type: ["job_service"] },
+      { ...base, id: "job", name: "転職X", service_type: "job_service" },
     ]);
     expect(result.school.map((s) => s.id)).toEqual(["a", "b", "none"]);
     expect(result.job_service.map((s) => s.id)).toEqual(["job"]);
@@ -35,6 +35,21 @@ describe("normalizeServices", () => {
   it("特徴を 1 行ずつに分け、行頭の記号を取る", () => {
     const [service] = normalizeServices([{ ...base, features: "・現役エンジニアが講師\n- 転職保証あり\r\n\n給付金対象" }]).school;
     expect(service.features).toEqual(["現役エンジニアが講師", "転職保証あり", "給付金対象"]);
+  });
+
+  it("特徴は YAML のリストでも書ける", () => {
+    const [service] = normalizeServices([{ ...base, features: ["現役エンジニアが講師", " ", 1] }]).school;
+    expect(service.features).toEqual(["現役エンジニアが講師"]);
+  });
+
+  it("ロゴはサイト内の画像だけ受け付ける", () => {
+    const logo = { url: "/blog/images/services/a.png", width: 200, height: 100 };
+    const [ok, external] = normalizeServices([
+      { ...base, id: "a", name: "A", order: 1, logo },
+      { ...base, id: "b", name: "B", order: 2, logo: { ...logo, url: "https://example.com/a.png" } },
+    ]).school;
+    expect(ok.logo).toEqual(logo);
+    expect(external.logo).toBeNull();
   });
 
   it("広告扱いは明示的に false のときだけ外し、ボタン名は長すぎれば既定に戻す", () => {
@@ -50,10 +65,11 @@ describe("normalizeServices", () => {
 
   it("参照記事の id と計測用 URL を検証する", () => {
     const [service] = normalizeServices([
-      { ...base, review_article: { id: "review-1" }, tracking_pixel_url: "http://example.com/px" },
+      { ...base, review_article: "review-1", tracking_pixel_url: "http://example.com/px" },
     ]).school;
     expect(service.reviewArticleId).toBe("review-1");
     expect(service.trackingPixelUrl).toBeNull();
+    expect(normalizeServices([{ ...base, review_article: "../x" }]).school[0].reviewArticleId).toBeNull();
   });
 });
 
@@ -62,7 +78,7 @@ describe("groupByPurpose", () => {
     const { school, job_service } = normalizeServices([
       { ...base, id: "a", name: "A", order: 1, purposes: ["転職", "副業"] },
       { ...base, id: "b", name: "B", order: 2, purposes: ["転職"] },
-      { ...base, id: "j", name: "J", service_type: ["job_service"], purposes: ["副業", "副業"] },
+      { ...base, id: "j", name: "J", service_type: "job_service", purposes: ["副業", "副業"] },
     ]);
     const groups = groupByPurpose([...school, ...job_service]);
     expect(groups.map((g) => [g.purpose, g.services.map((s) => s.id)])).toEqual([

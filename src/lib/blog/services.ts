@@ -1,9 +1,9 @@
 import { parseHttpsUrl } from "./body-blocks";
-import type { MicroCMSImage } from "./types";
+import type { BlogImage } from "./types";
 
 /**
- * 比較ページ（/blog）に掲載するスクール・転職サービス（microCMS の services API）。
- * 管理画面の入力ミスで比較表全体を壊さないよう、名前・種別・公式サイトの URL が無いものは出さない
+ * 比較ページ（/blog）に掲載するスクール・転職サービス（content/blog/services.yml）。
+ * 名前・種別・公式サイトの URL が無いものは出さない（content のテストで、すべて掲載されることを確かめる）
  */
 export type ServiceType = "school" | "job_service";
 
@@ -12,7 +12,7 @@ export type ComparedService = {
   type: ServiceType;
   name: string;
   catchCopy: string | null;
-  logo: MicroCMSImage | null;
+  logo: BlogImage | null;
   summary: string | null;
   features: string[];
   /** スクール：受講料 / 転職サービス：利用料金 */
@@ -67,31 +67,32 @@ function text(value: unknown): string | null {
   return typeof value === "string" && value.trim() ? value.trim() : null;
 }
 
-/** セレクトフィールドは配列で返る（複数選択オフでも配列） */
+/** 1 つでも複数でも書ける項目（例: purposes: [転職, 副業] / purposes: 転職） */
 function selections(value: unknown): string[] {
   const values = Array.isArray(value) ? value : [value];
   return [...new Set(values.map(text).filter((v): v is string => v !== null))];
 }
 
+/** YAML のリスト、または改行区切りの文字列 */
 function lines(value: unknown): string[] {
-  return (text(value) ?? "")
-    .split(/\r?\n/)
-    .map((line) => line.replace(/^[・\-*]\s*/, "").trim())
+  const values = Array.isArray(value) ? value : (text(value) ?? "").split(/\r?\n/);
+  return values
+    .map((line) => (typeof line === "string" ? line.replace(/^[・\-*]\s*/, "").trim() : ""))
     .filter(Boolean);
 }
 
-function image(value: unknown): MicroCMSImage | null {
+/** content の読み込みで public/ の画像に置き換え済みのもの */
+function image(value: unknown): BlogImage | null {
   if (typeof value !== "object" || value === null) return null;
   const { url, width, height } = value as Record<string, unknown>;
-  return typeof url === "string" && typeof width === "number" && typeof height === "number" && parseHttpsUrl(url)
+  return typeof url === "string" && url.startsWith("/") && typeof width === "number" && typeof height === "number"
     ? { url, width, height }
     : null;
 }
 
+/** 記事の id（content/blog/posts のファイル名） */
 function referenceId(value: unknown): string | null {
-  if (typeof value !== "object" || value === null) return null;
-  const id = (value as Record<string, unknown>).id;
-  return typeof id === "string" && /^[A-Za-z0-9_-]{1,100}$/.test(id) ? id : null;
+  return typeof value === "string" && /^[A-Za-z0-9_-]{1,100}$/.test(value) ? value : null;
 }
 
 function toService(raw: RawService): ComparedService | null {

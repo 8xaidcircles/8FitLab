@@ -1,0 +1,24 @@
+# /blog の比較欄に出すスクール・転職サービス。項目の説明は docs/blog-writing.md
+#
+# - id: example-school
+#   name: サンプルスクール
+#   service_type: school               # school / job_service
+#   catch_copy: 【未経験から転職を目指すなら】
+#   logo: /blog/images/services/example-school.png
+#   summary: 2〜3 行の紹介
+#   features:
+#     - 特徴 1
+#     - 特徴 2
+#   price: 169,800円〜
+#   period: 4〜16週間                  # スクールのみ
+#   learning_style: オンライン         # スクールのみ
+#   career_support: あり
+#   target: 20代・未経験               # 転職サービスのみ
+#   purposes: [未経験から転職, 費用を抑えたい]
+#   official_url: https://px.a8.net/svt/ejp?a8mat=XXXX
+#   cta_label: 公式サイトを見る
+#   sponsored: true
+#   review_article: frontend-school-review   # 詳しい記事のスラッグ（任意）
+#   checked_at: 2026年10月2日
+#   order: 10
+[]

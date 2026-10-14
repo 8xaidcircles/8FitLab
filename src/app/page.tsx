@@ -4,7 +4,7 @@ import { JsonLd } from "@/components/json-ld";
 import { organizationId } from "@/components/StructuredData";
 import { PostCard } from "@/components/post-card";
 import { TrackView } from "@/components/track-view";
-import { listPosts } from "@/lib/blog/microcms";
+import { listPosts } from "@/lib/blog/content";
 import { loadGoals } from "@/lib/career-match";
 import { absoluteUrl, SITE_DESCRIPTION, SITE_NAME } from "@/lib/site";
 

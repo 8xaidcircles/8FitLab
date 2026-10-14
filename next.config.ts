@@ -1,7 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // data/ の JSON は fs で読むため、サーバー関数のトレースに明示的に含める（data/raw は巨大なため含めない）
+  // data/ の JSON と Blog の記事は fs で読むため、サーバー関数のトレースに明示的に含める（data/raw は巨大なため含めない）。
+  // 記事の画像はサイズを測るため public/blog も読む
   outputFileTracingIncludes: {
     "/*": [
       "./data/goals/**/*.json",
@@ -10,6 +11,8 @@ const nextConfig: NextConfig = {
       "./data/education/**/*.json",
       "./data/learning-paths/**/*.json",
       "./data/statistics/**/*.json",
+      "./content/blog/**",
+      "./public/blog/**",
     ],
   },
   // fs の動的パスから data/ 全体がトレースされるため、元データ（数百 MB・再配布しない）と
@@ -39,9 +42,6 @@ const nextConfig: NextConfig = {
         ],
       },
     ];
-  },
-  images: {
-    remotePatterns: [{ protocol: "https", hostname: "images.microcms-assets.io" }],
   },
 };
 

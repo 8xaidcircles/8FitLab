@@ -88,7 +88,7 @@ body {
   color: var(--color-ink);
 }
 
-/* microCMS リッチエディタが出力する記事本文 */
+/* Markdown から変換した記事本文（src/lib/blog/markdown.ts） */
 .blog-content {
   line-height: 1.95;
   overflow-wrap: anywhere;
@@ -137,6 +137,16 @@ body {
   }
   & li::marker {
     color: var(--color-sky);
+  }
+  & .contains-task-list {
+    padding-left: 0.25em;
+    list-style: none;
+  }
+  & .footnotes {
+    border-top: 1px solid var(--color-line);
+    padding-top: 1em;
+    font-size: 0.85rem;
+    color: var(--color-muted);
   }
   & blockquote {
     border-left: 4px solid var(--color-line);

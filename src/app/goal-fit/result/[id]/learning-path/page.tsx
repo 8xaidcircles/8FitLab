@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { TrackView } from "@/components/track-view";
 import { isUuid } from "@/lib/anonymous-user";
 import { getAssessment } from "@/lib/assessment/repository";
-import { listRecommendationArticles } from "@/lib/blog/microcms";
+import { listRecommendationArticles } from "@/lib/blog/content";
 import {
   evaluateSteps,
   loadGoals,

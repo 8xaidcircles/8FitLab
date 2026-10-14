@@ -2,7 +2,7 @@ import type { BlogPostSummary } from "@/lib/blog/types";
 import { isStepSatisfied } from "./skill-gap";
 import type { LearningStep } from "./types";
 
-// おすすめは運営が書いた Blog 記事（microCMS の recommend_* フィールド）。リンク先は常に /blog/{id}
+// おすすめは運営が書いた Blog 記事（frontmatter の recommend_* フィールド）。リンク先は常に /blog/{id}
 
 export const RECOMMENDATION_TYPES = ["material", "career_service"] as const;
 export type RecommendationType = (typeof RECOMMENDATION_TYPES)[number];

@@ -1,10 +1,8 @@
 import type { MetadataRoute } from "next";
-import { listPosts } from "@/lib/blog/microcms";
+import { listPosts } from "@/lib/blog/content";
 import { collectCategories, collectGoalCategories } from "@/lib/blog/utils";
 import { loadGoals } from "@/lib/career-match";
 import { absoluteUrl } from "@/lib/site";
-
-export const revalidate = 3600;
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [posts, goals] = await Promise.all([listPosts(), loadGoals()]);
@@ -27,7 +25,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     })),
     ...posts.map((post) => ({
       url: absoluteUrl(`/blog/${post.id}`),
-      lastModified: post.revisedAt ?? post.updatedAt,
+      lastModified: post.updatedAt,
       changeFrequency: "monthly" as const,
       priority: 0.6,
     })),

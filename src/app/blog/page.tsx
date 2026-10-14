@@ -3,7 +3,7 @@ import Link from "next/link";
 import type { ReactNode } from "react";
 import { JobCategoryPickTable, ServiceCard, ServiceTable } from "@/components/service-compare";
 import { JOB_SERVICE_PICKS, SCHOOL_PICKS, type JobCategoryPick } from "@/lib/blog/job-category-picks";
-import { listPosts, listServices } from "@/lib/blog/microcms";
+import { listPosts, listServices } from "@/lib/blog/content";
 import { groupByPurpose, normalizeServices, type ComparedService } from "@/lib/blog/services";
 import { collectCategories, collectGoalCategories } from "@/lib/blog/utils";
 import { loadGoals } from "@/lib/career-match";

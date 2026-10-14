@@ -1,0 +1,9 @@
+# 記事のカテゴリ。記事の frontmatter の category に id を書く。
+# 職種のカテゴリ（frontend-developer など）は data/goals/goals.json から自動で作るため、ここには書かない（記事の goal に書く）。
+# id は URL /blog/category/{id} になる（英数字・-・_）
+- id: career
+  name: キャリア・転職
+- id: learning
+  name: 学習方法
+- id: school
+  name: スクール選び

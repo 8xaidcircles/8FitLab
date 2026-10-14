@@ -1,7 +1,7 @@
 import { TrackClick } from "@/components/track-click";
 import type { CtaButtonBlock } from "@/lib/blog/body-blocks";
 
-// 記事本文中の外部サービスへのボタン（microCMS の cta_button）。広告リンクには rel="sponsored nofollow" と PR 表記を付ける
+// 記事本文中の外部サービスへのボタン（Markdown の ```cta）。広告リンクには rel="sponsored nofollow" と PR 表記を付ける
 export function BlogCtaButton({ block, articleId, positionIndex }: { block: CtaButtonBlock; articleId: string; positionIndex: number }) {
   return (
     <div className="relative rounded-2xl border border-line bg-white px-5 py-6 text-center">

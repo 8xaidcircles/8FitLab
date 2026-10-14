@@ -1,8 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { normalizeBodyBlocks, parseHttpsUrl } from "../body-blocks";
+import { parseCtaBlock, parseHttpsUrl } from "../body-blocks";
 
 const cta = {
-  fieldId: "cta_button",
   label: "公式サイトで詳細を見る",
   url: "https://px.a8.net/svt/ejp?a8mat=TEST",
   note: "無料体験あり",
@@ -10,52 +9,41 @@ const cta = {
   tracking_pixel_url: "https://www10.a8.net/0.gif?a8mat=TEST",
 };
 
-describe("normalizeBodyBlocks", () => {
-  it("rich_text と cta_button を入力順のまま整える", () => {
-    expect(normalizeBodyBlocks([{ fieldId: "rich_text", content: " <p>本文</p> " }, cta])).toEqual([
-      { kind: "rich_text", html: "<p>本文</p>" },
-      {
-        kind: "cta_button",
-        label: "公式サイトで詳細を見る",
-        url: "https://px.a8.net/svt/ejp?a8mat=TEST",
-        note: "無料体験あり",
-        sponsored: true,
-        trackingPixelUrl: "https://www10.a8.net/0.gif?a8mat=TEST",
-        linkHost: "px.a8.net",
-      },
-    ]);
+describe("parseCtaBlock", () => {
+  it("CTA ボタンに整える", () => {
+    expect(parseCtaBlock({ ...cta, label: " 公式サイトで詳細を見る " })).toEqual({
+      kind: "cta_button",
+      label: "公式サイトで詳細を見る",
+      url: "https://px.a8.net/svt/ejp?a8mat=TEST",
+      note: "無料体験あり",
+      sponsored: true,
+      trackingPixelUrl: "https://www10.a8.net/0.gif?a8mat=TEST",
+      linkHost: "px.a8.net",
+    });
   });
 
   it("sponsored は明示的に false のときだけ広告扱いを外す（未入力は広告として扱う）", () => {
-    const [unset] = normalizeBodyBlocks([{ ...cta, sponsored: undefined }]);
-    const [off] = normalizeBodyBlocks([{ ...cta, sponsored: false }]);
-    expect(unset).toMatchObject({ sponsored: true });
-    expect(off).toMatchObject({ sponsored: false });
+    expect(parseCtaBlock({ label: "見る", url: "https://example.com" })).toMatchObject({
+      sponsored: true,
+      note: null,
+      trackingPixelUrl: null,
+    });
+    expect(parseCtaBlock({ ...cta, sponsored: false })).toMatchObject({ sponsored: false });
   });
 
-  it("ボタン文言・https の URL が無い CTA、空の本文、未知のブロックは捨てる", () => {
-    expect(
-      normalizeBodyBlocks([
-        { ...cta, label: " " },
-        { ...cta, label: "あ".repeat(61) },
-        { ...cta, url: "javascript:alert(1)" },
-        { ...cta, url: "http://example.com" },
-        { fieldId: "rich_text", content: "  " },
-        { fieldId: "unknown", content: "<p>x</p>" },
-        null,
-        "text",
-      ]),
-    ).toEqual([]);
-  });
-
-  it("計測用画像は https だけ。不正なら画像だけ外してボタンは残す", () => {
-    const [block] = normalizeBodyBlocks([{ ...cta, tracking_pixel_url: "http://www10.a8.net/0.gif" }]);
-    expect(block).toMatchObject({ kind: "cta_button", trackingPixelUrl: null });
-  });
-
-  it("配列でなければ空", () => {
-    expect(normalizeBodyBlocks(undefined)).toEqual([]);
-    expect(normalizeBodyBlocks({ fieldId: "rich_text", content: "<p>x</p>" })).toEqual([]);
+  it.each([
+    ["文言が空", { ...cta, label: " " }, "label"],
+    ["文言が長すぎる", { ...cta, label: "あ".repeat(61) }, "60 文字"],
+    ["javascript: の URL", { ...cta, url: "javascript:alert(1)" }, "url"],
+    ["http の URL", { ...cta, url: "http://example.com" }, "url"],
+    ["補足が長すぎる", { ...cta, note: "あ".repeat(201) }, "note"],
+    ["sponsored が真偽値でない", { ...cta, sponsored: "yes" }, "sponsored"],
+    ["計測用画像が http", { ...cta, tracking_pixel_url: "http://www10.a8.net/0.gif" }, "tracking_pixel_url"],
+    ["項目名の誤り", { ...cta, lable: "x" }, "lable"],
+    ["YAML でない", "ボタン", "label: ..."],
+    ["空", null, "label: ..."],
+  ])("%s は例外", (_, raw, message) => {
+    expect(() => parseCtaBlock(raw)).toThrow(message);
   });
 });
 

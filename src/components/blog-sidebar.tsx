@@ -47,7 +47,7 @@ export function BlogSidebar({
   author: BlogAuthor | null;
   posts: BlogPostSummary[];
   categories: CategoryLink[];
-  /** 職種カテゴリ（goal_id）。microCMS のカテゴリに同じ ID があれば、こちらにだけ出す */
+  /** 職種カテゴリ（goal_id）。categories.yml のカテゴリに同じ ID があれば、こちらにだけ出す */
   goalCategories: CategoryLink[];
   currentPostId?: string;
   currentCategoryId?: string;
