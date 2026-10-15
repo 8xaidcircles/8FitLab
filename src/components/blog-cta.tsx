@@ -5,9 +5,9 @@ export function BlogCta({ goal }: { goal?: { goal_id: string; name: string } | n
   return (
     <aside className="relative overflow-hidden rounded-3xl border border-line bg-white p-6 md:p-8">
       <div className="bg-brand-gradient absolute inset-x-0 top-0 h-1" />
-      <p className="text-lg font-extrabold">あなたの現在地から最短の学習ステップを診断</p>
+      <p className="text-lg font-extrabold">あなたの現在地から最短の学習ロードマップを診断</p>
       <p className="mt-2 text-sm leading-relaxed text-muted">
-        現在のスキル・経歴から、Goal達成までのロードマップとおすすめサービスが分かります。
+        現在のスキル・経歴から、Goal達成までのステップとおすすめサービスが分かります。
       </p>
       <div className="mt-5 flex flex-wrap gap-3">
         <Link
