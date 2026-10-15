@@ -1,3 +1,5 @@
+import type { Metadata } from "next";
+
 const SLUG_PATTERN = /^[A-Za-z0-9_-]{1,100}$/;
 
 export function isValidSlug(slug: unknown): slug is string {
@@ -45,6 +47,19 @@ export function collectGoalCategories(
     name: goal.name,
     count: posts.filter((post) => isInGoalCategory(post, goal)).length,
   }));
+}
+
+/**
+ * 記事の robots。draft: true の間だけ noindex にし、draft を外して公開すると次のビルドで自動的に外れる
+ * （本番では下書きはそもそもページを作らないため、noindex が付くのはプレビューと開発環境だけ）
+ */
+export function postRobots(post: { draft: boolean }): Metadata["robots"] {
+  return post.draft ? { index: false, follow: false } : undefined;
+}
+
+/** 記事がまだ無いカテゴリは、中身の無いページとして検索結果に出さない。記事が入れば自動的に外れる */
+export function categoryRobots(postCount: number): Metadata["robots"] {
+  return postCount === 0 ? { index: false, follow: true } : undefined;
 }
 
 /** <script type="application/ld+json"> に埋め込んでも </script> で閉じられないようにする */

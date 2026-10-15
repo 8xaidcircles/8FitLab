@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { listPosts } from "@/lib/blog/content";
-import { collectCategories, collectGoalCategories, isInGoalCategory } from "@/lib/blog/utils";
+import { categoryRobots, collectCategories, collectGoalCategories, isInGoalCategory } from "@/lib/blog/utils";
 import { loadGoals } from "@/lib/career-match";
 import { BlogListing } from "../../blog-listing";
 
@@ -53,8 +53,7 @@ export async function generateMetadata({ params }: PageProps<"/blog/category/[ca
     title: `${category.name}の記事一覧`,
     description,
     alternates: { canonical: `/blog/category/${category.id}` },
-    // 記事がまだ無い職種カテゴリは、中身の無いページとして検索結果に出さない
-    ...(categoryPosts.length === 0 && { robots: { index: false, follow: true } }),
+    robots: categoryRobots(categoryPosts.length),
   };
 }
 

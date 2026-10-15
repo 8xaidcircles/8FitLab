@@ -1,5 +1,29 @@
 import { describe, expect, it } from "vitest";
-import { collectGoalCategories, formatDate, isInGoalCategory, isValidSlug, resolveGoalId, serializeJsonLd } from "../utils";
+import {
+  categoryRobots,
+  collectGoalCategories,
+  formatDate,
+  isInGoalCategory,
+  isValidSlug,
+  postRobots,
+  resolveGoalId,
+  serializeJsonLd,
+} from "../utils";
+
+describe("robots（noindex）", () => {
+  it("公開した記事は noindex を付けない", () => {
+    expect(postRobots({ draft: false })).toBeUndefined();
+  });
+
+  it("下書きの記事は noindex・nofollow", () => {
+    expect(postRobots({ draft: true })).toEqual({ index: false, follow: false });
+  });
+
+  it("記事のあるカテゴリは noindex を付けず、記事の無いカテゴリだけ noindex", () => {
+    expect(categoryRobots(1)).toBeUndefined();
+    expect(categoryRobots(0)).toEqual({ index: false, follow: true });
+  });
+});
 
 describe("isValidSlug", () => {
   it("英数字・ハイフン・アンダースコアのみ受け付ける", () => {

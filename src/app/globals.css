@@ -179,20 +179,45 @@ body {
     font-size: 0.85rem;
     line-height: 1.7;
   }
+  /*
+   * 表は横にスクロールさせ、セルを細く潰さない。見出しは1行目。1列目（項目名）は折り返さず、スクロールしても左に固定する。
+   * collapse の枠線は固定したセルと一緒に動かないため、separate にして各セルの右と下に線を引く
+   */
   & table {
     display: block;
     overflow-x: auto;
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 0;
     font-size: 0.9rem;
   }
   & th,
   & td {
-    border: 1px solid var(--color-line);
-    padding: 0.5rem 0.75rem;
+    border-right: 1px solid var(--color-line);
+    border-bottom: 1px solid var(--color-line);
+    padding: 0.625rem 0.75rem;
+    vertical-align: top;
+  }
+  & tr:first-child > th {
+    border-top: 1px solid var(--color-line);
+  }
+  & :is(th, td):first-child {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    border-left: 1px solid var(--color-line);
   }
   & th {
     background: var(--color-sky-soft);
     font-weight: 700;
+    white-space: nowrap;
+  }
+  & td {
+    min-width: 15rem;
+  }
+  & td:first-child {
+    min-width: 0;
+    background: var(--color-mist);
+    white-space: nowrap;
   }
   & hr {
     border-color: var(--color-line);

@@ -40,6 +40,13 @@ describe("renderMarkdown", () => {
     expect(block.kind === "rich_text" && block.html).toContain("<del>古い</del>");
   });
 
+  it("表のセル内の <br> は改行にする", () => {
+    const { blocks } = renderMarkdown("| a | b |\n| --- | --- |\n| 1<br>2 | 3<br />4 |");
+    const [block] = blocks;
+    expect(block.kind === "rich_text" && block.html).toContain("<td>1<br>\n2</td>");
+    expect(block.kind === "rich_text" && block.html).toContain("<td>3<br>\n4</td>");
+  });
+
   it("CTA 以外のコードブロックはそのまま本文に出す", () => {
     const { blocks } = renderMarkdown("```ts\nconst a = 1;\n```");
     expect(blocks).toEqual([{ kind: "rich_text", html: '<pre><code class="language-ts">const a = 1;\n</code></pre>' }]);
@@ -55,6 +62,8 @@ describe("renderMarkdown", () => {
     ["h1 見出し", "# タイトル", "h1"],
     ["生の HTML", '<script>alert(1)</script>', "HTML"],
     ["インラインの HTML", 'a <img src="x" onerror="alert(1)"> b', "HTML"],
+    ["表の外の <br>", "a<br>b", "HTML"],
+    ["表のセル内の <br> 以外の HTML", '| a |\n| --- |\n| <img src="x" onerror="alert(1)"> |', "HTML"],
     ["javascript: のリンク", "[x](javascript:alert(1))", "使えない URL"],
     ["プロトコル相対のリンク", "[x](//evil.example.com)", "使えない URL"],
     ["CTA の項目の誤り", "```cta\nlabel: 見る\n```", "url"],

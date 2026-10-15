@@ -22,6 +22,7 @@ const GOAL_FIT_LANG = "goal-fit";
 const BLOCK_LANGS = new Set([CTA_LANG, GOAL_FIT_LANG]);
 const BLOCK_MARKER = "@@8FITLAB_BLOCK_";
 const BLOCK_PLACEHOLDER = /<p>@@8FITLAB_BLOCK_(\d+)@@<\/p>/;
+const LINE_BREAK = /^<br\s*\/?>$/i;
 
 const processor = unified()
   .use(remarkParse)
@@ -42,7 +43,13 @@ function checkNode(node: Nodes, localAssets: string[]): void {
     throw new Error("本文に「# 見出し」（h1）は使えません。記事タイトルが h1 になるため、本文は ## から始めてください");
   }
   if (node.type === "html") {
-    throw new Error(`本文に HTML は書けません（${node.value.slice(0, 40)}）`);
+    throw new Error(`本文に HTML は書けません（${node.value.slice(0, 40)}）。表のセル内の改行 <br> だけ使えます`);
+  }
+  // Markdown の表はセル内で改行できないため、<br> だけを改行として受け付ける
+  if (node.type === "tableCell") {
+    node.children = node.children.map((child) =>
+      child.type === "html" && LINE_BREAK.test(child.value.trim()) ? { type: "break" } : child,
+    );
   }
   if (node.type === "code" && node.lang && BLOCK_LANGS.has(node.lang)) {
     throw new Error(`\`\`\`${node.lang} は箇条書きや引用の中には置けません。本文の直下に書いてください`);

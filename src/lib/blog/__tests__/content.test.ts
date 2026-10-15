@@ -1,9 +1,35 @@
 import { readFile } from "node:fs/promises";
 import path from "node:path";
-import { describe, expect, it } from "vitest";
-import { loadBlogContent } from "../content";
+import { afterEach, describe, expect, it, vi } from "vitest";
+import { getPost, listPosts, loadBlogContent } from "../content";
 import { renderMarkdown } from "../markdown";
 import { normalizeServices } from "../services";
+import { postRobots } from "../utils";
+
+describe("本番（VERCEL_ENV=production）", () => {
+  afterEach(() => {
+    vi.unstubAllEnvs();
+  });
+
+  it("draft を外した記事はすべて公開され、noindex が付かない", async () => {
+    vi.stubEnv("VERCEL_ENV", "production");
+    const { posts } = await loadBlogContent();
+    const published = posts.filter((post) => !post.draft).map((post) => post.id);
+    expect((await listPosts()).map((post) => post.id).sort()).toEqual(published.sort());
+    for (const id of published) {
+      const post = await getPost(id);
+      expect(post && postRobots(post), id).toBeUndefined();
+    }
+  });
+
+  it("下書きはページを作らない", async () => {
+    vi.stubEnv("VERCEL_ENV", "production");
+    const { posts } = await loadBlogContent();
+    for (const draft of posts.filter((post) => post.draft)) {
+      expect(await getPost(draft.id), draft.id).toBeNull();
+    }
+  });
+});
 
 // content/blog の実データの検査。記事の追加・変更の PR は、このテストとビルドが通れば形式は正しい
 describe("content/blog", () => {

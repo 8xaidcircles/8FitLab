@@ -14,7 +14,7 @@ import { ShareLinks } from "@/components/share-links";
 import { TrackView } from "@/components/track-view";
 import { getPost, listPosts } from "@/lib/blog/content";
 import { buildToc } from "@/lib/blog/toc";
-import { collectCategories, collectGoalCategories, formatDate, resolveGoalId } from "@/lib/blog/utils";
+import { collectCategories, collectGoalCategories, formatDate, postRobots, resolveGoalId } from "@/lib/blog/utils";
 import { loadGoals } from "@/lib/career-match";
 import { absoluteUrl, SITE_NAME } from "@/lib/site";
 
@@ -36,7 +36,7 @@ export async function generateMetadata({ params }: PageProps<"/blog/[slug]">): P
     description: post.description,
     alternates: { canonical: path },
     authors: post.author ? [{ name: post.author.name }] : undefined,
-    ...(post.draft && { robots: { index: false, follow: false } }),
+    robots: postRobots(post),
     openGraph: {
       type: "article",
       url: path,
