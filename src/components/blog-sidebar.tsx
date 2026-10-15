@@ -1,8 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
-import { AuthorProfile } from "@/components/author-box";
-import type { BlogAuthor, BlogPostSummary } from "@/lib/blog/types";
+import type { BlogPostSummary } from "@/lib/blog/types";
 const LATEST_COUNT = 6;
 
 type CategoryLink = { id: string; name: string; count: number };
@@ -36,7 +35,6 @@ function CategoryList({ categories, currentCategoryId }: { categories: CategoryL
 }
 
 export function BlogSidebar({
-  author,
   posts,
   categories,
   goalCategories,
@@ -44,7 +42,6 @@ export function BlogSidebar({
   currentCategoryId,
   navigationOnly = false,
 }: {
-  author: BlogAuthor | null;
   posts: BlogPostSummary[];
   categories: CategoryLink[];
   /** 職種カテゴリ（goal_id）。categories.yml のカテゴリに同じ ID があれば、こちらにだけ出す */
@@ -87,8 +84,6 @@ export function BlogSidebar({
           <p className="mt-2 text-center text-xs text-muted">【無料】Goal Fit 診断</p>
         </Widget>
       )}
-
-      {!navigationOnly && author && <AuthorProfile author={author} compact />}
 
       {!navigationOnly && (
       <section className="relative overflow-hidden rounded-2xl bg-ink p-5 text-white">

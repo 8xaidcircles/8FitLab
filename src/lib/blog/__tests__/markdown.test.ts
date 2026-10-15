@@ -24,6 +24,15 @@ describe("renderMarkdown", () => {
     ]);
   });
 
+  it("```goal-fit を書いた位置に Goal Fit 誘導のブロックを置く", () => {
+    const { blocks } = renderMarkdown("前。\n\n```goal-fit\n```\n\n後。");
+    expect(blocks).toEqual([
+      { kind: "rich_text", html: "<p>前。</p>" },
+      { kind: "goal_fit" },
+      { kind: "rich_text", html: "<p>後。</p>" },
+    ]);
+  });
+
   it("GFM（表・打ち消し線）を HTML にする", () => {
     const { blocks } = renderMarkdown("| a | b |\n| --- | --- |\n| 1 | 2 |\n\n~~古い~~");
     const [block] = blocks;
@@ -51,6 +60,8 @@ describe("renderMarkdown", () => {
     ["CTA の項目の誤り", "```cta\nlabel: 見る\n```", "url"],
     ["CTA の YAML の誤り", "```cta\nlabel: [\n```", "YAML"],
     ["箇条書きの中の CTA", "- 項目\n\n  ```cta\n  label: 見る\n  url: https://example.com\n  ```", "本文の直下"],
+    ["中身のある goal-fit", "```goal-fit\nlabel: 試す\n```", "何も書かない"],
+    ["引用の中の goal-fit", "> ```goal-fit\n> ```", "本文の直下"],
   ])("%s は例外", (_, markdown, message) => {
     expect(() => renderMarkdown(markdown)).toThrow(message);
   });

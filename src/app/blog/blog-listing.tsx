@@ -95,7 +95,6 @@ export function BlogListing({
           </section>
         </div>
         <BlogSidebar
-          author={null}
           posts={allPosts}
           categories={categories}
           goalCategories={goalCategories}

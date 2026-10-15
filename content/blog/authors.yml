@@ -1,16 +1,15 @@
 # 編集者プロフィール。記事の frontmatter の author に id を書く。
-# 最初の編集者は、author を書いていない記事のサイドバーにも出る。
-# 項目: id（必須）, name（必須）, role, avatar（/blog/images/... の画像）, highlights（1 行に 1 つ）, bio,
+# 項目: id（必須）, name（必須）, role, avatar（/blog/images/... の画像）, bio,
 #       x_url, github_url, note_url, website_url（https のみ）
 #
 # - id: editor
 #   name: 8FitLab 編集部
 #   role: 8FitLab 運営
 #   avatar: /blog/images/authors/editor.png
-#   highlights: |
-#     Web 制作会社で 5 年間フロントエンド開発
-#     エンジニア採用の面接官を担当
 #   bio: |
 #     プロフィール本文。改行はそのまま表示します。
 #   x_url: https://x.com/xxxx
-[]
+- id: editorial
+  name: 8FitLab編集部
+  avatar: /blog/images/authors/8fitlab-editorial.png
+  bio: プログラミング未経験から無料スクールで学習を始め、受託開発企業へWebエンジニアとして転職した経歴を持つ。現在は複数のWebサービスを自作・運営しながら、8FitLabの開発・運営やWeb開発・ライティング活動に従事。実体験に基づいた未経験からのキャリア形成やWeb制作に関する情報を発信中。

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { AuthorProfile, AuthorSummary } from "@/components/author-box";
+import { AuthorProfile } from "@/components/author-box";
 import { BlogCta } from "@/components/blog-cta";
 import { BlogCtaButton } from "@/components/blog-cta-button";
 import { BlogSidebar } from "@/components/blog-sidebar";
@@ -12,7 +12,7 @@ import { organizationId } from "@/components/StructuredData";
 import { PostCard } from "@/components/post-card";
 import { ShareLinks } from "@/components/share-links";
 import { TrackView } from "@/components/track-view";
-import { getPost, listAuthors, listPosts } from "@/lib/blog/content";
+import { getPost, listPosts } from "@/lib/blog/content";
 import { buildToc } from "@/lib/blog/toc";
 import { collectCategories, collectGoalCategories, formatDate, resolveGoalId } from "@/lib/blog/utils";
 import { loadGoals } from "@/lib/career-match";
@@ -54,7 +54,7 @@ export default async function BlogPostPage({ params }: PageProps<"/blog/[slug]">
   const post = await getPost(slug);
   if (!post) notFound();
 
-  const [goals, allPosts, authors] = await Promise.all([loadGoals(), listPosts(), listAuthors()]);
+  const [goals, allPosts] = await Promise.all([loadGoals(), listPosts()]);
   const goalId = resolveGoalId(post.goal, goals);
   const goal = goals.find((g) => g.goal_id === goalId) ?? null;
   const author = post.author ?? null;
@@ -72,6 +72,8 @@ export default async function BlogPostPage({ params }: PageProps<"/blog/[slug]">
   );
   const tocItems = blocks.flatMap((block) => (block.kind === "rich_text" ? block.items : []));
   const ctaIndexes = blocks.map((_, i) => blocks.slice(0, i).filter((b) => b.kind === "cta_button").length);
+  // 本文に ```goal-fit が無い記事は、従来どおり記事の最後に出す
+  const hasInlineGoalFit = blocks.some((b) => b.kind === "goal_fit");
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-10">
@@ -146,12 +148,6 @@ export default async function BlogPostPage({ params }: PageProps<"/blog/[slug]">
             <h1 className="mt-2 text-2xl leading-snug font-extrabold md:text-3xl">{post.title}</h1>
             {post.description && <p className="mt-3 text-sm leading-relaxed text-muted">{post.description}</p>}
 
-            {author && (
-              <div className="mt-6">
-                <AuthorSummary author={author} />
-              </div>
-            )}
-
             {post.eyecatch && (
               <Image
                 src={post.eyecatch.url}
@@ -172,6 +168,8 @@ export default async function BlogPostPage({ params }: PageProps<"/blog/[slug]">
               {blocks.map((block, i) =>
                 block.kind === "rich_text" ? (
                   <div key={i} className="blog-content" dangerouslySetInnerHTML={{ __html: block.html }} />
+                ) : block.kind === "goal_fit" ? (
+                  <BlogCta key={i} goal={goal} />
                 ) : (
                   <BlogCtaButton key={i} block={block} articleId={post.id} positionIndex={ctaIndexes[i]} />
                 ),
@@ -180,12 +178,14 @@ export default async function BlogPostPage({ params }: PageProps<"/blog/[slug]">
           </article>
 
           <div className="mt-10 border-t border-line pt-6">
-            <ShareLinks url={url} title={post.title} />
+            <ShareLinks url={url} />
           </div>
 
-          <div className="mt-10">
-            <BlogCta goal={goal} />
-          </div>
+          {!hasInlineGoalFit && (
+            <div className="mt-10">
+              <BlogCta goal={goal} />
+            </div>
+          )}
 
           {author && (
             <div className="mt-10">
@@ -208,7 +208,6 @@ export default async function BlogPostPage({ params }: PageProps<"/blog/[slug]">
         </div>
 
         <BlogSidebar
-          author={author ?? authors[0] ?? null}
           posts={allPosts}
           categories={collectCategories(allPosts)}
           goalCategories={collectGoalCategories(allPosts, goals)}

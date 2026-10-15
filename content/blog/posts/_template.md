@@ -8,7 +8,7 @@ publishedAt: 2026-10-15
 # updatedAt: 2026-10-20          # 内容を更新したときだけ書く
 category: career                 # content/blog/categories.yml の id（任意）
 goal: [frontend-developer]       # data/goals/goals.json の goal_id か名前（任意。職種カテゴリに出る）
-# author: editor                 # content/blog/authors.yml の id（任意）
+author: editorial                # content/blog/authors.yml の id（任意。記事末尾にプロフィールが出る）
 # eyecatch: /blog/images/slug/eyecatch.png   # public/blog/ 配下の画像（任意）
 draft: true                      # true の間は本番に出ない（プレビュー URL では見える）
 # --- おすすめ記事（学習ロードマップに出す場合だけ） ---
@@ -32,6 +32,9 @@ label: 公式サイトで詳細を見る
 url: https://example.com/
 note: 無料体験あり（2026年10月時点）
 sponsored: true
+```
+
+```goal-fit
 ```
 
 ### 小見出し

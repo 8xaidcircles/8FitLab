@@ -30,6 +30,6 @@ describe("content/blog", () => {
   it("テンプレートの本文はそのまま記事として変換できる", async () => {
     const source = await readFile(path.join(process.cwd(), "content", "blog", "posts", "_template.md"), "utf-8");
     const body = source.replace(/\r\n?/g, "\n").split(/^---$/m).slice(2).join("---");
-    expect(renderMarkdown(body).blocks.map((block) => block.kind)).toEqual(["rich_text", "cta_button", "rich_text"]);
+    expect(renderMarkdown(body).blocks.map((block) => block.kind)).toEqual(["rich_text", "cta_button", "goal_fit", "rich_text"]);
   });
 });

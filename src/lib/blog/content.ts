@@ -43,7 +43,7 @@ const POST_KEYS = new Set([
   "recommend_order",
   "recommend_audience",
 ]);
-const AUTHOR_KEYS = new Set(["id", "name", "role", "avatar", "highlights", "bio", "x_url", "github_url", "note_url", "website_url"]);
+const AUTHOR_KEYS = new Set(["id", "name", "role", "avatar", "bio", "x_url", "github_url", "note_url", "website_url"]);
 const RECOMMEND_TYPES = new Set(["material", "career_service"]);
 const RECOMMEND_AUDIENCES = new Set(["learning", "experienced"]);
 
@@ -176,7 +176,6 @@ async function loadAuthors(): Promise<BlogAuthor[]> {
         name: requiredText(item.name, file, "name"),
         role: optionalText(item.role, file, "role"),
         avatar: await loadImage(item.avatar, file, "avatar"),
-        highlights: optionalText(item.highlights, file, "highlights"),
         bio: optionalText(item.bio, file, "bio"),
         ...links,
       } satisfies BlogAuthor;
@@ -323,11 +322,6 @@ export async function getPost(slug: string): Promise<BlogPost | null> {
 /** 比較ページに掲載するスクール・転職サービス（未検証の生データ。normalizeServices で整える） */
 export async function listServices(): Promise<RawService[]> {
   return (await loadBlogContent()).services;
-}
-
-/** 編集者（authors.yml の順） */
-export async function listAuthors(): Promise<BlogAuthor[]> {
-  return (await loadBlogContent()).authors;
 }
 
 /** recommend_type を入力した記事（normalizeRecommendationArticles で整える） */

@@ -1,5 +1,6 @@
 /**
- * 記事本文のブロック。Markdown の本文（rich_text）と、```cta で書いた外部サービスへのボタン（cta_button）を出現順に並べる。
+ * 記事本文のブロック。Markdown の本文（rich_text）と、```cta で書いた外部サービスへのボタン（cta_button）、
+ * ```goal-fit で書いた Goal Fit 診断への誘導（goal_fit）を出現順に並べる。
  * CTA の書き間違いは記事を出さずにビルドとテストで止める（広告リンクが壊れたまま公開しない）
  */
 export type RichTextBlock = { kind: "rich_text"; html: string };
@@ -16,7 +17,10 @@ export type CtaButtonBlock = {
   linkHost: string;
 };
 
-export type BodyBlock = RichTextBlock | CtaButtonBlock;
+/** ```goal-fit を書いた位置に出す Goal Fit 診断への誘導（中身は記事の goal から作る） */
+export type GoalFitBlock = { kind: "goal_fit" };
+
+export type BodyBlock = RichTextBlock | CtaButtonBlock | GoalFitBlock;
 
 const MAX_LABEL_LENGTH = 60;
 const MAX_NOTE_LENGTH = 200;

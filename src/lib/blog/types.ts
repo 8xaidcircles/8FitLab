@@ -13,8 +13,6 @@ export type BlogAuthor = {
   /** 肩書き（例：8FitLab 運営者） */
   role?: string | null;
   avatar?: BlogImage | null;
-  /** 記事冒頭の「この記事を書いた人」に出す要点。改行区切り */
-  highlights?: string | null;
   /** 記事末尾のプロフィール本文 */
   bio?: string | null;
   x_url?: string | null;
