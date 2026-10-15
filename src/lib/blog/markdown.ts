@@ -72,7 +72,7 @@ function parseCta(value: string): CtaButtonBlock {
 }
 
 function parseGoalFit(value: string): GoalFitBlock {
-  if (value.trim()) throw new Error("```goal-fit の中には何も書かないでください（文言は記事の goal から自動で作ります）");
+  if (value.trim()) throw new Error("```goal-fit の中には何も書かないでください（文言は blog-cta.tsx で共通です）");
   return { kind: "goal_fit" };
 }
 
