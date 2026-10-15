@@ -27,7 +27,7 @@ const DATE_TIME = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2}(\.\d+)?)?(Z|[+-]\d{2}:\
 const MAX_TITLE_LENGTH = 100;
 const MAX_DESCRIPTION_LENGTH = 300;
 
-const POST_KEYS = new Set([
+export const POST_KEYS = new Set([
   "title",
   "description",
   "publishedAt",
@@ -61,6 +61,11 @@ export function showDrafts(): boolean {
 
 function fail(file: string, message: string): never {
   throw new Error(`content/blog/${file}: ${message}`);
+}
+
+/** 未入力。管理画面（Pages CMS）は空欄を '' や null で保存するため、書かなかったのと同じに扱う */
+function isBlank(value: unknown): boolean {
+  return value === undefined || value === null || value === "";
 }
 
 function record(value: unknown, file: string, label: string): Record<string, unknown> {
@@ -120,7 +125,7 @@ function publicPath(url: string, file: string): string {
 }
 
 async function loadImage(value: unknown, file: string, key: string): Promise<BlogImage | null> {
-  if (value === undefined || value === null || value === "") return null;
+  if (isBlank(value)) return null;
   if (typeof value !== "string") fail(file, `${key} は画像のパスにしてください`);
   const filePath = publicPath(value, file);
   if (!(await exists(filePath))) fail(file, `${key} の画像がありません: public${value}`);
@@ -231,7 +236,7 @@ async function loadPost(
   const unknownGoals = goal.filter((v) => !goals.some((g) => g.goal_id === v || g.name === v));
   if (unknownGoals.length > 0) fail(file, `goal が data/goals/goals.json にありません: ${unknownGoals.join(", ")}`);
 
-  if (fm.draft !== undefined && typeof fm.draft !== "boolean") fail(file, "draft は true か false にしてください");
+  if (!isBlank(fm.draft) && typeof fm.draft !== "boolean") fail(file, "draft は true か false にしてください");
 
   const recommendType = textList(fm.recommend_type, file, "recommend_type");
   if (recommendType.some((t) => !RECOMMEND_TYPES.has(t))) fail(file, "recommend_type は material か career_service にしてください");
@@ -239,7 +244,7 @@ async function loadPost(
   if (recommendAudience.some((a) => !RECOMMEND_AUDIENCES.has(a))) {
     fail(file, "recommend_audience は learning か experienced にしてください");
   }
-  if (fm.recommend_order !== undefined && (typeof fm.recommend_order !== "number" || !Number.isFinite(fm.recommend_order))) {
+  if (!isBlank(fm.recommend_order) && (typeof fm.recommend_order !== "number" || !Number.isFinite(fm.recommend_order))) {
     fail(file, "recommend_order は数値にしてください");
   }
 
@@ -266,7 +271,7 @@ async function loadPost(
     goal,
     draft: fm.draft === true,
     publishedAt,
-    updatedAt: fm.updatedAt === undefined ? publishedAt : parseDate(fm.updatedAt, file, "updatedAt"),
+    updatedAt: isBlank(fm.updatedAt) ? publishedAt : parseDate(fm.updatedAt, file, "updatedAt"),
     recommend_type: recommendType,
     recommend_skill_ids: textList(fm.recommend_skill_ids, file, "recommend_skill_ids").join(","),
     recommend_goal_ids: textList(fm.recommend_goal_ids, file, "recommend_goal_ids").join(","),

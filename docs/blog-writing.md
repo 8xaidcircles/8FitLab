@@ -1,6 +1,6 @@
 # Blog の書き方（Markdown）
 
-Blog の記事・編集者・カテゴリ・比較サービスは、すべてリポジトリの `content/blog/` に置く。CMS は使わない。記事を追加・変更したら、コミットして PR を出し、マージすると本番に出る。
+Blog の記事・編集者・カテゴリ・比較サービスは、すべてリポジトリの `content/blog/` に置く。記事を追加・変更したら、コミットして PR を出し、マージすると本番に出る。記事はブラウザの管理画面（Pages CMS）からも書ける（下の「管理画面（Pages CMS）」）。
 
 ```
 content/blog/
@@ -23,6 +23,29 @@ public/blog/images/     記事・編集者・サービスの画像
 - 記事の無いカテゴリページも 404 になる。そのカテゴリの記事を公開すると、カテゴリページも自動で作られて検索エンジンに登録できる状態になる（判定は `src/lib/blog/utils.ts` の `postRobots`・`categoryRobots`）
 - 形式の誤り（必須項目の欠け、存在しないカテゴリ・画像、CTA の URL の誤りなど）は、テストとビルドが「ファイル名: 理由」で失敗する。ビルドが失敗したデプロイは本番に反映されないため、壊れた記事が公開されることはない
 - 自動投稿（Claude Code など）も同じ流れで行う：記事ファイルを書く → `npm test` → コミット → PR（またはマージ）
+
+## 管理画面（Pages CMS）
+
+[Pages CMS](https://app.pagescms.org) は、GitHub のリポジトリのファイルをブラウザの入力画面で編集する無料のサービス。保存すると GitHub にコミットされ、Vercel が自動でデプロイする。設定はリポジトリ直下の `.pages.yml`。
+
+### 最初に1回だけ
+
+1. https://app.pagescms.org を開き、GitHub アカウントでサインインする
+2. 「GitHub App をインストール」で、`8xaidcircles/8FitLab` だけを選んでインストールする（Only select repositories）
+3. リポジトリ一覧から 8FitLab を開く。左のメニューに「ブログ記事」が出る
+
+### 記事を書いて公開する
+
+1. 「ブログ記事」を開いて新規作成のボタンを押す。最初にファイル名を聞かれるので、`{スラッグ}.md`（英数字とハイフン。例 `backend-developer-school.md`）にする。これが URL `/blog/{スラッグ}` になり、公開後は変えない
+2. タイトル・説明文・公開日・カテゴリ・職種・アイキャッチを入力する。本文には雛形（CTA ボタン・Goal Fit・比較表の例）が入っているので、書き換える
+3. 「下書き」をオンのまま「Save」する。下書きは本番サイトに出ない（保存のたびに `main` にコミットされるが、公開はされない）
+4. 公開するときは「下書き」をオフにして「Save」する。数分で本番に出る（sitemap にも載り、`noindex` も付かない）
+
+- 画像は、アイキャッチは入力欄から、本文の画像は左メニューの「Media」からアップロードし、本文に `![説明](/blog/images/...)` と書く。ファイル名は英数字とハイフンにする（日本語は使わない）。共通画像（`/blog/images/common/`）はアップロード不要
+- 本文は Markdown で書く（見たまま編集のエディタにすると、CTA ボタン・Goal Fit・表のセル内の `<br>` が保存時に崩れるため）
+- 書き方を間違えて保存すると、そのデプロイは失敗して本番は前の状態のまま（壊れた記事は公開されない）。GitHub の Actions（CI）と Vercel のデプロイに「ファイル名: 理由」が出るので、直して保存し直す
+- 公開前にプレビューしたいときは、画面左上のブランチ選択で新しいブランチ（例 `post/backend-developer-school`）を作ってから書く。そのブランチの Vercel プレビュー URL（GitHub のコミット・PR に出る）で、下書きも表示される。確認後、GitHub で PR を作ってマージする
+- カテゴリ・執筆者・職種の選択肢は `.pages.yml` に書いてある。`categories.yml`・`authors.yml`・`data/goals/goals.json` を変えたら `.pages.yml` も合わせる（`pages-cms.test.ts` がずれを検出する）
 
 ## frontmatter
 
@@ -51,6 +74,26 @@ GitHub と同じ Markdown（GFM）で書く。表・打ち消し線・チェッ�
 - 画像は `![説明](/blog/images/{スラッグ}/xxx.png)`。サイト内の画像はファイルが無いとエラーになる
 - HTML は書けない（書くとエラー）。装飾は Markdown の範囲で行う。例外として、表のセル内の改行だけ `<br>` が使える
 - 表は横にスクロールでき、1行目が見出し（水色の背景・太字）になる。各列は最低 15rem の幅を保ち、1列目（項目名）は折り返さず、横にスクロールしても左に固定される
+
+### 共通の挿入画像（public/blog/images/common）
+
+どの記事の h2 直後にも使える 8FitLab の画像（1280×720）。記事専用の画像が無いときに使う。同じ画像を1記事で2回使わない。
+
+| ファイル | 内容 | 向いている見出し | 書き方の例 |
+| --- | --- | --- | --- |
+| `career-roadmap.jpg` | コードの道を進む人と上向きの矢印 | 職種の説明、ロードマップ、キャリアの将来性 | `![コードの道を進んでキャリアアップを目指す人のイラスト](/blog/images/common/career-roadmap.jpg)` |
+| `team-discussion.jpg` | 3人で画面のコードを見ながら話し合う | チーム開発、現場の仕事内容、コードレビュー | `![チームでコードを見ながら話し合うエンジニアのイラスト](/blog/images/common/team-discussion.jpg)` |
+| `self-study-coding.jpg` | ノートパソコンで学習する人と成長の矢印 | 独学、学習方法、学習のステップ | `![ノートパソコンでプログラミングを学ぶ人のイラスト](/blog/images/common/self-study-coding.jpg)` |
+| `choosing-options.jpg` | 3つの選択肢から1つを選ぶ人 | 選び方、比較、おすすめ | `![3つの選択肢から自分に合うものを選ぶ人のイラスト](/blog/images/common/choosing-options.jpg)` |
+| `mentoring-session.jpg` | 2人で学習内容を相談する | メンター・講師のサポート、カウンセリング、転職相談 | `![メンターに学習の進め方を相談する人のイラスト](/blog/images/common/mentoring-session.jpg)` |
+| `web-coding.jpg` | パソコンでWeb画面のコードを書く人 | 職種の説明、仕事内容、フロントエンド | `![ノートパソコンでWeb画面のコードを書くエンジニアのイラスト](/blog/images/common/web-coding.jpg)` |
+| `choosing-path.jpg` | 3つの道から進む道を選ぶ人 | 選び方のポイント、進路・キャリアの選択 | `![3つの選択肢の前で進む道を選ぶ人のイラスト](/blog/images/common/choosing-path.jpg)` |
+| `instructor-teaching.jpg` | 講師が画面のコードを指して受講生に教える | スクールの比較、授業・講師、カリキュラム | `![講師が画面のコードを指しながら受講生に教えるイラスト](/blog/images/common/instructor-teaching.jpg)` |
+| `learning-growth.jpg` | 右肩上がりの矢印と学習する人 | まとめ、成長・キャリアアップ | `![右肩上がりの矢印とともに学習を進めるエンジニアのイラスト](/blog/images/common/learning-growth.jpg)` |
+| `website-build-steps.jpg` | 設計図からWebサイトが完成するまでの3段階 | 手順・ステップ、学習ロードマップ、制作の流れ | `![設計図からWebサイトが完成するまでの段階を示すイラスト](/blog/images/common/website-build-steps.jpg)` |
+
+- 説明（`![` と `]` の間）は、画像の内容を1文で書く（画像が読めない人と検索エンジン向け）
+- 新しい共通画像は、内容が分かる英語のファイル名（小文字と `-`）で `public/blog/images/common/` に置き、この表に追記する
 
 ### 比較表のテンプレート
 

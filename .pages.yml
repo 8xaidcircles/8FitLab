@@ -1,0 +1,200 @@
+# Pages CMS（https://app.pagescms.org）の設定。ブラウザの管理画面から記事を書き、GitHub に保存する。
+# 使い方は docs/blog-writing.md「管理画面（Pages CMS）」。
+# 項目の決まり（使える値・必須かどうか）は src/lib/blog/content.ts と同じにする。
+# 選択肢（category・goal・author）は content/blog/*.yml と data/goals/goals.json に合わせる（pages-cms.test.ts で照合）
+
+media:
+  input: public/blog/images
+  output: /blog/images
+  categories: [image]
+  rename: safe
+
+settings:
+  # 管理画面に無い項目も消さずに残す
+  content:
+    merge: true
+  commit:
+    templates:
+      create: "content(blog): create {path} (Pages CMS)"
+      update: "content(blog): update {path} (Pages CMS)"
+      delete: "content(blog): delete {path} (Pages CMS)"
+      rename: "content(blog): rename {oldPath} -> {newPath} (Pages CMS)"
+
+content:
+  - name: posts
+    label: ブログ記事
+    type: collection
+    path: content/blog/posts
+    format: yaml-frontmatter
+    exclude: [_template.md]
+    filename:
+      template: "new-post-{year}{month}{day}.md"
+      field: create
+    view:
+      fields: [title, publishedAt, draft]
+      primary: title
+      sort: [publishedAt, title]
+      search: [title, description]
+      default:
+        sort: publishedAt
+        order: desc
+    fields:
+      - name: title
+        label: タイトル
+        type: string
+        required: true
+        options:
+          maxlength: 100
+      - name: description
+        label: 説明文
+        description: 一覧・検索結果に出る説明（300 文字以内）
+        type: text
+        required: true
+        options:
+          maxlength: 300
+      - name: draft
+        label: 下書き
+        description: オンの間は本番サイトに出ない。公開するときにオフにして保存する
+        type: boolean
+        default: true
+      - name: publishedAt
+        label: 公開日
+        type: date
+        required: true
+        options:
+          format: yyyy-MM-dd
+      - name: updatedAt
+        label: 更新日
+        description: 公開後に内容を更新したときだけ入れる
+        type: date
+        default: ""
+        options:
+          format: yyyy-MM-dd
+      - name: category
+        label: カテゴリ
+        type: select
+        options:
+          placeholder: 選択してください
+          values:
+            - name: career
+              label: キャリア・転職
+            - name: learning
+              label: 学習方法
+            - name: school
+              label: スクール選び
+      - name: goal
+        label: 職種
+        description: 記事が対象とする職種（職種別の一覧に出る）
+        type: select
+        options:
+          multiple: true
+          values: &goals
+            - name: frontend-developer
+              label: フロントエンドエンジニア
+            - name: backend-developer
+              label: バックエンドエンジニア
+            - name: full-stack-developer
+              label: フルスタックエンジニア
+            - name: data-analyst
+              label: データアナリスト
+            - name: data-scientist
+              label: データサイエンティスト
+            - name: data-engineer
+              label: データエンジニア
+            - name: it-project-manager
+              label: ITプロジェクトマネージャー
+            - name: product-manager
+              label: プロダクトマネージャー
+            - name: software-architect
+              label: ソフトウェアアーキテクト
+            - name: mobile-app-developer
+              label: モバイルアプリエンジニア
+            - name: network-engineer
+              label: ネットワークエンジニア
+            - name: test-analyst
+              label: テストエンジニア / QA
+            - name: devops-sre
+              label: DevOps / SREエンジニア
+            - name: cloud-architect
+              label: クラウドアーキテクト
+      - name: author
+        label: 執筆者
+        type: select
+        default: editorial
+        options:
+          values:
+            - name: editorial
+              label: 8FitLab編集部
+      - name: eyecatch
+        label: アイキャッチ画像
+        description: 1280×720 程度。ファイル名は英数字とハイフン（例 frontend-school-eyecatch.png）
+        type: image
+      - name: body
+        label: 本文（Markdown）
+        description: 見出しは ## から。h2 の直後の画像は /blog/images/common/ の共通画像も使える。CTA ボタン・Goal Fit・比較表の書き方は docs/blog-writing.md
+        type: code
+        options:
+          format: markdown
+        default: |
+          ※本記事はプロモーションを含みます。
+
+          導入文。
+
+          ## 見出し（本文は ## から始める）
+
+          ![画像の説明](/blog/images/common/web-coding.jpg)
+
+          本文。**強調**、[リンク](https://example.com)、`コード` が使えます。
+
+          ```cta
+          label: 〇〇の公式サイトを見る
+          url: https://example.com/
+          note: 無料体験あり（2026年10月時点）
+          sponsored: true
+          ```
+
+          ```goal-fit
+          ```
+
+          ### 比較表（スクール名、カリキュラム、料金、講師）
+
+          **※下記の表は横にスクロールできます。**
+
+          | スクール名 | スクールA | スクールB | スクールC |
+          | --- | --- | --- | --- |
+          | 主なカリキュラム・特徴 | ・特徴1<br>・特徴2<br>・特徴3 | ・特徴1<br>・特徴2 | ・特徴1<br>・特徴2 |
+          | 料金目安 | 3ヶ月〇万円<br>※税込 | 〇万円〜<br>※給付金の対象 | 〇万円〜 |
+          | 講師・サポート体制 | ・サポート1<br>・サポート2 | ・サポート1<br>・サポート2 | ・サポート1<br>・サポート2 |
+          | 公式サイト | [公式サイトを見る](https://example.com/) | [公式サイトを見る](https://example.com/) | [公式サイトを見る](https://example.com/) |
+      # --- おすすめ記事（学習ロードマップに出す場合だけ。通常は空のまま） ---
+      - name: recommend_type
+        label: おすすめの種類（任意）
+        type: select
+        options:
+          values:
+            - name: material
+              label: 教材
+            - name: career_service
+              label: 転職サービス
+      - name: recommend_skill_ids
+        label: おすすめ対象のスキル ID（任意）
+        description: カンマ区切り（例 javascript,typescript）
+        type: string
+      - name: recommend_goal_ids
+        label: おすすめ対象の職種（任意）
+        type: select
+        options:
+          multiple: true
+          values: *goals
+      - name: recommend_audience
+        label: おすすめ対象の読者（任意）
+        type: select
+        options:
+          values:
+            - name: learning
+              label: 学習中
+            - name: experienced
+              label: 経験者
+      - name: recommend_order
+        label: おすすめの表示順（任意）
+        type: number
