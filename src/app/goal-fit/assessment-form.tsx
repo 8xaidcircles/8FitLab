@@ -902,7 +902,7 @@ export function AssessmentForm({
       <Section
         step={6}
         title="キャリア・学習条件"
-        hint="答えたくない項目は「回答をスキップする」を選んでください。"
+        hint="学習スタイルを選んでください。"
         required
         error={fieldErrors.conditions}
       >
