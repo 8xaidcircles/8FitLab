@@ -18,6 +18,7 @@ import {
   EDUCATION_STATUS_LABELS,
   EMPLOYMENT_STATUS_LABELS,
   EXPERIENCE_STATUS_LABELS,
+  LOCATION_REGION_GROUPS,
   LOCATION_REGION_LABELS,
   MISSING_INPUT_SUMMARIES,
   SKILL_STATUS_LABELS,
@@ -405,15 +406,22 @@ function ChoiceSelect<K extends string>({
   label,
   value,
   options,
+  groups,
   invalid,
   onChange,
 }: {
   label: string;
   value: K | "";
   options: Record<K, string>;
+  groups?: readonly { label: string; regions: readonly K[] }[];
   invalid?: boolean;
   onChange: (value: K) => void;
 }) {
+  const option = (key: K) => (
+    <option key={key} value={key}>
+      {options[key]}
+    </option>
+  );
   return (
     <label className="block">
       <span className="mb-1 block text-sm font-bold">{label}</span>
@@ -428,11 +436,13 @@ function ChoiceSelect<K extends string>({
         <option value="" disabled>
           選択してください
         </option>
-        {(Object.entries(options) as [K, string][]).map(([key, text]) => (
-          <option key={key} value={key}>
-            {text}
-          </option>
-        ))}
+        {groups
+          ? groups.map((group) => (
+              <optgroup key={group.label} label={group.label}>
+                {group.regions.map(option)}
+              </optgroup>
+            ))
+          : (Object.keys(options) as K[]).map(option)}
       </select>
     </label>
   );
@@ -913,6 +923,7 @@ export function AssessmentForm({
             label="お住まいの地域"
             value={locationRegion}
             options={LOCATION_REGION_LABELS}
+            groups={LOCATION_REGION_GROUPS}
             invalid={Boolean(fieldErrors.conditions) && !locationRegion}
             onChange={(value) => {
               setLocationRegion(value);

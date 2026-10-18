@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { loadEducation } from "@/lib/career-match/data";
-import { educationIds, LIMITS, parseAssessmentSubmission, type KnownAssessmentIds } from "../validate";
+import { LOCATION_REGION_GROUPS } from "@/lib/labels";
+import { educationIds, LIMITS, LOCATION_REGIONS, parseAssessmentSubmission, type KnownAssessmentIds } from "../validate";
 
 const known: KnownAssessmentIds = {
   goalIds: new Set(["frontend-developer"]),
@@ -175,14 +176,14 @@ describe("parseAssessmentSubmission", () => {
   it("キャリア・学習条件は値と「回答をスキップする」を受け付け、未送信は null にする", () => {
     const result = parse({
       age_group: "20s_late",
-      location_region: "kanto",
+      location_region: "tokyo",
       timeframe: "within_3_months",
       employment_status: "full_time",
       weekly_learning_hours: "5_15h",
     });
     expect(result.ok && result.value).toMatchObject({
       age_group: "20s_late",
-      location_region: "kanto",
+      location_region: "tokyo",
       timeframe: "within_3_months",
       employment_status: "full_time",
       weekly_learning_hours: "5_15h",
@@ -199,9 +200,17 @@ describe("parseAssessmentSubmission", () => {
     expect(omitted.ok && omitted.value.age_group).toBeNull();
   });
 
+  it("都道府県グループはすべての地域を1回ずつ含む", () => {
+    const ids = LOCATION_REGION_GROUPS.flatMap((group) => group.regions);
+    expect(new Set(ids).size).toBe(ids.length);
+    expect([...ids].sort()).toEqual([...LOCATION_REGIONS].sort());
+    expect(LOCATION_REGION_GROUPS.at(-1)?.regions).toEqual(["overseas", "skipped"]);
+  });
+
   it("キャリア・学習条件の未知の値は拒否", () => {
     expect(parse({ age_group: "10s" })).toEqual({ ok: false, error: "invalid_screening" });
-    expect(parse({ location_region: "hokkaido" })).toEqual({ ok: false, error: "invalid_screening" });
+    expect(parse({ location_region: "kanto" })).toEqual({ ok: false, error: "invalid_screening" });
+    expect(parse({ location_region: "hokkaido" }).ok).toBe(true);
     expect(parse({ timeframe: "next_year" })).toEqual({ ok: false, error: "invalid_screening" });
     expect(parse({ employment_status: "part_time" })).toEqual({ ok: false, error: "invalid_screening" });
     expect(parse({ weekly_learning_hours: 5 })).toEqual({ ok: false, error: "invalid_screening" });

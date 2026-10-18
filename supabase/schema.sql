@@ -21,9 +21,10 @@ CREATE TABLE IF NOT EXISTS public.assessment_sessions (
     -- skipped：回答をスキップする。資格を選んだ行と、この列より前に保存した行は NULL
     certification_status TEXT CHECK (certification_status IN ('none', 'planning_to_certify', 'skipped')),
     -- 属性。skipped は「回答をスキップする」。この項目より前に保存した行は NULL。
-    -- 制約名は 20261018_b2b_analytics_expansion.sql と同じにする（自動命名だと再実行時に DROP が当たらない）
+    -- 制約名は 20261018_b2b_analytics_expansion.sql と同じにする（自動命名だと再実行時に DROP が当たらない）。
+    -- location_region の値は 20261018_b2b_analytics_expansion_2.sql と同じ（47都道府県・overseas・skipped）。
     age_group TEXT CONSTRAINT assessment_sessions_age_group_check CHECK (age_group IS NULL OR age_group IN ('20s_early', '20s_late', '30s_early', '30s_late', '40s_or_above', 'skipped')),
-    location_region TEXT CONSTRAINT assessment_sessions_location_region_check CHECK (location_region IS NULL OR location_region IN ('kanto', 'kansai', 'tokai', 'other_japan', 'overseas', 'skipped')),
+    location_region TEXT CONSTRAINT assessment_sessions_location_region_check CHECK (location_region IS NULL OR location_region IN ('hokkaido', 'aomori', 'iwate', 'miyagi', 'akita', 'yamagata', 'fukushima', 'ibaraki', 'tochigi', 'gunma', 'saitama', 'chiba', 'tokyo', 'kanagawa', 'niigata', 'toyama', 'ishikawa', 'fukui', 'yamanashi', 'nagano', 'gifu', 'shizuoka', 'aichi', 'mie', 'shiga', 'kyoto', 'osaka', 'hyogo', 'nara', 'wakayama', 'tottori', 'shimane', 'okayama', 'hiroshima', 'yamaguchi', 'tokushima', 'kagawa', 'ehime', 'kochi', 'fukuoka', 'saga', 'nagasaki', 'kumamoto', 'oita', 'miyazaki', 'kagoshima', 'okinawa', 'overseas', 'skipped')),
     timeframe TEXT CONSTRAINT assessment_sessions_timeframe_check CHECK (timeframe IS NULL OR timeframe IN ('immediately', 'within_3_months', 'within_6_months', 'just_learning', 'skipped')),
     employment_status TEXT CONSTRAINT assessment_sessions_employment_status_check CHECK (employment_status IS NULL OR employment_status IN ('full_time', 'contract', 'freelance', 'student', 'unemployed', 'skipped')),
     weekly_learning_hours TEXT CONSTRAINT assessment_sessions_weekly_learning_hours_check CHECK (weekly_learning_hours IS NULL OR weekly_learning_hours IN ('under_5h', '5_15h', '15_30h', 'over_30h', 'skipped')),
