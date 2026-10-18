@@ -129,6 +129,7 @@ export default function PrivacyPolicyPage() {
                 "職務経験・経験年数",
                 "職務経験の有無に関する回答（実務経験がある／ない／わからない・回答しない）",
                 "学歴・学校区分",
+                "年齢層、居住地域、就労状態、転職・就職を考える時期、週に学習できる時間（回答をスキップした場合を含む）",
                 "Goal Fitの計算結果",
                 "Skill Match、Experience Match、Education Match等の各評価結果",
                 "Skill Gapに関する判定結果",
@@ -237,6 +238,13 @@ export default function PrivacyPolicyPage() {
           <SubSection title="6-6. 法令等への対応">
             <List
               items={["法令、裁判所、行政機関その他の公的機関の要請への対応", "当事業者の権利・財産・安全の保護"]}
+            />
+          </SubSection>
+          <SubSection title="6-7. 属性データの提供">
+            <List
+              items={[
+                "氏名や連絡先と結び付かない診断の属性データ（Goal、スキル、資格、職歴の年数、学歴、年齢層、居住地域、就労状態、転職・就職を考える時期、週の学習時間、適合度）を、プログラミングスクールや人材紹介・転職支援を行う事業者へ提供すること",
+              ]}
             />
           </SubSection>
         </Section>
@@ -409,6 +417,9 @@ export default function PrivacyPolicyPage() {
 
         <Section title="10. 第三者提供">
           <p>当事業者は、取得した個人情報について、法令に基づく場合を除き、あらかじめ本人の同意を得ずに第三者へ提供しません。</p>
+          <p>
+            氏名、メールアドレスその他の連絡先を含まない診断の属性データは、上記「6-7. 属性データの提供」のとおり、プログラミングスクールや人材紹介・転職支援を行う事業者へ提供することがあります。利用者へ連絡するための連絡先は取得していません。
+          </p>
           <p>ただし、以下の場合を除きます。</p>
           <ol className="list-inside list-decimal space-y-1">
             <li>個人情報の取扱いを外部の事業者へ委託する場合</li>

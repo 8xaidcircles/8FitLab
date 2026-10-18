@@ -27,7 +27,17 @@ describe("parseAssessmentSubmission", () => {
   it("正しい入力を受け付け、学歴から統計上の学歴を導く", () => {
     expect(parseAssessmentSubmission(valid, known)).toEqual({
       ok: true,
-      value: { ...valid, skill_status: null, certification_status: null, degree_id: "Bachelor" },
+      value: {
+        ...valid,
+        skill_status: null,
+        certification_status: null,
+        degree_id: "Bachelor",
+        age_group: null,
+        location_region: null,
+        timeframe: null,
+        employment_status: null,
+        weekly_learning_hours: null,
+      },
     });
   });
 
@@ -160,6 +170,41 @@ describe("parseAssessmentSubmission", () => {
   it.each(["skipped", "unknown"])("学歴「回答をスキップする」（%s）は skipped・統計上の学歴なし（null）として受け付ける", (education_level_id) => {
     const result = parse({ education_level_id });
     expect(result.ok && result.value).toMatchObject({ education_level_id: "skipped", degree_id: null });
+  });
+
+  it("キャリア・学習条件は値と「回答をスキップする」を受け付け、未送信は null にする", () => {
+    const result = parse({
+      age_group: "20s_late",
+      location_region: "kanto",
+      timeframe: "within_3_months",
+      employment_status: "full_time",
+      weekly_learning_hours: "5_15h",
+    });
+    expect(result.ok && result.value).toMatchObject({
+      age_group: "20s_late",
+      location_region: "kanto",
+      timeframe: "within_3_months",
+      employment_status: "full_time",
+      weekly_learning_hours: "5_15h",
+    });
+    const skipped = parse({
+      age_group: "skipped",
+      location_region: "skipped",
+      timeframe: "skipped",
+      employment_status: "skipped",
+      weekly_learning_hours: "skipped",
+    });
+    expect(skipped.ok && skipped.value.age_group).toBe("skipped");
+    const omitted = parse({ age_group: undefined });
+    expect(omitted.ok && omitted.value.age_group).toBeNull();
+  });
+
+  it("キャリア・学習条件の未知の値は拒否", () => {
+    expect(parse({ age_group: "10s" })).toEqual({ ok: false, error: "invalid_screening" });
+    expect(parse({ location_region: "hokkaido" })).toEqual({ ok: false, error: "invalid_screening" });
+    expect(parse({ timeframe: "next_year" })).toEqual({ ok: false, error: "invalid_screening" });
+    expect(parse({ employment_status: "part_time" })).toEqual({ ok: false, error: "invalid_screening" });
+    expect(parse({ weekly_learning_hours: 5 })).toEqual({ ok: false, error: "invalid_screening" });
   });
 
   it("すべて未該当・スキップの入力を受け付ける", () => {

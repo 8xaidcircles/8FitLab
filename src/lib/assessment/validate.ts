@@ -12,6 +12,17 @@ import {
   type UserExperience,
 } from "@/lib/career-match/types";
 
+export const AGE_GROUPS = ["20s_early", "20s_late", "30s_early", "30s_late", "40s_or_above", "skipped"] as const;
+export type AgeGroup = (typeof AGE_GROUPS)[number];
+export const LOCATION_REGIONS = ["kanto", "kansai", "tokai", "other_japan", "overseas", "skipped"] as const;
+export type LocationRegion = (typeof LOCATION_REGIONS)[number];
+export const TIMEFRAMES = ["immediately", "within_3_months", "within_6_months", "just_learning", "skipped"] as const;
+export type Timeframe = (typeof TIMEFRAMES)[number];
+export const EMPLOYMENT_STATUSES = ["full_time", "contract", "freelance", "student", "unemployed", "skipped"] as const;
+export type EmploymentStatus = (typeof EMPLOYMENT_STATUSES)[number];
+export const WEEKLY_LEARNING_HOURS = ["under_5h", "5_15h", "15_30h", "over_30h", "skipped"] as const;
+export type WeeklyLearningHours = (typeof WEEKLY_LEARNING_HOURS)[number];
+
 export const LIMITS = {
   skills: 100,
   certifications: 50,
@@ -36,6 +47,12 @@ export interface AssessmentSubmission {
   education_level_id: string;
   // education_level_id から導いた統計上の学歴。Education Match はこの値で計算する。「回答をスキップする」は null
   degree_id: DegreeId | null;
+  // この項目より前の画面から送られたときは null。「回答をスキップする」は skipped
+  age_group: AgeGroup | null;
+  location_region: LocationRegion | null;
+  timeframe: Timeframe | null;
+  employment_status: EmploymentStatus | null;
+  weekly_learning_hours: WeeklyLearningHours | null;
 }
 
 export interface KnownAssessmentIds {
@@ -137,6 +154,21 @@ export function parseAssessmentSubmission(
   const degree = known.levelDegrees.get(education_level_id);
   if (degree === undefined) return { ok: false, error: "unknown_education_level" };
 
+  const age_group = parseScreening(raw.age_group, AGE_GROUPS);
+  const location_region = parseScreening(raw.location_region, LOCATION_REGIONS);
+  const timeframe = parseScreening(raw.timeframe, TIMEFRAMES);
+  const employment_status = parseScreening(raw.employment_status, EMPLOYMENT_STATUSES);
+  const weekly_learning_hours = parseScreening(raw.weekly_learning_hours, WEEKLY_LEARNING_HOURS);
+  if (
+    age_group === INVALID ||
+    location_region === INVALID ||
+    timeframe === INVALID ||
+    employment_status === INVALID ||
+    weekly_learning_hours === INVALID
+  ) {
+    return { ok: false, error: "invalid_screening" };
+  }
+
   return {
     ok: true,
     value: {
@@ -149,6 +181,17 @@ export function parseAssessmentSubmission(
       experiences: parsedExperiences,
       education_level_id,
       degree_id: degree,
+      age_group,
+      location_region,
+      timeframe,
+      employment_status,
+      weekly_learning_hours,
     },
   };
+}
+
+// 未送信（この項目より前の画面）と空文字は null。「回答をスキップする」は skipped として残す
+function parseScreening<T extends string>(value: unknown, allowed: readonly T[]): T | null | typeof INVALID {
+  if (value === undefined || value === null || value === "") return null;
+  return allowed.includes(value as T) ? (value as T) : INVALID;
 }

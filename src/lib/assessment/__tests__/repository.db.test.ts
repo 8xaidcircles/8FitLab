@@ -28,16 +28,33 @@ describe.skipIf(!hasDb)("Supabase repository（実 DB）", () => {
     await supabase.from("events").delete().eq("anonymous_user_id", anonymousUserId);
   });
 
-  async function save(submission: AssessmentSubmission, override: Partial<CareerMatchResult> = {}) {
+  async function save(
+    submission: Omit<
+      AssessmentSubmission,
+      "age_group" | "location_region" | "timeframe" | "employment_status" | "weekly_learning_hours"
+    > &
+      Partial<
+        Pick<AssessmentSubmission, "age_group" | "location_region" | "timeframe" | "employment_status" | "weekly_learning_hours">
+      >,
+    override: Partial<CareerMatchResult> = {},
+  ) {
+    const complete: AssessmentSubmission = {
+      age_group: null,
+      location_region: null,
+      timeframe: null,
+      employment_status: null,
+      weekly_learning_hours: null,
+      ...submission,
+    };
     const [stats, skill, path, known] = await Promise.all([
       loadCareerStatistics(submission.goal_id),
       loadSkillContext(submission.goal_id),
       loadLearningPath(submission.goal_id),
       loadKnownIds(),
     ]);
-    const result = { ...calculateCareerMatch(submission, stats, skill, known), ...override };
-    const missingSteps = learningPath(path, resolveUserSkills(submission, skill, known).held);
-    const id = await saveAssessment({ anonymousUserId, submission, result, missingSteps, learningPathVersion: path.version });
+    const result = { ...calculateCareerMatch(complete, stats, skill, known), ...override };
+    const missingSteps = learningPath(path, resolveUserSkills(complete, skill, known).held);
+    const id = await saveAssessment({ anonymousUserId, submission: complete, result, missingSteps, learningPathVersion: path.version });
     createdIds.push(id);
     return { id, result, missingSteps, learningPathVersion: path.version };
   }
@@ -53,6 +70,11 @@ describe.skipIf(!hasDb)("Supabase repository（実 DB）", () => {
       experiences: [{ role_id: "2513.5", years: 1.5 }],
       education_level_id: "technical-college",
       degree_id: "Secondary school",
+      age_group: null,
+      location_region: null,
+      timeframe: null,
+      employment_status: null,
+      weekly_learning_hours: null,
     };
     const { id, result, missingSteps } = await save(submission);
     const stored = await getAssessment(id);

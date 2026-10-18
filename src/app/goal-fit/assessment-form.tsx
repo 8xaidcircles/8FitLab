@@ -11,13 +11,19 @@ import {
   type ExperienceStatus,
   type SkillStatus,
 } from "@/lib/career-match/types";
+import type { AgeGroup, EmploymentStatus, LocationRegion, Timeframe, WeeklyLearningHours } from "@/lib/assessment/validate";
 import {
+  AGE_GROUP_LABELS,
   CERTIFICATION_STATUS_LABELS,
   EDUCATION_STATUS_LABELS,
+  EMPLOYMENT_STATUS_LABELS,
   EXPERIENCE_STATUS_LABELS,
+  LOCATION_REGION_LABELS,
   MISSING_INPUT_SUMMARIES,
   SKILL_STATUS_LABELS,
   SUBMIT_ERRORS,
+  TIMEFRAME_LABELS,
+  WEEKLY_LEARNING_HOURS_LABELS,
 } from "@/lib/labels";
 import { getAnonymousUserId, track } from "@/lib/track";
 
@@ -395,6 +401,43 @@ function StatusChoice<K extends string>({
   );
 }
 
+function ChoiceSelect<K extends string>({
+  label,
+  value,
+  options,
+  invalid,
+  onChange,
+}: {
+  label: string;
+  value: K | "";
+  options: Record<K, string>;
+  invalid?: boolean;
+  onChange: (value: K) => void;
+}) {
+  return (
+    <label className="block">
+      <span className="mb-1 block text-sm font-bold">{label}</span>
+      <select
+        value={value}
+        onChange={(e) => onChange(e.target.value as K)}
+        aria-label={label}
+        aria-required="true"
+        aria-invalid={invalid || undefined}
+        className={selectClass}
+      >
+        <option value="" disabled>
+          選択してください
+        </option>
+        {(Object.entries(options) as [K, string][]).map(([key, text]) => (
+          <option key={key} value={key}>
+            {text}
+          </option>
+        ))}
+      </select>
+    </label>
+  );
+}
+
 function toggled(set: ReadonlySet<string>, id: string): Set<string> {
   const next = new Set(set);
   if (next.has(id)) next.delete(id);
@@ -428,9 +471,18 @@ export function AssessmentForm({
   const [nextKey, setNextKey] = useState(1);
   const [levelId, setLevelId] = useState("");
   const [error, setError] = useState<string | null>(null);
-  const [fieldErrors, setFieldErrors] = useState<{ skills?: string; certifications?: string; experience?: string; education?: string }>(
-    {},
-  );
+  const [ageGroup, setAgeGroup] = useState<AgeGroup | "">("");
+  const [locationRegion, setLocationRegion] = useState<LocationRegion | "">("");
+  const [timeframe, setTimeframe] = useState<Timeframe | "">("");
+  const [employmentStatus, setEmploymentStatus] = useState<EmploymentStatus | "">("");
+  const [weeklyLearningHours, setWeeklyLearningHours] = useState<WeeklyLearningHours | "">("");
+  const [fieldErrors, setFieldErrors] = useState<{
+    skills?: string;
+    certifications?: string;
+    experience?: string;
+    education?: string;
+    conditions?: string;
+  }>({});
   const [pending, startTransition] = useTransition();
 
   // 検索は日本語表示名（日本語職種リスト）と ESCO の英語名のどちらでも選べる
@@ -537,6 +589,10 @@ export function AssessmentForm({
           ? SUBMIT_ERRORS.experience_rows_required
           : undefined,
       education: levelId ? undefined : SUBMIT_ERRORS.education_required,
+      conditions:
+        ageGroup && locationRegion && timeframe && employmentStatus && weeklyLearningHours
+          ? undefined
+          : SUBMIT_ERRORS.conditions_required,
     };
     setFieldErrors(errors);
     if (Object.values(errors).some(Boolean)) return;
@@ -550,6 +606,11 @@ export function AssessmentForm({
         experience_status: experienceStatus,
         experiences: experienceStatus === "entered" ? validExperiences : [],
         education_level_id: levelId,
+        age_group: ageGroup,
+        location_region: locationRegion,
+        timeframe,
+        employment_status: employmentStatus,
+        weekly_learning_hours: weeklyLearningHours,
       }, getAnonymousUserId());
       if (result.ok) {
         router.push(`/goal-fit/result/${result.assessmentId}`);
@@ -828,6 +889,77 @@ export function AssessmentForm({
         </div>
       </Section>
 
+      <Section
+        step={6}
+        title="キャリア・学習条件"
+        hint="答えたくない項目は「回答をスキップする」を選んでください。"
+        required
+        error={fieldErrors.conditions}
+      >
+        <div className="grid gap-4 sm:grid-cols-2">
+          <ChoiceSelect
+            label="年齢層"
+            value={ageGroup}
+            options={AGE_GROUP_LABELS}
+            invalid={Boolean(fieldErrors.conditions) && !ageGroup}
+            onChange={(value) => {
+              setAgeGroup(value);
+              if (value && locationRegion && timeframe && employmentStatus && weeklyLearningHours) {
+                setFieldErrors((errors) => ({ ...errors, conditions: undefined }));
+              }
+            }}
+          />
+          <ChoiceSelect
+            label="お住まいの地域"
+            value={locationRegion}
+            options={LOCATION_REGION_LABELS}
+            invalid={Boolean(fieldErrors.conditions) && !locationRegion}
+            onChange={(value) => {
+              setLocationRegion(value);
+              if (ageGroup && value && timeframe && employmentStatus && weeklyLearningHours) {
+                setFieldErrors((errors) => ({ ...errors, conditions: undefined }));
+              }
+            }}
+          />
+          <ChoiceSelect
+            label="転職・就職を考える時期"
+            value={timeframe}
+            options={TIMEFRAME_LABELS}
+            invalid={Boolean(fieldErrors.conditions) && !timeframe}
+            onChange={(value) => {
+              setTimeframe(value);
+              if (ageGroup && locationRegion && value && employmentStatus && weeklyLearningHours) {
+                setFieldErrors((errors) => ({ ...errors, conditions: undefined }));
+              }
+            }}
+          />
+          <ChoiceSelect
+            label="いまの働き方"
+            value={employmentStatus}
+            options={EMPLOYMENT_STATUS_LABELS}
+            invalid={Boolean(fieldErrors.conditions) && !employmentStatus}
+            onChange={(value) => {
+              setEmploymentStatus(value);
+              if (ageGroup && locationRegion && timeframe && value && weeklyLearningHours) {
+                setFieldErrors((errors) => ({ ...errors, conditions: undefined }));
+              }
+            }}
+          />
+          <ChoiceSelect
+            label="週に学習できる時間"
+            value={weeklyLearningHours}
+            options={WEEKLY_LEARNING_HOURS_LABELS}
+            invalid={Boolean(fieldErrors.conditions) && !weeklyLearningHours}
+            onChange={(value) => {
+              setWeeklyLearningHours(value);
+              if (ageGroup && locationRegion && timeframe && employmentStatus && value) {
+                setFieldErrors((errors) => ({ ...errors, conditions: undefined }));
+              }
+            }}
+          />
+        </div>
+      </Section>
+
       <div className="sticky bottom-4 rounded-2xl border border-line bg-white/95 p-4 shadow-lg backdrop-blur">
         {error && <p className="mb-3 text-sm text-coral">{error}</p>}
         {Object.values(fieldErrors).some(Boolean) && (
@@ -839,6 +971,7 @@ export function AssessmentForm({
                 ? MISSING_INPUT_SUMMARIES.experience_required
                 : fieldErrors.experience,
               fieldErrors.education && MISSING_INPUT_SUMMARIES.education_required,
+              fieldErrors.conditions && MISSING_INPUT_SUMMARIES.conditions_required,
             ]
               .filter((message): message is string => Boolean(message))
               .map((message) => (

@@ -12,6 +12,7 @@ import type {
   SkillUnitRole,
   SKIPPED_EDUCATION_LEVEL_ID,
 } from "@/lib/career-match/types";
+import type { AgeGroup, EmploymentStatus, LocationRegion, Timeframe, WeeklyLearningHours } from "@/lib/assessment/validate";
 
 /** 職歴の回答（診断フォームの選択肢の表示順） */
 export const EXPERIENCE_STATUS_LABELS: Record<ExperienceStatus, string> = {
@@ -107,6 +108,54 @@ export const CERTIFICATION_STATUS_LABELS: Record<CertificationStatus, string> = 
   skipped: "回答をスキップする",
 };
 
+/** 年齢層（診断フォームの表示順） */
+export const AGE_GROUP_LABELS: Record<AgeGroup, string> = {
+  "20s_early": "20〜24歳",
+  "20s_late": "25〜29歳",
+  "30s_early": "30〜34歳",
+  "30s_late": "35〜39歳",
+  "40s_or_above": "40歳以上",
+  skipped: "回答をスキップする",
+};
+
+/** お住まいの地域（診断フォームの表示順） */
+export const LOCATION_REGION_LABELS: Record<LocationRegion, string> = {
+  kanto: "関東",
+  kansai: "関西",
+  tokai: "東海",
+  other_japan: "その他（日本国内）",
+  overseas: "海外",
+  skipped: "回答をスキップする",
+};
+
+/** 転職・就職を考える時期（診断フォームの表示順） */
+export const TIMEFRAME_LABELS: Record<Timeframe, string> = {
+  immediately: "すぐにでも",
+  within_3_months: "3ヶ月以内",
+  within_6_months: "6ヶ月以内",
+  just_learning: "まずは学習を優先したい",
+  skipped: "回答をスキップする",
+};
+
+/** いまの働き方（診断フォームの表示順） */
+export const EMPLOYMENT_STATUS_LABELS: Record<EmploymentStatus, string> = {
+  full_time: "正社員",
+  contract: "契約・派遣",
+  freelance: "フリーランス",
+  student: "学生",
+  unemployed: "離職中",
+  skipped: "回答をスキップする",
+};
+
+/** 週に学習できる時間（診断フォームの表示順） */
+export const WEEKLY_LEARNING_HOURS_LABELS: Record<WeeklyLearningHours, string> = {
+  under_5h: "5時間未満",
+  "5_15h": "5〜15時間",
+  "15_30h": "15〜30時間",
+  over_30h: "30時間以上",
+  skipped: "回答をスキップする",
+};
+
 /** 最終学歴を選ばない人の選択肢（data/education/education.json の level_id） */
 export const EDUCATION_STATUS_LABELS: Record<typeof SKIPPED_EDUCATION_LEVEL_ID, string> = {
   skipped: "回答をスキップする",
@@ -125,6 +174,9 @@ export const SUBMIT_ERRORS: Record<string, string> = {
   experience_required: "職務経歴は「実務経験がある」「実務経験なし」「回答をスキップする」のいずれかを選んでください。",
   experience_rows_required: "職種と年数を入力した職歴を1件以上追加してください。",
   education_required: "最終学歴を選ぶか、「回答をスキップする」を選んでください。",
+  conditions_required:
+    "年齢層、お住まいの地域、転職・就職を考える時期、いまの働き方、週に学習できる時間を選ぶか、それぞれ「回答をスキップする」を選んでください。",
+  invalid_screening: "キャリア・学習条件の入力内容に誤りがあります。ページを再読み込みしてもう一度お試しください。",
   save_failed: "結果の保存に失敗しました。時間をおいてもう一度お試しください。",
 };
 
@@ -134,6 +186,7 @@ export const MISSING_INPUT_SUMMARIES = {
   certifications_required: "資格が未入力です。",
   experience_required: "職務経歴が未入力です。",
   education_required: "最終学歴が未入力です。",
+  conditions_required: "キャリア・学習条件が未入力です。",
 } as const;
 
 export function formatPercent(value: number): string {

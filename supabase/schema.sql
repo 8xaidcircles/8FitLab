@@ -20,6 +20,16 @@ CREATE TABLE IF NOT EXISTS public.assessment_sessions (
     -- 資格を 1 つも選ばなかった理由。none：保有している資格はない / planning_to_certify：これから学習を開始する /
     -- skipped：回答をスキップする。資格を選んだ行と、この列より前に保存した行は NULL
     certification_status TEXT CHECK (certification_status IN ('none', 'planning_to_certify', 'skipped')),
+    -- 属性。skipped は「回答をスキップする」。この項目より前に保存した行は NULL。
+    -- 制約名は 20261018_b2b_analytics_expansion.sql と同じにする（自動命名だと再実行時に DROP が当たらない）
+    age_group TEXT CONSTRAINT assessment_sessions_age_group_check CHECK (age_group IS NULL OR age_group IN ('20s_early', '20s_late', '30s_early', '30s_late', '40s_or_above', 'skipped')),
+    location_region TEXT CONSTRAINT assessment_sessions_location_region_check CHECK (location_region IS NULL OR location_region IN ('kanto', 'kansai', 'tokai', 'other_japan', 'overseas', 'skipped')),
+    timeframe TEXT CONSTRAINT assessment_sessions_timeframe_check CHECK (timeframe IS NULL OR timeframe IN ('immediately', 'within_3_months', 'within_6_months', 'just_learning', 'skipped')),
+    employment_status TEXT CONSTRAINT assessment_sessions_employment_status_check CHECK (employment_status IS NULL OR employment_status IN ('full_time', 'contract', 'freelance', 'student', 'unemployed', 'skipped')),
+    weekly_learning_hours TEXT CONSTRAINT assessment_sessions_weekly_learning_hours_check CHECK (weekly_learning_hours IS NULL OR weekly_learning_hours IN ('under_5h', '5_15h', '15_30h', 'over_30h', 'skipped')),
+    -- 保存時の Goal Fit（0〜100）と、未習得の Learning Step 数
+    calculated_fit_score NUMERIC(5, 2),
+    skill_gap_count INTEGER,
     calculation_version TEXT NOT NULL,
     data_source_version TEXT NOT NULL,
     taxonomy_version TEXT NOT NULL,
@@ -29,6 +39,9 @@ CREATE TABLE IF NOT EXISTS public.assessment_sessions (
 
 CREATE INDEX IF NOT EXISTS idx_assessment_sessions_user
     ON public.assessment_sessions(anonymous_user_id);
+
+CREATE INDEX IF NOT EXISTS idx_assessment_sessions_b2b_filter
+    ON public.assessment_sessions (goal_id, timeframe, age_group);
 
 CREATE TABLE IF NOT EXISTS public.assessment_skills (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
