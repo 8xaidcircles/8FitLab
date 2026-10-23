@@ -32,7 +32,7 @@ export function BlogToc({ items }: { items: TocItem[] }) {
   if (items.length < MIN_ITEMS) return null;
   return (
     // 閉じた details は summary 以外を隠すため、上端の線は外側の要素に付ける
-    <div className="overflow-hidden rounded-b-xl bg-white shadow-[0_2px_12px_rgba(15,23,42,0.07)]">
+    <div id="blog-toc" className="overflow-hidden rounded-b-xl bg-white shadow-[0_2px_12px_rgba(15,23,42,0.07)]">
       <div className="bg-brand-gradient h-1" />
       <details className="group">
         <summary className="flex cursor-pointer list-none items-center gap-3 px-5 py-4 md:px-6 [&::-webkit-details-marker]:hidden">

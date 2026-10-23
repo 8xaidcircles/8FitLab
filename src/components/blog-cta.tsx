@@ -12,7 +12,7 @@ export function BlogCta({ goal }: { goal?: { goal_id: string; name: string } | n
       <div className="mt-5 flex flex-wrap gap-3">
         <Link
           href={href}
-          className="rounded-full bg-indigo px-6 py-3 text-sm font-bold text-white shadow-lg shadow-indigo/20 transition hover:bg-ink"
+          className="btn-reflection rounded-full bg-indigo px-6 py-3 text-sm font-bold text-white shadow-lg shadow-indigo/20 transition hover:bg-ink"
         >
           無料でGoal Fitを試す
         </Link>

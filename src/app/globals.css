@@ -114,6 +114,7 @@ body {
     margin-top: 1.75em;
     font-weight: 700;
   }
+  /* ポイント囲み・POINT風引用は blog-decor.css（.blog-article） */
   & a {
     color: var(--color-indigo);
     text-decoration: underline;
@@ -122,13 +123,13 @@ body {
   & a:hover {
     color: var(--color-sky);
   }
-  /* 比較表など、ページ内ジャンプ用。リンクだと分かる装飾は付けない */
-  & a[href^="#"] {
+  /* 比較表など、ページ内ジャンプ用。下線・色変更なし（リンクだと分かる装飾は付けない） */
+  & a[href^="#"],
+  & a[href^="#"]:hover,
+  & a[href^="#"]:visited {
     color: inherit;
     text-decoration: none;
-  }
-  & a[href^="#"]:hover {
-    color: inherit;
+    text-underline-offset: unset;
   }
   & ul,
   & ol {
@@ -154,11 +155,6 @@ body {
     border-top: 1px solid var(--color-line);
     padding-top: 1em;
     font-size: 0.85rem;
-    color: var(--color-muted);
-  }
-  & blockquote {
-    border-left: 4px solid var(--color-line);
-    padding-left: 1rem;
     color: var(--color-muted);
   }
   & img {

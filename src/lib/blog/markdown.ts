@@ -6,10 +6,12 @@ import remarkRehype from "remark-rehype";
 import { unified } from "unified";
 import { parse as parseYaml } from "yaml";
 import { parseCtaBlock, type BodyBlock, type CtaButtonBlock, type GoalFitBlock } from "./body-blocks";
+import { rehypeBlogDecor } from "./decorate-html";
 
 /**
  * 記事本文の Markdown（GFM）を、HTML の本文と ```cta のボタン・```goal-fit の診断誘導に分ける。
- * 生の HTML は書けない（remark-rehype が出力しないため、書いたら例外にして気づけるようにする）
+ * 生の HTML は書けない（remark-rehype が出力しないため、書いたら例外にして気づけるようにする）。
+ * FAQ・比較表・「目次に戻る」は rehypeBlogDecor が sousyoku-* クラスを付ける。
  */
 export type RenderedMarkdown = {
   blocks: BodyBlock[];
@@ -29,6 +31,7 @@ const processor = unified()
   .use(remarkGfm)
   // 脚注の見出しは目次に出さない（buildToc は h2・h3 を拾う）
   .use(remarkRehype, { footnoteLabel: "注釈", footnoteLabelTagName: "p", footnoteBackLabel: "本文に戻る" })
+  .use(rehypeBlogDecor)
   .use(rehypeStringify);
 
 /** 本文のリンク・画像に使える URL（https・サイト内パス・ページ内リンク・メール） */

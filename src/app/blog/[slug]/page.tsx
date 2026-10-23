@@ -135,7 +135,7 @@ export default async function BlogPostPage({ params }: PageProps<"/blog/[slug]">
 
       <div className="mt-4 grid gap-10 lg:grid-cols-[minmax(0,1fr)_300px]">
         <div className="min-w-0">
-          <article>
+          <article className="blog-article">
             <p className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-muted">
               {post.category && (
                 <Link href={`/blog/category/${post.category.id}`} className="font-bold text-sky hover:text-indigo">

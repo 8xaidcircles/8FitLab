@@ -36,8 +36,38 @@ describe("renderMarkdown", () => {
   it("GFM（表・打ち消し線）を HTML にする", () => {
     const { blocks } = renderMarkdown("| a | b |\n| --- | --- |\n| 1 | 2 |\n\n~~古い~~");
     const [block] = blocks;
+    expect(block.kind === "rich_text" && block.html).toContain('<div class="sousyoku-table--compare">');
     expect(block.kind === "rich_text" && block.html).toContain("<table>");
     expect(block.kind === "rich_text" && block.html).toContain("<del>古い</del>");
+  });
+
+  it("FAQ 見出し以下の h3 を sousyoku-faq にする", () => {
+    const { blocks } = renderMarkdown(
+      [
+        "## よくある質問",
+        "",
+        "### 未経験でも大丈夫ですか？",
+        "",
+        "**回答：はい、可能です。**",
+        "",
+        "サポートがあります。",
+        "",
+        "## まとめ：はじめの一歩",
+        "",
+        "まずは相談を。",
+      ].join("\n"),
+    );
+    const [block] = blocks;
+    expect(block.kind).toBe("rich_text");
+    if (block.kind !== "rich_text") return;
+    expect(block.html).toContain('class="sousyoku-faq"');
+    expect(block.html).toContain('class="sousyoku-faq__q"');
+    expect(block.html).toContain("未経験でも大丈夫ですか？");
+    expect(block.html).toContain('class="sousyoku-faq__a"');
+    expect(block.html).toContain("<strong>はい、可能です。</strong>");
+    expect(block.html).not.toContain("<h3>");
+    expect(block.html).toContain('class="sousyoku-toc-back"');
+    expect(block.html).toContain('href="#blog-toc"');
   });
 
   it("表のセル内の <br> は改行にする", () => {
