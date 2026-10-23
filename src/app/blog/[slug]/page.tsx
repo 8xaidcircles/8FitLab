@@ -39,7 +39,7 @@ export async function generateMetadata({ params }: PageProps<"/blog/[slug]">): P
     robots: postRobots(post),
     openGraph: {
       type: "article",
-      url: path,
+      url: absoluteUrl(path),
       title: post.title,
       description: post.description,
       publishedTime: post.publishedAt,

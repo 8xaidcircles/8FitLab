@@ -15,12 +15,14 @@ import {
 } from "@/lib/career-match";
 import type { Certification, HumanSkill, LearningPathMaster } from "@/lib/career-match/types";
 import { CERTIFICATION_CATEGORIES, HUMAN_SKILL_DOMAINS, TECH_SKILL_CATEGORIES } from "@/lib/labels";
+import { absoluteUrl } from "@/lib/site";
 import { AssessmentForm } from "./assessment-form";
 
 export const metadata: Metadata = {
   title: "Goal Fit",
   description: "目指す職種（Goal）とあなたのスキル・経験・学歴の一致度を診断します。",
   alternates: { canonical: "/goal-fit" },
+  openGraph: { url: absoluteUrl("/goal-fit") },
 };
 
 // Goal に関係する選択肢 = 計算に使う層（配分が 0 の層は除く）の技術スキル・人間定義層の要件 ∪ Learning Path の Step

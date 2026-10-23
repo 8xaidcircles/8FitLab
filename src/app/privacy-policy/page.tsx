@@ -2,12 +2,13 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { ExternalLink } from "@/components/external-link";
-import { OPERATOR, SITE_NAME, SITE_URL } from "@/lib/site";
+import { absoluteUrl, OPERATOR, SITE_NAME, SITE_ORIGIN } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "プライバシーポリシー",
   description: `${SITE_NAME}における利用者の情報（キャリア情報・アクセス情報・Cookie 等）の取扱いについて定めたプライバシーポリシーです。`,
   alternates: { canonical: "/privacy-policy" },
+  openGraph: { url: absoluteUrl("/privacy-policy") },
 };
 
 function Section({ id, title, children }: { id?: string; title: string; children: ReactNode }) {
@@ -43,7 +44,7 @@ function Code({ children }: { children: ReactNode }) {
 }
 
 export default function PrivacyPolicyPage() {
-  const siteUrl = `${SITE_URL}/`;
+  const siteUrl = `${SITE_ORIGIN}/`;
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-10">

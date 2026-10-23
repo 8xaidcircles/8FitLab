@@ -7,6 +7,7 @@ import { listPosts, listServices } from "@/lib/blog/content";
 import { groupByPurpose, normalizeServices, type ComparedService } from "@/lib/blog/services";
 import { collectCategories, collectGoalCategories } from "@/lib/blog/utils";
 import { loadGoals } from "@/lib/career-match";
+import { absoluteUrl } from "@/lib/site";
 import { BlogListing } from "./blog-listing";
 
 const TITLE = "プログラミングスクール・転職サービス比較";
@@ -17,6 +18,7 @@ export const metadata: Metadata = {
   title: TITLE,
   description: DESCRIPTION,
   alternates: { canonical: "/blog" },
+  openGraph: { url: absoluteUrl("/blog") },
 };
 
 function SectionHeading({ id, kicker, children }: { id: string; kicker: string; children: ReactNode }) {

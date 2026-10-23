@@ -1,7 +1,7 @@
 import { JsonLd } from "@/components/json-ld";
-import { absoluteUrl, OPERATOR, ORGANIZATION_NAME, ORGANIZATION_URL, SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
+import { absoluteUrl, OPERATOR, ORGANIZATION_NAME, ORGANIZATION_URL, SITE_DESCRIPTION, SITE_NAME, SITE_ORIGIN } from "@/lib/site";
 
-export const organizationId = `${SITE_URL}/#organization`;
+export const organizationId = `${SITE_ORIGIN}/#organization`;
 
 export function StructuredData() {
   return (
@@ -11,7 +11,7 @@ export function StructuredData() {
         "@type": "Organization",
         "@id": organizationId,
         name: SITE_NAME,
-        url: SITE_URL,
+        url: SITE_ORIGIN,
         description: SITE_DESCRIPTION,
         logo: {
           "@type": "ImageObject",

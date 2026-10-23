@@ -1,5 +1,11 @@
 export const SITE_NAME = "8FitLab";
-export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://8fitlab.com").replace(/\/+$/, "");
+/**
+ * 正規ホスト（www なし）。環境変数では上書きしない（プレビューでも canonical / sitemap は本番）。
+ * ホストのリダイレクトは Vercel Domains で行い、コードには書かない。
+ */
+export const SITE_ORIGIN = "https://8fitlab.com";
+/** @deprecated SITE_ORIGIN を使う。互換のため同じ値を残す */
+export const SITE_URL = SITE_ORIGIN;
 export const SITE_DESCRIPTION =
   "目指す職種（Goal）を選び、スキル・経験・学歴を入力すると、Goalとの一致度（Goal Fit）と不足スキル、日本向けの学習順（Learning Path）がわかります。";
 export const ORGANIZATION_NAME = "AID CIRCLES";
@@ -57,6 +63,19 @@ export const GA_MEASUREMENT_ID = matchedEnv(process.env.NEXT_PUBLIC_GA_MEASUREME
 /** Google AdSense のサイト運営者 ID。null なら広告を読み込まない */
 export const ADSENSE_CLIENT_ID = matchedEnv(process.env.NEXT_PUBLIC_ADSENSE_CLIENT_ID, /^ca-pub-\d{10,20}$/);
 
+/**
+ * 先頭が / のパスを SITE_ORIGIN に結合する。
+ * "//" で始まる値、? や # を含む値、先頭が / でない値は例外。
+ */
 export function absoluteUrl(path: string): string {
-  return `${SITE_URL}${path.startsWith("/") ? path : `/${path}`}`;
+  if (!path.startsWith("/")) {
+    throw new Error(`absoluteUrl: パスは / で始めてください（受け取った値: ${JSON.stringify(path)}）`);
+  }
+  if (path.startsWith("//")) {
+    throw new Error(`absoluteUrl: プロトコル相対パスは使えません（受け取った値: ${JSON.stringify(path)}）`);
+  }
+  if (path.includes("?") || path.includes("#")) {
+    throw new Error(`absoluteUrl: ? や # を含むパスは使えません（受け取った値: ${JSON.stringify(path)}）`);
+  }
+  return `${SITE_ORIGIN}${path}`;
 }

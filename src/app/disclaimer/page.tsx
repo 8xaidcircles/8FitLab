@@ -2,12 +2,13 @@ import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { ExternalLink } from "@/components/external-link";
 import { loadCareerStatistics, loadGoals } from "@/lib/career-match";
-import { ESCO, JOBHOP, OPERATOR, SITE_NAME, SITE_URL, STACK_OVERFLOW_SURVEY } from "@/lib/site";
+import { absoluteUrl, ESCO, JOBHOP, OPERATOR, SITE_NAME, SITE_ORIGIN, STACK_OVERFLOW_SURVEY } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "免責事項・データ出典",
   description: `${SITE_NAME}の運営者・免責事項と、利用しているオープンデータの出典・ライセンス表記です。`,
   alternates: { canonical: "/disclaimer" },
+  openGraph: { url: absoluteUrl("/disclaimer") },
 };
 
 function Section({ id, title, children }: { id?: string; title: string; children: ReactNode }) {
@@ -54,7 +55,7 @@ function Source({ title, rightsHolder, license, usage }: { title: ReactNode; rig
 export default async function DisclaimerPage() {
   const [goal] = await loadGoals();
   const { calculation_version: careerStatisticsVersion } = await loadCareerStatistics(goal.goal_id);
-  const siteUrl = `${SITE_URL}/`;
+  const siteUrl = `${SITE_ORIGIN}/`;
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-10">

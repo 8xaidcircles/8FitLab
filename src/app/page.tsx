@@ -10,6 +10,7 @@ import { absoluteUrl, SITE_DESCRIPTION, SITE_NAME } from "@/lib/site";
 
 export const metadata: Metadata = {
   alternates: { canonical: "/" },
+  openGraph: { url: absoluteUrl("/") },
 };
 
 const STEPS = [

@@ -6,7 +6,7 @@ import { Logo } from "@/components/logo";
 import { StructuredData } from "@/components/StructuredData";
 import { ThirdPartyScripts } from "@/components/third-party-scripts";
 import { loadGoals } from "@/lib/career-match";
-import { ADSENSE_CLIENT_ID, ORGANIZATION_URL, SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
+import { ADSENSE_CLIENT_ID, ORGANIZATION_URL, SITE_DESCRIPTION, SITE_NAME, SITE_ORIGIN } from "@/lib/site";
 import "./globals.css";
 
 const notoSansJp = Noto_Sans_JP({
@@ -16,7 +16,7 @@ const notoSansJp = Noto_Sans_JP({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(SITE_URL),
+  metadataBase: new URL(SITE_ORIGIN),
   title: {
     default: `${SITE_NAME} | エンジニアに、フィットするキャリアを。`,
     template: `%s | ${SITE_NAME}`,

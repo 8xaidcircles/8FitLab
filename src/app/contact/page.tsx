@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
-import { CONTACT_FORM, SITE_NAME } from "@/lib/site";
+import { absoluteUrl, CONTACT_FORM, SITE_NAME } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "お問い合わせ",
   description: `${SITE_NAME}へのお問い合わせフォームです。`,
   alternates: { canonical: "/contact" },
+  openGraph: { url: absoluteUrl("/contact") },
 };
 
 export default function ContactPage() {

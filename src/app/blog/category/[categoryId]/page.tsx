@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { listPosts } from "@/lib/blog/content";
 import { categoryRobots, collectCategories, collectGoalCategories, isInGoalCategory } from "@/lib/blog/utils";
 import { loadGoals } from "@/lib/career-match";
+import { absoluteUrl } from "@/lib/site";
 import { BlogListing } from "../../blog-listing";
 
 async function loadCategories() {
@@ -49,10 +50,12 @@ export async function generateMetadata({ params }: PageProps<"/blog/category/[ca
   const found = await findCategory(categoryId);
   if (!found) return {};
   const { category, description, categoryPosts } = found;
+  const path = `/blog/category/${category.id}`;
   return {
     title: `${category.name}の記事一覧`,
     description,
-    alternates: { canonical: `/blog/category/${category.id}` },
+    alternates: { canonical: path },
+    openGraph: { url: absoluteUrl(path) },
     robots: categoryRobots(categoryPosts.length),
   };
 }

@@ -2,12 +2,13 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { ExternalLink } from "@/components/external-link";
-import { SITE_NAME } from "@/lib/site";
+import { absoluteUrl, SITE_NAME } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Cookie・外部送信について",
   description: `${SITE_NAME}が利用する Cookie と、Google アナリティクス・Google AdSense・アフィリエイトサービスなどの外部サービスへ送信される情報についての公表事項です。`,
   alternates: { canonical: "/cookie-policy" },
+  openGraph: { url: absoluteUrl("/cookie-policy") },
 };
 
 function Section({ title, children }: { title: string; children: ReactNode }) {
