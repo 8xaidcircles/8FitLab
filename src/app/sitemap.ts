@@ -4,6 +4,7 @@ import { collectCategories, collectGoalCategories } from "@/lib/blog/utils";
 import { loadGoals } from "@/lib/career-match";
 import { absoluteUrl } from "@/lib/site";
 
+/** 公開 URL はすべて absoluteUrl（SITE_ORIGIN = https://8fitlab.com）で作る。結果ページは含めない */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [posts, goals] = await Promise.all([listPosts(), loadGoals()]);
   // 記事の無いカテゴリは noindex のため載せない
