@@ -122,6 +122,14 @@ body {
   & a:hover {
     color: var(--color-sky);
   }
+  /* 比較表など、ページ内ジャンプ用。リンクだと分かる装飾は付けない */
+  & a[href^="#"] {
+    color: inherit;
+    text-decoration: none;
+  }
+  & a[href^="#"]:hover {
+    color: inherit;
+  }
   & ul,
   & ol {
     padding-left: 1.5em;
