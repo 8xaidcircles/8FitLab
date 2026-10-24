@@ -16,41 +16,45 @@ function Widget({ title, children }: { title: string; children: ReactNode }) {
   );
 }
 
-/** もしま DMM WEBCAMP PRO バナー（300×250）。ASP 計測のため next/image は使わない */
-function DmmWebcampAffiliateBanner() {
+/** もしまバナー。ASP 計測のため next/image は使わない */
+function MoshimoBanner({
+  serviceId,
+  clickUrl,
+  imageUrl,
+  impressionUrl,
+  width,
+  height,
+  alt,
+}: {
+  serviceId: string;
+  clickUrl: string;
+  imageUrl: string;
+  impressionUrl: string;
+  width: number;
+  height: number;
+  alt: string;
+}) {
   return (
     <section className="relative overflow-hidden rounded-2xl border border-line bg-white p-3" aria-label="広告">
       <p className="mb-2 text-[10px] font-bold text-muted">PR</p>
       <TrackClick
         event="service_clicked"
-        data={{ service_id: "dmm-webcamp-pro", type: "school", placement: "blog_sidebar", sponsored: true }}
+        data={{ service_id: serviceId, type: "school", placement: "blog_sidebar", sponsored: true }}
       >
         <a
-          href="https://af.moshimo.com/af/c/click?a_id=5862932&p_id=1363&pc_id=2297&pl_id=20505"
+          href={clickUrl}
           target="_blank"
           rel="sponsored nofollow noopener"
           referrerPolicy="no-referrer-when-downgrade"
-          className="mx-auto block w-full max-w-[300px]"
+          className="mx-auto block w-full"
+          style={{ maxWidth: width }}
         >
           {/* eslint-disable-next-line @next/next/no-img-element -- ASP バナー。next/image は使わない */}
-          <img
-            src="https://image.moshimo.com/af-img/0323/000000020505.png"
-            width={300}
-            height={250}
-            alt="DMM WEBCAMP PRO"
-            className="h-auto w-full"
-          />
+          <img src={imageUrl} width={width} height={height} alt={alt} className="h-auto w-full" />
         </a>
       </TrackClick>
       {/* eslint-disable-next-line @next/next/no-img-element -- ASP 計測用 1×1 */}
-      <img
-        src="https://i.moshimo.com/af/i/impression?a_id=5862932&p_id=1363&pc_id=2297&pl_id=20505"
-        width={1}
-        height={1}
-        alt=""
-        className="absolute h-px w-px opacity-0"
-        loading="lazy"
-      />
+      <img src={impressionUrl} width={1} height={1} alt="" className="absolute h-px w-px opacity-0" loading="lazy" />
     </section>
   );
 }
@@ -140,7 +144,24 @@ export function BlogSidebar({
       </section>
       )}
 
-      <DmmWebcampAffiliateBanner />
+      <MoshimoBanner
+        serviceId="dmm-webcamp-pro"
+        clickUrl="https://af.moshimo.com/af/c/click?a_id=5862932&p_id=1363&pc_id=2297&pl_id=20505"
+        imageUrl="https://image.moshimo.com/af-img/0323/000000020505.png"
+        impressionUrl="https://i.moshimo.com/af/i/impression?a_id=5862932&p_id=1363&pc_id=2297&pl_id=20505"
+        width={300}
+        height={250}
+        alt="DMM WEBCAMP PRO"
+      />
+      <MoshimoBanner
+        serviceId="moshimo-75329"
+        clickUrl="https://af.moshimo.com/af/c/click?a_id=5862991&p_id=5870&pc_id=16301&pl_id=75329"
+        imageUrl="https://image.moshimo.com/af-img/1052/000000075329.png"
+        impressionUrl="https://i.moshimo.com/af/i/impression?a_id=5862991&p_id=5870&pc_id=16301&pl_id=75329"
+        width={504}
+        height={504}
+        alt="PR広告"
+      />
 
       {latest.length > 0 && (
         <Widget title="最新の記事">
