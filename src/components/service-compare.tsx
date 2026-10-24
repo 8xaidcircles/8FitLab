@@ -165,6 +165,10 @@ function PickLink({
     >
       <a href={pick.officialUrl} target="_blank" rel={pick.sponsored ? "sponsored nofollow noopener" : "noopener"} className={className}>
         {children}
+        {pick.trackingPixelUrl && (
+          // eslint-disable-next-line @next/next/no-img-element -- ASP 計測用 1×1。next/image は使わない
+          <img src={pick.trackingPixelUrl} width={1} height={1} alt="" className="absolute h-px w-px opacity-0" />
+        )}
       </a>
     </TrackClick>
   );

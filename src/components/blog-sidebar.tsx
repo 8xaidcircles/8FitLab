@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { TrackClick } from "@/components/track-click";
 import type { BlogPostSummary } from "@/lib/blog/types";
 const LATEST_COUNT = 6;
 
@@ -11,6 +12,45 @@ function Widget({ title, children }: { title: string; children: ReactNode }) {
     <section className="rounded-2xl border border-line bg-white p-5">
       <h2 className="border-b border-line pb-2 text-sm font-extrabold">{title}</h2>
       <div className="mt-3">{children}</div>
+    </section>
+  );
+}
+
+/** もしま DMM WEBCAMP PRO バナー（300×250）。ASP 計測のため next/image は使わない */
+function DmmWebcampAffiliateBanner() {
+  return (
+    <section className="relative overflow-hidden rounded-2xl border border-line bg-white p-3" aria-label="広告">
+      <p className="mb-2 text-[10px] font-bold text-muted">PR</p>
+      <TrackClick
+        event="service_clicked"
+        data={{ service_id: "dmm-webcamp-pro", type: "school", placement: "blog_sidebar", sponsored: true }}
+      >
+        <a
+          href="https://af.moshimo.com/af/c/click?a_id=5862932&p_id=1363&pc_id=2297&pl_id=20505"
+          target="_blank"
+          rel="sponsored nofollow noopener"
+          referrerPolicy="no-referrer-when-downgrade"
+          className="mx-auto block w-full max-w-[300px]"
+        >
+          {/* eslint-disable-next-line @next/next/no-img-element -- ASP バナー。next/image は使わない */}
+          <img
+            src="https://image.moshimo.com/af-img/0323/000000020505.png"
+            width={300}
+            height={250}
+            alt="DMM WEBCAMP PRO"
+            className="h-auto w-full"
+          />
+        </a>
+      </TrackClick>
+      {/* eslint-disable-next-line @next/next/no-img-element -- ASP 計測用 1×1 */}
+      <img
+        src="https://i.moshimo.com/af/i/impression?a_id=5862932&p_id=1363&pc_id=2297&pl_id=20505"
+        width={1}
+        height={1}
+        alt=""
+        className="absolute h-px w-px opacity-0"
+        loading="lazy"
+      />
     </section>
   );
 }
@@ -99,6 +139,8 @@ export function BlogSidebar({
         </Link>
       </section>
       )}
+
+      <DmmWebcampAffiliateBanner />
 
       {latest.length > 0 && (
         <Widget title="最新の記事">

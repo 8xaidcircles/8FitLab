@@ -198,9 +198,10 @@ sponsored: false
 > 仕事を辞めて3ヶ月で転職したい人は短期集中、働きながら6ヶ月で学びたい人は就業両立が、公式の分け方です。まずは公式サイトでコースを比べてみましょう。
 
 ```cta
-label: DMM WEBCAMPの公式サイトを見る
-url: https://web-camp.io/
-sponsored: false
+label: DMM WEBCAMP
+url: https://af.moshimo.com/af/c/click?a_id=5862932&p_id=1363&pc_id=2297&pl_id=61301
+sponsored: true
+tracking_pixel_url: https://i.moshimo.com/af/i/impression?a_id=5862932&p_id=1363&pc_id=2297&pl_id=61301
 ```
 
 ## 仕事と学習を無理なく両立！挫折せずに卒業まで駆け抜けるための学習計画

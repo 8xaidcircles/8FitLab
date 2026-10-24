@@ -11,6 +11,8 @@ export type JobCategoryPick = {
   coveredStepIds?: string[];
   /** ASP の広告リンクに差し替えたら true にする（rel="sponsored nofollow" になる） */
   sponsored: boolean;
+  /** ASP の広告コードに含まれる計測用の 1×1 画像の URL */
+  trackingPixelUrl?: string;
 };
 
 export const SCHOOL_PICKS: JobCategoryPick[] = [
@@ -33,12 +35,13 @@ export const SCHOOL_PICKS: JobCategoryPick[] = [
   },
   {
     goalId: "full-stack-developer",
-    name: "RUNTEQ（ランテック）",
-    course: "Web開発スタンダードコース",
-    fit: "画面からサーバー・データベースまで、Web アプリを一通り作れるようになるコース",
-    officialUrl: "https://runteq.jp/",
-    coveredStepIds: ["html-css", "javascript", "git-github", "backend-framework", "sql", "web-api", "testing", "cloud"],
-    sponsored: false,
+    name: "DMM WEBCAMP PRO",
+    course: "就業両立コース",
+    fit: "仕事を続けながら、HTML/CSS・Ruby on Rails などで Web アプリ開発から転職まで目指せるオンライン完結コース",
+    officialUrl: "https://af.moshimo.com/af/c/click?a_id=5862932&p_id=1363&pc_id=2297&pl_id=61301",
+    coveredStepIds: ["html-css", "javascript", "git-github", "backend-language", "backend-framework", "sql", "web-api", "cloud"],
+    sponsored: true,
+    trackingPixelUrl: "https://i.moshimo.com/af/i/impression?a_id=5862932&p_id=1363&pc_id=2297&pl_id=61301",
   },
   {
     goalId: "data-analyst",
