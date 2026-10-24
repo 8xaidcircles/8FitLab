@@ -6,7 +6,7 @@ category: school
 goal: [it-project-manager]
 author: editorial
 eyecatch: /blog/images/it-project-manager-school/eyecatch.png
-draft: true
+draft: false
 ---
 
 ※本記事はプロモーションを含みます。

@@ -18,7 +18,7 @@ export type BlogAdInsertContent = {
 
 /** もしま Remoful */
 export const REMOFUL_AD_INSERT: BlogAdInsertContent = {
-  badge: "注目　リモート求人",
+  badge: "注目💡リモート求人に特化",
   bannerHtml:
     '<a href="//af.moshimo.com/af/c/click?a_id=5862991&p_id=5870&pc_id=16301&pl_id=75329" rel="nofollow" referrerpolicy="no-referrer-when-downgrade" attributionsrc><img src="//image.moshimo.com/af-img/1052/000000075329.png" width="504" height="504" style="border:none;"></a><img src="//i.moshimo.com/af/i/impression?a_id=5862991&p_id=5870&pc_id=16301&pl_id=75329" width="1" height="1" style="border:none;" loading="lazy">',
   bullets: (
