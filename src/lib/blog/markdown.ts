@@ -5,11 +5,17 @@ import remarkParse from "remark-parse";
 import remarkRehype from "remark-rehype";
 import { unified } from "unified";
 import { parse as parseYaml } from "yaml";
-import { parseCtaBlock, type BodyBlock, type CtaButtonBlock, type GoalFitBlock } from "./body-blocks";
+import {
+  parseCtaBlock,
+  type AdInsertBlock,
+  type BodyBlock,
+  type CtaButtonBlock,
+  type GoalFitBlock,
+} from "./body-blocks";
 import { rehypeBlogDecor } from "./decorate-html";
 
 /**
- * 記事本文の Markdown（GFM）を、HTML の本文と ```cta のボタン・```goal-fit の診断誘導に分ける。
+ * 記事本文の Markdown（GFM）を、HTML の本文と ```cta のボタン・```goal-fit の診断誘導・```ad-insert の挿入広告に分ける。
  * 生の HTML は書けない（remark-rehype が出力しないため、書いたら例外にして気づけるようにする）。
  * FAQ・比較表・「目次に戻る」は rehypeBlogDecor が sousyoku-* クラスを付ける。
  */
@@ -21,7 +27,8 @@ export type RenderedMarkdown = {
 
 const CTA_LANG = "cta";
 const GOAL_FIT_LANG = "goal-fit";
-const BLOCK_LANGS = new Set([CTA_LANG, GOAL_FIT_LANG]);
+const AD_INSERT_LANG = "ad-insert";
+const BLOCK_LANGS = new Set([CTA_LANG, GOAL_FIT_LANG, AD_INSERT_LANG]);
 const BLOCK_MARKER = "@@8FITLAB_BLOCK_";
 const BLOCK_PLACEHOLDER = /<p>@@8FITLAB_BLOCK_(\d+)@@<\/p>/;
 const LINE_BREAK = /^<br\s*\/?>$/i;
@@ -79,6 +86,17 @@ function parseGoalFit(value: string): GoalFitBlock {
   return { kind: "goal_fit" };
 }
 
+function parseAdInsert(value: string): AdInsertBlock {
+  if (value.trim()) throw new Error("```ad-insert の中には何も書かないでください（文言・バナーは blog-ad-insert.tsx で共通です）");
+  return { kind: "ad_insert" };
+}
+
+function parseSpecialBlock(lang: string, value: string): BodyBlock {
+  if (lang === CTA_LANG) return parseCta(value);
+  if (lang === GOAL_FIT_LANG) return parseGoalFit(value);
+  return parseAdInsert(value);
+}
+
 export function renderMarkdown(markdown: string): RenderedMarkdown {
   const tree = processor.parse(markdown) as Root;
   const specials: BodyBlock[] = [];
@@ -89,7 +107,7 @@ export function renderMarkdown(markdown: string): RenderedMarkdown {
       checkNode(node, localAssets);
       return node;
     }
-    specials.push(node.lang === CTA_LANG ? parseCta(node.value) : parseGoalFit(node.value));
+    specials.push(parseSpecialBlock(node.lang, node.value));
     return { type: "paragraph", children: [{ type: "text", value: `${BLOCK_MARKER}${specials.length - 1}@@` }] };
   });
 

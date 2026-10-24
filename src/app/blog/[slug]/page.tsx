@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { AuthorProfile } from "@/components/author-box";
+import { BlogAdInsert } from "@/components/blog-ad-insert";
 import { BlogCta } from "@/components/blog-cta";
 import { BlogCtaButton } from "@/components/blog-cta-button";
 import { BlogSidebar } from "@/components/blog-sidebar";
@@ -170,6 +171,8 @@ export default async function BlogPostPage({ params }: PageProps<"/blog/[slug]">
                   <div key={i} className="blog-content" dangerouslySetInnerHTML={{ __html: block.html }} />
                 ) : block.kind === "goal_fit" ? (
                   <BlogCta key={i} goal={goal} />
+                ) : block.kind === "ad_insert" ? (
+                  <BlogAdInsert key={i} />
                 ) : (
                   <BlogCtaButton key={i} block={block} articleId={post.id} positionIndex={ctaIndexes[i]} />
                 ),

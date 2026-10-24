@@ -1008,3 +1008,205 @@
     height: 66px;
   }
 }
+
+/* ----------------------------------------------------------------
+   挿入広告テンプレート（w8-adinsert）
+   構成は参照デザインのまま、色は 8FitLab:
+     枠背景 = indigo-soft / 枠線・バッジ = indigo /
+     強調 = flame / CTA = indigo / 本文 = ink
+   Markdown: ```ad-insert``` / 実装: blog-ad-insert.tsx
+   CTA は ASP の <a> を CSS だけでボタン化（HTML 属性は改変しない）
+   ---------------------------------------------------------------- */
+.blog-article .w8-adinsert-stack {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  margin: 1.5em 0;
+  box-sizing: border-box;
+}
+
+.blog-article .w8-adinsert {
+  --w8-bg: var(--color-indigo-soft);
+  --w8-border: var(--color-indigo);
+  --w8-badge: var(--color-indigo);
+  --w8-text: var(--color-ink);
+  --w8-em: var(--color-flame);
+  --w8-cta: var(--color-indigo);
+  --w8-cta-shadow: rgba(43, 49, 146, 0.28);
+  position: relative;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 18px;
+  background: var(--w8-bg);
+  border: 2px solid var(--w8-border);
+  border-radius: 10px;
+  box-shadow: 0 10px 22px rgba(27, 31, 94, 0.08);
+}
+
+.blog-article .w8-adinsert__pr {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 1;
+  margin: 0;
+  padding: 2px 7px;
+  border: 1px solid var(--color-line);
+  border-radius: 4px;
+  background: #fff;
+  color: var(--color-muted);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  line-height: 1.4;
+}
+
+.blog-article .w8-adinsert__badge {
+  display: inline-block;
+  margin: 0 0 12px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--w8-badge);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1.4;
+}
+
+.blog-article .w8-adinsert__visual {
+  text-align: center;
+  line-height: 0;
+}
+
+.blog-article .w8-adinsert__visual a {
+  display: inline-block;
+  max-width: min(100%, 420px);
+  line-height: 0;
+}
+
+.blog-article .w8-adinsert__visual img {
+  display: inline-block;
+  max-width: 100%;
+  height: auto;
+  vertical-align: middle;
+  border: none;
+}
+
+.blog-article .w8-adinsert__visual img[width="1"],
+.blog-article .w8-adinsert__visual img[height="1"] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.blog-article .w8-adinsert__bullets {
+  margin-top: 14px;
+  color: var(--w8-text);
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.9;
+}
+
+.blog-article .w8-adinsert__em {
+  color: var(--w8-em);
+  font-weight: 800;
+}
+
+.blog-article .w8-adinsert__cta-wrap {
+  position: relative;
+  margin-top: 16px;
+  text-align: center;
+}
+
+.blog-article .w8-adinsert__cta-wrap > a {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  padding: 20px 40px;
+  border-radius: 8px;
+  background: var(--w8-cta);
+  color: #fff !important;
+  font-size: 18px;
+  font-weight: 800;
+  text-decoration: none !important;
+  box-shadow: 0 6px 14px var(--w8-cta-shadow);
+  transition: transform 0.15s ease, filter 0.15s ease;
+}
+
+.blog-article .w8-adinsert__cta-wrap > a:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.06);
+}
+
+.blog-article .w8-adinsert__cta-wrap > a::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -60%;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+  transform: skewX(-20deg);
+  animation: w8-adinsert-shine 1.8s infinite;
+  pointer-events: none;
+}
+
+.blog-article .w8-adinsert__cta-wrap > img[width="1"],
+.blog-article .w8-adinsert__cta-wrap > img[height="1"] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+@keyframes w8-adinsert-shine {
+  0% {
+    left: -60%;
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  60% {
+    left: 120%;
+    opacity: 1;
+  }
+  100% {
+    left: 120%;
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blog-article .w8-adinsert__cta-wrap > a::after {
+    animation: none;
+  }
+}
+
+@media (max-width: 480px) {
+  .blog-article .w8-adinsert {
+    padding: 14px;
+  }
+
+  .blog-article .w8-adinsert__badge {
+    font-size: 13px;
+    padding: 5px 10px;
+  }
+
+  .blog-article .w8-adinsert__bullets {
+    font-size: 14px;
+    line-height: 1.8;
+  }
+
+  .blog-article .w8-adinsert__cta-wrap > a {
+    width: 100%;
+    max-width: 100%;
+    padding: 16px 20px;
+    font-size: 16px;
+    box-sizing: border-box;
+  }
+}

@@ -108,7 +108,7 @@ CSV には属性が無いため、`beginner_friendly` / `novice_support` / `free
 | RUNTEQ | active | true | BE、FS | https://runteq.jp/ |
 | RaiseTech | active | true | BE、DevOps、クラウド | https://raise-tech.net/ |
 | ワンダフルコード | active | null | BE | https://wonderful-wife.net/study/ |
-| テラキャン プログラミング（旧 DMM WEBCAMP） | active | true | FS、DS | https://web-camp.io/ |
+| DMM WEBCAMP（旧テラキャン／アフィリエイト） | active | true | FS、DS | https://af.moshimo.com/af/c/click?a_id=5862932&p_id=1363&pc_id=2297&pl_id=61301 |
 | ストアカ | active | null | DA | https://www.street-academy.com/ |
 | データミックス（データサイエンティスト育成講座） | active | true | DA | https://datamix.co.jp/school/data-scientist/ |
 | CodeCamp | active | true | DA、DS | https://codecamp.jp/courses/engineer |

@@ -8,6 +8,12 @@ export interface LearningPathService {
   name: string;
   course?: string;
   url: string;
+  /** リンクボタンの文言（省略時は「公式サイトを見る →」） */
+  cta_label?: string;
+  /** ASP の広告リンクなら true（rel="sponsored nofollow" になる） */
+  sponsored?: boolean;
+  /** ASP の広告コードに含まれる計測用の 1×1 画像の URL */
+  tracking_pixel_url?: string;
   beginner_friendly?: boolean | null;
   novice_support?: boolean | null;
   freelance_available?: boolean | null;

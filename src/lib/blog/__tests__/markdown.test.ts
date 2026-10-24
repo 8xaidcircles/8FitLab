@@ -33,6 +33,15 @@ describe("renderMarkdown", () => {
     ]);
   });
 
+  it("```ad-insert を書いた位置に挿入広告のブロックを置く", () => {
+    const { blocks } = renderMarkdown("前。\n\n```ad-insert\n```\n\n後。");
+    expect(blocks).toEqual([
+      { kind: "rich_text", html: "<p>前。</p>" },
+      { kind: "ad_insert" },
+      { kind: "rich_text", html: "<p>後。</p>" },
+    ]);
+  });
+
   it("GFM（表・打ち消し線）を HTML にする", () => {
     const { blocks } = renderMarkdown("| a | b |\n| --- | --- |\n| 1 | 2 |\n\n~~古い~~");
     const [block] = blocks;
@@ -101,6 +110,7 @@ describe("renderMarkdown", () => {
     ["箇条書きの中の CTA", "- 項目\n\n  ```cta\n  label: 見る\n  url: https://example.com\n  ```", "本文の直下"],
     ["中身のある goal-fit", "```goal-fit\nlabel: 試す\n```", "何も書かない"],
     ["引用の中の goal-fit", "> ```goal-fit\n> ```", "本文の直下"],
+    ["中身のある ad-insert", "```ad-insert\nid: remoful\n```", "何も書かない"],
   ])("%s は例外", (_, markdown, message) => {
     expect(() => renderMarkdown(markdown)).toThrow(message);
   });

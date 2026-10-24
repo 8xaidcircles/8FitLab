@@ -52,24 +52,48 @@ export function ServiceCardGroup({
       ) : (
         <ul className="mt-3 grid gap-3 md:grid-cols-2">
           {services.map((service) => (
-            <li key={service.id} className="flex flex-col rounded-2xl border border-line bg-white p-4">
-              <p className="font-bold">{service.name}</p>
+            <li key={service.id} className="relative flex flex-col rounded-2xl border border-line bg-white p-4">
+              <div className="flex items-start gap-2">
+                <p className="font-bold">{service.name}</p>
+                {service.sponsored && (
+                  <span className="mt-0.5 shrink-0 rounded border border-line bg-white px-1.5 text-[10px] font-bold text-muted">PR</span>
+                )}
+              </div>
               {service.course && <p className="mt-0.5 text-xs text-muted">{service.course}</p>}
               <Tags service={service} />
               <TrackClick
                 event="service_clicked"
-                data={{ service_id: service.id, type: EVENT_TYPES[type], placement: "learning_path", goal_id: goalId, stage }}
+                data={{
+                  service_id: service.id,
+                  type: EVENT_TYPES[type],
+                  placement: "learning_path",
+                  goal_id: goalId,
+                  stage,
+                  sponsored: Boolean(service.sponsored),
+                }}
                 className="mt-auto pt-3"
               >
                 <a
                   href={service.url}
                   target="_blank"
-                  rel="noopener noreferrer"
+                  rel={service.sponsored ? "sponsored nofollow noopener" : "noopener noreferrer"}
+                  referrerPolicy={service.sponsored ? "no-referrer-when-downgrade" : undefined}
                   className="text-sm font-bold text-sky hover:underline"
                 >
-                  公式サイトを見る →
+                  {service.cta_label ?? "公式サイトを見る →"}
                 </a>
               </TrackClick>
+              {service.tracking_pixel_url && (
+                // eslint-disable-next-line @next/next/no-img-element -- ASP 計測用 1×1。next/image は使わない
+                <img
+                  src={service.tracking_pixel_url}
+                  width={1}
+                  height={1}
+                  alt=""
+                  className="absolute h-px w-px opacity-0"
+                  loading="lazy"
+                />
+              )}
             </li>
           ))}
         </ul>

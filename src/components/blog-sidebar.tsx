@@ -154,13 +154,13 @@ export function BlogSidebar({
         alt="DMM WEBCAMP PRO"
       />
       <MoshimoBanner
-        serviceId="moshimo-75329"
+        serviceId="remoful"
         clickUrl="https://af.moshimo.com/af/c/click?a_id=5862991&p_id=5870&pc_id=16301&pl_id=75329"
         imageUrl="https://image.moshimo.com/af-img/1052/000000075329.png"
         impressionUrl="https://i.moshimo.com/af/i/impression?a_id=5862991&p_id=5870&pc_id=16301&pl_id=75329"
         width={504}
         height={504}
-        alt="PR広告"
+        alt="Remoful"
       />
 
       {latest.length > 0 && (

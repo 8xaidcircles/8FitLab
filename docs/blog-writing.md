@@ -171,6 +171,29 @@ Goal Fit 診断への案内は、本文の好きな位置に中身が空の `goa
 - 本文に書かなかった記事は、従来どおり記事の最後（シェアの下）に出る
 - 文言を変えるときは `blog-cta.tsx` とこの節を一緒に直す
 
+### 挿入広告（```ad-insert）
+
+記事の途中に出す PR 枠。中身が空の `ad-insert` コードブロックを書くと、その位置に出る。
+
+構成テンプレート（参照デザインを 8FitLab 色に置き換え）:
+
+1. 注目バッジ（`indigo`）
+2. バナー画像（ASP HTML そのまま）
+3. 箇条書き（要点は `flame` 強調）
+4. 光る CTA（ASP テキスト広告 HTML を CSS でボタン化。属性・URL は改変しない）
+
+枠は `indigo-soft` 地に `indigo` の 2px ボーダー。文言・バナー・CTA HTML は `src/components/blog-ad-insert.tsx`（`BlogAdInsertContent` / `BlogAdInsertTemplate`）、見た目は `src/app/blog/blog-decor.css` の `.w8-adinsert*`。記事ごとに HTML は書かない。新しい案件は `BlogAdInsertContent` を足して切り替える。
+
+````markdown
+```ad-insert
+```
+````
+
+- 箇条書きや引用の中には置けない。中に何か書くとエラー
+- 最初の `##` の直前に置くと、導入文のあと・本編見出しの前に表示される（FAQ 前など途中の枠と併用可）
+- 広告を含む記事は冒頭に「※本記事はプロモーションを含みます。」と書く
+- ASP のバナー HTML は計測のため改変しない
+
 ## おすすめ記事（recommend_*）
 
 診断結果の「学習ロードマップ」ページ（`/goal-fit/result/[id]/learning-path`）に出すおすすめは、記事の frontmatter に次の項目を書いた記事から選ぶ。カードのリンク先は常に内部の `/blog/{スラッグ}` で、外部サイト・アフィリエイトへの案内と PR 表記は記事本文で行う。
