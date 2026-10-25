@@ -1045,9 +1045,8 @@
 
 /* ----------------------------------------------------------------
    挿入広告テンプレート（w8-adinsert）
-   構成は参照デザインのまま、色は 8FitLab:
-     枠背景 = indigo-soft / 枠線・バッジ = indigo /
-     強調 = flame / CTA = indigo / 本文 = ink
+   構成は参照デザインのまま。強調・CTA は VERTICE CTN 広告と同系の赤
+   （#ff0000 / #ff2a2a）。枠・バッジは indigo 系を維持。
    Markdown: ```ad-insert``` / 実装: blog-ad-insert.tsx
    CTA は ASP の <a> を CSS だけでボタン化（HTML 属性は改変しない）
    ---------------------------------------------------------------- */
@@ -1064,9 +1063,9 @@
   --w8-border: var(--color-indigo);
   --w8-badge: var(--color-indigo);
   --w8-text: var(--color-ink);
-  --w8-em: var(--color-flame);
-  --w8-cta: var(--color-indigo);
-  --w8-cta-shadow: rgba(43, 49, 146, 0.28);
+  --w8-em: #ff0000;
+  --w8-cta: #ff2a2a;
+  --w8-cta-shadow: rgba(255, 42, 42, 0.28);
   position: relative;
   box-sizing: border-box;
   width: 100%;
