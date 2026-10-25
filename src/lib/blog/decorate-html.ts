@@ -7,6 +7,9 @@ import type { Element, ElementContent, Root, RootContent, Text } from "hast";
 const FAQ_HEADING = /よくある質問|FAQ/;
 const SUMMARY_HEADING = /^まとめ|^【まとめ】/;
 const ANSWER_PREFIX = /^(?:回答[：:]|A[.．]\s*)/;
+/** 記事冒頭の広告表記（Markdown の1段落 → .sousyoku-pr） */
+const PR_NOTICE =
+  /^(?:※本記事はプロモーションを含みます。|このページには広告（PR）を含みます)$/;
 
 function isElement(node: RootContent | ElementContent | undefined): node is Element {
   return node?.type === "element";
@@ -74,6 +77,21 @@ function stripAnswerPrefix(nodes: ElementContent[]): ElementContent[] {
 
 function cleanQuestion(text: string): string {
   return text.replace(/^Q\d*[.．]?\s*/i, "").trim();
+}
+
+/** 広告表記の段落を .sousyoku-pr に変換する（生 HTML は Markdown で書けないため） */
+function wrapPrNotice(children: RootContent[]): RootContent[] {
+  return children.map((node) => {
+    if (!isElement(node) || node.tagName !== "p") return node;
+    const text = textOf(node).trim();
+    if (!PR_NOTICE.test(text)) return node;
+    return {
+      type: "element",
+      tagName: "div",
+      properties: { className: ["sousyoku-pr"] },
+      children: [{ type: "text", value: "このページには広告（PR）を含みます" }],
+    };
+  });
 }
 
 /** 比較表を横スクロール＋1列目固定の枠で包む */
@@ -152,6 +170,6 @@ function insertTocBack(children: RootContent[]): RootContent[] {
 /** rehype プラグイン: 記事本文の hast に装飾クラスを付ける */
 export function rehypeBlogDecor() {
   return (tree: Root) => {
-    tree.children = insertTocBack(decorateFaq(wrapTables(tree.children)));
+    tree.children = insertTocBack(decorateFaq(wrapTables(wrapPrNotice(tree.children))));
   };
 }

@@ -16,9 +16,10 @@ function Widget({ title, children }: { title: string; children: ReactNode }) {
   );
 }
 
-/** もしまバナー。ASP 計測のため next/image は使わない */
+/** もしまバナー。ALL英会話風の【PR】見出し＋下線。ASP 計測のため next/image は使わない */
 function MoshimoBanner({
   serviceId,
+  title,
   clickUrl,
   imageUrl,
   impressionUrl,
@@ -27,6 +28,7 @@ function MoshimoBanner({
   alt,
 }: {
   serviceId: string;
+  title: string;
   clickUrl: string;
   imageUrl: string;
   impressionUrl: string;
@@ -35,8 +37,8 @@ function MoshimoBanner({
   alt: string;
 }) {
   return (
-    <section className="relative overflow-hidden rounded-2xl border border-line bg-white p-3" aria-label="広告">
-      <p className="mb-2 text-[10px] font-bold text-muted">PR</p>
+    <section className="blog-sidebar-ad relative" aria-label="広告">
+      <p className="blog-sidebar-ad__title">{title}</p>
       <TrackClick
         event="service_clicked"
         data={{ service_id: serviceId, type: "school", placement: "blog_sidebar", sponsored: true }}
@@ -146,6 +148,7 @@ export function BlogSidebar({
 
       <MoshimoBanner
         serviceId="dmm-webcamp-pro"
+        title="【PR】エンジニア転職を目指すなら「DMM WEBCAMP PRO」"
         clickUrl="https://af.moshimo.com/af/c/click?a_id=5862932&p_id=1363&pc_id=2297&pl_id=20505"
         imageUrl="https://image.moshimo.com/af-img/0323/000000020505.png"
         impressionUrl="https://i.moshimo.com/af/i/impression?a_id=5862932&p_id=1363&pc_id=2297&pl_id=20505"
@@ -154,13 +157,14 @@ export function BlogSidebar({
         alt="DMM WEBCAMP PRO"
       />
       <MoshimoBanner
-        serviceId="remoful"
-        clickUrl="https://af.moshimo.com/af/c/click?a_id=5862991&p_id=5870&pc_id=16301&pl_id=75329"
-        imageUrl="https://image.moshimo.com/af-img/1052/000000075329.png"
-        impressionUrl="https://i.moshimo.com/af/i/impression?a_id=5862991&p_id=5870&pc_id=16301&pl_id=75329"
-        width={504}
-        height={504}
-        alt="Remoful"
+        serviceId="it-kyujin-navi-freelance"
+        title="【PR】フリーエンジニアを手厚くサポート「IT求人ナビ フリーランス」"
+        clickUrl="https://af.moshimo.com/af/c/click?a_id=5862995&p_id=3026&pc_id=6979&pl_id=38472"
+        imageUrl="https://image.moshimo.com/af-img/2440/000000038472.jpg"
+        impressionUrl="https://i.moshimo.com/af/i/impression?a_id=5862995&p_id=3026&pc_id=6979&pl_id=38472"
+        width={300}
+        height={250}
+        alt="IT求人ナビ フリーランス"
       />
 
       {latest.length > 0 && (

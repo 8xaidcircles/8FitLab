@@ -32,7 +32,7 @@ export const REMOFUL_AD_INSERT: BlogAdInsertContent = {
   ),
   // 自由テキストのみ変更。href / rel / referrerpolicy / attributionsrc / 計測 img はそのまま
   ctaHtml:
-    '<a href="//af.moshimo.com/af/c/click?a_id=5862991&p_id=5870&pc_id=16301&pl_id=75201" rel="nofollow" referrerpolicy="no-referrer-when-downgrade" attributionsrc>Remofulで無料相談</a><img src="//i.moshimo.com/af/i/impression?a_id=5862991&p_id=5870&pc_id=16301&pl_id=75201" width="1" height="1" style="border:none;" loading="lazy">',
+    '<a href="//af.moshimo.com/af/c/click?a_id=5862991&p_id=5870&pc_id=16301&pl_id=75201" rel="nofollow" referrerpolicy="no-referrer-when-downgrade" attributionsrc>無料登録</a><img src="//i.moshimo.com/af/i/impression?a_id=5862991&p_id=5870&pc_id=16301&pl_id=75201" width="1" height="1" style="border:none;" loading="lazy">',
 };
 
 /** 挿入広告の見た目テンプレート（色・余白は blog-decor.css の .w8-adinsert*） */

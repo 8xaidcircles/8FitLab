@@ -42,6 +42,14 @@ describe("renderMarkdown", () => {
     ]);
   });
 
+  it("広告表記の段落を sousyoku-pr にする", () => {
+    const { blocks } = renderMarkdown("このページには広告（PR）を含みます\n\n本文。");
+    const [block] = blocks;
+    expect(block.kind === "rich_text" && block.html).toContain('class="sousyoku-pr"');
+    expect(block.kind === "rich_text" && block.html).toContain("このページには広告（PR）を含みます");
+    expect(block.kind === "rich_text" && block.html).not.toContain("<p>このページには広告");
+  });
+
   it("GFM（表・打ち消し線）を HTML にする", () => {
     const { blocks } = renderMarkdown("| a | b |\n| --- | --- |\n| 1 | 2 |\n\n~~古い~~");
     const [block] = blocks;

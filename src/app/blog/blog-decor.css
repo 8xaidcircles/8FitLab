@@ -90,7 +90,7 @@
 }
 
 /* ----------------------------------------------------------------
-   0. PR表記バッジ
+   0. PR表記バッジ（記事冒頭の広告表記）
    ---------------------------------------------------------------- */
 .blog-article .sousyoku-pr {
   display: flex;
@@ -99,9 +99,9 @@
   margin: 0 0 1.5rem;
   padding: 0.75em 1em;
   font-size: 0.85rem;
-  color: var(--color-muted);
-  background: var(--color-mist);
-  border-radius: 0.375rem;
+  color: #666;
+  background: #f5f5f5;
+  border-radius: 4px;
 }
 
 .blog-article .sousyoku-pr::before {
@@ -110,12 +110,46 @@
   width: 1.2em;
   height: 1.2em;
   border-radius: 50%;
-  background: var(--color-muted);
+  background: #999;
   color: #fff;
   font-size: 0.75em;
   font-weight: 700;
   line-height: 1.2em;
   text-align: center;
+}
+
+/* ----------------------------------------------------------------
+   0b. サイドバー広告（ALL英会話風【PR】見出し＋二色下線）
+   ---------------------------------------------------------------- */
+.blog-sidebar-ad__title {
+  position: relative;
+  overflow: hidden;
+  margin: 0 0 1rem;
+  padding: 0 0 0.625rem;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  line-height: 1.45;
+  color: var(--color-ink);
+}
+
+.blog-sidebar-ad__title::before,
+.blog-sidebar-ad__title::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+.blog-sidebar-ad__title::before {
+  z-index: 2;
+  width: 2.5rem;
+  border-bottom: 3px solid var(--color-indigo);
+}
+
+.blog-sidebar-ad__title::after {
+  z-index: 1;
+  width: 100%;
+  border-bottom: 3px solid var(--color-line);
 }
 
 /* ----------------------------------------------------------------
