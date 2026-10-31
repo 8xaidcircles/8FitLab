@@ -79,8 +79,12 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="ja" className={`${notoSansJp.variable} h-full antialiased`}>
       <head>
-        {/* Impact 公式スニペットは value 属性。Metadata API の content 版と併用する */}
-        <meta name="impact-site-verification" content={IMPACT_SITE_VERIFICATION} value={IMPACT_SITE_VERIFICATION} />
+        {/* Impact 公式スニペットは value 属性（型に無いため spread）。Metadata API の content 版と併用 */}
+        <meta
+          name="impact-site-verification"
+          content={IMPACT_SITE_VERIFICATION}
+          {...{ value: IMPACT_SITE_VERIFICATION }}
+        />
       </head>
       <body className="flex min-h-full flex-col">
         {/* Impact「ページ内容に貼り付け」用（クローラが head の value を拾えない場合のフォールバック） */}
