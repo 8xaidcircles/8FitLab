@@ -15,6 +15,9 @@ const notoSansJp = Noto_Sans_JP({
   weight: ["400", "500", "700", "800"],
 });
 
+/** Impact.com（Udemy アフィリエイト）のサイト所有権確認トークン */
+const IMPACT_SITE_VERIFICATION = "7c77e7a7-3dfc-46c2-816a-21575f02d697";
+
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_ORIGIN),
   title: {
@@ -46,6 +49,12 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image", images: ["/og-image-1200x630.png"] },
   // AdSense のサイト所有権の確認用
   ...(ADSENSE_CLIENT_ID && { other: { "google-adsense-account": ADSENSE_CLIENT_ID } }),
+  // Impact (Udemy アフィリエイト) — Metadata API は content 属性で出力する
+  verification: {
+    other: {
+      "impact-site-verification": IMPACT_SITE_VERIFICATION,
+    },
+  },
 };
 
 const NAV = [
@@ -70,10 +79,14 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="ja" className={`${notoSansJp.variable} h-full antialiased`}>
       <head>
-        {/* Impact (Udemy アフィリエイト) サイト認証 — 公式スニペットは value 属性 */}
-        <meta name="impact-site-verification" value="7c77e7a7-3dfc-46c2-816a-21575f02d697" />
+        {/* Impact 公式スニペットは value 属性。Metadata API の content 版と併用する */}
+        <meta name="impact-site-verification" content={IMPACT_SITE_VERIFICATION} value={IMPACT_SITE_VERIFICATION} />
       </head>
       <body className="flex min-h-full flex-col">
+        {/* Impact「ページ内容に貼り付け」用（クローラが head の value を拾えない場合のフォールバック） */}
+        <span className="absolute h-px w-px overflow-hidden whitespace-nowrap border-0 p-0" style={{ clip: "rect(0, 0, 0, 0)" }} aria-hidden="true">
+          {IMPACT_SITE_VERIFICATION}
+        </span>
         <StructuredData />
         <div className="bg-brand-gradient h-1" />
         <header className="border-b border-line bg-white/90 backdrop-blur">
