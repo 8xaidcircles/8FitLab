@@ -69,6 +69,10 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
   const goals = await loadGoals();
   return (
     <html lang="ja" className={`${notoSansJp.variable} h-full antialiased`}>
+      <head>
+        {/* Impact (Udemy アフィリエイト) サイト認証 — 公式スニペットは value 属性 */}
+        <meta name="impact-site-verification" value="7c77e7a7-3dfc-46c2-816a-21575f02d697" />
+      </head>
       <body className="flex min-h-full flex-col">
         <StructuredData />
         <div className="bg-brand-gradient h-1" />
