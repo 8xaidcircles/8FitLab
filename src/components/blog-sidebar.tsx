@@ -149,9 +149,9 @@ export function BlogSidebar({
       <MoshimoBanner
         serviceId="dmm-webcamp-pro"
         title="【PR】エンジニア転職を目指すなら「DMM WEBCAMP PRO」"
-        clickUrl="https://af.moshimo.com/af/c/click?a_id=5862932&p_id=1363&pc_id=2297&pl_id=20505"
+        clickUrl="https://af.moshimo.com/af/c/click?a_id=5873841&p_id=1363&pc_id=2297&pl_id=20505"
         imageUrl="https://image.moshimo.com/af-img/0323/000000020505.png"
-        impressionUrl="https://i.moshimo.com/af/i/impression?a_id=5862932&p_id=1363&pc_id=2297&pl_id=20505"
+        impressionUrl="https://i.moshimo.com/af/i/impression?a_id=5873841&p_id=1363&pc_id=2297&pl_id=20505"
         width={300}
         height={250}
         alt="DMM WEBCAMP PRO"
@@ -159,9 +159,9 @@ export function BlogSidebar({
       <MoshimoBanner
         serviceId="it-kyujin-navi-freelance"
         title="【PR】フリーエンジニアを手厚くサポート「IT求人ナビ フリーランス」"
-        clickUrl="https://af.moshimo.com/af/c/click?a_id=5862995&p_id=3026&pc_id=6979&pl_id=38472"
+        clickUrl="https://af.moshimo.com/af/c/click?a_id=5873842&p_id=3026&pc_id=6979&pl_id=38472"
         imageUrl="https://image.moshimo.com/af-img/2440/000000038472.jpg"
-        impressionUrl="https://i.moshimo.com/af/i/impression?a_id=5862995&p_id=3026&pc_id=6979&pl_id=38472"
+        impressionUrl="https://i.moshimo.com/af/i/impression?a_id=5873842&p_id=3026&pc_id=6979&pl_id=38472"
         width={300}
         height={250}
         alt="IT求人ナビ フリーランス"
