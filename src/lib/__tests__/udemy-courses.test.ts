@@ -29,9 +29,11 @@ describe("udemy-courses.json", () => {
     expect([...courseIds, ...unavailableIds].sort()).toEqual([...roadmapSkillIds].sort());
   });
 
-  it("講座は Udemy の講座ページの URL で、講座名・講師がある", () => {
+  it("講座は Udemy アフィリエイト URL（または講座ページ URL）で、講座名・講師がある", () => {
     for (const course of master.courses) {
-      expect(course.url, course.skill_id).toMatch(/^https:\/\/www\.udemy\.com\/course\/[a-z0-9_-]+\/$/i);
+      expect(course.url, course.skill_id).toMatch(
+        /^https:\/\/(trk\.udemy\.com\/[A-Za-z0-9]+|www\.udemy\.com\/course\/[a-z0-9_-]+\/)$/i,
+      );
       expect(course.title.trim(), course.skill_id).not.toBe("");
       expect(course.instructor.trim(), course.skill_id).not.toBe("");
     }

@@ -1,479 +1,479 @@
 {
   "version": "1.0.0",
-  "checked_at": "2026-10-09",
+  "checked_at": "2026-11-01",
   "courses": [
     {
       "skill_id": "agile-scrum",
       "title": "【非エンジニアやスクラム初心者向け】短時間で学ぶスクラムの基礎基本【DX／アジャイル】",
-      "url": "https://www.udemy.com/course/scrum-basic/",
+      "url": "https://trk.udemy.com/5kEvYD",
       "instructor": "ぐり主任 【ぐりLab】"
     },
     {
       "skill_id": "angular",
       "title": "【2025年版】初めてのAngular超入門。実践で学ぶ本格Webアプリ開発【TypeScript】",
-      "url": "https://www.udemy.com/course/angular-beginner/",
+      "url": "https://trk.udemy.com/aNVM2Q",
       "instructor": "ハマアツ (浜田篤)"
     },
     {
       "skill_id": "apache-spark",
       "title": "PySparkによる大規模データ処理手法と機械学習",
-      "url": "https://www.udemy.com/course/pyspark-ml/",
+      "url": "https://trk.udemy.com/1GBvRB",
       "instructor": "Satoshi A"
     },
     {
       "skill_id": "api-testing",
       "title": "初めてのPostman（ポストマン）入門。HTTP通信やREST APIの基礎を学び、APIデバッグ手法の基礎を学ぼう",
-      "url": "https://www.udemy.com/course/postman-api/",
+      "url": "https://trk.udemy.com/VO9MBk",
       "instructor": "ハマアツ (浜田篤)"
     },
     {
       "skill_id": "architecture-documentation",
       "title": "エンジニアのためのUML入門",
-      "url": "https://www.udemy.com/course/uml-engineer/",
+      "url": "https://trk.udemy.com/JkXM4N",
       "instructor": "鈴木 楽水"
     },
     {
       "skill_id": "aws",
       "title": "AWS：ゼロから実践するAmazon Web Services。手を動かしながらインフラの基礎を習得",
-      "url": "https://www.udemy.com/course/aws-and-infra/",
+      "url": "https://trk.udemy.com/ZV5MBW",
       "instructor": "山浦 清透, Yusukeaoki"
     },
     {
       "skill_id": "azure",
       "title": "作りながら覚えるMicrosoft Azure入門講座（IaaS編）",
-      "url": "https://www.udemy.com/course/microsoft-azure-iaas-part/",
+      "url": "https://trk.udemy.com/oNDk0Y",
       "instructor": "Makoto Okada"
     },
     {
       "skill_id": "bigquery",
       "title": "BigQuery で学ぶ非エンジニアのための SQL データ分析入門",
-      "url": "https://www.udemy.com/course/bigquerysql/",
+      "url": "https://trk.udemy.com/WOrMRn",
       "instructor": "木田 和廣"
     },
     {
       "skill_id": "ci-cd",
       "title": "GitHub Actionsで学ぶCI/CD入門―ビルド・デプロイの基本からAPI自動テスト・AWSへの自動デプロイまで",
-      "url": "https://www.udemy.com/course/cicd-with-github-actions/",
+      "url": "https://trk.udemy.com/E01MJn",
       "instructor": "しま (大嶋勇樹)"
     },
     {
       "skill_id": "cloud-networking",
       "title": "Amazon Web Service マスターコース VPC編",
-      "url": "https://www.udemy.com/course/amazon-web-service-vpc/",
+      "url": "https://trk.udemy.com/2RzvMG",
       "instructor": "Kazuya Kojima"
     },
     {
       "skill_id": "cloud-security",
       "title": "クラウドネイティブ人材育成コース【セキュリティ編】",
-      "url": "https://www.udemy.com/course/cloudnativesecurity/",
+      "url": "https://trk.udemy.com/4a0vyG",
       "instructor": "GG トップ"
     },
     {
       "skill_id": "csharp",
       "title": "C#文法１：C#で最初に身に着けるべき30の文法",
-      "url": "https://www.udemy.com/course/cskihonnoki/",
+      "url": "https://trk.udemy.com/dygMky",
       "instructor": "ピーコック アンダーソン"
     },
     {
       "skill_id": "data-visualization",
       "title": "データサイエンティストを目指す人のための『ゼロからの Tableau 入門』",
-      "url": "https://www.udemy.com/course/tableau-x/",
+      "url": "https://trk.udemy.com/YVPMbq",
       "instructor": "木田 和廣"
     },
     {
       "skill_id": "database-design",
       "title": "はじめてのテーブル設計・データベース設計【わかりやすい解説 + 身近なテーマでレッスン】",
-      "url": "https://www.udemy.com/course/hajimete-ronrisekkei/",
+      "url": "https://trk.udemy.com/MKzM2N",
       "instructor": "ひらまつ しょうたろう"
     },
     {
       "skill_id": "deep-learning",
       "title": "ディープラーニング : Pythonでゼロから構築し学ぶ人工知能（AI）と深層学習の原理",
-      "url": "https://www.udemy.com/course/deepzero/",
+      "url": "https://trk.udemy.com/7XqvnO",
       "instructor": "我妻 幸長 Yukinaga Azuma"
     },
     {
       "skill_id": "design-patterns",
       "title": "【脱オブジェクト指向初心者！】Pythonで学ぶSOLID原則・デザインパターン",
-      "url": "https://www.udemy.com/course/python-solid-design-patterns/",
+      "url": "https://trk.udemy.com/m4qPjZ",
       "instructor": "Yu Shinozaki"
     },
     {
       "skill_id": "django",
       "title": "【徹底的に解説！】Djangoの基礎をマスターして、3つのアプリを作ろう！（Django2版 / 3版を同時公開中です）",
-      "url": "https://www.udemy.com/course/django-3app/",
+      "url": "https://trk.udemy.com/L0BMOO",
       "instructor": "株式会社CODOR （大橋亮太）"
     },
     {
       "skill_id": "docker",
       "title": "米シリコンバレーDevOps監修！超Docker完全入門【優しい図解説とハンズオンLab付き】",
-      "url": "https://www.udemy.com/course/linux-docker-compose-dockerfile-kanzennyumon/",
+      "url": "https://trk.udemy.com/xJagrO",
       "instructor": "DevOps大学 | CKA & CKS & AWS DevOps Pro (元GAFAM現シリバレエンジニア)"
     },
     {
       "skill_id": "domain-driven-design",
       "title": "C#でドメイン駆動開発パート１【C#でドメイン駆動開発とテスト駆動開発を使って保守性の高いプログラミングをする方法】",
-      "url": "https://www.udemy.com/course/domain-1/",
+      "url": "https://trk.udemy.com/gRBxq0",
       "instructor": "ピーコック アンダーソン"
     },
     {
       "skill_id": "excel",
       "title": "Microsoft Excel - Power Pivot, Power Query, DAX 入門講座",
-      "url": "https://www.udemy.com/course/masukawa_018/",
+      "url": "https://trk.udemy.com/QYLMAz",
       "instructor": "マスカワ シゲル"
     },
     {
       "skill_id": "express",
       "title": "Node.js + Express + MySQL で作る 安全な Webアプリケーション 実践講座",
-      "url": "https://www.udemy.com/course/web-application-with-nodejs-mysql/",
+      "url": "https://trk.udemy.com/rErmLB",
       "instructor": "津郷 晶也, Growcite, Inc."
     },
     {
       "skill_id": "fastapi",
       "title": "Python初学者のネクストステップ！FastAPIによるWeb API開発講座",
-      "url": "https://www.udemy.com/course/python-fastapi/",
+      "url": "https://trk.udemy.com/PzEMRq",
       "instructor": "今西 航平"
     },
     {
       "skill_id": "flask",
       "title": "設計を理解しながらWebアプリを開発！【はじめてのWeb開発】【Flask】",
-      "url": "https://www.udemy.com/course/flask_memo/",
+      "url": "https://trk.udemy.com/5kEvyD",
       "instructor": "ぐり主任 【ぐりLab】"
     },
     {
       "skill_id": "flutter",
       "title": "Flutterアプリ開発講座(初級編)",
-      "url": "https://www.udemy.com/course/nzigen-flutter_beginner/",
+      "url": "https://trk.udemy.com/enXLeZ",
       "instructor": "エヌ次元 株式会社"
     },
     {
       "skill_id": "git-github",
       "title": "Git： もう怖くないGit！チーム開発で必要なGitを完全マスター",
-      "url": "https://www.udemy.com/course/unscared_git/",
+      "url": "https://trk.udemy.com/aNVMjQ",
       "instructor": "山浦 清透, Yusukeaoki"
     },
     {
       "skill_id": "go",
       "title": "現役シリコンバレーエンジニアが教えるGo入門 + 応用でビットコインのシストレFintechアプリの開発",
-      "url": "https://www.udemy.com/course/go-fintech/",
+      "url": "https://trk.udemy.com/m4qM6O",
       "instructor": "酒井 潤 (Jun Sakai)"
     },
     {
       "skill_id": "google-cloud",
       "title": "Google Cloud（GCP）の基礎 - 図解と実践でインフラの基礎を固める 【2025年 最新版】",
-      "url": "https://www.udemy.com/course/google-cloud-i/",
+      "url": "https://trk.udemy.com/PzExLR",
       "instructor": "Stack BeeDash"
     },
     {
       "skill_id": "html-css",
       "title": "HTML/CSS + JavaScriptをちゃんと学ぶ講座",
-      "url": "https://www.udemy.com/course/html-css-js/",
+      "url": "https://trk.udemy.com/enXzoQ",
       "instructor": "たにぐち まこと（ともすた）"
     },
     {
       "skill_id": "iac",
       "title": "Terraform入門ハンズオンwith AWS（v1.3使用）―Terraformの基本からモジュール化、学習方法まで",
-      "url": "https://www.udemy.com/course/terraform-with-aws/",
+      "url": "https://trk.udemy.com/AgeZza",
       "instructor": "しま (大嶋勇樹)"
     },
     {
       "skill_id": "java",
       "title": "一週間で身につくJava言語",
-      "url": "https://www.udemy.com/course/java-jhu/",
+      "url": "https://trk.udemy.com/JkXn3v",
       "instructor": "亀田 健司"
     },
     {
       "skill_id": "javascript",
       "title": "超JavaScript 完全ガイド 2026",
-      "url": "https://www.udemy.com/course/javascript-complete/",
+      "url": "https://trk.udemy.com/ZV5akz",
       "instructor": "よしぴー (Yoshipi)"
     },
     {
       "skill_id": "kotlin",
       "title": "はじめての Kotlin【Java 知らなくてOK！丁寧な解説で Android に必要な Kotlin の基本を学習】",
-      "url": "https://www.udemy.com/course/kotlin-beginner/",
+      "url": "https://trk.udemy.com/0GoqrN",
       "instructor": "ひらまつ しょうたろう"
     },
     {
       "skill_id": "kubernetes",
       "title": "Kubernetes入門",
-      "url": "https://www.udemy.com/course/kubernetes-basics-2021/",
+      "url": "https://trk.udemy.com/bkJXZM",
       "instructor": "Masato Naka"
     },
     {
       "skill_id": "laravel",
       "title": "PHPからLaravelまで サーバーサイドをとことんやってみよう【初心者から脱初心者へ】【わかりやすさ最重視】",
-      "url": "https://www.udemy.com/course/phpbeginnertolaravel/",
+      "url": "https://trk.udemy.com/2RzDPA",
       "instructor": "世界のアオキ (Akihiro Aoki)"
     },
     {
       "skill_id": "linux",
       "title": "はじめてのLinuxサーバー構築運用入門 - Linuxコマンドを基礎から学ぶ",
-      "url": "https://www.udemy.com/course/learn-basics-of-linux/",
+      "url": "https://trk.udemy.com/vDkMLL",
       "instructor": "中村 祐太 Yuta Nakamura, 中村祐太のFindUアカデミー 【AI&WEB開発】"
     },
     {
       "skill_id": "machine-learning",
       "title": "みんなのAI講座 ゼロからPythonで学ぶ人工知能と機械学習 【2026年最新版】",
-      "url": "https://www.udemy.com/course/learning-ai/",
+      "url": "https://trk.udemy.com/zzGo4m",
       "instructor": "我妻 幸長 Yukinaga Azuma"
     },
     {
       "skill_id": "math-for-ml",
       "title": "AIのための数学講座：少しづつ丁寧に学ぶ人工知能向けの線形代数/確率・統計/微分",
-      "url": "https://www.udemy.com/course/math-for-ai/",
+      "url": "https://trk.udemy.com/E01MyX",
       "instructor": "我妻 幸長 Yukinaga Azuma"
     },
     {
       "skill_id": "microservices",
       "title": "マイクロサービスアーキテクチャ",
-      "url": "https://www.udemy.com/course/microservices-architecture-design/",
+      "url": "https://trk.udemy.com/bkJMVB",
       "instructor": "津郷 晶也, Growcite, Inc."
     },
     {
       "skill_id": "mobile-ui",
       "title": "初心者から始めるアプリデザイン＜UI/UXデザインをFigmaで学ぼう！＞Webデザインにも応用可能",
-      "url": "https://www.udemy.com/course/figma-app-design/",
+      "url": "https://trk.udemy.com/6kLYEN",
       "instructor": "Shunsuke Sawada"
     },
     {
       "skill_id": "monitoring",
       "title": "AWSで学ぶ！Grafana・Prometheusによるシステム監視入門講座",
-      "url": "https://www.udemy.com/course/awsgrafanaprometheus/",
+      "url": "https://trk.udemy.com/2RzvdD",
       "instructor": "Shota Fukuyama"
     },
     {
       "skill_id": "network-fundamentals",
       "title": "ネットワークエンジニアを目指す初心者はここから始めよう！「ゼロから学ぶネットワーク基礎」豊富な図解で徹底解説",
-      "url": "https://www.udemy.com/course/network_fundamentals_starting_from_zero/",
+      "url": "https://trk.udemy.com/3kWvEv",
       "instructor": "Hisashi Wakisaka"
     },
     {
       "skill_id": "network-security",
       "title": "【ハンズオン】ネットワークセキュリティ入門講座",
-      "url": "https://www.udemy.com/course/nsbjbysuzuki/",
+      "url": "https://trk.udemy.com/vDkJVA",
       "instructor": "フミヒト スズキ OSCP,OSCE"
     },
     {
       "skill_id": "nextjs",
       "title": "【Next.js入門】ReactフレームワークのNext.jsでマイクロブログを構築しながら基礎と本質を学ぶ講座",
-      "url": "https://www.udemy.com/course/nextjs-microblog-for-beginner/",
+      "url": "https://trk.udemy.com/4a0vE1",
       "instructor": "Shin Code"
     },
     {
       "skill_id": "nodejs",
       "title": "【Node.js入門】Node.jsとMongoDBを連携してTodoアプリを１から構築してみよう",
-      "url": "https://www.udemy.com/course/nodejs-mongodb-todoapp/",
+      "url": "https://trk.udemy.com/dygMGQ",
       "instructor": "Shin Code"
     },
     {
       "skill_id": "numpy",
       "title": "【Numpy超基礎】数値計算を効率的に実行するスキルを習得",
-      "url": "https://www.udemy.com/course/numpy_basics/",
+      "url": "https://trk.udemy.com/NGWMbO",
       "instructor": "かずのすけ （Hirata）"
     },
     {
       "skill_id": "nuxt",
       "title": "【Nuxt.js】入門から応用まで！【Firebase】と連携しWebアプリをつくってみよう【SPA】",
-      "url": "https://www.udemy.com/course/nuxtjs-firebase/",
+      "url": "https://trk.udemy.com/YVPMNO",
       "instructor": "世界のアオキ (Akihiro Aoki)"
     },
     {
       "skill_id": "pandas",
       "title": "【0から始めるPandas】大量データを処理する基礎スキルを習得",
-      "url": "https://www.udemy.com/course/pandas_basics/",
+      "url": "https://trk.udemy.com/NGWMbO",
       "instructor": "かずのすけ （Hirata）"
     },
     {
       "skill_id": "php",
       "title": "PHP+MySQL（MariaDB）をちゃんと学ぶ講座",
-      "url": "https://www.udemy.com/course/php7basic/",
+      "url": "https://trk.udemy.com/jR09yn",
       "instructor": "たにぐち まこと（ともすた）"
     },
     {
       "skill_id": "product-metrics",
       "title": "【GA4入門講座】初心者のためのGoogleアナリティクス4完全ガイド",
-      "url": "https://www.udemy.com/course/ga4-beginner/",
+      "url": "https://trk.udemy.com/PzEMV6",
       "instructor": "カトー ヒサヨシ"
     },
     {
       "skill_id": "product-roadmap",
       "title": "プロダクトマネジメント実践講座: シリコンバレー企業の現役PMが伝授する、プロダクトの成長を加速するロードマップの書き方",
-      "url": "https://www.udemy.com/course/building_product_roadmap/",
+      "url": "https://trk.udemy.com/5kEvZn",
       "instructor": "曽根原 春樹"
     },
     {
       "skill_id": "project-management",
       "title": "新任リーダーのためのITプロジェクト管理入門",
-      "url": "https://www.udemy.com/course/team-leader-basic/",
+      "url": "https://trk.udemy.com/enXLEg",
       "instructor": "津郷 晶也, 西村 信行 Nobuyuki Nishimura, Growcite, Inc."
     },
     {
       "skill_id": "python",
       "title": "現役シリコンバレーエンジニアが教えるPython 3 入門 + 応用 +アメリカのシリコンバレー流コードスタイル",
-      "url": "https://www.udemy.com/course/python-beginner/",
+      "url": "https://trk.udemy.com/GbJMVE",
       "instructor": "酒井 潤 (Jun Sakai)"
     },
     {
       "skill_id": "r",
       "title": "Rではじめる統計基礎講座",
-      "url": "https://www.udemy.com/course/r-statistics/",
+      "url": "https://trk.udemy.com/VO9MYR",
       "instructor": "寺田 清昭"
     },
     {
       "skill_id": "react",
       "title": "【React18対応】モダンJavaScriptの基礎から始める挫折しないためのReact入門",
-      "url": "https://www.udemy.com/course/modern_javascipt_react_beginner/",
+      "url": "https://trk.udemy.com/JkXMVQ",
       "instructor": "じゃけぇ (Takumi Okada)"
     },
     {
       "skill_id": "react-native",
       "title": "React Native, Firebase, Expo でアプリ開発をゼロから始めよう！",
-      "url": "https://www.udemy.com/course/react-native-ios-android/",
+      "url": "https://trk.udemy.com/ZV5MKR",
       "instructor": "Shunsuke Sawada"
     },
     {
       "skill_id": "requirements-definition",
       "title": "システムを作らせる技術（要求定義編）",
-      "url": "https://www.udemy.com/course/cambridge-scope/",
+      "url": "https://trk.udemy.com/gRBx65",
       "instructor": "ケンブリッジ・ テクノロジー・パートナーズ, 白川 克"
     },
     {
       "skill_id": "routing-switching",
       "title": "【ウズカレ式】　『CCNA最短合格講義』の著者直伝！4日でネットワーク基礎、スイッチング、ルーティングの基礎が学べる講座",
-      "url": "https://www.udemy.com/course/ccna200-301/",
+      "url": "https://trk.udemy.com/B5avy9",
       "instructor": "ウズウズカレッジ （株式会社UZUZ COLLEGE）"
     },
     {
       "skill_id": "ruby",
       "title": "はじめてのRuby on Rails入門-RubyとRailsを基礎から学びウェブアプリケーションをネットに公開しよう",
-      "url": "https://www.udemy.com/course/the-ultimate-ruby-on-rails-bootcamp/",
+      "url": "https://trk.udemy.com/0Govj3",
       "instructor": "中村 祐太 Yuta Nakamura, 中村祐太のFindUアカデミー 【AI&WEB開発】"
     },
     {
       "skill_id": "ruby-on-rails",
       "title": "はじめてのRuby on Rails入門-RubyとRailsを基礎から学びウェブアプリケーションをネットに公開しよう",
-      "url": "https://www.udemy.com/course/the-ultimate-ruby-on-rails-bootcamp/",
+      "url": "https://trk.udemy.com/0Govj3",
       "instructor": "中村 祐太 Yuta Nakamura, 中村祐太のFindUアカデミー 【AI&WEB開発】"
     },
     {
       "skill_id": "scala",
       "title": "【Scala入門 | 初心者向け】関数型プログラミングを基礎から学ぼう！（LTS最新版Ver3.3.4対応）",
-      "url": "https://www.udemy.com/course/scalaltsver334/",
+      "url": "https://trk.udemy.com/n4x5Ex",
       "instructor": "ITペンギン の隠れ家"
     },
     {
       "skill_id": "sdlc",
       "title": "【超初心者向け】【システム開発の流れから学ぶ】エンジニアとして活躍するための知識・スキルを明確化！【現場を知る】",
-      "url": "https://www.udemy.com/course/system_development_skills/",
+      "url": "https://trk.udemy.com/bkJMNB",
       "instructor": "ぐり主任 【ぐりLab】"
     },
     {
       "skill_id": "snowflake",
       "title": "Snowflakeによるデータエンジニアリングの基礎",
-      "url": "https://www.udemy.com/course/snowflake-load/",
+      "url": "https://trk.udemy.com/6kLYdN",
       "instructor": "Satoshi A"
     },
     {
       "skill_id": "spring-boot",
       "title": "IntelliJ ではじめる Spring Boot：課題管理アプリを作って学ぶWebアプリケーション開発の基礎",
-      "url": "https://www.udemy.com/course/intellij-spring-boot/",
+      "url": "https://trk.udemy.com/OY0MKA",
       "instructor": "poco-tech at Udemy, poco-tech Support デスク"
     },
     {
       "skill_id": "sql",
       "title": "3時間で学ぶ SQL ・データベース 超入門【丁寧な解説+演習問題で SQL データ抽出の基本が身につく】標準 SQL",
-      "url": "https://www.udemy.com/course/sql-begginer/",
+      "url": "https://trk.udemy.com/2Rzv5D",
       "instructor": "ひらまつ しょうたろう"
     },
     {
       "skill_id": "stakeholder-management",
       "title": "会議運営の苦手な“あなた”が、今日からできる会議ファシリテーション",
-      "url": "https://www.udemy.com/course/kaigi-facilitation/",
+      "url": "https://trk.udemy.com/3kWvZv",
       "instructor": "前田 秀雄"
     },
     {
       "skill_id": "statistics",
       "title": "【しっかり原理を理解したい方向け】東大理系女子と学ぶはじめての統計学",
-      "url": "https://www.udemy.com/course/intro-to-stat/",
+      "url": "https://trk.udemy.com/R0qMn7",
       "instructor": "Kanae Ishihara"
     },
     {
       "skill_id": "swift",
       "title": "【SwiftUI】チャットアプリを作りながら学ぶ実践的iPhoneアプリ開発講座",
-      "url": "https://www.udemy.com/course/chatappwithswiftui/",
+      "url": "https://trk.udemy.com/vDkJjA",
       "instructor": "カーキ (Yohei Terashima)"
     },
     {
       "skill_id": "system-design",
       "title": "リバーシで学ぶアプリケーション設計入門〜仕様の整理からTypeScriptでの実装まで〜",
-      "url": "https://www.udemy.com/course/learning-application-architecture-with-reversi/",
+      "url": "https://trk.udemy.com/4a0vm1",
       "instructor": "しま (大嶋勇樹)"
     },
     {
       "skill_id": "test-automation",
       "title": "Playwright × TypeScript E2Eテスト自動化入門講座",
-      "url": "https://www.udemy.com/course/playwright-typescript-e2e/",
+      "url": "https://trk.udemy.com/qW9aZn",
       "instructor": "Shota Fukuyama"
     },
     {
       "skill_id": "test-design",
       "title": "はじめてのソフトウェアテスト技法【全てのエンジニアが知るべき最重要テスト技法を、丁寧な解説と演習問題で身につけよう】",
-      "url": "https://www.udemy.com/course/software-test-design/",
+      "url": "https://trk.udemy.com/QYLM4Y",
       "instructor": "ひらまつ しょうたろう"
     },
     {
       "skill_id": "testing",
       "title": "C#でテスト駆動開発【TDD】をする方法",
-      "url": "https://www.udemy.com/course/cs-tdd01/",
+      "url": "https://trk.udemy.com/rErmOG",
       "instructor": "ピーコック アンダーソン"
     },
     {
       "skill_id": "tidyverse",
       "title": "AIエンジニアが教えるRとtidyverseによるデータの前処理講座",
-      "url": "https://www.udemy.com/course/r-tidyverse-preprocess/",
+      "url": "https://trk.udemy.com/jR09Zn",
       "instructor": "shun ."
     },
     {
       "skill_id": "typescript",
       "title": "【世界で7万人が受講】Understanding TypeScript 日本語版",
-      "url": "https://www.udemy.com/course/understanding-typescript-jp/",
+      "url": "https://trk.udemy.com/5kEvYn",
       "instructor": "Yota Hamada, Maximilian Schwarzmüller"
     },
     {
       "skill_id": "user-research",
       "title": "問題解決・価値創造の出発点！価値ある情報を集めるインタビューの技術　~生成AIでは得られない一次データを集めるスキル",
-      "url": "https://www.udemy.com/course/interviewskill/",
+      "url": "https://trk.udemy.com/k4ErZM",
       "instructor": "中野崇 株式会社Breezy"
     },
     {
       "skill_id": "ux-design",
       "title": "UXデザイン講座　UXデザイン基礎入門　ver. 2.0",
-      "url": "https://www.udemy.com/course/kitohito0004/",
+      "url": "https://trk.udemy.com/enXLgg",
       "instructor": "萩本 晋"
     },
     {
       "skill_id": "vue",
       "title": "超Vue.js 完全ガイド2026 (Vue Router, Pinia含む)",
-      "url": "https://www.udemy.com/course/vue-js-complete-guide/",
+      "url": "https://trk.udemy.com/xJagQO",
       "instructor": "よしぴー (Yoshipi)"
     },
     {
       "skill_id": "web-accessibility",
       "title": "ゼロから始めるウェブアクセシビリティ：ウェブ初心者でも分かる取り組み方",
-      "url": "https://www.udemy.com/course/accesibility-basic/",
+      "url": "https://trk.udemy.com/DWGvnq",
       "instructor": "慧 貞包"
     },
     {
       "skill_id": "web-api",
       "title": "REST WebAPI サービス 設計",
-      "url": "https://www.udemy.com/course/rest-webapi-development/",
+      "url": "https://trk.udemy.com/9VD7OQ",
       "instructor": "津郷 晶也, Growcite, Inc."
     },
     {
       "skill_id": "web-security",
       "title": "初心者のためのOWASP Top 10 2025で学ぶアプリケーションセキュリティ入門",
-      "url": "https://www.udemy.com/course/owasp-top-10-ja/",
+      "url": "https://trk.udemy.com/rErmOB",
       "instructor": "山川 次郎 Yamakawa Jiro"
     }
   ],
