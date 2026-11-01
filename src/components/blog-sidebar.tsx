@@ -103,6 +103,17 @@ export function BlogSidebar({
 
   return (
     <aside className="space-y-6" aria-label="サイドバー">
+      <MoshimoBanner
+        serviceId="claude-code"
+        title="【PR】自作できるClaude Codeスクール「バイテックGEEK」"
+        clickUrl="https://af.moshimo.com/af/c/click?a_id=5873850&p_id=7629&pc_id=22069&pl_id=95324"
+        imageUrl="https://image.moshimo.com/af-img/5991/000000095324.png"
+        impressionUrl="https://i.moshimo.com/af/i/impression?a_id=5873850&p_id=7629&pc_id=22069&pl_id=95324"
+        width={300}
+        height={250}
+        alt="バイテックGEEK"
+      />
+
       {navigationOnly && (
         <Widget title="Goal Fit">
           <Link
