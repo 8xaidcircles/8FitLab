@@ -24,7 +24,10 @@ export type GoalFitBlock = { kind: "goal_fit" };
 /** ```ad-insert を書いた位置に出す挿入広告（文言・バナーは blog-ad-insert.tsx で共通） */
 export type AdInsertBlock = { kind: "ad_insert" };
 
-export type BodyBlock = RichTextBlock | CtaButtonBlock | GoalFitBlock | AdInsertBlock;
+/** ```related を書いた位置に出す「あわせて読みたい記事」カード（slug で他記事を参照） */
+export type RelatedPostBlock = { kind: "related_post"; slug: string };
+
+export type BodyBlock = RichTextBlock | CtaButtonBlock | GoalFitBlock | AdInsertBlock | RelatedPostBlock;
 
 const MAX_LABEL_LENGTH = 60;
 const MAX_NOTE_LENGTH = 200;
@@ -85,4 +88,23 @@ export function parseCtaBlock(raw: unknown): CtaButtonBlock {
     trackingPixelUrl,
     linkHost: url.host,
   };
+}
+
+const RELATED_KEYS = new Set(["slug"]);
+
+/** ```related ブロックの中身（YAML）を関連記事カードにする */
+export function parseRelatedBlock(raw: unknown): RelatedPostBlock {
+  if (typeof raw !== "object" || raw === null || Array.isArray(raw)) {
+    throw new Error("related ブロックは「slug: 記事スラッグ」の形で書いてください");
+  }
+  const item = raw as Record<string, unknown>;
+  const unknownKeys = Object.keys(item).filter((key) => !RELATED_KEYS.has(key));
+  if (unknownKeys.length > 0) throw new Error(`related ブロックに使えない項目があります: ${unknownKeys.join(", ")}`);
+
+  const slug = text(item.slug);
+  if (!slug) throw new Error("related ブロックの slug（記事スラッグ）がありません");
+  if (!/^[a-z0-9][a-z0-9_-]*$/i.test(slug)) {
+    throw new Error("related ブロックの slug は英数字・ハイフン・アンダースコアにしてください");
+  }
+  return { kind: "related_post", slug };
 }

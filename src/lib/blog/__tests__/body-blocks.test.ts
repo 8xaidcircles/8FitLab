@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { parseCtaBlock, parseHttpsUrl } from "../body-blocks";
+import { parseCtaBlock, parseHttpsUrl, parseRelatedBlock } from "../body-blocks";
 
 const cta = {
   label: "公式サイトで詳細を見る",
@@ -53,5 +53,23 @@ describe("parseHttpsUrl", () => {
     expect(parseHttpsUrl("data:text/html,x")).toBeNull();
     expect(parseHttpsUrl("not a url")).toBeNull();
     expect(parseHttpsUrl(1)).toBeNull();
+  });
+});
+
+describe("parseRelatedBlock", () => {
+  it("関連記事カードに整える", () => {
+    expect(parseRelatedBlock({ slug: " full-stack-developer-school " })).toEqual({
+      kind: "related_post",
+      slug: "full-stack-developer-school",
+    });
+  });
+
+  it.each([
+    ["slug が空", { slug: " " }, "slug"],
+    ["不正な文字", { slug: "../etc" }, "slug"],
+    ["項目名の誤り", { id: "x" }, "id"],
+    ["空", null, "slug:"],
+  ])("%s は例外", (_, raw, message) => {
+    expect(() => parseRelatedBlock(raw)).toThrow(message);
   });
 });

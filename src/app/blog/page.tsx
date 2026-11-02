@@ -116,8 +116,11 @@ export default async function BlogIndex() {
         </ul>
       </nav>
 
-      <section className="relative mt-6 overflow-hidden rounded-2xl bg-ink p-5 text-white sm:p-6 md:p-8">
-        <div className="bg-brand-gradient absolute inset-x-0 top-0 h-1" />
+      <Link
+        href="/goal-fit"
+        className="group relative mt-6 block overflow-hidden rounded-2xl bg-ink p-5 text-white transition hover:brightness-110 sm:p-6 md:p-8"
+      >
+        <div className="bg-brand-gradient absolute inset-x-0 top-0 h-1.5" />
         <p className="text-[10px] font-bold tracking-widest text-sky sm:text-xs">GOAL FIT</p>
         <p className="mt-2 text-base leading-snug font-extrabold sm:text-lg md:text-xl lg:text-2xl">
           どのスクールが合うか迷ったら、まずは目指す職種との距離を確認
@@ -125,15 +128,12 @@ export default async function BlogIndex() {
         <p className="mt-2 text-xs leading-relaxed text-white/80 sm:text-sm md:text-base">
           スキル・経験・学歴から、目指す職種との一致度と、次に学ぶ順番がわかります。スクールで何を学ぶべきかを決める材料にしてください。
         </p>
-        <div className="mt-5 text-center">
-          <Link
-            href="/goal-fit"
-            className="inline-block rounded-full bg-white px-6 py-2.5 text-xs font-bold text-indigo transition hover:bg-sky-soft sm:px-8 sm:py-3 sm:text-sm md:text-base"
-          >
+        <div className="mt-6 text-center">
+          <span className="btn-reflection inline-flex items-center justify-center rounded-full bg-[linear-gradient(90deg,#ffe4ec_0%,#fff0d6_25%,#e8f8e0_50%,#dff3ff_75%,#ebe4ff_100%)] px-8 py-3.5 text-sm font-extrabold text-indigo shadow-lg shadow-white/25 transition group-hover:brightness-105 sm:px-10 sm:py-4 sm:text-base md:text-lg">
             無料でGoal Fitを試す
-          </Link>
+          </span>
         </div>
-      </section>
+      </Link>
       <p className="mt-3 text-center text-xs text-muted">
         <span
           tabIndex={0}

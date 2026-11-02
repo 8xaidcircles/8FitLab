@@ -6,6 +6,7 @@ import { AuthorProfile } from "@/components/author-box";
 import { BlogAdInsert } from "@/components/blog-ad-insert";
 import { BlogCta } from "@/components/blog-cta";
 import { BlogCtaButton } from "@/components/blog-cta-button";
+import { BlogRelatedCard } from "@/components/blog-related-card";
 import { BlogSidebar } from "@/components/blog-sidebar";
 import { BlogToc } from "@/components/blog-toc";
 import { JsonLd } from "@/components/json-ld";
@@ -166,17 +167,18 @@ export default async function BlogPostPage({ params }: PageProps<"/blog/[slug]">
             </div>
 
             <div className="mt-8 space-y-8">
-              {blocks.map((block, i) =>
-                block.kind === "rich_text" ? (
-                  <div key={i} className="blog-content" dangerouslySetInnerHTML={{ __html: block.html }} />
-                ) : block.kind === "goal_fit" ? (
-                  <BlogCta key={i} goal={goal} />
-                ) : block.kind === "ad_insert" ? (
-                  <BlogAdInsert key={i} />
-                ) : (
-                  <BlogCtaButton key={i} block={block} articleId={post.id} positionIndex={ctaIndexes[i]} />
-                ),
-              )}
+              {blocks.map((block, i) => {
+                if (block.kind === "rich_text") {
+                  return <div key={i} className="blog-content" dangerouslySetInnerHTML={{ __html: block.html }} />;
+                }
+                if (block.kind === "goal_fit") return <BlogCta key={i} goal={goal} />;
+                if (block.kind === "ad_insert") return <BlogAdInsert key={i} />;
+                if (block.kind === "related_post") {
+                  const relatedPost = allPosts.find((p) => p.id === block.slug);
+                  return relatedPost ? <BlogRelatedCard key={i} post={relatedPost} /> : null;
+                }
+                return <BlogCtaButton key={i} block={block} articleId={post.id} positionIndex={ctaIndexes[i]} />;
+              })}
             </div>
           </article>
 

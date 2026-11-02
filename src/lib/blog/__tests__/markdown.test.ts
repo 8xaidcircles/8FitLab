@@ -42,6 +42,15 @@ describe("renderMarkdown", () => {
     ]);
   });
 
+  it("```related を書いた位置に関連記事のブロックを置く", () => {
+    const { blocks } = renderMarkdown("前。\n\n```related\nslug: full-stack-developer-school\n```\n\n後。");
+    expect(blocks).toEqual([
+      { kind: "rich_text", html: "<p>前。</p>" },
+      { kind: "related_post", slug: "full-stack-developer-school" },
+      { kind: "rich_text", html: "<p>後。</p>" },
+    ]);
+  });
+
   it("広告表記の段落を sousyoku-pr にする", () => {
     const { blocks } = renderMarkdown("このページには広告（PR）を含みます\n\n本文。");
     const [block] = blocks;

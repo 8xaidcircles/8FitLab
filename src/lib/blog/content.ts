@@ -285,6 +285,14 @@ async function readContent(): Promise<BlogContent> {
   // _ で始まるファイル（_template.md）は記事にしない
   const fileNames = (await readdir(POSTS_DIR).catch(() => [] as string[])).filter((name) => name.endsWith(".md") && !name.startsWith("_"));
   const posts = await Promise.all(fileNames.map((name) => loadPost(name, { authors, categories, goals })));
+  const postIds = new Set(posts.map((post) => post.id));
+  for (const post of posts) {
+    for (const block of post.blocks) {
+      if (block.kind !== "related_post") continue;
+      if (!postIds.has(block.slug)) fail(`${post.id}.md`, `related の slug「${block.slug}」の記事がありません`);
+      if (block.slug === post.id) fail(`${post.id}.md`, "related の slug に自分自身は指定できません");
+    }
+  }
   posts.sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime() || a.id.localeCompare(b.id));
   return { posts, authors, categories, services };
 }

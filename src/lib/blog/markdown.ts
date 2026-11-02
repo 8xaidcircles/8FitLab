@@ -7,15 +7,18 @@ import { unified } from "unified";
 import { parse as parseYaml } from "yaml";
 import {
   parseCtaBlock,
+  parseRelatedBlock,
   type AdInsertBlock,
   type BodyBlock,
   type CtaButtonBlock,
   type GoalFitBlock,
+  type RelatedPostBlock,
 } from "./body-blocks";
 import { rehypeBlogDecor } from "./decorate-html";
 
 /**
- * 記事本文の Markdown（GFM）を、HTML の本文と ```cta のボタン・```goal-fit の診断誘導・```ad-insert の挿入広告に分ける。
+ * 記事本文の Markdown（GFM）を、HTML の本文と ```cta のボタン・```goal-fit の診断誘導・
+ * ```ad-insert の挿入広告・```related の関連記事カードに分ける。
  * 生の HTML は書けない（remark-rehype が出力しないため、書いたら例外にして気づけるようにする）。
  * FAQ・比較表・「目次に戻る」は rehypeBlogDecor が sousyoku-* クラスを付ける。
  */
@@ -28,7 +31,8 @@ export type RenderedMarkdown = {
 const CTA_LANG = "cta";
 const GOAL_FIT_LANG = "goal-fit";
 const AD_INSERT_LANG = "ad-insert";
-const BLOCK_LANGS = new Set([CTA_LANG, GOAL_FIT_LANG, AD_INSERT_LANG]);
+const RELATED_LANG = "related";
+const BLOCK_LANGS = new Set([CTA_LANG, GOAL_FIT_LANG, AD_INSERT_LANG, RELATED_LANG]);
 const BLOCK_MARKER = "@@8FITLAB_BLOCK_";
 const BLOCK_PLACEHOLDER = /<p>@@8FITLAB_BLOCK_(\d+)@@<\/p>/;
 const LINE_BREAK = /^<br\s*\/?>$/i;
@@ -91,10 +95,21 @@ function parseAdInsert(value: string): AdInsertBlock {
   return { kind: "ad_insert" };
 }
 
+function parseRelated(value: string): RelatedPostBlock {
+  let raw: unknown;
+  try {
+    raw = parseYaml(value);
+  } catch (error) {
+    throw new Error(`related ブロックの YAML を読めません: ${error instanceof Error ? error.message : String(error)}`);
+  }
+  return parseRelatedBlock(raw);
+}
+
 function parseSpecialBlock(lang: string, value: string): BodyBlock {
   if (lang === CTA_LANG) return parseCta(value);
   if (lang === GOAL_FIT_LANG) return parseGoalFit(value);
-  return parseAdInsert(value);
+  if (lang === AD_INSERT_LANG) return parseAdInsert(value);
+  return parseRelated(value);
 }
 
 export function renderMarkdown(markdown: string): RenderedMarkdown {
