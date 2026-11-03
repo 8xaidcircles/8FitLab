@@ -6,7 +6,7 @@ category: school
 goal: [software-architect]
 author: editorial
 eyecatch: /blog/images/software-architect-school/eyecatch.png
-draft: true
+draft: false
 ---
 
 このページには広告（PR）を含みます
