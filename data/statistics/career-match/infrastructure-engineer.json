@@ -1,5 +1,5 @@
 {
- "goal_id": "network-engineer",
+ "goal_id": "infrastructure-engineer",
  "mapping_status": "exact",
  "goal_occupations": [
   "2523.3"
@@ -18,7 +18,7 @@
  "experience_reference_estimator": "harrell-davis",
  "requirement_groups": [
   {
-   "group_id": "network-engineer",
+   "group_id": "infrastructure-engineer",
    "occupations": [
     "2523.3"
    ],

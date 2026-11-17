@@ -246,7 +246,7 @@ describe("最低教育要件（2.4.0 で確定）", () => {
     "product-manager": "Bachelor",
     "software-architect": "Bachelor",
     "mobile-app-developer": "Bachelor",
-    "network-engineer": "Bachelor",
+    "infrastructure-engineer": "Bachelor",
     "test-analyst": "Bachelor",
     "devops-sre": "Bachelor",
     "cloud-architect": "Bachelor",

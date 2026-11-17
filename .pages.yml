@@ -109,8 +109,8 @@ content:
               label: ソフトウェアアーキテクト
             - name: mobile-app-developer
               label: モバイルアプリエンジニア
-            - name: network-engineer
-              label: ネットワークエンジニア
+            - name: infrastructure-engineer
+              label: インフラエンジニア
             - name: test-analyst
               label: テストエンジニア / QA
             - name: devops-sre

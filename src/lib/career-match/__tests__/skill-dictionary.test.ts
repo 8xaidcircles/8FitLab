@@ -205,7 +205,7 @@ describe("代わりのきく技術のグループ", () => {
     },
     {
       groupId: "python-web-framework",
-      goalIds: ["data-scientist", "data-engineer", "devops-sre", "cloud-architect", "network-engineer"],
+      goalIds: ["data-scientist", "data-engineer", "devops-sre", "cloud-architect", "infrastructure-engineer"],
       members: ["fastapi", "flask", "django"],
     },
   ])("$groupId は $goalIds で 1 項目になり、メンバーが個別の項目として残らない", ({ groupId, goalIds, members }) => {
@@ -404,7 +404,7 @@ describe("Goal ごとの人間定義層の要件と層の配分", () => {
   });
 
   it("技術スキル層がほぼ無い Goal（PM・PdM・Test・Network）は人間定義層 100%", () => {
-    for (const goalId of ["it-project-manager", "product-manager", "test-analyst", "network-engineer"]) {
+    for (const goalId of ["it-project-manager", "product-manager", "test-analyst", "infrastructure-engineer"]) {
       expect(skillLayers.goals.find((g) => g.goal_id === goalId)?.layer_weights).toEqual({ tech: 0, human: 1 });
     }
   });

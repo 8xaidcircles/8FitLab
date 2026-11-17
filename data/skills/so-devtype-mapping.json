@@ -107,7 +107,7 @@
       }
     },
     {
-      "goal_id": "network-engineer",
+      "goal_id": "infrastructure-engineer",
       "mapping_status": "proxy",
       "mapping_note": "ネットワーク専門の職種が無いため System administrator で代用する",
       "devtypes": {

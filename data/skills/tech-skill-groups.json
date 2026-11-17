@@ -47,7 +47,7 @@
       "description": "FastAPI・Flask・Django は Python の中で互いに代わりがきくため 1 項目にまとめる。言語をまたぐサーバーサイドのフレームワーク（server-framework）を適用しない全 Goal に適用する",
       "goals": [
         "frontend-developer", "data-analyst", "data-scientist", "data-engineer", "it-project-manager", "product-manager",
-        "mobile-app-developer", "network-engineer", "test-analyst", "devops-sre", "cloud-architect"
+        "mobile-app-developer", "infrastructure-engineer", "test-analyst", "devops-sre", "cloud-architect"
       ],
       "members": ["fastapi", "flask", "django"]
     },

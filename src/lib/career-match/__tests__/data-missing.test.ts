@@ -10,7 +10,7 @@ vi.mock("node:fs/promises", async (importOriginal) => {
     ...actual,
     readFile: vi.fn((file: string, options: BufferEncoding) => {
       if (/skill-match[\\/](it-project-manager|data-analyst)\.json$/.test(String(file))) return fail("ENOENT");
-      if (/skill-match[\\/]network-engineer\.json$/.test(String(file))) return fail("EACCES");
+      if (/skill-match[\\/]infrastructure-engineer\.json$/.test(String(file))) return fail("EACCES");
       return actual.readFile(file, options);
     }),
   };
@@ -22,7 +22,7 @@ describe("技術スキル統計のファイルが無い Goal", () => {
   });
 
   it("ファイルが無い以外の読み込みエラーはそのまま投げる", async () => {
-    await expect(loadSkillStatistics("network-engineer")).rejects.toThrow("EACCES");
+    await expect(loadSkillStatistics("infrastructure-engineer")).rejects.toThrow("EACCES");
   });
 
   it("技術層 100% の Goal でも計算は止まらず、人間定義層 100% に寄せる（fallback）", async () => {

@@ -123,7 +123,7 @@ export const SCHOOL_PICKS: JobCategoryPick[] = [
     sponsored: false,
   },
   {
-    goalId: "network-engineer",
+    goalId: "infrastructure-engineer",
     name: "ウズウズカレッジ",
     course: "CCNAコース",
     fit: "ネットワークの標準資格 CCNA の取得と、インフラエンジニアとしての就職サポートが一体",
@@ -232,7 +232,7 @@ export const JOB_SERVICE_PICKS: JobCategoryPick[] = [
     sponsored: false,
   },
   {
-    goalId: "network-engineer",
+    goalId: "infrastructure-engineer",
     name: "マイナビIT AGENT",
     fit: "IT・Web 業界に特化した転職エージェントで、ネットワーク・インフラ職の求人も扱う",
     officialUrl: "https://mynavi-agent.jp/it/",

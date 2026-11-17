@@ -82,7 +82,7 @@
       "human_requirements": ["git-github", "mobile-ui", "web-api", "testing", "app-release", "ci-cd"]
     },
     {
-      "goal_id": "network-engineer",
+      "goal_id": "infrastructure-engineer",
       "layer_weights": { "tech": 0, "human": 1 },
       "layer_weight_reason": "Stack Overflow に対応する DevType が無く、代理 DevType（System administrator）の採用技術に Web 開発系の技術が混ざるため",
       "human_requirements": [

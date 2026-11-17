@@ -220,13 +220,13 @@
       "summary": "iOS / Android アプリを作る"
     },
     {
-      "goal_id": "network-engineer",
-      "display_name": "Network Engineer",
+      "goal_id": "infrastructure-engineer",
+      "display_name": "Infrastructure Engineer",
       "mapping_status": "exact",
       "requirement_groups": [
         {
-          "group_id": "network-engineer",
-          "name": "ネットワークエンジニア",
+          "group_id": "infrastructure-engineer",
+          "name": "インフラエンジニア",
           "occupations": [
             {
               "code": "2523.3",
@@ -235,8 +235,8 @@
           ]
         }
       ],
-      "name": "ネットワークエンジニア",
-      "summary": "ネットワークを設計・構築・運用する"
+      "name": "インフラエンジニア",
+      "summary": "インフラ・ネットワークを設計・構築・運用する"
     },
     {
       "goal_id": "test-analyst",
