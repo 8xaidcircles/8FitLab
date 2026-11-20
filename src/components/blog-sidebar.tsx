@@ -16,7 +16,7 @@ function Widget({ title, children }: { title: string; children: ReactNode }) {
   );
 }
 
-/** もしまバナー。ALL英会話風の【PR】見出し＋下線。ASP 計測のため next/image は使わない */
+/** もしまバナー。見出し＋下線。ASP 計測のため next/image は使わない */
 function MoshimoBanner({
   serviceId,
   title,
@@ -103,17 +103,6 @@ export function BlogSidebar({
 
   return (
     <aside className="space-y-6" aria-label="サイドバー">
-      <MoshimoBanner
-        serviceId="claude-code"
-        title="【PR】自作できるClaude Codeスクール「バイテックGEEK」"
-        clickUrl="https://af.moshimo.com/af/c/click?a_id=5873850&p_id=7629&pc_id=22069&pl_id=95324"
-        imageUrl="https://image.moshimo.com/af-img/5991/000000095324.png"
-        impressionUrl="https://i.moshimo.com/af/i/impression?a_id=5873850&p_id=7629&pc_id=22069&pl_id=95324"
-        width={300}
-        height={250}
-        alt="バイテックGEEK"
-      />
-
       {navigationOnly && (
         <Widget title="Goal Fit">
           <Link
@@ -158,18 +147,19 @@ export function BlogSidebar({
       )}
 
       <MoshimoBanner
-        serviceId="dmm-webcamp-pro"
-        title="【PR】エンジニア転職を目指すなら「DMM WEBCAMP PRO」"
-        clickUrl="https://af.moshimo.com/af/c/click?a_id=5873841&p_id=1363&pc_id=2297&pl_id=20505"
-        imageUrl="https://image.moshimo.com/af-img/0323/000000020505.png"
-        impressionUrl="https://i.moshimo.com/af/i/impression?a_id=5873841&p_id=1363&pc_id=2297&pl_id=20505"
+        serviceId="claude-code"
+        title="自作できるClaude Codeスクール「バイテックGEEK」"
+        clickUrl="https://af.moshimo.com/af/c/click?a_id=5873850&p_id=7629&pc_id=22069&pl_id=95324"
+        imageUrl="https://image.moshimo.com/af-img/5991/000000095324.png"
+        impressionUrl="https://i.moshimo.com/af/i/impression?a_id=5873850&p_id=7629&pc_id=22069&pl_id=95324"
         width={300}
         height={250}
-        alt="DMM WEBCAMP PRO"
+        alt="バイテックGEEK"
       />
+
       <MoshimoBanner
         serviceId="it-kyujin-navi-freelance"
-        title="【PR】フリーエンジニアを手厚くサポート「IT求人ナビ フリーランス」"
+        title="フリーエンジニアを手厚くサポート「IT求人ナビ フリーランス」"
         clickUrl="https://af.moshimo.com/af/c/click?a_id=5873842&p_id=3026&pc_id=6979&pl_id=38472"
         imageUrl="https://image.moshimo.com/af-img/2440/000000038472.jpg"
         impressionUrl="https://i.moshimo.com/af/i/impression?a_id=5873842&p_id=3026&pc_id=6979&pl_id=38472"
